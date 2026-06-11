@@ -4,11 +4,11 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
-import { ChangeDetectionStrategy, Component, provideZoneChangeDetection } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Component, signal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { provideMockDirectionality } from 'ng-zorro-antd/core/testing';
+import { provideMockDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 
 import { NzDescriptionsComponent } from './descriptions.component';
 import { NzDescriptionsModule } from './descriptions.module';
@@ -18,10 +18,7 @@ declare const viewport: any;
 
 describe('descriptions', () => {
   beforeEach(() => {
-    // todo: use zoneless
-    TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection()]
-    });
+    TestBed.configureTestingModule({});
   });
 
   describe('with different spans', () => {
@@ -44,7 +41,7 @@ describe('descriptions', () => {
       expect(title).toBeTruthy();
       expect(view).toBeTruthy();
 
-      testComponent.title = '';
+      testComponent.title.set('');
       fixture.detectChanges();
       title = componentElement.querySelector('.ant-descriptions-title');
       expect(title).toBeFalsy();
@@ -56,7 +53,7 @@ describe('descriptions', () => {
       rows = componentElement.querySelectorAll('.ant-descriptions-row');
       expect(rows.length).toBe(1);
 
-      testComponent.colspanArray = [1, 1, 1, 2, 3, 1, 5];
+      testComponent.colspanArray.set([1, 1, 1, 2, 3, 1, 5]);
       fixture.detectChanges();
       rows = componentElement.querySelectorAll('.ant-descriptions-row');
       expect(rows.length).toBe(3);
@@ -64,21 +61,21 @@ describe('descriptions', () => {
       expect(spyOnWarn).toHaveBeenCalledWith('[NG-ZORRO]:', '"nzColumn" is 3 but we have row length 5');
       expect(spyOnWarn).toHaveBeenCalledWith('[NG-ZORRO]:', '"nzColumn" is 3 but we have row length 6');
 
-      testComponent.column = 5;
-      testComponent.colspanArray = [1, 2, 3];
+      testComponent.column.set(5);
+      testComponent.colspanArray.set([1, 2, 3]);
       fixture.detectChanges();
       rows = componentElement.querySelectorAll('.ant-descriptions-row');
       expect(rows.length).toBe(1);
       expect(spyOnWarn).toHaveBeenCalledTimes(4);
       expect(spyOnWarn).toHaveBeenCalledWith('[NG-ZORRO]:', '"nzColumn" is 5 but we have row length 6');
 
-      testComponent.colspanArray = [1, 2, 2];
+      testComponent.colspanArray.set([1, 2, 2]);
       fixture.detectChanges();
       rows = componentElement.querySelectorAll('.ant-descriptions-row');
       expect(rows.length).toBe(1);
 
       // Should the last fill the rest space.
-      testComponent.colspanArray = [1, 1];
+      testComponent.colspanArray.set([1, 1]);
       fixture.detectChanges();
       rows = componentElement.querySelectorAll('.ant-descriptions-row');
       const tds = componentElement.querySelectorAll('.ant-descriptions-item');
@@ -87,21 +84,21 @@ describe('descriptions', () => {
       spyOnWarn.calls.reset();
     });
 
-    it('should responsive work', fakeAsync(() => {
-      testComponent.column = {
+    it('should responsive work', async () => {
+      testComponent.column.set({
         xxl: 3,
         xl: 3,
         lg: 3,
         md: 3,
         sm: 2,
         xs: 1
-      };
-      testComponent.colspanArray = [1, 1, 1, 2, 3, 1, 5];
+      });
+      testComponent.colspanArray.set([1, 1, 1, 2, 3, 1, 5]);
 
       viewport.set(1024, 1024);
       window.dispatchEvent(new Event('resize'));
       fixture.detectChanges();
-      tick(1000);
+      await updateNonSignalsInput(fixture, 1000);
       fixture.detectChanges();
       rows = componentElement.querySelectorAll('.ant-descriptions-row');
       expect(rows.length).toBe(3);
@@ -109,27 +106,27 @@ describe('descriptions', () => {
       viewport.set(320, 320);
       window.dispatchEvent(new Event('resize'));
       fixture.detectChanges();
-      tick(1000);
+      await updateNonSignalsInput(fixture, 1000);
       fixture.detectChanges();
 
       rows = componentElement.querySelectorAll('.ant-descriptions-row');
       expect(rows.length).toBe(7);
 
       viewport.reset();
-    }));
+    });
 
     // fix #3795
-    it('should change to use content work', fakeAsync(() => {
+    it('should change to use content work', async () => {
       let firstTitle = componentElement.querySelector('.ant-descriptions-item-label') as HTMLSpanElement;
       expect(firstTitle.innerText).toBe('Item Title 0');
 
-      testComponent.itemTitle = 'Item ';
+      testComponent.itemTitle.set('Item ');
       fixture.detectChanges();
-      tick(16);
+      await updateNonSignalsInput(fixture, 16);
       fixture.detectChanges();
       firstTitle = componentElement.querySelector('.ant-descriptions-item-label') as HTMLSpanElement;
       expect(firstTitle.innerText).toBe('Item 0');
-    }));
+    });
   });
 
   describe('RTL', () => {
@@ -163,18 +160,17 @@ describe('descriptions', () => {
   imports: [NzDescriptionsModule],
   selector: 'nz-test-descriptions',
   template: `
-    <nz-descriptions [nzTitle]="title" [nzBordered]="bordered" [nzColumn]="column">
-      @for (col of colspanArray; track $index) {
-        <nz-descriptions-item [nzTitle]="itemTitle + $index" [nzSpan]="col" />
+    <nz-descriptions [nzTitle]="title()" [nzBordered]="bordered()" [nzColumn]="column()">
+      @for (col of colspanArray(); track $index) {
+        <nz-descriptions-item [nzTitle]="itemTitle() + $index" [nzSpan]="col" />
       }
     </nz-descriptions>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestDescriptionsComponent {
-  bordered = false;
-  colspanArray: number[] = [1, 1, 1];
-  column: NzDescriptionsComponent['nzColumn'] = 3;
-  title = 'Title';
-  itemTitle = 'Item Title ';
+  readonly bordered = signal(false);
+  readonly colspanArray = signal<number[]>([1, 1, 1]);
+  readonly column = signal<NzDescriptionsComponent['nzColumn']>(3);
+  readonly title = signal('Title');
+  readonly itemTitle = signal('Item Title ');
 }

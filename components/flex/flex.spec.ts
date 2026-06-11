@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, provideZoneChangeDetection } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -27,13 +27,6 @@ describe('flex', () => {
   let element: HTMLElement;
 
   beforeEach(() => {
-    // todo: use zoneless
-    TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection()]
-    });
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(TestFlexComponent);
     element = fixture.debugElement.query(By.directive(NzFlexDirective)).nativeElement;
     component = fixture.componentInstance;
@@ -45,10 +38,10 @@ describe('flex', () => {
   });
 
   it('should have correct direction', () => {
-    component.isVertical = false;
+    component.isVertical.set(false);
     fixture.detectChanges();
     expect(element.className).not.toContain('vertical');
-    component.isVertical = true;
+    component.isVertical.set(true);
     fixture.detectChanges();
     expect(element.className).toContain('vertical');
   });
@@ -69,7 +62,7 @@ describe('flex', () => {
       'normal'
     ];
     listOfJustifications.forEach(justification => {
-      component.justify = justification;
+      component.justify.set(justification);
       fixture.detectChanges();
       expect(element.className).toContain(justification);
     });
@@ -78,7 +71,7 @@ describe('flex', () => {
   it('should have correct alignment value', () => {
     const listOfAlignments: NzAlign[] = ['flex-start', 'center', 'flex-end', 'start', 'end', 'stretch', 'normal'];
     listOfAlignments.forEach(alignment => {
-      component.align = alignment;
+      component.align.set(alignment);
       fixture.detectChanges();
       expect(element.className).toContain(alignment);
     });
@@ -87,7 +80,7 @@ describe('flex', () => {
   it('should have correct gap value', () => {
     const listOfGaps: NzGap[] = ['small', 'middle', 'large', 10, 20, 30, 40];
     listOfGaps.forEach(gap => {
-      component.gap = gap;
+      component.gap.set(gap);
       fixture.detectChanges();
       let gapValue: string;
       switch (gap) {
@@ -107,7 +100,7 @@ describe('flex', () => {
       expect(getComputedStyle(element).getPropertyValue('gap')).toEqual(gapValue);
     });
 
-    component.gap = '10rem';
+    component.gap.set('10rem');
     fixture.detectChanges();
     expect(getComputedStyle(element).getPropertyValue('gap')).toEqual(`${10 * 16}px`);
   });
@@ -115,7 +108,7 @@ describe('flex', () => {
   it('should have correct wrap value', () => {
     const listOfWraps: NzWrap[] = ['wrap', 'nowrap', 'wrap-reverse'];
     listOfWraps.forEach(wrap => {
-      component.wrap = wrap;
+      component.wrap.set(wrap);
       fixture.detectChanges();
       expect(element.className).toContain(`flex-wrap-${wrap}`);
     });
@@ -124,12 +117,12 @@ describe('flex', () => {
   it('should have correct flex value', () => {
     const listOfFlexes: NzFlex[] = ['0 0 auto', '1 1 100%', '0 1 50px'];
     listOfFlexes.forEach(flex => {
-      component.flex = flex;
+      component.flex.set(flex);
       fixture.detectChanges();
       expect(getComputedStyle(element).getPropertyValue('flex')).toEqual(flex);
     });
 
-    component.flex = '1 0 50rem';
+    component.flex.set('1 0 50rem');
     fixture.detectChanges();
     expect(getComputedStyle(element).getPropertyValue('flex')).toEqual('1 0 800px');
   });
@@ -164,25 +157,24 @@ describe('flex', () => {
   template: `
     <div
       nz-flex
-      [nzVertical]="isVertical"
-      [nzJustify]="justify"
-      [nzAlign]="align"
-      [nzGap]="gap"
-      [nzWrap]="wrap"
-      [nzFlex]="flex"
+      [nzVertical]="isVertical()"
+      [nzJustify]="justify()"
+      [nzAlign]="align()"
+      [nzGap]="gap()"
+      [nzWrap]="wrap()"
+      [nzFlex]="flex()"
     >
       <div></div>
       <div></div>
       <div></div>
     </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class TestFlexComponent {
-  isVertical = false;
-  justify: NzJustify = 'normal';
-  align: NzAlign = 'normal';
-  gap: 'small' | 'middle' | 'large' | NzCustomGap = 0;
-  wrap: 'wrap' | 'nowrap' | 'wrap-reverse' = 'nowrap';
-  flex: `${NzFlexShrink} ${NzFlexGrow} ${NzFlexBasis}` | 'unset' = 'unset';
+  readonly isVertical = signal(false);
+  readonly justify = signal<NzJustify>('normal');
+  readonly align = signal<NzAlign>('normal');
+  readonly gap = signal<'small' | 'middle' | 'large' | NzCustomGap>(0);
+  readonly wrap = signal<'wrap' | 'nowrap' | 'wrap-reverse'>('nowrap');
+  readonly flex = signal<`${NzFlexShrink} ${NzFlexGrow} ${NzFlexBasis}` | 'unset'>('unset');
 }

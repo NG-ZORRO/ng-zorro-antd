@@ -48,6 +48,7 @@ import {
   dispatchKeyboardEvent,
   dispatchMouseEvent,
   provideMockDirectionality,
+  sleep,
   testDirectionality,
   updateNonSignalsInput
 } from 'ng-zorro-antd/core/testing';
@@ -67,6 +68,8 @@ import {
   NzCascaderTriggerType,
   NzShowSearchOptions
 } from './typings';
+
+const MOUSE_EVENT_DELAY = 150;
 
 describe('cascader', () => {
   let overlayContainer: OverlayContainer;
@@ -157,15 +160,14 @@ describe('cascader', () => {
 
     it('should not have EMPTY label', () => {
       fixture.detectChanges();
-      const label: HTMLElement = cascader.nativeElement.querySelector('.ant-select-selection-item');
+      const label = cascader.nativeElement.querySelector('.ant-select-selection-item');
       expect(label).toBeNull();
     });
 
     it('should placeholder work', () => {
-      const placeholder = 'placeholder test';
-      testComponent.nzPlaceHolder.set(placeholder);
+      testComponent.nzPlaceHolder.set('placeholder test');
       fixture.detectChanges();
-      expect(getPlaceholder()).toBe(placeholder);
+      expect(getPlaceholder()).toBe('placeholder test');
     });
 
     it('should show/hide placeholder when trigger compositionstart/compositionend event', () => {
@@ -188,6 +190,7 @@ describe('cascader', () => {
       testComponent.nzSize.set('small');
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).toContain('ant-select-sm');
+
       testComponent.nzSize.set('large');
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).toContain('ant-select-lg');
@@ -201,9 +204,9 @@ describe('cascader', () => {
       // label will not show if no item selected
       expect(getLabelElement()).toBeNull();
       expect(testComponent.cascader.getSubmitValue().join(',')).toBe('');
+
       testComponent.values.set([1, 2, 3]);
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(getLabelText()).toBe('Zhejiang / Hangzhou / West Lake');
       expect(testComponent.cascader.getSubmitValue().join(',')).toBe('1,2,3');
     });
@@ -214,9 +217,9 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(getLabelElement()).toBeNull();
       expect(testComponent.cascader.getSubmitValue().join(',')).toBe('');
+
       testComponent.values.set(['zhejiang', 'hangzhou', 'xihu']);
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(getLabelText()).toBe('Zhejiang / Hangzhou / West Lake');
       expect(testComponent.cascader.getSubmitValue().join(',')).toBe('zhejiang,hangzhou,xihu');
     });
@@ -226,6 +229,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(cascader.nativeElement.querySelector('.ant-select-arrow')).toBeDefined();
       expect(cascader.nativeElement.querySelector('.ant-select-arrow .anticon').classList).toContain('anticon-down');
+
       testComponent.nzShowArrow.set(false);
       fixture.detectChanges();
       expect(cascader.nativeElement.querySelector('.ant-select-arrow')).toBeNull();
@@ -236,6 +240,7 @@ describe('cascader', () => {
       testComponent.values.set(['zhejiang', 'hangzhou', 'xihu']);
       fixture.detectChanges();
       expect(cascader.nativeElement.querySelector('.ant-select-clear')).toBeDefined();
+
       testComponent.nzAllowClear.set(false);
       fixture.detectChanges();
       expect(cascader.nativeElement.querySelector('.ant-select-clear')).toBeNull();
@@ -288,13 +293,13 @@ describe('cascader', () => {
       expect(testComponent.nzDisabled()).toBe(false);
 
       cascader.nativeElement.click();
-      await updateNonSignalsInput(fixture, 200);
+      await sleep(MOUSE_EVENT_DELAY);
       fixture.detectChanges();
       expect(testComponent.cascader.menuOpen()).toBe(true);
       expect(testComponent.onOpenChange).toHaveBeenCalledTimes(1);
 
       cascader.nativeElement.click();
-      await updateNonSignalsInput(fixture, 200);
+      await sleep(MOUSE_EVENT_DELAY);
       fixture.detectChanges();
       expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.onOpenChange).toHaveBeenCalledTimes(2);
@@ -307,16 +312,16 @@ describe('cascader', () => {
       expect(testComponent.nzDisabled()).toBe(false);
       expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.onOpenChange).toHaveBeenCalledTimes(0);
+
       dispatchMouseEvent(cascader.nativeElement, 'mouseenter');
-      await updateNonSignalsInput(fixture, 300);
-      fixture.detectChanges();
+      await sleep(300);
+      await fixture.whenStable();
       expect(testComponent.cascader.menuOpen()).toBe(true);
       expect(testComponent.onOpenChange).toHaveBeenCalledTimes(1);
 
       dispatchMouseEvent(cascader.nativeElement, 'mouseleave');
-      await updateNonSignalsInput(fixture, 300);
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await sleep(300);
+      await fixture.whenStable();
       expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.onOpenChange).toHaveBeenCalledTimes(2);
     });
@@ -327,15 +332,15 @@ describe('cascader', () => {
       testComponent.nzMouseEnterDelay.set(0);
       testComponent.nzMouseLeaveDelay.set(0);
       fixture.detectChanges();
+
       expect(testComponent.cascader.menuOpen()).toBe(false);
       dispatchMouseEvent(cascader.nativeElement, 'mouseenter');
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(testComponent.cascader.menuOpen()).toBe(true);
       expect(testComponent.onOpenChange).toHaveBeenCalledTimes(1);
+
       dispatchMouseEvent(cascader.nativeElement, 'mouseleave');
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.onOpenChange).toHaveBeenCalledTimes(2);
     });
@@ -344,26 +349,24 @@ describe('cascader', () => {
       testComponent.nzExpandTrigger.set('hover');
       fixture.detectChanges();
       expect(testComponent.cascader.menuOpen()).toBe(false);
+
       testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       expect(testComponent.cascader.menuOpen()).toBe(true);
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await fixture.whenStable();
       const optionEl = getItemAtColumnAndRow(1, 1)!;
       expect(optionEl.classList).not.toContain('ant-cascader-menu-item-active');
 
       dispatchMouseEvent(optionEl, 'mouseenter');
-      await updateNonSignalsInput(fixture, 10);
-      fixture.detectChanges();
+      await sleep(10); // < delay
       expect(optionEl.classList).not.toContain('ant-cascader-menu-item-active');
+
       dispatchMouseEvent(optionEl, 'mouseleave');
-      await updateNonSignalsInput(fixture, 400);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(optionEl.classList).not.toContain('ant-cascader-menu-item-active');
 
       dispatchMouseEvent(optionEl, 'mouseenter');
-      await updateNonSignalsInput(fixture, 400);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(optionEl.classList).toContain('ant-cascader-menu-item-active');
     });
 
@@ -374,14 +377,14 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).toContain('ant-select-disabled');
       expect(testComponent.onOpenChange).toHaveBeenCalledTimes(0);
+
       cascader.nativeElement.click();
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.onOpenChange).toHaveBeenCalledTimes(0);
+
       testComponent.cascader.setMenuOpen(true);
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.onOpenChange).toHaveBeenCalledTimes(0);
     });
@@ -390,13 +393,12 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).not.toContain('ant-select-disabled');
       testComponent.cascader.setDisabledState(true);
-      cascader.injector.get(ChangeDetectorRef).markForCheck();
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).toContain('ant-select-disabled');
       expect(testComponent.onOpenChange).toHaveBeenCalledTimes(0);
+
       cascader.nativeElement.click();
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.onOpenChange).toHaveBeenCalledTimes(0);
     });
@@ -408,9 +410,9 @@ describe('cascader', () => {
       expect(testComponent.cascader.nzDisabled).toBe(true);
       expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.onOpenChange).toHaveBeenCalledTimes(0);
+
       dispatchMouseEvent(cascader.nativeElement, 'mouseenter');
-      await updateNonSignalsInput(fixture, 300);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.onOpenChange).toHaveBeenCalledTimes(0);
 
@@ -421,11 +423,11 @@ describe('cascader', () => {
       expect(testComponent.cascader.nzDisabled).toBe(false);
       expect(testComponent.cascader.menuOpen()).toBe(true);
       expect(testComponent.onOpenChange).toHaveBeenCalledTimes(1);
+
       testComponent.nzDisabled.set(true);
       fixture.detectChanges();
       dispatchMouseEvent(cascader.nativeElement, 'mouseleave');
-      await updateNonSignalsInput(fixture, 300);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(testComponent.cascader.menuOpen()).toBe(true);
       expect(testComponent.onOpenChange).toHaveBeenCalledTimes(1);
     });
@@ -435,8 +437,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(testComponent.cascader.menuOpen()).toBe(false);
       dispatchMouseEvent(cascader.nativeElement, 'mouseleave');
-      await updateNonSignalsInput(fixture, 300);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.onOpenChange).toHaveBeenCalledTimes(0);
     });
@@ -446,10 +447,10 @@ describe('cascader', () => {
       testComponent.nzAllowClear.set(true);
       testComponent.values.set(['zhejiang', 'hangzhou', 'xihu']);
       await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
       expect(testComponent.values()).toEqual(['zhejiang', 'hangzhou', 'xihu']);
-      fixture.detectChanges();
+
       spyOn(testComponent, 'onClear');
+      expect(testComponent.onClear).not.toHaveBeenCalled();
       cascader.nativeElement.querySelector('.ant-select-clear nz-icon').click();
       fixture.detectChanges();
       expect(testComponent.values()).toEqual([]);
@@ -460,9 +461,8 @@ describe('cascader', () => {
       fixture.detectChanges();
       testComponent.values.set(['zhejiang', 'hangzhou', 'xihu']);
       await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
       expect(testComponent.values()).toEqual(['zhejiang', 'hangzhou', 'xihu']);
-      fixture.detectChanges();
+
       spyOn(testComponent, 'onClear');
       testComponent.cascader.clearSelection();
       fixture.detectChanges();
@@ -484,13 +484,14 @@ describe('cascader', () => {
     it('should input focus and blur work', async () => {
       const fakeInputFocusEvent = createFakeEvent('focus', false, true);
       const fakeInputBlurEvent = createFakeEvent('blur', false, true);
-
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).not.toContain('ant-select-focused');
+
       getInputEl().dispatchEvent(fakeInputFocusEvent);
       cascader.injector.get(ChangeDetectorRef).markForCheck();
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).toContain('ant-select-focused');
+
       getInputEl().dispatchEvent(fakeInputBlurEvent);
       cascader.injector.get(ChangeDetectorRef).markForCheck();
       fixture.detectChanges();
@@ -501,6 +502,7 @@ describe('cascader', () => {
       cascader.injector.get(ChangeDetectorRef).markForCheck();
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).toContain('ant-select-focused');
+
       getInputEl().dispatchEvent(fakeInputBlurEvent);
       cascader.injector.get(ChangeDetectorRef).markForCheck();
       fixture.detectChanges();
@@ -536,8 +538,7 @@ describe('cascader', () => {
     it('should menu class work', async () => {
       fixture.detectChanges();
       cascader.nativeElement.click();
-      await updateNonSignalsInput(fixture, 200);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(testComponent.cascader.menuOpen()).toBe(true);
       expect(overlayContainerElement.querySelector('.ant-cascader-menus')!.classList).toContain('menu-classA');
       expect(overlayContainerElement.querySelector('.ant-cascader-menu')!.classList).toContain('column-classA');
@@ -546,8 +547,7 @@ describe('cascader', () => {
     it('should menu style work', async () => {
       fixture.detectChanges();
       cascader.nativeElement.click();
-      await updateNonSignalsInput(fixture, 200);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(testComponent.cascader.menuOpen()).toBe(true);
       const targetElement = overlayContainerElement.querySelector('.menu-classA') as HTMLElement;
       expect(targetElement.style.height).toBe('120px');
@@ -784,7 +784,7 @@ describe('cascader', () => {
 
       const itemEl4 = getItemAtColumnAndRow(2, 2)!;
       itemEl4.click(); // click leaf node
-      await updateNonSignalsInput(fixture, 300);
+      await sleep(MOUSE_EVENT_DELAY);
       expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.values()).toEqual(['zhejiang', 'ningbo']);
     });
@@ -849,8 +849,7 @@ describe('cascader', () => {
       expect(testComponent.cascader.menuOpen()).toBe(true);
 
       getItemAtColumnAndRow(3, 1)!.click();
-      await updateNonSignalsInput(fixture, 200);
-
+      await sleep(MOUSE_EVENT_DELAY);
       fixture.detectChanges();
       expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(getAllColumns().length).toBe(0);
@@ -968,6 +967,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', RIGHT_ARROW);
       fixture.detectChanges();
+
       let itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       let itemEl2 = getItemAtColumnAndRow(2, 1)!;
@@ -1043,13 +1043,11 @@ describe('cascader', () => {
     it('when there is only one column activated, pressing LEFT should fold the menu', async () => {
       testComponent.values.set(['zhejiang', 'ningbo']);
       testComponent.cascader.setMenuOpen(true);
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await fixture.whenStable();
 
       expect(getAllColumns().length).toBe(2);
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
-      await updateNonSignalsInput(fixture);
       fixture.detectChanges();
       expect(testComponent.cascader.menuOpen()).toBeFalse();
     });
@@ -1079,7 +1077,7 @@ describe('cascader', () => {
       fixture.detectChanges();
 
       expect(testComponent.values()).toEqual(['zhejiang', 'hangzhou', 'xihu']);
-      await updateNonSignalsInput(fixture, 200);
+      await sleep(200);
       fixture.detectChanges();
       expect(testComponent.cascader.menuOpen()).toBe(false);
     });
@@ -1170,7 +1168,7 @@ describe('cascader', () => {
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
 
       dispatchMouseEvent(itemEl1, 'mouseenter');
-      await updateNonSignalsInput(fixture, 200);
+      await sleep(MOUSE_EVENT_DELAY);
       fixture.detectChanges();
       expect(getAllColumns().length).toBe(2);
       const itemEl2 = getItemAtColumnAndRow(2, 1)!;
@@ -1186,8 +1184,7 @@ describe('cascader', () => {
       expect(testComponent.values()).toBeNull(); // not select yet
 
       dispatchMouseEvent(itemEl2, 'mouseenter');
-      await updateNonSignalsInput(fixture, 200);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(getAllColumns().length).toBe(3);
       const itemEl3 = getItemAtColumnAndRow(3, 1)!;
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
@@ -1196,7 +1193,7 @@ describe('cascader', () => {
       expect(testComponent.values()).toBeNull(); // not select yet
 
       dispatchMouseEvent(itemEl2, 'mouseleave');
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(getAllColumns().length).toBe(3);
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
@@ -1204,8 +1201,7 @@ describe('cascader', () => {
       expect(testComponent.values()).toBeNull(); // not select yet
 
       dispatchMouseEvent(itemEl3, 'mouseenter');
-      await updateNonSignalsInput(fixture, 200);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(getAllColumns().length).toBe(3);
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
@@ -1213,17 +1209,10 @@ describe('cascader', () => {
       expect(testComponent.values()).toBeNull(); // not select yet
 
       itemEl3.click();
-      await updateNonSignalsInput(fixture, 200);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
+      expect(testComponent.values()).toEqual(['zhejiang', 'hangzhou', 'xihu']);
 
-      const value = testComponent.values();
-      expect(value).toBeDefined();
-      expect(value!.length).toBe(3);
-      expect(value![0]).toBe('zhejiang');
-      expect(value![1]).toBe('hangzhou');
-      expect(value![2]).toBe('xihu');
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(getAllColumns().length).toBe(0);
       expect(testComponent.cascader.menuOpen()).toBe(false);
     });
@@ -1244,14 +1233,12 @@ describe('cascader', () => {
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
 
       dispatchMouseEvent(itemEl2, 'mouseenter');
-      await updateNonSignalsInput(fixture, 200);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       expect(getAllColumns().length).toBe(1);
 
       dispatchMouseEvent(itemEl2, 'mouseleave');
-      await updateNonSignalsInput(fixture, 200);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       expect(getAllColumns().length).toBe(1);
     });
@@ -1263,25 +1250,20 @@ describe('cascader', () => {
 
       testComponent.values.set(['zhejiang', 'hangzhou', 'xihu']);
       testComponent.cascader.setMenuOpen(true); // Open cascader dropdown.
-
-      await updateNonSignalsInput(fixture, 500);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(3);
 
       const c2i2 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(2)'
       ) as HTMLElement;
       dispatchMouseEvent(c2i2, 'mouseenter');
-
-      await updateNonSignalsInput(fixture, 500);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(2);
     });
 
     it('should change on select work', async () => {
       testComponent.nzChangeOnSelect.set(true);
       fixture.detectChanges();
-      expect(testComponent.values()).toBeNull();
       expect(getAllColumns().length).toBe(0);
       expect(testComponent.values()).toBeNull(); // not select yet
 
@@ -1322,12 +1304,9 @@ describe('cascader', () => {
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
 
       itemEl3.click();
-      await updateNonSignalsInput(fixture, 200);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
 
       expect(testComponent.values()).toEqual(['zhejiang', 'hangzhou', 'xihu']);
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
       expect(getAllColumns().length).toBe(0);
       expect(testComponent.cascader.menuOpen()).toBe(false);
     });
@@ -1347,10 +1326,9 @@ describe('cascader', () => {
 
       const itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
-      dispatchMouseEvent(itemEl1, 'mouseenter');
-      await updateNonSignalsInput(fixture, 200);
-      fixture.detectChanges();
 
+      dispatchMouseEvent(itemEl1, 'mouseenter');
+      await sleep(MOUSE_EVENT_DELAY);
       expect(testComponent.cascader.menuOpen()).toBe(true);
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(getAllColumns().length).toBe(2);
@@ -1359,10 +1337,9 @@ describe('cascader', () => {
       const itemEl2 = getItemAtColumnAndRow(2, 1)!;
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
-      dispatchMouseEvent(itemEl2, 'mouseenter');
-      await updateNonSignalsInput(fixture, 200);
-      fixture.detectChanges();
 
+      dispatchMouseEvent(itemEl2, 'mouseenter');
+      await sleep(MOUSE_EVENT_DELAY);
       expect(testComponent.cascader.menuOpen()).toBe(true);
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
@@ -1373,19 +1350,14 @@ describe('cascader', () => {
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
-      dispatchMouseEvent(itemEl3, 'mouseenter');
-      await updateNonSignalsInput(fixture, 200);
-      fixture.detectChanges();
 
+      dispatchMouseEvent(itemEl3, 'mouseenter');
+      await sleep(MOUSE_EVENT_DELAY);
       expect(testComponent.values()).toBeNull(); // mouseenter does not trigger selection
 
       itemEl3.click();
-      await updateNonSignalsInput(fixture, 200);
-      fixture.detectChanges();
-
+      await sleep(MOUSE_EVENT_DELAY);
       expect(testComponent.values()).toEqual(['zhejiang', 'hangzhou', 'xihu']); // click trigger selection
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
       expect(getAllColumns().length).toBe(0);
       expect(testComponent.cascader.menuOpen()).toBe(false);
     });
@@ -1411,9 +1383,7 @@ describe('cascader', () => {
       expect(testComponent.values()).toBeNull(); // not select yet
 
       itemEl1.click();
-      await updateNonSignalsInput(fixture, 200);
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(testComponent.cascader.menuOpen()).toBe(true);
       expect(testComponent.values()).toEqual(['zhejiang']);
     });
@@ -1434,8 +1404,7 @@ describe('cascader', () => {
       expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
 
       itemEl1.click();
-      await updateNonSignalsInput(fixture, 300);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(testComponent.cascader.inSearchingMode).toBe(false);
       expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.cascader.inputValue).toBe('');
@@ -1447,8 +1416,7 @@ describe('cascader', () => {
       testComponent.nzShowSearch.set(true);
       fixture.detectChanges();
       testComponent.cascader.setMenuOpen(true);
-      await updateNonSignalsInput(fixture, 0);
-      fixture.detectChanges();
+      await fixture.whenStable();
 
       // input search value
       testComponent.cascader.inputValue = 'o';
@@ -1476,11 +1444,9 @@ describe('cascader', () => {
       testComponent.cascader.setMenuOpen(true);
       testComponent.cascader.inputValue = 'o';
       await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
       expect(testComponent.cascader.menuOpen()).toBe(true);
+
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', ESCAPE);
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
       expect(testComponent.cascader.inputValue).toBe('');
       expect(testComponent.values()).toEqual(['zhengjiang', 'hangzhou', 'xihu']);
     });
@@ -1499,8 +1465,7 @@ describe('cascader', () => {
       expect(itemEl1.innerText).toBe('Zhejiang New / Hangzhou New / West Lake New');
 
       itemEl1.click();
-      await updateNonSignalsInput(fixture, 300);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(testComponent.cascader.inSearchingMode).toBe(false);
       expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.cascader.inputValue).toBe('');
@@ -1521,8 +1486,7 @@ describe('cascader', () => {
       expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
 
       itemEl1.click();
-      await updateNonSignalsInput(fixture, 300);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(testComponent.cascader.inSearchingMode).toBe(false);
       expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.cascader.inputValue).toBe('');
@@ -1544,8 +1508,7 @@ describe('cascader', () => {
       expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
 
       itemEl1.click();
-      await updateNonSignalsInput(fixture, 300);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(testComponent.cascader.inSearchingMode).toBe(false);
       expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.cascader.inputValue).toBe('');
@@ -1569,8 +1532,7 @@ describe('cascader', () => {
       expect(itemEl1.innerText).toBe('Jiangsu / Nanjing / Zhong Hua Men');
 
       itemEl1.click();
-      await updateNonSignalsInput(fixture, 300);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(testComponent.cascader.inSearchingMode).toBe(false);
       expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.cascader.inputValue).toBe('');
@@ -1588,8 +1550,7 @@ describe('cascader', () => {
       expect(testComponent.cascader.cascaderService.columns[0][0].isDisabled).toBe(true);
 
       itemEl1.click();
-      await updateNonSignalsInput(fixture, 300);
-      fixture.detectChanges();
+      await sleep(MOUSE_EVENT_DELAY);
       expect(testComponent.cascader.inSearchingMode).toBe(true);
       expect(testComponent.cascader.menuOpen()).toBe(true);
       expect(testComponent.cascader.inputValue).toBe('o');
@@ -1615,15 +1576,13 @@ describe('cascader', () => {
       const itemEl2 = getItemAtColumnAndRow(1, 2)!;
       const itemEl4 = getItemAtColumnAndRow(1, 4)!;
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', DOWN_ARROW);
-      fixture.detectChanges();
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
+
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', DOWN_ARROW);
-      fixture.detectChanges();
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       expect(itemEl4.classList).toContain('ant-cascader-menu-item-active');
+
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', ENTER);
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
       expect(testComponent.values()).toEqual(['option1', 'option14']);
     });
 
@@ -1633,12 +1592,11 @@ describe('cascader', () => {
       testComponent.cascader.inputValue = 'o';
       testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
+
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       const itemEl1 = getItemAtColumnAndRow(1, 1)!;
-      fixture.detectChanges();
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', RIGHT_ARROW);
-      fixture.detectChanges();
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
     });
 
@@ -1714,9 +1672,7 @@ describe('cascader', () => {
     });
 
     it('should nzPlacement works', async () => {
-      fixture.detectChanges();
       testComponent.cascader.setMenuOpen(true);
-      fixture.detectChanges();
       let element = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
       expect(element.classList.contains('ant-select-dropdown-placement-bottomLeft')).toBe(true);
       expect(element.classList.contains('ant-select-dropdown-placement-bottomRight')).toBe(false);
@@ -1725,11 +1681,9 @@ describe('cascader', () => {
 
       const setNzPlacement = async (placement: NzCascaderPlacement): Promise<void> => {
         testComponent.cascader.setMenuOpen(false);
-        fixture.detectChanges();
         testComponent.nzPlacement.set(placement);
         testComponent.cascader.setMenuOpen(true);
-        await updateNonSignalsInput(fixture, 200);
-        fixture.detectChanges();
+        await fixture.whenStable();
       };
 
       await setNzPlacement('bottomRight');
@@ -1754,26 +1708,23 @@ describe('cascader', () => {
       expect(element.classList.contains('ant-select-dropdown-placement-topRight')).toBe(true);
     });
 
-    it('should cascade work when the value of ngModel that is not existed in options', async () => {
-      fixture.detectChanges();
+    it('should cascade work when the value of ngModel that is not existed in options', () => {
       testComponent.values.set(['zhejiang', 'a']);
       testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       getItemAtColumnAndRow(1, 1)!.click();
       getItemAtColumnAndRow(2, 1)!.click();
       getItemAtColumnAndRow(3, 1)!.click();
-      fixture.detectChanges();
       expect(testComponent.values()).toEqual(['zhejiang', 'hangzhou', 'xihu']);
     });
 
     it('should display activated column correctly after clicking outside and reopen', async () => {
-      fixture.detectChanges();
       testComponent.values.set(['zhejiang', 'hangzhou', 'xihu']);
       // First open - should display activated columns correctly
       testComponent.cascader.setMenuOpen(true);
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(getAllColumns().length).toBe(3);
+
       let itemEl1 = getItemAtColumnAndRow(1, 1)!;
       let itemEl2 = getItemAtColumnAndRow(2, 1)!;
       let itemEl3 = getItemAtColumnAndRow(3, 1)!;
@@ -1783,9 +1734,9 @@ describe('cascader', () => {
 
       // Click first column option (zhejiang) - should fold the third column
       itemEl1.click();
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(getAllColumns().length).toBe(2);
+
       itemEl1 = getItemAtColumnAndRow(1, 1)!;
       itemEl2 = getItemAtColumnAndRow(2, 1)!;
       itemEl3 = getItemAtColumnAndRow(3, 1)!;
@@ -1795,15 +1746,13 @@ describe('cascader', () => {
 
       // Click outside to close menu - value should remain unchanged
       dispatchFakeEvent(document.body, 'click');
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(testComponent.cascader.menuOpen()).toBe(false);
       expect(testComponent.values()).toEqual(['zhejiang', 'hangzhou', 'xihu']);
 
       // Reopen menu - should display activated columns correctly based on current value
       testComponent.cascader.setMenuOpen(true);
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(getAllColumns().length).toBe(3);
       itemEl1 = getItemAtColumnAndRow(1, 1)!;
       itemEl2 = getItemAtColumnAndRow(2, 1)!;
@@ -1816,16 +1765,14 @@ describe('cascader', () => {
     describe('should nzOpen works', () => {
       beforeEach(async () => {
         testComponent.nzOpen.set(true);
-        await updateNonSignalsInput(fixture, 200);
-        fixture.detectChanges();
+        await fixture.whenStable();
       });
 
       it('should nzOpen can control the visibility of menu', async () => {
         expect(testComponent.cascader.menuOpen()).toBe(true);
         expect(testComponent.onOpenChange).toHaveBeenCalledTimes(1);
         testComponent.nzOpen.set(false);
-        await updateNonSignalsInput(fixture, 200);
-        fixture.detectChanges();
+        await fixture.whenStable();
         expect(testComponent.cascader.menuOpen()).toBe(false);
         expect(testComponent.onOpenChange).toHaveBeenCalledTimes(2);
       });
@@ -1835,8 +1782,7 @@ describe('cascader', () => {
         getItemAtColumnAndRow(1, 1)!.click();
         getItemAtColumnAndRow(2, 1)!.click();
         getItemAtColumnAndRow(3, 1)!.click(); // zhejiang, hangzhou, xihu
-        await updateNonSignalsInput(fixture);
-        fixture.detectChanges();
+        await fixture.whenStable();
         expect(testComponent.onValueChanges).toHaveBeenCalled();
         expect(testComponent.cascader.menuOpen()).toBe(true);
         spyOn(testComponent.cascader, 'onClickOutside');
@@ -1855,9 +1801,8 @@ describe('cascader', () => {
         getItemAtColumnAndRow(2, 1)!.click();
         getItemAtColumnAndRow(3, 1)!.click(); // jiangsu, nanjing, zhonghuamen
         expect(testComponent.values()).toEqual([['zhejiang', 'hangzhou'], ['jiangsu']]);
-        await updateNonSignalsInput(fixture);
-        fixture.detectChanges();
         expect(testComponent.cascader.menuOpen()).toBe(true);
+
         spyOn(testComponent.cascader, 'clearSelection');
         expect(cascader.nativeElement.querySelector('.ant-select-clear .anticon')).toBeDefined();
         cascader.nativeElement.querySelector('.ant-select-clear .anticon').click();
@@ -1869,8 +1814,8 @@ describe('cascader', () => {
         expect(testComponent.onOpenChange).toHaveBeenCalledTimes(1);
         expect(testComponent.cascader.menuOpen()).toBe(true);
         cascader.nativeElement.click();
-        await updateNonSignalsInput(fixture, 200);
-        fixture.detectChanges();
+        await sleep(200);
+        await fixture.whenStable();
         expect(testComponent.cascader.menuOpen()).toBe(true);
         expect(testComponent.onOpenChange).toHaveBeenCalledWith(false);
         expect(testComponent.onOpenChange).toHaveBeenCalledTimes(2);
@@ -1880,15 +1825,14 @@ describe('cascader', () => {
         getItemAtColumnAndRow(2, 1)!.click();
         fixture.detectChanges();
         getItemAtColumnAndRow(3, 1)!.click();
-        await updateNonSignalsInput(fixture, 200);
-        fixture.detectChanges();
+        await sleep(200);
+        await fixture.whenStable();
         expect(testComponent.cascader.menuOpen()).toBe(true);
         expect(testComponent.onOpenChange).toHaveBeenCalledWith(false);
         expect(testComponent.onOpenChange).toHaveBeenCalledTimes(3);
 
         dispatchFakeEvent(document.body, 'click');
-        await updateNonSignalsInput(fixture);
-        fixture.detectChanges();
+        await fixture.whenStable();
         expect(testComponent.cascader.menuOpen()).toBe(true);
         expect(testComponent.onOpenChange).toHaveBeenCalledWith(false);
         expect(testComponent.onOpenChange).toHaveBeenCalledTimes(4);
@@ -1902,9 +1846,8 @@ describe('cascader', () => {
     let testComponent: NzDemoCascaderMultipleComponent;
 
     function setValues(len = 10): void {
-      testComponent.values.set(
-        testComponent.nzOptions[0].children!.slice(0, len).map(o => [testComponent.nzOptions[0].value, o.value])
-      );
+      const option = testComponent.nzOptions[0];
+      testComponent.values.set(option.children!.slice(0, len).map(o => [option.value, o.value]));
       fixture.detectChanges();
     }
 
@@ -1937,14 +1880,12 @@ describe('cascader', () => {
       // not exceed
       setValues(3);
       await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
       let tags = cascader.queryAll(By.directive(NzSelectItemComponent));
       expect(tags.length).toBe(3);
 
       // exceed maxTagCount
       setValues(10);
       await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
       tags = cascader.queryAll(By.directive(NzSelectItemComponent));
       expect(tags.length).toBe(4); // maxTagCount + 1
     });
@@ -1952,17 +1893,14 @@ describe('cascader', () => {
     it('should remove item work', async () => {
       setValues(4);
       await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
       const removeBtn = cascader.queryAll(By.css('.ant-select-selection-item-remove'))[2];
       removeBtn.nativeElement.click();
-      fixture.detectChanges();
       const tags = cascader.queryAll(By.directive(NzSelectItemComponent));
       expect(tags.length).toBe(3);
     });
 
-    it('should check state conduct up and down', async () => {
+    it('should check state conduct up and down', () => {
       cascader.componentInstance.setMenuOpen(true);
-      await updateNonSignalsInput(fixture, 600);
       fixture.detectChanges();
 
       // firstly, expand all columns (for convenience)
@@ -2012,8 +1950,7 @@ describe('cascader', () => {
 
     it('should click checkbox not set option activated', async () => {
       cascader.componentInstance.setMenuOpen(true);
-      await updateNonSignalsInput(fixture, 600);
-      fixture.detectChanges();
+      await fixture.whenStable();
 
       const option = getItemAtColumnAndRow(1, 1)!;
       const checkbox = getCheckboxAtColumnAndRow(1, 1)!;
@@ -2028,8 +1965,7 @@ describe('cascader', () => {
 
     it('should change check state when click leaf node', async () => {
       cascader.componentInstance.setMenuOpen(true);
-      await updateNonSignalsInput(fixture, 600);
-      fixture.detectChanges();
+      await fixture.whenStable();
 
       // firstly, expand all columns (for convenience)
       getItemAtColumnAndRow(1, 2)!.click();
@@ -2058,8 +1994,7 @@ describe('cascader', () => {
       spyOn(testComponent, 'onChanges');
       expect(testComponent.onChanges).not.toHaveBeenCalled();
       cascader.componentInstance.setMenuOpen(true);
-      await updateNonSignalsInput(fixture, 600);
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(testComponent.onChanges).not.toHaveBeenCalled();
 
       const checkbox = getCheckboxAtColumnAndRow(1, 1)!;
@@ -2070,8 +2005,7 @@ describe('cascader', () => {
 
     it('should support ENTER key to toggle option checked state in multiple mode', async () => {
       cascader.componentInstance.setMenuOpen(true);
-      await updateNonSignalsInput(fixture, 600);
-      fixture.detectChanges();
+      await fixture.whenStable();
       getItemAtColumnAndRow(1, 1)!.click();
       fixture.detectChanges();
       const optionEl = getItemAtColumnAndRow(2, 1)!;
@@ -2095,8 +2029,7 @@ describe('cascader', () => {
 
     it('should not activate option with isDisableCheckbox by pressing RIGHT ARROW key', async () => {
       cascader.componentInstance.setMenuOpen(true);
-      await updateNonSignalsInput(fixture, 600);
-      fixture.detectChanges();
+      await fixture.whenStable();
       getItemAtColumnAndRow(1, 2)!.click();
       fixture.detectChanges();
       getItemAtColumnAndRow(2, 1)!.click();
@@ -2114,8 +2047,7 @@ describe('cascader', () => {
 
     it('should not activate option with isDisableCheckbox in moveUpOrDown method', async () => {
       cascader.componentInstance.setMenuOpen(true);
-      await updateNonSignalsInput(fixture, 600);
-      fixture.detectChanges();
+      await fixture.whenStable();
       getItemAtColumnAndRow(1, 2)!.click();
       fixture.detectChanges();
       getItemAtColumnAndRow(2, 1)!.click();
@@ -2196,9 +2128,9 @@ describe('cascader', () => {
       testComponent.cascader.setMenuOpen(true);
       fixture.detectChanges();
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(1);
-      await updateNonSignalsInput(fixture, 1000); // wait for first row to load finish
-      fixture.detectChanges();
 
+      await sleep(600); // wait for first row to load finish
+      fixture.detectChanges();
       expect(getAllColumns().length).toBe(1);
       expect(testComponent.values()).toBeNull(); // not select yet
 
@@ -2206,7 +2138,7 @@ describe('cascader', () => {
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
 
       itemEl1.click();
-      await updateNonSignalsInput(fixture, 600);
+      await sleep(600);
       fixture.detectChanges();
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(2);
       expect(getAllColumns().length).toBe(2);
@@ -2217,7 +2149,7 @@ describe('cascader', () => {
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
 
       itemEl2.click();
-      await updateNonSignalsInput(fixture, 600);
+      await sleep(600);
       fixture.detectChanges();
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(3);
       expect(getAllColumns().length).toBe(3);
@@ -2229,15 +2161,13 @@ describe('cascader', () => {
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
 
       itemEl3.click();
-      await updateNonSignalsInput(fixture, 600);
-      await updateNonSignalsInput(fixture);
+      await sleep(600);
       fixture.detectChanges();
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(4);
       expect(testComponent.values()).toBeNull(); // not select yet
 
       itemEl3.click(); // re-click again, this time it is a leaf
-      await updateNonSignalsInput(fixture, 600);
-      await updateNonSignalsInput(fixture);
+      await sleep(600);
       fixture.detectChanges();
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(4);
       expect(testComponent.values()).toEqual(['zhejiang', 'hangzhou', 'xihu']);
@@ -2246,7 +2176,7 @@ describe('cascader', () => {
     it('should nzLoadData work when specifies default value', async () => {
       spyOn(testComponent, 'addCallTimes');
       testComponent.values.set(['zhejiang', 'hangzhou', 'xihu']);
-      await updateNonSignalsInput(fixture, 3000);
+      await sleep(3000);
       fixture.detectChanges();
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(3);
       expect(testComponent.cascader.cascaderService.columns.length).toBe(3);
@@ -2256,28 +2186,26 @@ describe('cascader', () => {
     it('should not emit error after clear search and reopen it', async () => {
       fixture.detectChanges();
       testComponent.cascader.setMenuOpen(true);
-      await updateNonSignalsInput(fixture, 1000); // wait for first row to load finish
+      await sleep(1000); // wait for first row to load finish
       fixture.detectChanges();
       const itemEl1 = getItemAtColumnAndRow(1, 1)!;
 
       itemEl1.click();
-      await updateNonSignalsInput(fixture, 600);
+      await sleep(600);
       fixture.detectChanges();
       const itemEl2 = getItemAtColumnAndRow(2, 1)!;
 
       itemEl2.click();
-      await updateNonSignalsInput(fixture, 600);
+      await sleep(600);
       fixture.detectChanges();
       const itemEl3 = getItemAtColumnAndRow(3, 1)!;
 
       itemEl3.click();
-      await updateNonSignalsInput(fixture, 600);
-      await updateNonSignalsInput(fixture);
+      await sleep(600);
       fixture.detectChanges();
 
       itemEl3.click(); // re-click again, this time it is a leaf
-      await updateNonSignalsInput(fixture, 600);
-      await updateNonSignalsInput(fixture);
+      await sleep(600);
       fixture.detectChanges();
       cascader.nativeElement.querySelector('.ant-select-clear .anticon').click();
       testComponent.cascader.setMenuOpen(true);
@@ -2377,7 +2305,7 @@ describe('cascader RTL behavior', () => {
   it('should menu class work', async () => {
     fixture.detectChanges();
     cascader.nativeElement.click();
-    await updateNonSignalsInput(fixture, 200);
+    await sleep(MOUSE_EVENT_DELAY);
     fixture.detectChanges();
     expect(overlayContainerElement.querySelector('.ant-cascader-menus')!.classList).toContain('ant-cascader-rtl');
   });
@@ -2431,9 +2359,6 @@ describe('nzPopupRender', () => {
     fixture.detectChanges();
 
     component.cascader.setMenuOpen(true);
-    await updateNonSignalsInput(fixture, 200);
-    fixture.detectChanges();
-
     const customFooter = overlayContainerElement.querySelector('.custom-footer');
     expect(customFooter).toBeTruthy();
     expect(customFooter?.textContent).toBe('Custom Footer');
@@ -2448,9 +2373,6 @@ describe('nzPopupRender', () => {
     fixture.detectChanges();
 
     component.cascader.setMenuOpen(true);
-    await updateNonSignalsInput(fixture, 200);
-    fixture.detectChanges();
-
     const menu = overlayContainerElement.querySelector('.ant-cascader-menus');
     expect(menu).toBeTruthy();
 
@@ -2487,6 +2409,7 @@ describe('finalSize', () => {
     fixture.detectChanges();
     expect(cascaderElement.classList).toContain('ant-select-lg');
   });
+
   it('should set correctly the size from the compactSize signal', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: NZ_SPACE_COMPACT_SIZE, useValue: compactSizeSignal }]
@@ -2496,6 +2419,7 @@ describe('finalSize', () => {
     fixture.detectChanges();
     expect(cascaderElement.classList).toContain('ant-select-lg');
   });
+
   it('should set correctly the size from the component input', () => {
     fixture = TestBed.createComponent(NzDemoCascaderDefaultComponent);
     cascaderElement = fixture.debugElement.query(By.directive(NzCascaderComponent)).nativeElement;

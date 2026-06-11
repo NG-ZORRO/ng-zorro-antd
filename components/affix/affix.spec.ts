@@ -4,15 +4,7 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DebugElement,
-  DOCUMENT,
-  ElementRef,
-  Renderer2,
-  ViewChild
-} from '@angular/core';
+import { Component, DebugElement, DOCUMENT, ElementRef, Renderer2, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
@@ -127,7 +119,7 @@ describe('affix', () => {
   describe('resize', () => {
     it('should be reset placeholder size', async () => {
       const offsetTop = 150;
-      context.newOffset = offsetTop;
+      context.newOffset.set(offsetTop);
       await setupInitialState({ offsetTop: offsetTop + 1 });
       const offsetWidthSpy = spyOnProperty(componentObject.elementRef(), 'offsetWidth', 'get');
       await emitScroll(window, 2);
@@ -145,8 +137,8 @@ describe('affix', () => {
     it('should be reset placeholder size when container becomes greater', async () => {
       const target = componentObject.target();
       const clientHeightSpy = spyOnProperty(target, 'clientHeight', 'get');
-      context.fakeTarget = target;
-      context.newOffsetBottom = 10;
+      context.fakeTarget.set(target);
+      context.newOffsetBottom.set(10);
       clientHeightSpy.and.returnValue(10);
       await setupInitialState();
       await emitScroll(target, 11);
@@ -162,7 +154,7 @@ describe('affix', () => {
     const offsetTop = 150;
 
     beforeEach(() => {
-      context.newOffset = offsetTop;
+      context.newOffset.set(offsetTop);
     });
 
     describe('when scrolled within top offset', () => {
@@ -184,7 +176,7 @@ describe('affix', () => {
     });
 
     it('recreate bug https://github.com/NG-ZORRO/ng-zorro-antd/issues/868', async () => {
-      context.newOffset = offsetTop.toString() as NzSafeAny;
+      context.newOffset.set(offsetTop.toString() as NzSafeAny);
       await setupInitialState({ offsetTop: offsetTop + 1 });
       await emitScroll(window, 2);
 
@@ -199,8 +191,8 @@ describe('affix', () => {
     describe('with window', () => {
       beforeEach(() => {
         target = window;
-        context.fakeTarget = target;
-        context.newOffsetBottom = 10;
+        context.fakeTarget.set(target);
+        context.newOffsetBottom.set(10);
       });
 
       describe('when scrolled below the bottom offset', () => {
@@ -214,8 +206,8 @@ describe('affix', () => {
     describe('with target', () => {
       beforeEach(() => {
         target = componentObject.target();
-        context.fakeTarget = target;
-        context.newOffsetBottom = offsetTop;
+        context.fakeTarget.set(target);
+        context.newOffsetBottom.set(offsetTop);
       });
 
       describe('when scrolled within bottom offset', () => {
@@ -241,7 +233,7 @@ describe('affix', () => {
 
     beforeEach(() => {
       target = componentObject.target();
-      context.fakeTarget = target;
+      context.fakeTarget.set(target);
     });
 
     describe('when window is scrolled', () => {
@@ -275,7 +267,7 @@ describe('affix', () => {
       spyOn(component, 'updatePosition');
       expect(component.updatePosition).not.toHaveBeenCalled();
 
-      context.fakeTarget = '#target';
+      context.fakeTarget.set('#target');
       await fixture.whenStable();
 
       expect(component.updatePosition).toHaveBeenCalled();
@@ -396,18 +388,17 @@ describe('affix', () => {
 @Component({
   imports: [NzAffixComponent],
   template: `
-    <nz-affix id="affix" [nzTarget]="fakeTarget" [nzOffsetTop]="newOffset" [nzOffsetBottom]="newOffsetBottom">
+    <nz-affix id="affix" [nzTarget]="fakeTarget()" [nzOffsetTop]="newOffset()" [nzOffsetBottom]="newOffsetBottom()">
       <button id="content">Affix Button</button>
     </nz-affix>
     <div id="target"></div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class TestAffixComponent {
   @ViewChild(NzAffixComponent, { static: true }) nzAffixComponent!: NzAffixComponent;
-  fakeTarget?: string | Element | Window;
-  newOffset!: number;
-  newOffsetBottom!: number;
+  readonly fakeTarget = signal<string | Element | Window | undefined>(undefined);
+  readonly newOffset = signal<number | undefined>(undefined);
+  readonly newOffsetBottom = signal<number | undefined>(undefined);
 }
 
 describe('NzAffixComponent', () => {

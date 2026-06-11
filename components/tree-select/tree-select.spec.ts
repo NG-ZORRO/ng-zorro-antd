@@ -7,21 +7,12 @@ import { BACKSPACE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { TestKey } from '@angular/cdk/testing';
 import { UnitTestElement } from '@angular/cdk/testing/testbed';
-import {
-  ChangeDetectorRef,
-  Component,
-  DebugElement,
-  NgZone,
-  signal,
-  TemplateRef,
-  ViewChild,
-  WritableSignal
-} from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { Component, DebugElement, NgZone, signal, TemplateRef, ViewChild, WritableSignal } from '@angular/core';
+import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
 import {
   createKeyboardEvent,
@@ -29,7 +20,8 @@ import {
   dispatchMouseEvent,
   MockNgZone,
   sleep,
-  typeInElement
+  typeInElement,
+  updateNonSignalsInput
 } from 'ng-zorro-antd/core/testing';
 import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
@@ -47,7 +39,7 @@ describe('tree-select', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideNoopAnimations(),
+        provideNzNoAnimation(),
         {
           provide: NgZone,
           useFactory: () => {
@@ -75,34 +67,25 @@ describe('tree-select', () => {
     let treeSelectComponent: NzTreeSelectComponent;
     let treeSelect: DebugElement;
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTreeSelectBasicComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent));
       treeSelectComponent = treeSelect.componentInstance;
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
-    }));
+    });
 
-    it('should size work', fakeAsync(() => {
+    it('should size work', () => {
       testComponent.size.set('small');
       fixture.detectChanges();
       expect(treeSelect.nativeElement.classList).toContain('ant-select-sm');
       testComponent.size.set('large');
       fixture.detectChanges();
       expect(treeSelect.nativeElement.classList).toContain('ant-select-lg');
-    }));
+    });
 
-    it('should placement works', fakeAsync(() => {
-      const treeSelectChangeDetector = treeSelect.injector.get(ChangeDetectorRef);
-
-      fixture.detectChanges();
+    it('should placement works', async () => {
       treeSelectComponent.openDropdown();
-      treeSelectChangeDetector.markForCheck();
       fixture.detectChanges();
       let element = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
       expect(element.classList.contains('ant-select-dropdown-placement-bottomLeft')).toBe(true);
@@ -110,39 +93,37 @@ describe('tree-select', () => {
       expect(element.classList.contains('ant-select-dropdown-placement-topLeft')).toBe(false);
       expect(element.classList.contains('ant-select-dropdown-placement-topRight')).toBe(false);
 
-      const setPlacement = (placement: NzPlacementType): void => {
+      const setPlacement = async (placement: NzPlacementType): Promise<void> => {
         treeSelectComponent.closeDropdown();
         fixture.detectChanges();
         testComponent.placement.set(placement);
         fixture.detectChanges();
         treeSelectComponent.openDropdown();
-        treeSelectChangeDetector.markForCheck();
         fixture.detectChanges();
-        tick();
-        fixture.detectChanges();
+        await fixture.whenStable();
       };
 
-      setPlacement('bottomRight');
+      await setPlacement('bottomRight');
       element = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
       expect(element.classList.contains('ant-select-dropdown-placement-bottomLeft')).toBe(false);
       expect(element.classList.contains('ant-select-dropdown-placement-bottomRight')).toBe(true);
       expect(element.classList.contains('ant-select-dropdown-placement-topLeft')).toBe(false);
       expect(element.classList.contains('ant-select-dropdown-placement-topRight')).toBe(false);
 
-      setPlacement('topLeft');
+      await setPlacement('topLeft');
       element = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
       expect(element.classList.contains('ant-select-dropdown-placement-bottomLeft')).toBe(false);
       expect(element.classList.contains('ant-select-dropdown-placement-bottomRight')).toBe(false);
       expect(element.classList.contains('ant-select-dropdown-placement-topLeft')).toBe(true);
       expect(element.classList.contains('ant-select-dropdown-placement-topRight')).toBe(false);
 
-      setPlacement('topRight');
+      await setPlacement('topRight');
       element = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
       expect(element.classList.contains('ant-select-dropdown-placement-bottomLeft')).toBe(false);
       expect(element.classList.contains('ant-select-dropdown-placement-bottomRight')).toBe(false);
       expect(element.classList.contains('ant-select-dropdown-placement-topLeft')).toBe(false);
       expect(element.classList.contains('ant-select-dropdown-placement-topRight')).toBe(true);
-    }));
+    });
 
     describe('should variant works', () => {
       it('outlined', () => {
@@ -176,12 +157,12 @@ describe('tree-select', () => {
       });
     });
 
-    it('should allowClear work', () => {
+    it('should allowClear work', async () => {
       const nativeElement = treeSelect.nativeElement as HTMLElement;
       expect(nativeElement.classList).not.toContain('ant-select-allow-clear');
       expect(nativeElement.querySelector('nz-select-clear')).toBeNull();
       testComponent.allowClear.set(true);
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(nativeElement.classList).toContain('ant-select-allow-clear');
       expect(nativeElement.querySelector('nz-select-clear')).not.toBeNull();
 
@@ -210,20 +191,15 @@ describe('tree-select', () => {
       fixture.detectChanges();
     });
 
-    it('should disabled work', fakeAsync(() => {
+    it('should disabled work', async () => {
       testComponent.disabled.set(true);
       fixture.detectChanges();
       expect(treeSelect.nativeElement.classList).toContain('ant-select-disabled');
       expect(treeSelectComponent.nzOpen).toBe(false);
       treeSelect.nativeElement.click();
-      fixture.detectChanges();
-      tick();
+      await fixture.whenStable();
       expect(treeSelectComponent.nzOpen).toBe(false);
-      treeSelectComponent.openDropdown();
-      treeSelect.nativeElement.click();
-      fixture.detectChanges();
-      tick();
-    }));
+    });
 
     it('should dropdownMatchSelectWidth work', async () => {
       testComponent.dropdownMatchSelectWidth.set(true);
@@ -245,107 +221,90 @@ describe('tree-select', () => {
       expect(overlayPane.style.minWidth).toBe('250px');
     });
 
-    it('should clear value work', fakeAsync(() => {
+    it('should clear value work', async () => {
       testComponent.allowClear.set(true);
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(testComponent.value()).toBe('10001');
       treeSelectComponent.updateSelectedNodes();
       fixture.detectChanges();
       treeSelect.nativeElement.querySelector('nz-select-clear').click();
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(testComponent.value()).toBe(null);
-    }));
+    });
 
-    it('should set null value work', fakeAsync(() => {
+    it('should set null value work', async () => {
       fixture.detectChanges();
       expect(testComponent.value()).toBe('10001');
       testComponent.nzSelectTreeComponent.updateSelectedNodes();
       fixture.detectChanges();
       testComponent.setNull();
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(testComponent.value()).toBe(null);
       expect(testComponent.nzSelectTreeComponent.selectedNodes.length).toEqual(0);
       expect(testComponent.nzSelectTreeComponent.value.length).toBe(0);
-    }));
+    });
 
-    it('should dropdown style work', fakeAsync(() => {
+    it('should dropdown style work', () => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
-      flush();
       const targetElement = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
       expect(targetElement.style.height).toBe('120px');
-    }));
+    });
 
-    it('should dropdown classname work', fakeAsync(() => {
+    it('should dropdown classname work', () => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
-      flush();
       const targetElement = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
       expect(targetElement.classList).toContain('class1');
       expect(targetElement.classList).toContain('class2');
-    }));
+    });
 
-    it('should click option close dropdown', fakeAsync(() => {
+    it('should click option close dropdown', async () => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
       fixture.detectChanges();
       const targetNode = overlayContainerElement.querySelectorAll('.ant-select-tree-node-content-wrapper')[2];
       dispatchMouseEvent(targetNode, 'click');
-      fixture.detectChanges();
-      flush();
+      await fixture.whenStable();
       expect(treeSelectComponent.nzOpen).toBe(false);
-    }));
+    });
 
-    it('should be focusable', fakeAsync(() => {
+    it('should be focusable', async () => {
       const focusTrigger = treeSelect.query(By.css('.ant-select-selection-search-input')).nativeElement;
       expect(treeSelect.nativeElement.classList).not.toContain('ant-select-focused');
       dispatchFakeEvent(focusTrigger, 'focus');
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(treeSelect.nativeElement.classList).toContain('ant-select-focused');
-    }));
+    });
 
-    it('should open dropdown when keydown', fakeAsync(async () => {
-      const testElement = new UnitTestElement(treeSelect.nativeElement, async () => {
-        fixture.detectChanges();
-        flush();
-        fixture.detectChanges();
-      });
+    async function noop(): Promise<void> {
+      // noop
+    }
+
+    it('should open dropdown when keydown', async () => {
+      const testElement = new UnitTestElement(treeSelect.nativeElement, noop);
       expect(treeSelectComponent.nzOpen).toBe(false);
+
       await testElement.sendKeys(TestKey.ESCAPE);
       expect(treeSelectComponent.nzOpen).toBe(false);
 
       await testElement.sendKeys(TestKey.ENTER);
       expect(treeSelectComponent.nzOpen).toBe(true);
-    }));
+    });
 
-    it('should close dropdown when TAB keydown', fakeAsync(async () => {
-      const testElement = new UnitTestElement(treeSelect.nativeElement, async () => {
-        fixture.detectChanges();
-        flush();
-        fixture.detectChanges();
-      });
+    it('should close dropdown when TAB keydown', async () => {
+      const testElement = new UnitTestElement(treeSelect.nativeElement, noop);
 
       treeSelectComponent.nzOpen = true;
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-
+      await updateNonSignalsInput(fixture);
       await testElement.sendKeys(TestKey.TAB);
       expect(treeSelectComponent.nzOpen).toBe(false);
-    }));
+    });
 
-    it('should showSearch work', fakeAsync(() => {
+    it('should showSearch work', async () => {
       treeSelectComponent.updateSelectedNodes();
       fixture.detectChanges();
       testComponent.showSearch.set(true);
@@ -357,13 +316,10 @@ describe('tree-select', () => {
       expect(searchInput.style.opacity).toBe('');
       testComponent.showSearch.set(false);
       fixture.detectChanges();
-      tick();
       expect(searchInput.style.opacity).toBe('0');
-      flush();
-      fixture.detectChanges();
-    }));
+    });
 
-    it('should display no data', fakeAsync(() => {
+    it('should display no data', async () => {
       treeSelectComponent.updateSelectedNodes();
       fixture.detectChanges();
       testComponent.showSearch.set(true);
@@ -374,94 +330,85 @@ describe('tree-select', () => {
       expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeFalsy();
       fixture.detectChanges();
       treeSelectComponent.inputValue = 'invalid_value';
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
       expect(overlayContainerElement.querySelector('nz-tree')!.getAttribute('hidden')).toBe('');
       expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeTruthy();
-    }));
+    });
 
-    it('should clean search value when reopen', fakeAsync(() => {
+    it('should clean search value when reopen', async () => {
       testComponent.showSearch.set(true);
       fixture.detectChanges();
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       treeSelectComponent.inputValue = 'invalid_value';
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
       expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeTruthy();
 
       treeSelect.nativeElement.click();
-      fixture.detectChanges();
-      tick(200);
+      await fixture.whenStable();
       fixture.detectChanges();
       treeSelect.nativeElement.click();
       fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
 
       expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeFalsy();
-    }));
+    });
 
-    it('should max tag count work', fakeAsync(() => {
+    it('should max tag count work', async () => {
       fixture.detectChanges();
       testComponent.multiple.set(true);
       fixture.detectChanges();
       testComponent.value.set(['1001', '10001', '100011', '100012']);
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
       expect(treeSelect.nativeElement.querySelectorAll('nz-select-item').length).toBe(4);
+
       testComponent.maxTagCount.set(2);
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
       expect(treeSelect.nativeElement.querySelectorAll('nz-select-item').length).toBe(3);
       const maxTagPlaceholderElement = treeSelect.nativeElement.querySelectorAll('nz-select-item')[2];
       expect(maxTagPlaceholderElement).toBeTruthy();
       expect(maxTagPlaceholderElement.innerText.trim()).toBe(
         `+ ${testComponent.value()!.length - testComponent.maxTagCount()} ...`
       );
-    }));
+    });
 
-    it('should set selectable', fakeAsync(() => {
+    it('should set selectable', async () => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
+
       let node = overlayContainerElement.querySelector('.ant-select-tree-node-content-wrapper')!;
       dispatchMouseEvent(node, 'click');
-      fixture.detectChanges();
-      flush();
+      await fixture.whenStable();
       expect(treeSelectComponent.nzOpen).toBe(false);
+
       testComponent.nodes.update(nodes => [{ ...nodes[0], selectable: false }, ...nodes.slice(1)]);
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
+
       node = overlayContainerElement.querySelector('nz-tree-node[builtin]')!;
       dispatchMouseEvent(node, 'click');
-      fixture.detectChanges();
-      flush();
+      await fixture.whenStable();
       expect(treeSelectComponent.nzOpen).toBe(true);
-    }));
+    });
 
-    it('should nzBackdrop work', fakeAsync(() => {
+    it('should nzBackdrop work', () => {
       testComponent.hasBackdrop.set(true);
       fixture.detectChanges();
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       const boundingBox = overlayContainerElement.children[0];
       expect(boundingBox.children[0].classList).toContain('cdk-overlay-backdrop');
-    }));
+    });
 
-    it('should isComposing/inputValue is correct', fakeAsync(() => {
+    it('should isComposing/inputValue is correct', async () => {
       treeSelectComponent.inputValue = '';
       treeSelectComponent.isComposingChange(true);
       treeSelectComponent.setInputValue('1011');
-      flush();
+      await updateNonSignalsInput(fixture);
       expect(treeSelectComponent.isComposing).toBe(true);
       expect(treeSelectComponent.inputValue).toBe('');
-    }));
+    });
 
     it('should nzPrefix work', () => {
       const host = fixture.debugElement.nativeElement;
@@ -489,136 +436,106 @@ describe('tree-select', () => {
     let treeSelectComponent: NzTreeSelectComponent;
     let treeSelect: DebugElement;
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTreeSelectCheckableComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent));
       treeSelectComponent = treeSelect.componentInstance;
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
-    }));
+    });
 
-    it('should is multiple', fakeAsync(() => {
+    it('should is multiple', async () => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
       expect(treeSelectComponent.isMultiple).toBe(true);
-      flush();
-    }));
+    });
 
-    it('should update input width', fakeAsync(() => {
+    it('should update input width', async () => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       testComponent.showSearch.set(true);
-      fixture.detectChanges();
-      flush();
+      await fixture.whenStable();
       const input = treeSelect.nativeElement.querySelector('input') as HTMLInputElement;
       typeInElement('test', input);
-      fixture.detectChanges();
-      flush();
+      await fixture.whenStable();
       typeInElement('test test test', input);
-      fixture.detectChanges();
-      flush();
-      treeSelectComponent.inputValue = '';
-      fixture.detectChanges();
-      flush();
+      await fixture.whenStable();
       typeInElement('', input);
-      fixture.detectChanges();
-      flush();
+      await fixture.whenStable();
       zone.simulateZoneExit();
       fixture.detectChanges();
-      expect(input.style.width === '').toBe(true);
-    }));
+      expect(input.style.width === '').toBeTrue();
+    });
 
-    it('should set null value work', fakeAsync(() => {
-      fixture.detectChanges();
+    it('should set null value work', async () => {
       expect(testComponent.value()![0]).toBe('1000122');
       testComponent.setNull();
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(testComponent.value()).toBe(null);
       expect(testComponent.nzSelectTreeComponent.selectedNodes.length).toBe(0);
       expect(testComponent.nzSelectTreeComponent.value.length).toBe(0);
-    }));
+    });
 
-    it('should not check strictly work', fakeAsync(() => {
-      fixture.detectChanges();
+    it('should not check strictly work', async () => {
       testComponent.value.set(['1001', '10001', '100012']);
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(testComponent.nzSelectTreeComponent.selectedNodes.length).toBe(1);
-      flush();
-    }));
+    });
 
-    it('should check strictly work', fakeAsync(() => {
-      fixture.detectChanges();
+    it('should check strictly work', async () => {
       testComponent.checkStrictly.set(true);
       testComponent.value.set(['1001', '10001', '100012']);
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(testComponent.nzSelectTreeComponent.selectedNodes.length).toBe(3);
       testComponent.checkStrictly.set(false);
-      flush();
       fixture.detectChanges();
-    }));
+    });
 
-    it('should remove checked when press backs', fakeAsync(() => {
+    it('should remove checked when press backs', async () => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       testComponent.showSearch.set(true);
-      fixture.detectChanges();
-      flush();
+      await fixture.whenStable();
+
       const input = treeSelect.nativeElement.querySelector('input') as HTMLInputElement;
       const BACKSPACE_EVENT = createKeyboardEvent('keydown', BACKSPACE, input);
       treeSelectComponent.updateSelectedNodes();
       fixture.detectChanges();
-      expect(treeSelectComponent.selectedNodes.length === 1).toBe(true);
-      treeSelectComponent.onKeyDownInput(BACKSPACE_EVENT);
-      fixture.detectChanges();
-      tick(200);
-      expect(treeSelectComponent.selectedNodes.length === 0).toBe(true);
-      treeSelectComponent.onKeyDownInput(BACKSPACE_EVENT);
-      fixture.detectChanges();
-      tick(200);
-      expect(treeSelectComponent.selectedNodes.length === 0).toBe(true);
-    }));
+      expect(treeSelectComponent.selectedNodes.length).toBe(1);
 
-    it('should click option not close dropdown', fakeAsync(() => {
+      treeSelectComponent.onKeyDownInput(BACKSPACE_EVENT);
+      await updateNonSignalsInput(fixture);
+      expect(treeSelectComponent.selectedNodes.length).toBe(0);
+
+      treeSelectComponent.onKeyDownInput(BACKSPACE_EVENT);
+      await updateNonSignalsInput(fixture);
+      expect(treeSelectComponent.selectedNodes.length).toBe(0);
+    });
+
+    it('should click option not close dropdown', async () => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
-      fixture.detectChanges();
+
       const targetNode = overlayContainerElement.querySelectorAll('nz-tree-node[builtin]')[2];
       dispatchMouseEvent(targetNode, 'click');
-      fixture.detectChanges();
-      flush();
+      await fixture.whenStable();
       expect(treeSelectComponent.nzOpen).toBe(true);
-    }));
+    });
 
-    it('should prevent open the dropdown when click remove', fakeAsync(() => {
+    it('should prevent open the dropdown when click remove', async () => {
       testComponent.value.set(['1000122']);
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(treeSelectComponent.selectedNodes.length).toBe(1);
+
       treeSelect.nativeElement.querySelector('.ant-select-selection-item-remove').click();
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(treeSelectComponent.selectedNodes.length).toBe(0);
       expect(treeSelectComponent.nzOpen).toBe(false);
-    }));
+    });
 
-    it('should display no data', fakeAsync(() => {
+    it('should display no data', async () => {
       treeSelectComponent.updateSelectedNodes();
       fixture.detectChanges();
       testComponent.showSearch.set(true);
@@ -627,14 +544,12 @@ describe('tree-select', () => {
       fixture.detectChanges();
       expect(overlayContainerElement.querySelector('nz-tree')!.getAttribute('hidden')).toBeNull();
       expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeFalsy();
-      fixture.detectChanges();
+
       treeSelectComponent.inputValue = 'invalid_value';
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(overlayContainerElement.querySelector('nz-tree')!.getAttribute('hidden')).toBe('');
       expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeTruthy();
-    }));
+    });
   });
 
   describe('form', () => {
@@ -651,34 +566,25 @@ describe('tree-select', () => {
       treeSelectComponent = treeSelect.componentInstance;
     });
 
-    it('should set disabled work', fakeAsync(() => {
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
+    it('should set disabled work', async () => {
       const nativeElement = treeSelect.nativeElement as HTMLElement;
       expect(nativeElement.classList).not.toContain('ant-select-disabled');
       expect(nativeElement.querySelector('nz-select-clear')).not.toBeNull();
+
       testComponent.disable();
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(nativeElement.classList).toContain('ant-select-disabled');
       expect(nativeElement.querySelector('nz-select-clear')).toBeNull();
-    }));
+    });
 
-    it('should set null value work', fakeAsync(() => {
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
+    it('should set null value work', async () => {
       expect(testComponent.formControl.value).toBe('10021');
       testComponent.setNull();
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(testComponent.formControl.value).toBe(null);
       expect(treeSelectComponent.selectedNodes.length).toBe(0);
       expect(treeSelectComponent.value.length).toBe(0);
-    }));
+    });
   });
 
   describe('tree component', () => {
@@ -687,18 +593,13 @@ describe('tree-select', () => {
     let treeSelectComponent: NzTreeSelectComponent;
     let treeSelect: DebugElement;
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTreeSelectCheckableComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent));
       treeSelectComponent = treeSelect.componentInstance;
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
-    }));
+    });
 
     it('should keep expand state', () => {
       testComponent.expandKeys.set([]);
@@ -708,15 +609,17 @@ describe('tree-select', () => {
       expect(treeSelectComponent.nzOpen).toBe(true);
       let targetSwitcher = overlayContainerElement.querySelector('.ant-select-tree-switcher')!;
       expect(targetSwitcher.classList.contains('ant-select-tree-switcher_close')).toBe(true);
-      fixture.detectChanges();
+
       dispatchMouseEvent(targetSwitcher, 'click');
       fixture.detectChanges();
       targetSwitcher = overlayContainerElement.querySelector('.ant-select-tree-switcher')!;
       expect(targetSwitcher.classList.contains('ant-select-tree-switcher_open')).toBe(true);
       expect(treeSelectComponent.nzExpandedKeys[0] === '1001').toBe(true);
+
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(false);
+
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       targetSwitcher = overlayContainerElement.querySelector('.ant-select-tree-switcher')!;
@@ -729,18 +632,18 @@ describe('tree-select', () => {
   describe('customized icon', () => {
     let fixture: ComponentFixture<NzTestTreeSelectCustomizedIconComponent>;
     let treeSelect: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTreeSelectCustomizedIconComponent);
       treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent));
     });
 
-    it('should display', fakeAsync(() => {
+    it('should display', async () => {
       fixture.detectChanges();
       treeSelect.nativeElement.click();
-      flush();
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(overlayContainerElement.querySelector('.anticon.anticon-frown-o')).toBeTruthy();
-    }));
+    });
   });
 
   describe('Status', () => {
@@ -802,31 +705,25 @@ describe('tree-select', () => {
       treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent));
     });
 
-    it('should set nzVirtualHeight work', fakeAsync(() => {
+    it('should set nzVirtualHeight work', async () => {
       fixture.detectChanges();
       treeSelect.nativeElement.click();
-      flush();
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
+      await fixture.whenStable();
       const virtualScrollViewport = overlayContainerElement.querySelector('.cdk-virtual-scroll-viewport')!;
       expect(window.getComputedStyle(virtualScrollViewport).height).toBe('300px');
-    }));
+    });
 
-    it('should support x-scroll when the length of node label is greater than the length of select dropdown', fakeAsync(() => {
+    it('should support x-scroll when the length of node label is greater than the length of select dropdown', async () => {
       fixture.detectChanges();
       treeSelect.nativeElement.click();
-      flush();
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
+      await fixture.whenStable();
       overlayContainerElement
         .querySelector('.cdk-virtual-scroll-content-wrapper')!
         .setAttribute('style', 'width: 250px');
       const virtualScrollViewport = overlayContainerElement.querySelector('.cdk-virtual-scroll-content-wrapper')!;
       expect(virtualScrollViewport.clientWidth).toBe(250);
       expect(virtualScrollViewport.scrollWidth).toBeGreaterThan(250);
-    }));
+    });
   });
 });
 
@@ -840,6 +737,7 @@ describe('tree-select finalSize', () => {
     compactSizeSignal = signal<NzSizeLDSType>('large');
     formSizeSignal = signal<NzSizeLDSType>('default');
   });
+
   afterEach(() => {
     TestBed.resetTestingModule();
   });
@@ -858,6 +756,7 @@ describe('tree-select finalSize', () => {
     fixture.detectChanges();
     expect(treeSelectElement.classList).toContain('ant-select-lg');
   });
+
   it('should set correctly the size from the compactSize signal', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: NZ_SPACE_COMPACT_SIZE, useValue: compactSizeSignal }]
@@ -867,6 +766,7 @@ describe('tree-select finalSize', () => {
     fixture.detectChanges();
     expect(treeSelectElement.classList).toContain('ant-select-lg');
   });
+
   it('should set correctly the size from the component input', () => {
     fixture = TestBed.createComponent(TestTreeSelectFinalSizeComponent);
     treeSelectElement = fixture.debugElement.query(By.directive(NzTreeSelectComponent)).nativeElement;
@@ -884,9 +784,11 @@ describe('finalVariant', () => {
   beforeEach(() => {
     formVariantSignal = signal<NzVariant>('outlined');
   });
+
   afterEach(() => {
     TestBed.resetTestingModule();
   });
+
   it('should use formVariant when nzVariant is not set (undefined by default)', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]

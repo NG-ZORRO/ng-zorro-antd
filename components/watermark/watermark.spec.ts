@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ApplicationRef, ChangeDetectionStrategy, Component, DebugElement, destroyPlatform } from '@angular/core';
+import { ApplicationRef, Component, DebugElement, destroyPlatform, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { bootstrapApplication, By } from '@angular/platform-browser';
 import { renderApplication } from '@angular/platform-server';
@@ -34,7 +34,8 @@ describe('watermark', () => {
   });
 
   it('basic', async () => {
-    testComponent.nzContent = 'NG Ant Design';
+    testComponent.nzContent.set('NG Ant Design');
+    fixture.detectChanges();
     await fixture.whenStable();
     const view = resultEl.nativeElement.querySelector('.watermark > div');
     expect(view).toBeTruthy();
@@ -42,8 +43,10 @@ describe('watermark', () => {
   });
 
   it('image', async () => {
-    testComponent.nzImage =
-      'https://img.alicdn.com/imgextra/i3/O1CN01UR3Zkq1va9fnZsZcr_!!6000000006188-55-tps-424-64.svg';
+    testComponent.nzImage.set(
+      'https://img.alicdn.com/imgextra/i3/O1CN01UR3Zkq1va9fnZsZcr_!!6000000006188-55-tps-424-64.svg'
+    );
+    fixture.detectChanges();
     await fixture.whenStable();
     const view = resultEl.nativeElement.querySelector('.watermark > div');
     expect(view).toBeTruthy();
@@ -54,7 +57,8 @@ describe('watermark', () => {
     mockSrcSpy.and.callFake(() => {
       resultEl.componentInstance['onImageError']?.();
     });
-    testComponent.nzImage = 'https://img.alicdn.com/test.svg';
+    testComponent.nzImage.set('https://img.alicdn.com/test.svg');
+    fixture.detectChanges();
     await fixture.whenStable();
     const view = resultEl.nativeElement.querySelector('.watermark > div');
     expect(view).toBeTruthy();
@@ -62,8 +66,9 @@ describe('watermark', () => {
   });
 
   it('should offset work', async () => {
-    testComponent.nzContent = ['Angular', 'NG Ant Design'];
-    testComponent.nzOffset = [200, 200];
+    testComponent.nzContent.set(['Angular', 'NG Ant Design']);
+    testComponent.nzOffset.set([200, 200]);
+    fixture.detectChanges();
     await fixture.whenStable();
 
     const view = resultEl.nativeElement.querySelector('.watermark > div');
@@ -74,10 +79,11 @@ describe('watermark', () => {
   });
 
   it('should backgroundSize work', async () => {
-    testComponent.nzContent = 'NG Ant Design';
-    testComponent.nzGap = [100, 100];
-    testComponent.nzWidth = 200;
-    testComponent.nzHeight = 200;
+    testComponent.nzContent.set('NG Ant Design');
+    testComponent.nzGap.set([100, 100]);
+    testComponent.nzWidth.set(200);
+    testComponent.nzHeight.set(200);
+    fixture.detectChanges();
     await fixture.whenStable();
 
     const view = resultEl.nativeElement.querySelector('.watermark > div');
@@ -85,7 +91,8 @@ describe('watermark', () => {
   });
 
   it('should MutationObserver work', async () => {
-    testComponent.nzContent = 'NG Ant Design';
+    testComponent.nzContent.set('NG Ant Design');
+    fixture.detectChanges();
     await fixture.whenStable();
 
     const view = resultEl.nativeElement.querySelector('.watermark > div');
@@ -96,7 +103,8 @@ describe('watermark', () => {
   });
 
   it('should observe the modification of style', async () => {
-    testComponent.nzContent = 'NG Ant Design';
+    testComponent.nzContent.set('NG Ant Design');
+    fixture.detectChanges();
     await fixture.whenStable();
 
     const view = resultEl.nativeElement.querySelector('.watermark > div');
@@ -143,28 +151,27 @@ describe('watermark (SSR)', () => {
   imports: [NzWatermarkModule],
   template: `
     <nz-watermark
-      [nzContent]="nzContent"
-      [nzWidth]="nzWidth"
-      [nzHeight]="nzHeight"
-      [nzRotate]="nzRotate"
-      [nzZIndex]="nzZIndex"
-      [nzImage]="nzImage"
-      [nzFont]="nzFont"
-      [nzGap]="nzGap"
-      [nzOffset]="nzOffset"
+      [nzContent]="nzContent()"
+      [nzWidth]="nzWidth()"
+      [nzHeight]="nzHeight()"
+      [nzRotate]="nzRotate()"
+      [nzZIndex]="nzZIndex()"
+      [nzImage]="nzImage()"
+      [nzFont]="nzFont()"
+      [nzGap]="nzGap()"
+      [nzOffset]="nzOffset()"
       class="watermark"
     />
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestWatermarkBasicComponent {
-  nzContent: string | string[] = 'NG Ant Design';
-  nzWidth: number = 120;
-  nzHeight: number = 64;
-  nzRotate: number = -22;
-  nzZIndex: number = 9;
-  nzImage: string = '';
-  nzFont: FontType = {};
-  nzGap: [number, number] = [100, 100];
-  nzOffset: [number, number] = [50, 50];
+  readonly nzContent = signal<string | string[]>('NG Ant Design');
+  readonly nzWidth = signal(120);
+  readonly nzHeight = signal(64);
+  readonly nzRotate = signal(-22);
+  readonly nzZIndex = signal(9);
+  readonly nzImage = signal('');
+  readonly nzFont = signal<FontType>({});
+  readonly nzGap = signal<[number, number]>([100, 100]);
+  readonly nzOffset = signal<[number, number]>([50, 50]);
 }
