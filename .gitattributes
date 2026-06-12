@@ -7,3 +7,5 @@
 *.less  text eol=lf
 *.md    text eol=lf
 *.yml   text eol=lf
+
+.github/workflows/*.lock.yml linguist-generated=true merge=ours
