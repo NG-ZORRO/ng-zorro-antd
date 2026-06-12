@@ -26,7 +26,7 @@ tag: '{{version}}'
 
 ### ⚠ BREAKING CHANGES
 
-Remove the following APIs which were marked as deprecated in the previous version:
+移除以下在过去的版本中标记为废弃的 API:
 
 | Module                        | API                                                                                  |
 | ----------------------------- | ------------------------------------------------------------------------------------ |
