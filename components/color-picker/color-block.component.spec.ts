@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import { Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -17,9 +17,8 @@ describe('color-block', () => {
   let resultEl: DebugElement;
 
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideZoneChangeDetection()]
+      providers: [provideNoopAnimations()]
     });
   });
 
@@ -37,7 +36,7 @@ describe('color-block', () => {
   });
 
   it('color-block color', () => {
-    component.nzColor = '#ff6600';
+    component.nzColor.set('#ff6600');
     fixture.detectChanges();
     expect(resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner').style.backgroundColor).toBe(
       'rgb(255, 102, 0)'
@@ -45,12 +44,12 @@ describe('color-block', () => {
   });
 
   it('color-block size', () => {
-    component.nzSize = 'small';
+    component.nzSize.set('small');
     fixture.detectChanges();
     expect(resultEl.nativeElement.querySelector('ng-antd-color-block').parentNode.classList).toContain(
       'ant-color-picker-inline-sm'
     );
-    component.nzSize = 'large';
+    component.nzSize.set('large');
     fixture.detectChanges();
     expect(resultEl.nativeElement.querySelector('ng-antd-color-block').parentNode.classList).toContain(
       'ant-color-picker-inline-lg'
@@ -60,21 +59,20 @@ describe('color-block', () => {
   it('color-block click', () => {
     fixture.detectChanges();
     resultEl.nativeElement.querySelector('.ant-color-picker-color-block').click();
-    expect(component.isClick).toBeTrue();
+    expect(component.isClick()).toBeTrue();
   });
 });
 
 @Component({
   imports: [NzColorPickerModule],
-  template: ` <nz-color-block [nzColor]="nzColor" [nzSize]="nzSize" (nzOnClick)="clickHandle()" /> `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: ` <nz-color-block [nzColor]="nzColor()" [nzSize]="nzSize()" (nzOnClick)="clickHandle()" /> `
 })
 export class NzTestColorBlockComponent {
-  nzColor = '#1677ff';
-  nzSize: NzSizeLDSType = 'default';
-  isClick: boolean = false;
+  readonly nzColor = signal('#1677ff');
+  readonly nzSize = signal<NzSizeLDSType>('default');
+  readonly isClick = signal(false);
 
   clickHandle(): void {
-    this.isClick = true;
+    this.isClick.set(true);
   }
 }

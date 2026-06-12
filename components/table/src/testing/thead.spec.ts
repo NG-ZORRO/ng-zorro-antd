@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -48,7 +48,7 @@ describe('nz-thead', () => {
     fixture.detectChanges();
     expect(testComponent.sortChange).toHaveBeenCalledTimes(2);
 
-    testComponent.columns = testComponent.columns.slice(0, 1);
+    testComponent.columns.set(testComponent.columns().slice(0, 1));
     fixture.detectChanges();
     upButtons = table.nativeElement.querySelectorAll('.ant-table-column-sorters');
     expect(upButtons.length).toBe(3);
@@ -64,16 +64,15 @@ describe('nz-thead', () => {
       <thead (nzSortOrderChange)="sortChange($event)">
         <th nzColumnKey="first" [nzSortFn]="filterFn"></th>
         <th nzColumnKey="second" [nzSortFn]="filterFn">></th>
-        @for (col of columns; track col) {
+        @for (col of columns(); track col) {
           <th [nzColumnKey]="col" [nzSortFn]="filterFn">></th>
         }
       </thead>
     </nz-table>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTheadTestNzTableComponent {
   sortChange = jasmine.createSpy('sort change');
-  columns = ['third', 'fourth'];
+  readonly columns = signal(['third', 'fourth']);
   filterFn = (): number => -1;
 }

@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, provideZoneChangeDetection } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -18,10 +18,7 @@ describe('input-search', () => {
   let fixture: ComponentFixture<InputSearchTestComponent>;
 
   beforeEach(() => {
-    // todo: use zoneless
-    TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection()]
-    });
+    TestBed.configureTestingModule({});
   });
 
   beforeEach(() => {
@@ -38,10 +35,10 @@ describe('input-search', () => {
 
   it('should be apply size classes', () => {
     const searchElement: HTMLElement = fixture.debugElement.query(By.directive(NzInputSearchDirective)).nativeElement;
-    component.size = 'small';
+    component.size.set('small');
     fixture.detectChanges();
     expect(searchElement.classList).toContain('ant-input-search-small');
-    component.size = 'large';
+    component.size.set('large');
     fixture.detectChanges();
     expect(searchElement.classList).toContain('ant-input-search-large');
   });
@@ -49,15 +46,15 @@ describe('input-search', () => {
   it('should be apply button classes', async () => {
     const searchElement: HTMLElement = fixture.debugElement.query(By.directive(NzInputSearchDirective)).nativeElement;
     expect(searchElement.classList).not.toContain('ant-input-search-with-button');
-    component.enterButton = true;
+    component.enterButton.set(true);
     fixture.detectChanges();
     await fixture.whenStable();
     expect(searchElement.classList).toContain('ant-input-search-with-button');
-    component.enterButton = 'submit';
+    component.enterButton.set('submit');
     fixture.detectChanges();
     await fixture.whenStable();
     expect(searchElement.classList).toContain('ant-input-search-with-button');
-    component.enterButton = '';
+    component.enterButton.set('');
     fixture.detectChanges();
     await fixture.whenStable();
     expect(searchElement.classList).toContain('ant-input-search-with-button');
@@ -72,11 +69,11 @@ describe('input-search', () => {
     const searchButtonElement: HTMLButtonElement = fixture.nativeElement.querySelector('.ant-input-search-button');
     expect(searchButtonElement).toBeTruthy();
     expect(searchButtonElement.classList).toContain('ant-btn-default');
-    component.enterButton = true;
+    component.enterButton.set(true);
     fixture.detectChanges();
     await fixture.whenStable();
     expect(searchButtonElement.classList).toContain('ant-btn-primary');
-    component.enterButton = '';
+    component.enterButton.set('');
     fixture.detectChanges();
     await fixture.whenStable();
     expect(searchButtonElement.classList).toContain('ant-btn-primary');
@@ -84,7 +81,7 @@ describe('input-search', () => {
 
   it('should be render search icon when enterButton is an empty string', async () => {
     const searchButtonElement: HTMLButtonElement = fixture.nativeElement.querySelector('.ant-input-search-button');
-    component.enterButton = '';
+    component.enterButton.set('');
     fixture.detectChanges();
     await fixture.whenStable();
     const searchIconElement = searchButtonElement.querySelector('.anticon-search');
@@ -94,11 +91,11 @@ describe('input-search', () => {
   it('should be apply size classes to search button', async () => {
     const searchButtonElement: HTMLButtonElement = fixture.nativeElement.querySelector('.ant-input-search-button');
     expect(searchButtonElement).toBeTruthy();
-    component.size = 'small';
+    component.size.set('small');
     fixture.detectChanges();
     await fixture.whenStable();
     expect(searchButtonElement.classList).toContain('ant-btn-sm');
-    component.size = 'large';
+    component.size.set('large');
     fixture.detectChanges();
     await fixture.whenStable();
     expect(searchButtonElement.classList).toContain('ant-btn-lg');
@@ -106,7 +103,7 @@ describe('input-search', () => {
 
   it('should be loading work', async () => {
     const searchButtonElement: HTMLButtonElement = fixture.nativeElement.querySelector('.ant-input-search-button');
-    component.loading = true;
+    component.loading.set(true);
     fixture.detectChanges();
     await fixture.whenStable();
     expect(searchButtonElement.classList).toContain('ant-btn-loading');
@@ -115,7 +112,7 @@ describe('input-search', () => {
   describe('should be disabled work', () => {
     it('by input', async () => {
       const searchButtonElement: HTMLButtonElement = fixture.nativeElement.querySelector('.ant-input-search-button');
-      component.enterButton = 'submit';
+      component.enterButton.set('submit');
       fixture.detectChanges();
       await fixture.whenStable();
       expect(searchButtonElement.textContent.trim()).toEqual('submit');
@@ -133,7 +130,7 @@ describe('input-search', () => {
   it('should be emit search event when click search button', async () => {
     spyOn(component, 'onSearch');
     const searchButtonElement: HTMLButtonElement = fixture.nativeElement.querySelector('.ant-input-search-button');
-    component.value = 'test';
+    component.value.set('test');
     fixture.detectChanges();
     await fixture.whenStable();
     searchButtonElement.click();
@@ -144,7 +141,7 @@ describe('input-search', () => {
   it('should be emit search event when keydown enter', async () => {
     spyOn(component, 'onSearch');
     const inputElement: HTMLInputElement = fixture.nativeElement.querySelector('input');
-    component.value = 'test';
+    component.value.set('test');
     fixture.detectChanges();
     await fixture.whenStable();
     inputElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
@@ -155,7 +152,7 @@ describe('input-search', () => {
   it('should be emit search event when click clear button', async () => {
     spyOn(component, 'onSearch');
     const clearButtonElement: HTMLElement = fixture.nativeElement.querySelector('.ant-input-clear-icon');
-    component.value = 'test';
+    component.value.set('test');
     fixture.detectChanges();
     await fixture.whenStable();
     clearButtonElement.click();
@@ -168,8 +165,8 @@ describe('input-search', () => {
     const searchButtonElement: HTMLButtonElement = fixture.nativeElement.querySelector('.ant-input-search-button');
     const inputElement: HTMLInputElement = fixture.nativeElement.querySelector('input');
     const clearButtonElement: HTMLElement = fixture.nativeElement.querySelector('.ant-input-clear-icon');
-    component.value = 'test';
-    component.loading = true;
+    component.value.set('test');
+    component.loading.set(true);
     fixture.detectChanges();
     await fixture.whenStable();
     searchButtonElement.click();
@@ -182,17 +179,16 @@ describe('input-search', () => {
 @Component({
   imports: [NzInputModule, FormsModule],
   template: `
-    <nz-input-search nzAllowClear [nzLoading]="loading" [nzEnterButton]="enterButton" (nzSearch)="onSearch($event)">
-      <input nz-input [(ngModel)]="value" [nzSize]="size" />
+    <nz-input-search nzAllowClear [nzLoading]="loading()" [nzEnterButton]="enterButton()" (nzSearch)="onSearch($event)">
+      <input nz-input [ngModel]="value()" (ngModelChange)="value.set($event)" [nzSize]="size()" />
     </nz-input-search>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class InputSearchTestComponent {
-  loading = false;
-  enterButton: boolean | string = false;
-  value = '';
-  size: NzSizeLDSType = 'default';
+  readonly loading = signal(false);
+  readonly enterButton = signal<boolean | string>(false);
+  readonly value = signal('');
+  readonly size = signal<NzSizeLDSType>('default');
 
   onSearch(_event: NzInputSearchEvent): void {}
 }
@@ -204,7 +200,6 @@ class InputSearchTestComponent {
       <input nz-input />
       <span nzInputSearchEnterButton>custom</span>
     </nz-input-search>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class InputSearchCustomEnterButtonTestComponent {}

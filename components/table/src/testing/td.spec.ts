@@ -3,10 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, signal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzTdAddOnComponent, NzTableModule } from 'ng-zorro-antd/table';
 
 describe('nz-td', () => {
@@ -15,10 +16,7 @@ describe('nz-td', () => {
   let td: DebugElement;
 
   beforeEach(() => {
-    // todo: use zoneless
-    TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection()]
-    });
+    TestBed.configureTestingModule({});
     fixture = TestBed.createComponent(NzTestTdComponent);
     fixture.detectChanges();
     testComponent = fixture.debugElement.componentInstance;
@@ -31,27 +29,27 @@ describe('nz-td', () => {
     expect(td.nativeElement.classList).toContain('ant-table-selection-column');
   });
 
-  it('should checked work', fakeAsync(() => {
+  it('should checked work', async () => {
     fixture.detectChanges();
     expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild!.classList).not.toContain(
       'ant-checkbox-checked'
     );
-    testComponent.checked = true;
+    testComponent.checked.set(true);
     fixture.detectChanges();
-    flush();
+    await updateNonSignalsInput(fixture);
     fixture.detectChanges();
-    expect(testComponent.checked).toBe(true);
+    expect(testComponent.checked()).toBe(true);
     expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild!.classList).toContain(
       'ant-checkbox-checked'
     );
     expect(testComponent.checkedChange).toHaveBeenCalledTimes(0);
-  }));
+  });
 
   it('should disabled work', () => {
     fixture.detectChanges();
-    testComponent.disabled = true;
+    testComponent.disabled.set(true);
     fixture.detectChanges();
-    expect(testComponent.checked).toBe(false);
+    expect(testComponent.checked()).toBe(false);
     expect(
       td.nativeElement
         .querySelector('.ant-checkbox-wrapper')
@@ -60,7 +58,7 @@ describe('nz-td', () => {
     expect(testComponent.checkedChange).toHaveBeenCalledTimes(0);
     td.nativeElement.querySelector('.ant-checkbox-wrapper').click();
     fixture.detectChanges();
-    expect(testComponent.checked).toBe(false);
+    expect(testComponent.checked()).toBe(false);
     expect(
       td.nativeElement
         .querySelector('.ant-checkbox-wrapper')
@@ -72,14 +70,14 @@ describe('nz-td', () => {
   it('should indeterminate work', () => {
     fixture.detectChanges();
     fixture.detectChanges();
-    testComponent.indeterminate = true;
+    testComponent.indeterminate.set(true);
     fixture.detectChanges();
     expect(
       td.nativeElement
         .querySelector('.ant-checkbox-wrapper')
         .firstElementChild!.classList.contains('ant-checkbox-indeterminate')
     ).toBe(true);
-    testComponent.checked = true;
+    testComponent.checked.set(true);
     fixture.detectChanges();
     expect(
       td.nativeElement
@@ -93,7 +91,7 @@ describe('nz-td', () => {
     expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain(
       'ant-table-row-expand-icon-collapsed'
     );
-    testComponent.expand = true;
+    testComponent.expand.set(true);
     fixture.detectChanges();
     expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain(
       'ant-table-row-expand-icon-expanded'
@@ -108,7 +106,7 @@ describe('nz-td', () => {
     );
     td.nativeElement.querySelector('.ant-table-row-expand-icon').click();
     fixture.detectChanges();
-    expect(testComponent.expand).toBe(true);
+    expect(testComponent.expand()).toBe(true);
     expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain(
       'ant-table-row-expand-icon-expanded'
     );
@@ -116,26 +114,26 @@ describe('nz-td', () => {
   });
 
   it('should be row index when index-size is 0', () => {
-    testComponent.indentSize = 0;
+    testComponent.indentSize.set(0);
     fixture.detectChanges();
     expect(td.nativeElement.querySelector('.ant-table-row-indent')).not.toBeNull();
   });
 
   it('should indentSize work', () => {
-    testComponent.indentSize = 20;
+    testComponent.indentSize.set(20);
     fixture.detectChanges();
     expect(td.nativeElement.querySelector('.ant-table-row-indent').style.paddingLeft).toBe('20px');
   });
 
   it('should left work', () => {
-    testComponent.left = '20px';
+    testComponent.left.set('20px');
     fixture.detectChanges();
     expect(td.nativeElement.classList).toContain('ant-table-cell-fix-left');
     expect(td.nativeElement.style.left).toBe('20px');
   });
 
   it('should right work', () => {
-    testComponent.right = '20px';
+    testComponent.right.set('20px');
     fixture.detectChanges();
     expect(td.nativeElement.classList).toContain('ant-table-cell-fix-right');
     expect(td.nativeElement.style.right).toBe('20px');
@@ -150,7 +148,7 @@ describe('nz-td', () => {
   });
 
   it('should add aria-label', () => {
-    testComponent.label = 'test-label';
+    testComponent.label.set('test-label');
     fixture.detectChanges();
     console.log(td.nativeElement.querySelector('label').attributes.getNamedItem('aria-label').value);
     expect(td.nativeElement.querySelector('label').attributes.getNamedItem('aria-label').value).toBe('test-label'); //toContain('test-label');
@@ -161,36 +159,34 @@ describe('nz-td', () => {
   imports: [NzTableModule],
   template: `
     <td
-      [(nzChecked)]="checked"
-      [nzIndeterminate]="indeterminate"
-      [nzLabel]="label"
-      (nzCheckedChange)="checkedChange($event)"
-      [nzDisabled]="disabled"
-      [(nzExpand)]="expand"
-      (nzExpandChange)="expandChange($event)"
-      [nzIndentSize]="indentSize"
-      [nzLeft]="left"
-      [nzRight]="right"
+      [nzChecked]="checked()"
+      (nzCheckedChange)="checked.set($event); checkedChange($event)"
+      [nzIndeterminate]="indeterminate()"
+      [nzLabel]="label()"
+      [nzDisabled]="disabled()"
+      [nzExpand]="expand()"
+      (nzExpandChange)="expand.set($event); expandChange($event)"
+      [nzIndentSize]="indentSize()"
+      [nzLeft]="left()"
+      [nzRight]="right()"
     ></td>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestTdComponent {
-  checked = false;
+  readonly checked = signal(false);
   checkedChange = jasmine.createSpy('show change');
-  indeterminate = false;
-  disabled = false;
-  expand = false;
+  readonly indeterminate = signal(false);
+  readonly disabled = signal(false);
+  readonly expand = signal(false);
   expandChange = jasmine.createSpy('expand change');
-  indentSize: number = 0;
-  left: string | boolean = false;
-  right: string | boolean = false;
-  label: string | null = null;
+  readonly indentSize = signal(0);
+  readonly left = signal<string | boolean>(false);
+  readonly right = signal<string | boolean>(false);
+  readonly label = signal<string | null>(null);
 }
 
 @Component({
   imports: [NzTableModule],
-  template: `<td class="nz-disable-td" [nzChecked]="true"></td>`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<td class="nz-disable-td" [nzChecked]="true"></td>`
 })
 export class NzTestDisableTdComponent {}

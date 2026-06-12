@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Subscription } from 'rxjs';
 
@@ -97,7 +97,6 @@ describe('resize observer', () => {
 
 @Component({
   template: `<div nzResizeObserver></div>`,
-  imports: [NzResizeObserverDirective],
-  changeDetection: ChangeDetectionStrategy.Eager
+  imports: [NzResizeObserverDirective]
 })
 class TestHostComponent {}

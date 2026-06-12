@@ -3,13 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DebugElement,
-  provideZoneChangeDetection,
-  ViewEncapsulation
-} from '@angular/core';
+import { Component, DebugElement, signal, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -25,16 +19,8 @@ describe('NgxColorPickerComponent', () => {
   let resultEl: DebugElement;
 
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection()]
-    });
-  });
-
-  beforeEach(() => {
-    // todo: use zoneless
-    TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection(), provideNoopAnimations()]
+      providers: [provideNoopAnimations()]
     });
   });
 
@@ -53,7 +39,7 @@ describe('NgxColorPickerComponent', () => {
   });
 
   it('color-picker defaultValue', () => {
-    component.defaultValue = '#ff6600';
+    component.defaultValue.set('#ff6600');
     fixture.detectChanges();
     expect(resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner').style.backgroundColor).toBe(
       'rgb(255, 102, 0)'
@@ -61,7 +47,7 @@ describe('NgxColorPickerComponent', () => {
   });
 
   it('color-picker disabled', () => {
-    component.disabled = true;
+    component.disabled.set(true);
     fixture.detectChanges();
     expect(resultEl.nativeElement.querySelector('.ant-color-picker-panel').classList).toContain(
       'ant-color-picker-panel-disabled'
@@ -69,7 +55,7 @@ describe('NgxColorPickerComponent', () => {
   });
 
   it('color-picker disabledAlpha', () => {
-    component.disabledAlpha = true;
+    component.disabledAlpha.set(true);
     fixture.detectChanges();
     expect(resultEl.nativeElement.querySelector('.ant-color-picker-slider-group').classList).toContain(
       'ant-color-picker-slider-group-disabled-alpha'
@@ -77,7 +63,7 @@ describe('NgxColorPickerComponent', () => {
   });
 
   it('color-picker input color', () => {
-    component.value = '#ff6600';
+    component.value.set('#ff6600');
     fixture.detectChanges();
     const dom = fixture.debugElement.nativeElement.querySelector('.ant-color-picker-palette');
     const handleWrapper = dom.firstChild;
@@ -154,10 +140,10 @@ describe('NgxColorPickerComponent', () => {
   });
 
   it('color-picker presets render and clicking a preset updates color and emits change', () => {
-    component.presets = [
+    component.presets.set([
       { label: 'Recent', colors: ['rgb(255, 0, 0)', '#00ff00'], defaultOpen: true, key: 'recent' },
       { label: 'Favorites', colors: ['#0000ff'], key: 'fav' }
-    ];
+    ]);
     fixture.detectChanges();
 
     const hostEl = resultEl.nativeElement as HTMLElement;
@@ -184,11 +170,11 @@ describe('NgxColorPickerComponent', () => {
   imports: [NgAntdColorPickerComponent],
   template: `
     <ng-antd-color-picker
-      [value]="value"
-      [defaultValue]="defaultValue"
-      [disabled]="disabled"
-      [disabledAlpha]="disabledAlpha"
-      [presets]="presets"
+      [value]="value()"
+      [defaultValue]="defaultValue()"
+      [disabled]="disabled()"
+      [disabledAlpha]="disabledAlpha()"
+      [presets]="presets()"
       [panelRenderHeader]="title"
       [panelRenderFooter]="footer"
       (nzOnChange)="onChange($event)"
@@ -205,15 +191,14 @@ describe('NgxColorPickerComponent', () => {
   styles: `
     @import '../../style/testing.less';
     @import '../style/entry.less';
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzxTestColorPickerComponent {
-  value = '';
-  defaultValue = '';
-  disabled = false;
-  disabledAlpha = false;
-  presets: NzPresetColor[] = [];
+  readonly value = signal('');
+  readonly defaultValue = signal('');
+  readonly disabled = signal(false);
+  readonly disabledAlpha = signal(false);
+  readonly presets = signal<NzPresetColor[]>([]);
 
   changeColor: Color | null = null;
   complete: HsbaColorType | null = null;

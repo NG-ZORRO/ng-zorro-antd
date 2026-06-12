@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
+import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -48,8 +48,7 @@ describe('nz-tbody', () => {
     <table>
       <tbody></tbody>
     </table>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTbodyTestTableComponent {}
 
@@ -59,8 +58,7 @@ export class NzTbodyTestTableComponent {}
     <nz-table>
       <tbody></tbody>
     </nz-table>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTbodyTestNzTableComponent {
   expand = false;

@@ -5,12 +5,17 @@
 
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer, ScrollDispatcher } from '@angular/cdk/overlay';
-import { ChangeDetectionStrategy, Component, Provider, Type, ViewChild, inject } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject as testingInject, TestBed, tick } from '@angular/core/testing';
+import { Component, Provider, Type, ViewChild, inject } from '@angular/core';
+import { ComponentFixture, inject as testingInject, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
-import { createKeyboardEvent, createMouseEvent, dispatchEvent } from 'ng-zorro-antd/core/testing';
+import {
+  createKeyboardEvent,
+  createMouseEvent,
+  dispatchEvent,
+  updateNonSignalsInput
+} from 'ng-zorro-antd/core/testing';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 import { NzContextMenuService } from './context-menu.service';
@@ -41,7 +46,7 @@ describe('context-menu', () => {
     })
   );
 
-  it('should create dropdown', fakeAsync(() => {
+  it('should create dropdown', async () => {
     const fixture = createComponent(NzTestDropdownContextMenuComponent);
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
@@ -52,13 +57,14 @@ describe('context-menu', () => {
       const viewRef = component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
       expect(viewRef).toBeTruthy();
       fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(overlayContainerElement.textContent).toContain('1st menu item');
+      return updateNonSignalsInput(fixture, 1000).then(() => {
+        fixture.detectChanges();
+        expect(overlayContainerElement.textContent).toContain('1st menu item');
+      });
     }).not.toThrowError();
-  }));
+  });
 
-  it('should only one dropdown exist', fakeAsync(() => {
+  it('should only one dropdown exist', async () => {
     const fixture = createComponent(NzTestDropdownContextMenuComponent);
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
@@ -68,19 +74,23 @@ describe('context-menu', () => {
       const component = fixture.componentInstance;
       component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
       fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(overlayContainerElement.textContent).toContain('1st menu item');
-      fakeEvent = createMouseEvent('contextmenu', window.innerWidth, window.innerHeight);
-      component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
-      fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(overlayContainerElement.textContent).toContain('1st menu item');
+      return updateNonSignalsInput(fixture, 1000)
+        .then(() => {
+          fixture.detectChanges();
+          expect(overlayContainerElement.textContent).toContain('1st menu item');
+          fakeEvent = createMouseEvent('contextmenu', window.innerWidth, window.innerHeight);
+          component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
+          fixture.detectChanges();
+          return updateNonSignalsInput(fixture, 1000);
+        })
+        .then(() => {
+          fixture.detectChanges();
+          expect(overlayContainerElement.textContent).toContain('1st menu item');
+        });
     }).not.toThrowError();
-  }));
+  });
 
-  it('should dropdown close when scroll', fakeAsync(() => {
+  it('should dropdown close when scroll', async () => {
     const scrolledSubject = new Subject<void>();
     const fixture = createComponent(NzTestDropdownContextMenuComponent, [
       { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) }
@@ -92,18 +102,22 @@ describe('context-menu', () => {
       const component = fixture.componentInstance;
       component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
       fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(overlayContainerElement.textContent).toContain('1st menu item');
-      scrolledSubject.next();
-      fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(overlayContainerElement.textContent).toBe('');
+      return updateNonSignalsInput(fixture, 1000)
+        .then(() => {
+          fixture.detectChanges();
+          expect(overlayContainerElement.textContent).toContain('1st menu item');
+          scrolledSubject.next();
+          fixture.detectChanges();
+          return updateNonSignalsInput(fixture, 1000);
+        })
+        .then(() => {
+          fixture.detectChanges();
+          expect(overlayContainerElement.textContent).toBe('');
+        });
     }).not.toThrowError();
-  }));
+  });
 
-  it('should backdrop work with click', fakeAsync(() => {
+  it('should backdrop work with click', async () => {
     const fixture = createComponent(NzTestDropdownContextMenuComponent);
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
@@ -113,18 +127,22 @@ describe('context-menu', () => {
       const component = fixture.componentInstance;
       component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
       fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(overlayContainerElement.textContent).toContain('1st menu item');
-      document.body.click();
-      fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(overlayContainerElement.textContent).toBe('');
+      return updateNonSignalsInput(fixture, 1000)
+        .then(() => {
+          fixture.detectChanges();
+          expect(overlayContainerElement.textContent).toContain('1st menu item');
+          document.body.click();
+          fixture.detectChanges();
+          return updateNonSignalsInput(fixture, 1000);
+        })
+        .then(() => {
+          fixture.detectChanges();
+          expect(overlayContainerElement.textContent).toBe('');
+        });
     }).not.toThrowError();
-  }));
+  });
 
-  it('should backdrop work with keyboard event ESCAPE', fakeAsync(() => {
+  it('should backdrop work with keyboard event ESCAPE', async () => {
     const fixture = createComponent(NzTestDropdownContextMenuComponent);
     const keyboardEvent = createKeyboardEvent('keydown', ESCAPE, undefined, 'Escape');
     fixture.detectChanges();
@@ -135,16 +153,20 @@ describe('context-menu', () => {
       const component = fixture.componentInstance;
       component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
       fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(overlayContainerElement.textContent).toContain('1st menu item');
-      dispatchEvent(document.body, keyboardEvent);
-      fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(overlayContainerElement.textContent).toBe('');
+      return updateNonSignalsInput(fixture, 1000)
+        .then(() => {
+          fixture.detectChanges();
+          expect(overlayContainerElement.textContent).toContain('1st menu item');
+          dispatchEvent(document.body, keyboardEvent);
+          fixture.detectChanges();
+          return updateNonSignalsInput(fixture, 1000);
+        })
+        .then(() => {
+          fixture.detectChanges();
+          expect(overlayContainerElement.textContent).toBe('');
+        });
     }).not.toThrowError();
-  }));
+  });
 
   it('should not call the method close if the overlay is clicked inside', async () => {
     const fixture = createComponent(NzTestDropdownContextMenuComponent);
@@ -173,8 +195,7 @@ describe('context-menu', () => {
         <li nz-menu-item>3rd menu item</li>
       </ul>
     </nz-dropdown-menu>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestDropdownContextMenuComponent {
   public readonly nzContextMenuService = inject(NzContextMenuService);

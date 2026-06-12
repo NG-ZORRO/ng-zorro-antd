@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import { Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -27,9 +27,8 @@ describe('skeleton', () => {
   let dl: DebugElement;
 
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
+      providers: [provideNzIconsTesting()]
     });
   });
 
@@ -43,7 +42,7 @@ describe('skeleton', () => {
   describe('#nzActive', () => {
     it('should active work', () => {
       expect(dl.nativeElement.querySelector('.ant-skeleton-active')).toBeFalsy();
-      testComp.nzActive = true;
+      testComp.nzActive.set(true);
       fixture.detectChanges();
       expect(dl.nativeElement.querySelector('.ant-skeleton-active')).toBeTruthy();
     });
@@ -52,26 +51,26 @@ describe('skeleton', () => {
   describe('#nzTitle', () => {
     it('should basic width prop work', () => {
       expect(dl.nativeElement.querySelector('.ant-skeleton-title')).toBeFalsy();
-      testComp.nzTitle = true;
-      testComp.nzAvatar = false;
-      testComp.nzParagraph = true;
+      testComp.nzTitle.set(true);
+      testComp.nzAvatar.set(false);
+      testComp.nzParagraph.set(true);
       fixture.detectChanges();
       expect(dl.nativeElement.querySelector('.ant-skeleton-title').style.width).toBe('38%');
-      testComp.nzAvatar = true;
+      testComp.nzAvatar.set(true);
       fixture.detectChanges();
       expect(dl.nativeElement.querySelector('.ant-skeleton-title').style.width).toBe('50%');
-      testComp.nzParagraph = false;
+      testComp.nzParagraph.set(false);
       fixture.detectChanges();
       expect(dl.nativeElement.querySelector('.ant-skeleton-title').style.width).toBe('');
     });
     it('should customize width props work', () => {
-      testComp.nzTitle = true;
+      testComp.nzTitle.set(true);
       fixture.detectChanges();
       expect(dl.nativeElement.querySelector('.ant-skeleton-title').style.width).toBe('');
-      testComp.nzTitle = { width: '50%' };
+      testComp.nzTitle.set({ width: '50%' });
       fixture.detectChanges();
       expect(dl.nativeElement.querySelector('.ant-skeleton-title').style.width).toBe('50%');
-      testComp.nzTitle = { width: 200 };
+      testComp.nzTitle.set({ width: 200 });
       fixture.detectChanges();
       expect(dl.nativeElement.querySelector('.ant-skeleton-title').style.width).toBe('200px');
     });
@@ -79,19 +78,19 @@ describe('skeleton', () => {
 
   describe('#nzAvatar', () => {
     it('should basic avatar props work', () => {
-      testComp.nzTitle = true;
-      testComp.nzAvatar = true;
-      testComp.nzParagraph = false;
+      testComp.nzTitle.set(true);
+      testComp.nzAvatar.set(true);
+      testComp.nzParagraph.set(false);
       fixture.detectChanges();
       expect(dl.nativeElement.querySelector('.ant-skeleton-avatar-square')).toBeTruthy();
       expect(dl.nativeElement.querySelector('.ant-skeleton-with-avatar')).toBeTruthy();
-      testComp.nzParagraph = true;
+      testComp.nzParagraph.set(true);
       fixture.detectChanges();
       expect(dl.nativeElement.querySelector('.ant-skeleton-avatar-circle')).toBeTruthy();
     });
     for (const type of ['square', 'circle']) {
       it(`should customize shape ${type} work`, () => {
-        testComp.nzAvatar = { shape: type } as NzSkeletonAvatar;
+        testComp.nzAvatar.set({ shape: type } as NzSkeletonAvatar);
         fixture.detectChanges();
         expect(dl.query(By.css(`.ant-skeleton-avatar-${type}`)) !== null).toBe(true);
       });
@@ -101,7 +100,7 @@ describe('skeleton', () => {
       { size: 'small', cls: 'sm' }
     ]) {
       it(`should customize size ${type.size} work`, () => {
-        testComp.nzAvatar = { size: type.size } as NzSkeletonAvatar;
+        testComp.nzAvatar.set({ size: type.size } as NzSkeletonAvatar);
         fixture.detectChanges();
         expect(dl.query(By.css(`.ant-skeleton-avatar-${type.cls}`)) !== null).toBe(true);
       });
@@ -110,15 +109,15 @@ describe('skeleton', () => {
 
   describe('#nzParagraph', () => {
     it('should basic rows and width work', () => {
-      testComp.nzTitle = true;
-      testComp.nzAvatar = true;
-      testComp.nzParagraph = true;
+      testComp.nzTitle.set(true);
+      testComp.nzAvatar.set(true);
+      testComp.nzParagraph.set(true);
       fixture.detectChanges();
       let paragraphs = dl.nativeElement.querySelectorAll('.ant-skeleton-paragraph > li');
       expect(paragraphs.length).toBe(2);
       expect(paragraphs[0].style.width).toBe('');
       expect(paragraphs[1].style.width).toBe('');
-      testComp.nzAvatar = false;
+      testComp.nzAvatar.set(false);
       fixture.detectChanges();
       paragraphs = dl.nativeElement.querySelectorAll('.ant-skeleton-paragraph > li');
       expect(paragraphs.length).toBe(3);
@@ -126,26 +125,26 @@ describe('skeleton', () => {
       expect(paragraphs[2].style.width).toBe('61%');
     });
     it('should width type is string or number work', () => {
-      testComp.nzParagraph = { width: 100 };
+      testComp.nzParagraph.set({ width: 100 });
       fixture.detectChanges();
       let paragraphs = dl.nativeElement.querySelectorAll('.ant-skeleton-paragraph > li');
       expect(paragraphs[0].style.width).toBe('');
       expect(paragraphs[1].style.width).toBe('100px');
       expect(paragraphs[2]).toBeFalsy();
-      testComp.nzParagraph = { width: 100, rows: 3 };
+      testComp.nzParagraph.set({ width: 100, rows: 3 });
       fixture.detectChanges();
       paragraphs = dl.nativeElement.querySelectorAll('.ant-skeleton-paragraph > li');
       expect(paragraphs[1].style.width).toBe('');
       expect(paragraphs[2].style.width).toBe('100px');
     });
     it('should define width type is Array work', () => {
-      testComp.nzParagraph = { width: [200, '100px', '90%'] };
+      testComp.nzParagraph.set({ width: [200, '100px', '90%'] });
       fixture.detectChanges();
       let paragraphs = dl.nativeElement.querySelectorAll('.ant-skeleton-paragraph > li');
       expect(paragraphs[0].style.width).toBe('200px');
       expect(paragraphs[1].style.width).toBe('100px');
       expect(paragraphs[2]).toBeFalsy();
-      testComp.nzParagraph = { width: [200, '100px', '90%'], rows: 4 };
+      testComp.nzParagraph.set({ width: [200, '100px', '90%'], rows: 4 });
       fixture.detectChanges();
       paragraphs = dl.nativeElement.querySelectorAll('.ant-skeleton-paragraph > li');
       expect(paragraphs[2].style.width).toBe('90%');
@@ -156,7 +155,7 @@ describe('skeleton', () => {
   describe('#nzRound', () => {
     it('should round work', () => {
       expect(dl.nativeElement.querySelector('.ant-skeleton-round')).toBeFalsy();
-      testComp.nzRound = true;
+      testComp.nzRound.set(true);
       fixture.detectChanges();
       expect(dl.nativeElement.querySelector('.ant-skeleton-round')).toBeTruthy();
     });
@@ -169,9 +168,8 @@ describe('skeleton element', () => {
   let dl: DebugElement;
 
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
+      providers: [provideNzIconsTesting()]
     });
   });
 
@@ -184,26 +182,26 @@ describe('skeleton element', () => {
 
   it('should nzActive work', () => {
     expect(dl.nativeElement.querySelector('.ant-skeleton-active')).toBeFalsy();
-    testComp.nzActive = true;
+    testComp.nzActive.set(true);
     fixture.detectChanges();
     expect(dl.nativeElement.querySelector('.ant-skeleton-active')).toBeTruthy();
-    testComp.useSuite = 4;
+    testComp.useSuite.set(4);
     fixture.detectChanges();
     expect(dl.nativeElement.querySelector('.ant-skeleton-active')).toBeTruthy();
   });
 
   it('should nzSize work', () => {
     expect(dl.nativeElement.querySelector('.ant-skeleton-avatar-lg')).toBeFalsy();
-    testComp.nzSize = 'large';
+    testComp.nzSize.set('large');
     fixture.detectChanges();
     expect(dl.nativeElement.querySelector('.ant-skeleton-avatar-lg')).toBeTruthy();
-    testComp.nzSize = 40;
+    testComp.nzSize.set(40);
     fixture.detectChanges();
     expect(dl.nativeElement.querySelector('.ant-skeleton-avatar').style.width).toBe('40px');
     expect(dl.nativeElement.querySelector('.ant-skeleton-avatar').style.height).toBe('40px');
     expect(dl.nativeElement.querySelector('.ant-skeleton-avatar').style.lineHeight).toBe('40px');
     // number size only work in 'avatar' type
-    testComp.useSuite = 2;
+    testComp.useSuite.set(2);
     fixture.detectChanges();
     expect(dl.nativeElement.querySelector('.ant-skeleton-button').style.width).toBeFalsy();
   });
@@ -211,15 +209,15 @@ describe('skeleton element', () => {
   it('should nzShape work', () => {
     fixture.detectChanges();
     expect(dl.nativeElement.querySelector('.ant-skeleton-avatar-circle')).toBeNull();
-    testComp.nzShape = 'circle';
+    testComp.nzShape.set('circle');
     fixture.detectChanges();
     expect(dl.nativeElement.querySelector('.ant-skeleton-avatar-circle')).toBeTruthy();
-    testComp.nzShape = 'square';
+    testComp.nzShape.set('square');
     fixture.detectChanges();
     expect(dl.nativeElement.querySelector('.ant-skeleton-avatar-square')).toBeTruthy();
 
-    testComp.useSuite = 2;
-    testComp.nzShape = 'round';
+    testComp.useSuite.set(2);
+    testComp.nzShape.set('round');
     fixture.detectChanges();
     expect(dl.nativeElement.querySelector('.ant-skeleton-button-round')).toBeTruthy();
   });
@@ -227,7 +225,7 @@ describe('skeleton element', () => {
   it('should image svg work', () => {
     fixture.detectChanges();
     expect(dl.nativeElement.querySelector('svg')).toBeNull();
-    testComp.useSuite = 4;
+    testComp.useSuite.set(4);
     fixture.detectChanges();
     expect(dl.nativeElement.querySelector('svg')).toBeTruthy();
   });
@@ -237,46 +235,44 @@ describe('skeleton element', () => {
   imports: [NzSkeletonModule],
   template: `
     <nz-skeleton
-      [nzActive]="nzActive"
-      [nzAvatar]="nzAvatar"
-      [nzTitle]="nzTitle"
-      [nzParagraph]="nzParagraph"
-      [nzRound]="nzRound"
+      [nzActive]="nzActive()"
+      [nzAvatar]="nzAvatar()"
+      [nzTitle]="nzTitle()"
+      [nzParagraph]="nzParagraph()"
+      [nzRound]="nzRound()"
     />
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestSkeletonComponent {
-  nzActive: boolean = false;
-  nzRound: boolean = false;
-  nzAvatar: NzSkeletonAvatar | boolean = false;
-  nzTitle: NzSkeletonTitle | boolean = false;
-  nzParagraph: NzSkeletonParagraph | boolean = false;
+  readonly nzActive = signal(false);
+  readonly nzRound = signal(false);
+  readonly nzAvatar = signal<NzSkeletonAvatar | boolean>(false);
+  readonly nzTitle = signal<NzSkeletonTitle | boolean>(false);
+  readonly nzParagraph = signal<NzSkeletonParagraph | boolean>(false);
 }
 
 @Component({
   imports: [NzSkeletonModule],
   template: `
-    @switch (useSuite) {
+    @switch (useSuite()) {
       @case (1) {
-        <nz-skeleton-element nzType="avatar" [nzActive]="nzActive" [nzSize]="nzSize" [nzShape]="$any(nzShape)" />
+        <nz-skeleton-element nzType="avatar" [nzActive]="nzActive()" [nzSize]="nzSize()" [nzShape]="$any(nzShape())" />
       }
       @case (2) {
-        <nz-skeleton-element nzType="button" [nzActive]="nzActive" [nzSize]="$any(nzSize)" [nzShape]="nzShape" />
+        <nz-skeleton-element nzType="button" [nzActive]="nzActive()" [nzSize]="$any(nzSize())" [nzShape]="nzShape()" />
       }
       @case (3) {
-        <nz-skeleton-element nzType="input" [nzActive]="nzActive" [nzSize]="$any(nzSize)" />
+        <nz-skeleton-element nzType="input" [nzActive]="nzActive()" [nzSize]="$any(nzSize())" />
       }
       @case (4) {
-        <nz-skeleton-element nzType="image" [nzActive]="nzActive" />
+        <nz-skeleton-element nzType="image" [nzActive]="nzActive()" />
       }
     }
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestSkeletonElementComponent {
-  useSuite = 1;
-  nzActive: boolean = false;
-  nzSize: NzSkeletonAvatarSize | NzSkeletonButtonSize | NzSkeletonInputSize = 'default';
-  nzShape: NzSkeletonAvatarShape | NzSkeletonButtonShape = 'default';
+  readonly useSuite = signal(1);
+  readonly nzActive = signal(false);
+  readonly nzSize = signal<NzSkeletonAvatarSize | NzSkeletonButtonSize | NzSkeletonInputSize | number>('default');
+  readonly nzShape = signal<NzSkeletonAvatarShape | NzSkeletonButtonShape>('default');
 }

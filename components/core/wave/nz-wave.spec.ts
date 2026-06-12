@@ -3,11 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, provideZoneChangeDetection, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Component, ElementRef, signal, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
-import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import { dispatchMouseEvent, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 
 import { NzWaveDirective } from './nz-wave.directive';
 import { NzWaveModule } from './nz-wave.module';
@@ -21,10 +21,7 @@ describe('nz-wave basic', () => {
   let waveTarget: HTMLElement;
 
   beforeEach(() => {
-    // todo: use zoneless
-    TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection()]
-    });
+    TestBed.configureTestingModule({});
   });
 
   beforeEach(() => {
@@ -39,14 +36,14 @@ describe('nz-wave basic', () => {
     expect(document.body.querySelector('style') !== null).toBe(true);
   });
 
-  it('should remove wave when transition end', fakeAsync(() => {
+  it('should remove wave when transition end', async () => {
     dispatchMouseEvent(waveTarget, 'click');
     expect(waveTarget.hasAttribute(WAVE_ATTRIBUTE_NAME)).toBe(true);
     expect(document.body.querySelector('style') !== null).toBe(true);
-    tick(500);
+    await updateNonSignalsInput(fixture, 500);
     expect(waveTarget.hasAttribute(WAVE_ATTRIBUTE_NAME)).toBe(false);
     expect(document.body.querySelector('style') !== null).toBe(false);
-  }));
+  });
 
   it('should throttling when clicks', () => {
     dispatchMouseEvent(waveTarget, 'click');
@@ -59,7 +56,7 @@ describe('nz-wave basic', () => {
   });
 
   it('should not create wave on click when disabled', () => {
-    fixture.componentInstance.disabled = true;
+    fixture.componentInstance.disabled.set(true);
     fixture.detectChanges();
     dispatchMouseEvent(waveTarget, 'click');
     fixture.detectChanges();
@@ -68,7 +65,7 @@ describe('nz-wave basic', () => {
   });
 
   it('should not create wave on click when has disabled class', () => {
-    fixture.componentInstance.disabledClass = true;
+    fixture.componentInstance.disabledClass.set(true);
     fixture.detectChanges();
     dispatchMouseEvent(waveTarget, 'click');
     expect(waveTarget.hasAttribute(WAVE_ATTRIBUTE_NAME)).toBe(false);
@@ -76,23 +73,23 @@ describe('nz-wave basic', () => {
   });
 
   it('should not create wave style on click when invalid color', () => {
-    fixture.componentInstance.borderColor = '#ffffff';
+    fixture.componentInstance.borderColor.set('#ffffff');
     fixture.detectChanges();
     dispatchMouseEvent(waveTarget, 'click');
     expect(document.body.querySelector('style') !== null).toBe(false);
   });
 
   it('should priority use border-color color', () => {
-    fixture.componentInstance.borderColor = 'rgb(255, 255, 0)';
-    fixture.componentInstance.backgroundColor = 'rgb(255, 0, 0)';
+    fixture.componentInstance.borderColor.set('rgb(255, 255, 0)');
+    fixture.componentInstance.backgroundColor.set('rgb(255, 0, 0)');
     fixture.detectChanges();
     dispatchMouseEvent(waveTarget, 'click');
     const style: string = document.body.querySelector('style')!.innerText;
-    expect(style.includes(fixture.componentInstance.borderColor)).toBe(true);
+    expect(style.includes(fixture.componentInstance.borderColor())).toBe(true);
   });
 
   it('should not create wave style on click when grey color', () => {
-    fixture.componentInstance.borderColor = '#eee';
+    fixture.componentInstance.borderColor.set('#eee');
     fixture.detectChanges();
     dispatchMouseEvent(waveTarget, 'click');
     expect(document.body.querySelector('style') !== null).toBe(false);
@@ -103,7 +100,7 @@ describe('nz-wave basic', () => {
     expect(waveTarget.hasAttribute(WAVE_ATTRIBUTE_NAME)).toBe(true);
     expect(document.body.querySelector('style') !== null).toBe(true);
 
-    fixture.componentInstance.isDestroyed = true;
+    fixture.componentInstance.isDestroyed.set(true);
     fixture.detectChanges();
 
     expect(document.body.querySelector('style') !== null).toBe(false);
@@ -115,10 +112,7 @@ describe('nz-wave extra', () => {
   let waveTarget: HTMLElement;
 
   beforeEach(() => {
-    // todo: use zoneless
-    TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection()]
-    });
+    TestBed.configureTestingModule({});
   });
 
   beforeEach(() => {
@@ -134,17 +128,17 @@ describe('nz-wave extra', () => {
     expect(waveTarget.querySelector(EXTRA_NODE_CLASS_NAME) !== null).toBe(true);
   });
 
-  it('should remove wave when transition end', fakeAsync(() => {
+  it('should remove wave when transition end', async () => {
     dispatchMouseEvent(waveTarget, 'click');
     expect(document.body.querySelector('style') !== null).toBe(true);
     expect(waveTarget.querySelector(EXTRA_NODE_CLASS_NAME) !== null).toBe(true);
-    tick(500);
+    await updateNonSignalsInput(fixture, 500);
     expect(document.body.querySelector('style') !== null).toBe(false);
     expect(waveTarget.querySelector(EXTRA_NODE_CLASS_NAME) !== null).toBe(false);
-  }));
+  });
 
   it('should not create wave on click when has disabled class', () => {
-    fixture.componentInstance.disabledClass = true;
+    fixture.componentInstance.disabledClass.set(true);
     fixture.detectChanges();
     dispatchMouseEvent(waveTarget, 'click');
     expect(waveTarget.hasAttribute(WAVE_ATTRIBUTE_NAME_EXTRA_NODE)).toBe(false);
@@ -153,23 +147,23 @@ describe('nz-wave extra', () => {
   });
 
   it('should not create wave style on click when invalid color', () => {
-    fixture.componentInstance.borderColor = '#ffffff';
+    fixture.componentInstance.borderColor.set('#ffffff');
     fixture.detectChanges();
     dispatchMouseEvent(waveTarget, 'click');
     expect(document.body.querySelector('style') !== null).toBe(false);
   });
 
   it('should priority use border-color color', () => {
-    fixture.componentInstance.borderColor = 'rgb(255, 255, 0)';
-    fixture.componentInstance.backgroundColor = 'rgb(255, 0, 0)';
+    fixture.componentInstance.borderColor.set('rgb(255, 255, 0)');
+    fixture.componentInstance.backgroundColor.set('rgb(255, 0, 0)');
     fixture.detectChanges();
     dispatchMouseEvent(waveTarget, 'click');
     const style: string = document.body.querySelector('style')!.innerText;
-    expect(style.includes(fixture.componentInstance.borderColor)).toBe(true);
+    expect(style.includes(fixture.componentInstance.borderColor())).toBe(true);
   });
 
   it('should not create wave style on click when grey color', () => {
-    fixture.componentInstance.borderColor = '#eee';
+    fixture.componentInstance.borderColor.set('#eee');
     fixture.detectChanges();
     dispatchMouseEvent(waveTarget, 'click');
     expect(document.body.querySelector('style') !== null).toBe(false);
@@ -181,7 +175,7 @@ describe('nz-wave extra', () => {
     expect(document.body.querySelector('style') !== null).toBe(true);
     expect(waveTarget.querySelector(EXTRA_NODE_CLASS_NAME) !== null).toBe(true);
 
-    fixture.componentInstance.isDestroyed = true;
+    fixture.componentInstance.isDestroyed.set(true);
     fixture.detectChanges();
 
     expect(document.body.querySelector('style') !== null).toBe(false);
@@ -250,27 +244,26 @@ describe('nz-wave disable/enable', () => {
 @Component({
   imports: [NzWaveModule],
   template: `
-    @if (!isDestroyed) {
+    @if (!isDestroyed()) {
       <button
         #trigger
         nz-wave
-        [attr.disabled]="disabled || null"
-        [class.disabled]="disabledClass"
-        [style.border-color]="borderColor"
-        [style.background-color]="backgroundColor"
+        [attr.disabled]="disabled() || null"
+        [class.disabled]="disabledClass()"
+        [style.border-color]="borderColor()"
+        [style.background-color]="backgroundColor()"
       >
         Button
       </button>
     }
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class WaveContainerWithButtonComponent {
-  disabled = false;
-  disabledClass = false;
-  isDestroyed = false;
-  borderColor = 'rgb(0,255,0)';
-  backgroundColor = 'rgb(255,255,255)';
+  readonly disabled = signal(false);
+  readonly disabledClass = signal(false);
+  readonly isDestroyed = signal(false);
+  readonly borderColor = signal('rgb(0,255,0)');
+  readonly backgroundColor = signal('rgb(255,255,255)');
   @ViewChild('trigger', { static: false }) trigger!: ElementRef<HTMLElement>;
   @ViewChild(NzWaveDirective, { static: false }) wave!: NzWaveDirective;
 }
@@ -278,26 +271,25 @@ class WaveContainerWithButtonComponent {
 @Component({
   imports: [NzWaveModule],
   template: `
-    @if (!isDestroyed) {
+    @if (!isDestroyed()) {
       <div
         #trigger
         nz-wave
         [nzWaveExtraNode]="true"
-        [class.disabled]="disabledClass"
-        [style.border-color]="borderColor"
-        [style.background-color]="backgroundColor"
+        [class.disabled]="disabledClass()"
+        [style.border-color]="borderColor()"
+        [style.background-color]="backgroundColor()"
       >
         <button>Button</button>
       </div>
     }
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class WaveContainerWithExtraNodeComponent {
-  disabledClass = false;
-  isDestroyed = false;
-  borderColor = 'rgb(0,255,0)';
-  backgroundColor = 'rgb(255,255,255)';
+  readonly disabledClass = signal(false);
+  readonly isDestroyed = signal(false);
+  readonly borderColor = signal('rgb(0,255,0)');
+  readonly backgroundColor = signal('rgb(255,255,255)');
   @ViewChild('trigger', { static: false }) trigger!: ElementRef<HTMLElement>;
   @ViewChild(NzWaveDirective, { static: false }) wave!: NzWaveDirective;
 }

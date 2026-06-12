@@ -3,14 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DebugElement,
-  provideZoneChangeDetection,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
+import { Component, DebugElement, signal, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -26,9 +19,8 @@ import { NzFloatButtonBadge, NzFloatButtonType } from './typings';
 
 describe('float-button', () => {
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations(), provideZoneChangeDetection()]
+      providers: [provideNzIconsTesting(), provideNoopAnimations()]
     });
   });
 
@@ -47,21 +39,21 @@ describe('float-button', () => {
     });
 
     it('nzType', () => {
-      testComponent.nzType = 'primary';
+      testComponent.nzType.set('primary');
       fixture.detectChanges();
       const view = resultEl.nativeElement.querySelector('.ant-float-btn > .ant-btn-primary');
       expect(view.tagName).toBe('BUTTON');
     });
 
     it('nzShape', () => {
-      testComponent.nzShape = 'square';
+      testComponent.nzShape.set('square');
       fixture.detectChanges();
       expect(resultEl.nativeElement.classList).toContain('ant-float-btn-square');
     });
 
     it('nzHref && nzTarget', () => {
-      testComponent.nzTarget = '_blank';
-      testComponent.nzHref = 'https://ng.ant.design/';
+      testComponent.nzTarget.set('_blank');
+      testComponent.nzHref.set('https://ng.ant.design/');
       fixture.detectChanges();
       const view = resultEl.nativeElement.querySelector('.ant-float-btn > .ant-btn');
       expect(view.getAttribute('href') === 'https://ng.ant.design/').toBe(true);
@@ -69,14 +61,14 @@ describe('float-button', () => {
     });
 
     it('nzIcon', () => {
-      testComponent.nzIcon = testComponent.icon;
+      testComponent.nzIcon.set(testComponent.icon);
       fixture.detectChanges();
       const view = resultEl.nativeElement.getElementsByClassName('anticon-question-circle')[0];
       expect(view.getAttribute('nztype') === 'question-circle').toBe(true);
     });
 
     it('should nzIcon support passing nzType string only', () => {
-      testComponent.nzIcon = 'file-search';
+      testComponent.nzIcon.set('file-search');
       fixture.detectChanges();
       const view = resultEl.nativeElement.querySelector('nz-icon');
       expect(view.classList).toContain('anticon-file-search');
@@ -85,13 +77,13 @@ describe('float-button', () => {
     it('nzOnClick', () => {
       resultEl.nativeElement.getElementsByClassName('ant-btn')[0].dispatchEvent(new MouseEvent('click'));
       fixture.detectChanges();
-      expect(testComponent.isClick).toBe(true);
+      expect(testComponent.isClick()).toBe(true);
     });
 
     it('nzBadge', () => {
       expect(resultEl.nativeElement.querySelector('.ant-badge')).toBeNull();
       expect(floatButtonComponent.nzBadge()).toBeNull();
-      testComponent.nzBadge = { nzCount: 5 };
+      testComponent.nzBadge.set({ nzCount: 5 });
       fixture.detectChanges();
       expect(floatButtonComponent.nzBadge()).toEqual({
         nzCount: 5
@@ -108,37 +100,36 @@ describe('float-button', () => {
   imports: [NzFloatButtonModule, NzIconModule],
   template: `
     <nz-float-button
-      [nzIcon]="nzIcon"
-      [nzDescription]="nzDescription"
-      [nzHref]="nzHref"
-      [nzTarget]="nzTarget"
-      [nzType]="nzType"
-      [nzShape]="nzShape"
-      [nzBadge]="nzBadge"
+      [nzIcon]="nzIcon()"
+      [nzDescription]="nzDescription()"
+      [nzHref]="nzHref()"
+      [nzTarget]="nzTarget()"
+      [nzType]="nzType()"
+      [nzShape]="nzShape()"
+      [nzBadge]="nzBadge()"
       (nzOnClick)="onClick($event)"
     />
     <ng-template #icon>
       <nz-icon nzType="question-circle" nzTheme="outline" />
     </ng-template>
     <ng-template #description>HELP</ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestFloatButtonBasicComponent {
-  nzHref: string | null = null;
-  nzTarget: string | null = null;
-  nzType: NzFloatButtonType = 'default';
-  nzShape: NzShapeSCType = 'circle';
-  nzIcon: string | TemplateRef<void> | null = null;
-  nzDescription: TemplateRef<void> | null = null;
-  nzBadge: NzFloatButtonBadge | null = null;
+  readonly nzHref = signal<string | null>(null);
+  readonly nzTarget = signal<string | null>(null);
+  readonly nzType = signal<NzFloatButtonType>('default');
+  readonly nzShape = signal<NzShapeSCType>('circle');
+  readonly nzIcon = signal<string | TemplateRef<void> | null>(null);
+  readonly nzDescription = signal<TemplateRef<void> | null>(null);
+  readonly nzBadge = signal<NzFloatButtonBadge | null>(null);
 
   @ViewChild('icon', { static: false }) icon!: TemplateRef<void>;
   @ViewChild('description', { static: false }) description!: TemplateRef<void>;
 
-  isClick: boolean = false;
+  readonly isClick = signal(false);
 
   onClick(value: boolean): void {
-    this.isClick = value;
+    this.isClick.set(value);
   }
 }

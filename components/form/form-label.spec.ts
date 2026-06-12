@@ -4,19 +4,11 @@
  */
 
 import { NgTemplateOutlet } from '@angular/common';
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  DebugElement,
-  provideZoneChangeDetection,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
+import { Component, computed, DebugElement, effect, signal, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzLabelAlignType } from 'ng-zorro-antd/form/form.directive';
 import { NzFormModule } from 'ng-zorro-antd/form/form.module';
 import { en_US, NzI18nService } from 'ng-zorro-antd/i18n';
@@ -26,9 +18,8 @@ import { NzRequiredMark } from './types';
 
 describe('form-label', () => {
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection(), provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
   });
 
@@ -55,7 +46,7 @@ describe('form-label', () => {
     it('should required work', () => {
       expect(label.nativeElement.querySelector('label').classList).not.toContain('ant-form-item-required');
 
-      testComponent.required = true;
+      testComponent.required.set(true);
       fixture.detectChanges();
 
       expect(label.nativeElement.querySelector('label').classList).toContain('ant-form-item-required');
@@ -64,7 +55,7 @@ describe('form-label', () => {
     it('should no colon work', () => {
       expect(label.nativeElement.querySelector('label').classList).not.toContain('ant-form-item-no-colon');
 
-      testComponent.noColon = true;
+      testComponent.noColon.set(true);
       fixture.detectChanges();
 
       expect(label.nativeElement.querySelector('label').classList).toContain('ant-form-item-no-colon');
@@ -73,13 +64,13 @@ describe('form-label', () => {
     it('should tooltip work', () => {
       expect(label.nativeElement.querySelector('.ant-form-item-tooltip')).toBeNull();
 
-      testComponent.tooltipTitle = 'tooltip';
+      testComponent.tooltipTitle.set('tooltip');
       fixture.detectChanges();
 
       expect(label.nativeElement.querySelector('.ant-form-item-tooltip')).toBeDefined();
       expect(label.nativeElement.querySelector('.anticon-question-circle')).toBeDefined();
 
-      testComponent.tooltipIcon = 'info-circle';
+      testComponent.tooltipIcon.set('info-circle');
       fixture.detectChanges();
 
       expect(label.nativeElement.querySelector('.ant-form-item-tooltip')).toBeDefined();
@@ -89,7 +80,7 @@ describe('form-label', () => {
     it('should label align work', () => {
       expect(label.nativeElement.classList).not.toContain('ant-form-item-label-left');
 
-      testComponent.align = 'left';
+      testComponent.align.set('left');
       fixture.detectChanges();
 
       expect(label.nativeElement.classList).toContain('ant-form-item-label-left');
@@ -98,7 +89,7 @@ describe('form-label', () => {
     it('should label wrap work', () => {
       expect(label.nativeElement.classList).not.toContain('ant-form-item-label-wrap');
 
-      testComponent.labelWrap = true;
+      testComponent.labelWrap.set(true);
       fixture.detectChanges();
 
       expect(label.nativeElement.classList).toContain('ant-form-item-label-wrap');
@@ -132,7 +123,7 @@ describe('form-label', () => {
     });
 
     it('should show optional styling when form nzRequiredMark is false', () => {
-      testComponent.requiredMark = false;
+      testComponent.requiredMark.set(false);
       fixture.detectChanges();
 
       const requiredLabel = labels.find(l => l.nativeElement.classList.contains('required-label'));
@@ -149,7 +140,7 @@ describe('form-label', () => {
     });
 
     it('should show optional styling when form nzRequiredMark is "optional"', () => {
-      testComponent.requiredMark = 'optional';
+      testComponent.requiredMark.set('optional');
       fixture.detectChanges();
 
       const requiredLabel = labels.find(l => l.nativeElement.classList.contains('required-label'));
@@ -163,7 +154,7 @@ describe('form-label', () => {
     });
 
     it('should show optional text when nzRequiredMark is "optional" and field is not required', () => {
-      testComponent.requiredMark = 'optional';
+      testComponent.requiredMark.set('optional');
       fixture.detectChanges();
 
       const requiredLabel = labels.find(l => l.nativeElement.classList.contains('required-label'));
@@ -180,7 +171,7 @@ describe('form-label', () => {
     });
 
     it('should NOT show optional text when nzRequiredMark is false', () => {
-      testComponent.requiredMark = false;
+      testComponent.requiredMark.set(false);
       fixture.detectChanges();
 
       const requiredLabel = labels.find(l => l.nativeElement.classList.contains('required-label'));
@@ -191,7 +182,7 @@ describe('form-label', () => {
     });
 
     it('should NOT show optional text when nzRequiredMark is true', () => {
-      testComponent.requiredMark = true;
+      testComponent.requiredMark.set(true);
       fixture.detectChanges();
 
       const requiredLabel = labels.find(l => l.nativeElement.classList.contains('required-label'));
@@ -202,7 +193,7 @@ describe('form-label', () => {
     });
 
     it('should use custom template when provided', () => {
-      testComponent.useCustomTemplate = true;
+      testComponent.useCustomTemplate.set(true);
       fixture.detectChanges();
 
       const requiredLabel = labels.find(l => l.nativeElement.classList.contains('required-label'));
@@ -218,7 +209,7 @@ describe('form-label', () => {
     });
 
     it('should handle template context correctly with required and optional labels', () => {
-      testComponent.useCustomTemplate = true;
+      testComponent.useCustomTemplate.set(true);
       fixture.detectChanges();
 
       const requiredLabelElement = fixture.debugElement.query(By.css('.required-label'));
@@ -239,31 +230,30 @@ describe('form-label', () => {
   imports: [NzFormModule],
   template: `
     <nz-form-label
-      [nzFor]="forValue"
-      [nzNoColon]="noColon"
-      [nzRequired]="required"
-      [nzTooltipTitle]="tooltipTitle"
-      [nzTooltipIcon]="tooltipIcon"
-      [nzLabelAlign]="align"
-      [nzLabelWrap]="labelWrap"
+      [nzFor]="forValue()"
+      [nzNoColon]="noColon()"
+      [nzRequired]="required()"
+      [nzTooltipTitle]="tooltipTitle()"
+      [nzTooltipIcon]="tooltipIcon()"
+      [nzLabelAlign]="align()"
+      [nzLabelWrap]="labelWrap()"
     />
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestFormLabelComponent {
-  forValue = 'test';
-  required = false;
-  noColon = false;
-  tooltipTitle?: string;
-  tooltipIcon!: string | NzFormTooltipIcon;
-  align: NzLabelAlignType = 'right';
-  labelWrap = false;
+  readonly forValue = signal('test');
+  readonly required = signal(false);
+  readonly noColon = signal(false);
+  readonly tooltipTitle = signal<string | undefined>(undefined);
+  readonly tooltipIcon = signal<string | NzFormTooltipIcon>('question-circle');
+  readonly align = signal<NzLabelAlignType>('right');
+  readonly labelWrap = signal(false);
 }
 
 @Component({
   imports: [NzFormModule, NgTemplateOutlet],
   template: `
-    <form nz-form [nzRequiredMark]="useCustomTemplate ? customRequiredMarkTemplate : requiredMark">
+    <form nz-form [nzRequiredMark]="effectiveRequiredMark()">
       <nz-form-item>
         <nz-form-label class="required-label" nzRequired>
           <span class="label-content">Required Field</span>
@@ -284,19 +274,27 @@ export class NzTestFormLabelComponent {
       }
       <ng-container *ngTemplateOutlet="label" />
     </ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
-export class NzTestFormLabelRequiredMarkComponent implements AfterViewInit {
-  requiredMark: NzRequiredMark = true;
-  useCustomTemplate = false;
+export class NzTestFormLabelRequiredMarkComponent {
+  readonly requiredMark = signal<NzRequiredMark>(true);
+  readonly useCustomTemplate = signal(false);
 
   @ViewChild('customRequiredMarkTemplate', { static: true })
   customRequiredMarkTemplate!: TemplateRef<{ $implicit: TemplateRef<void>; required: boolean }>;
 
-  ngAfterViewInit(): void {
-    if (this.useCustomTemplate) {
-      this.requiredMark = this.customRequiredMarkTemplate;
+  readonly effectiveRequiredMark = computed(() => {
+    if (this.useCustomTemplate()) {
+      return this.customRequiredMarkTemplate;
     }
+    return this.requiredMark();
+  });
+
+  constructor() {
+    effect(() => {
+      if (this.useCustomTemplate()) {
+        this.requiredMark.set(this.customRequiredMarkTemplate);
+      }
+    });
   }
 }

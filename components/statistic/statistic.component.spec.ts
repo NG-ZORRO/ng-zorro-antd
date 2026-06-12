@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import { Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -15,9 +15,8 @@ import { NzStatisticModule } from './statistic.module';
 
 describe('statistic', () => {
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
+      providers: [provideNzIconsTesting()]
     });
   });
 
@@ -37,8 +36,8 @@ describe('statistic', () => {
       expect(statisticEl.nativeElement.querySelector('.ant-statistic-content-prefix')).toBeFalsy();
       expect(statisticEl.nativeElement.querySelector('.ant-statistic-content-suffix')).toBeFalsy();
 
-      testComponent.prefix = 'prefix';
-      testComponent.suffix = 'suffix';
+      testComponent.prefix.set('prefix');
+      testComponent.suffix.set('suffix');
       fixture.detectChanges();
       expect(statisticEl.nativeElement.querySelector('.ant-statistic-content-prefix').innerText).toBe('prefix');
       expect(statisticEl.nativeElement.querySelector('.ant-statistic-content-suffix').innerText).toBe('suffix');
@@ -46,7 +45,7 @@ describe('statistic', () => {
 
     it('should render skeleton', () => {
       expect(statisticEl.nativeElement.querySelector('.ant-statistic-skeleton')).toBeFalsy();
-      testComponent.loading = true;
+      testComponent.loading.set(true);
       fixture.detectChanges();
       expect(statisticEl.nativeElement.querySelector('.ant-statistic-skeleton')).toBeTruthy();
     });
@@ -58,13 +57,18 @@ describe('statistic', () => {
 @Component({
   imports: [NzStatisticModule],
   template: `
-    <nz-statistic [nzValue]="123.45" [nzTitle]="title" [nzSuffix]="suffix" [nzPrefix]="prefix" [nzLoading]="loading" />
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+    <nz-statistic
+      [nzValue]="123.45"
+      [nzTitle]="title()"
+      [nzSuffix]="suffix()"
+      [nzPrefix]="prefix()"
+      [nzLoading]="loading()"
+    />
+  `
 })
 export class NzTestStatisticComponent {
-  title = 'title';
-  prefix = '';
-  suffix = '';
-  loading = false;
+  readonly title = signal('title');
+  readonly prefix = signal('');
+  readonly suffix = signal('');
+  readonly loading = signal(false);
 }

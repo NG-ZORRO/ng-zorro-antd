@@ -3,9 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, provideZoneChangeDetection } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+
+import { updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 
 import { NzCheckboxOption } from './checkbox-group.component';
 import { NzCheckboxModule } from './checkbox.module';
@@ -16,10 +18,7 @@ describe('checkbox group', () => {
   let hostElement: HTMLElement;
 
   beforeEach(() => {
-    // todo: use zoneless
-    TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection()]
-    });
+    TestBed.configureTestingModule({});
   });
 
   beforeEach(() => {
@@ -32,24 +31,24 @@ describe('checkbox group', () => {
   it('should be render option elements', () => {
     let elements = getOptionElements();
     for (let index = 0; index < elements.length; index++) {
-      expect(elements[index].textContent?.trim()).toBe((component.options[index] as NzCheckboxOption).label);
+      expect(elements[index].textContent?.trim()).toBe((component.options()[index] as NzCheckboxOption).label);
     }
-    component.options = [1, 2, 3];
+    component.options.set([1, 2, 3]);
     fixture.detectChanges();
     elements = getOptionElements();
     for (let index = 0; index < elements.length; index++) {
-      expect(elements[index].textContent?.trim()).toBe(component.options[index].toString());
+      expect(elements[index].textContent?.trim()).toBe(component.options()[index].toString());
     }
-    component.options = ['a', 'b', 'c'];
+    component.options.set(['a', 'b', 'c']);
     fixture.detectChanges();
     elements = getOptionElements();
     for (let index = 0; index < elements.length; index++) {
-      expect(elements[index].textContent?.trim()).toBe(component.options[index]);
+      expect(elements[index].textContent?.trim()).toBe(component.options()[index].toString());
     }
   });
 
   it('should be name work', () => {
-    component.name = 'zorro';
+    component.name.set('zorro');
     fixture.detectChanges();
     const elements = getOptionElements();
     for (const element of elements) {
@@ -58,7 +57,7 @@ describe('checkbox group', () => {
   });
 
   it('should be apply disabled class', () => {
-    component.disabled = true;
+    component.disabled.set(true);
     fixture.detectChanges();
     for (const element of getOptionElements()) {
       expect(element.classList).toContain('ant-checkbox-wrapper-disabled');
@@ -66,35 +65,39 @@ describe('checkbox group', () => {
   });
 
   it('should be set disabled by ng control', async () => {
-    component.controlDisabled = true;
+    component.controlDisabled.set(true);
     fixture.detectChanges();
-    await fixture.whenStable();
+    await updateNonSignalsInput(fixture);
+    fixture.detectChanges();
     for (const element of getOptionElements()) {
       expect(element.classList).toContain('ant-checkbox-wrapper-disabled');
     }
   });
 
   it('should be change value', async () => {
-    component.value = ['A'];
+    component.value.set(['A']);
     fixture.detectChanges();
-    await fixture.whenStable();
+    await updateNonSignalsInput(fixture);
+    fixture.detectChanges();
     let checkedOptionElements = getOptionElements().filter(ele =>
       ele.classList.contains('ant-checkbox-wrapper-checked')
     );
     expect(checkedOptionElements.length).toBe(1);
     expect(checkedOptionElements[0].textContent?.trim()).toBe('A');
 
-    component.value = ['A', 'B'];
+    component.value.set(['A', 'B']);
     fixture.detectChanges();
-    await fixture.whenStable();
+    await updateNonSignalsInput(fixture);
+    fixture.detectChanges();
     checkedOptionElements = getOptionElements().filter(ele => ele.classList.contains('ant-checkbox-wrapper-checked'));
     expect(checkedOptionElements.length).toBe(2);
     expect(checkedOptionElements[0].textContent?.trim()).toBe('A');
     expect(checkedOptionElements[1].textContent?.trim()).toBe('B');
 
-    component.value = [];
+    component.value.set([]);
     fixture.detectChanges();
-    await fixture.whenStable();
+    await updateNonSignalsInput(fixture);
+    fixture.detectChanges();
     checkedOptionElements = getOptionElements().filter(ele => ele.classList.contains('ant-checkbox-wrapper-checked'));
     expect(checkedOptionElements.length).toBe(0);
   });
@@ -110,10 +113,7 @@ describe('checkbox group with custom layout', () => {
   let hostElement: HTMLElement;
 
   beforeEach(() => {
-    // todo: use zoneless
-    TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection()]
-    });
+    TestBed.configureTestingModule({});
   });
 
   beforeEach(() => {
@@ -124,7 +124,7 @@ describe('checkbox group with custom layout', () => {
   });
 
   it('should be apply disabled class', () => {
-    component.disabled = true;
+    component.disabled.set(true);
     fixture.detectChanges();
     for (const element of getOptionElements()) {
       expect(element.classList).toContain('ant-checkbox-wrapper-disabled');
@@ -132,26 +132,29 @@ describe('checkbox group with custom layout', () => {
   });
 
   it('should be change value', async () => {
-    component.value = ['A'];
+    component.value.set(['A']);
     fixture.detectChanges();
-    await fixture.whenStable();
+    await updateNonSignalsInput(fixture);
+    fixture.detectChanges();
     let checkedOptionElements = getOptionElements().filter(ele =>
       ele.classList.contains('ant-checkbox-wrapper-checked')
     );
     expect(checkedOptionElements.length).toBe(1);
     expect(checkedOptionElements[0].textContent?.trim()).toBe('A');
 
-    component.value = ['A', 'B'];
+    component.value.set(['A', 'B']);
     fixture.detectChanges();
-    await fixture.whenStable();
+    await updateNonSignalsInput(fixture);
+    fixture.detectChanges();
     checkedOptionElements = getOptionElements().filter(ele => ele.classList.contains('ant-checkbox-wrapper-checked'));
     expect(checkedOptionElements.length).toBe(2);
     expect(checkedOptionElements[0].textContent?.trim()).toBe('A');
     expect(checkedOptionElements[1].textContent?.trim()).toBe('B');
 
-    component.value = [];
+    component.value.set([]);
     fixture.detectChanges();
-    await fixture.whenStable();
+    await updateNonSignalsInput(fixture);
+    fixture.detectChanges();
     checkedOptionElements = getOptionElements().filter(ele => ele.classList.contains('ant-checkbox-wrapper-checked'));
     expect(checkedOptionElements.length).toBe(0);
   });
@@ -160,15 +163,15 @@ describe('checkbox group with custom layout', () => {
     const checkboxElements = getOptionElements();
     checkboxElements[0].click();
     fixture.detectChanges();
-    expect(component.value).toEqual(['A']);
+    expect(component.value()).toEqual(['A']);
 
     checkboxElements[1].click();
     fixture.detectChanges();
-    expect(component.value).toEqual(['A', 'B']);
+    expect(component.value()).toEqual(['A', 'B']);
 
     checkboxElements[0].click();
     fixture.detectChanges();
-    expect(component.value).toEqual(['B']);
+    expect(component.value()).toEqual(['B']);
   });
 
   function getOptionElements(): HTMLElement[] {
@@ -180,39 +183,38 @@ describe('checkbox group with custom layout', () => {
   imports: [NzCheckboxModule, FormsModule],
   template: `
     <nz-checkbox-group
-      [nzOptions]="options"
-      [nzName]="name"
-      [nzDisabled]="disabled"
-      [(ngModel)]="value"
-      [disabled]="controlDisabled"
+      [nzOptions]="options()"
+      [nzName]="name()"
+      [nzDisabled]="disabled()"
+      [ngModel]="value()"
+      (ngModelChange)="value.set($event)"
+      [disabled]="controlDisabled()"
     />
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class CheckboxGroupTestComponent {
-  options: string[] | number[] | NzCheckboxOption[] = [
+  readonly options = signal<string[] | number[] | NzCheckboxOption[]>([
     { label: 'A', value: 'A' },
     { label: 'B', value: 'B' },
     { label: 'C', value: 'C' }
-  ];
-  value: string[] = [];
-  disabled = false;
-  controlDisabled = false;
-  name: string | null = null;
+  ]);
+  readonly value = signal<string[]>([]);
+  readonly disabled = signal(false);
+  readonly controlDisabled = signal(false);
+  readonly name = signal<string | null>(null);
 }
 
 @Component({
   imports: [NzCheckboxModule, FormsModule],
   template: `
-    <nz-checkbox-group [nzDisabled]="disabled" [(ngModel)]="value">
+    <nz-checkbox-group [nzDisabled]="disabled()" [ngModel]="value()" (ngModelChange)="value.set($event)">
       <label nz-checkbox nzValue="A">A</label>
       <label nz-checkbox nzValue="B">B</label>
       <label nz-checkbox nzValue="C">C</label>
     </nz-checkbox-group>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class CheckboxGroupWithCustomLayoutTestComponent {
-  value: string[] = [];
-  disabled = false;
+  readonly value = signal<string[]>([]);
+  readonly disabled = signal(false);
 }

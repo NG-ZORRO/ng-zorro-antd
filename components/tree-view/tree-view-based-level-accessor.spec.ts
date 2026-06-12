@@ -4,7 +4,7 @@
  */
 
 import { SelectionModel } from '@angular/cdk/collections';
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -99,7 +99,7 @@ describe('tree-view based on nzLevelAccessor', () => {
     it('should nzDirectoryTree work', async () => {
       const treeView = fixture.debugElement.query(By.css('nz-tree-view'));
       expect(treeView.nativeElement.classList).not.toContain('ant-tree-directory');
-      testComponent.directoryTree = true;
+      testComponent.directoryTree.set(true);
       fixture.changeDetectorRef.markForCheck();
       await fixture.whenStable();
       expect(treeView.nativeElement.classList).toContain('ant-tree-directory');
@@ -109,7 +109,7 @@ describe('tree-view based on nzLevelAccessor', () => {
     it('should nzBlockNode work', async () => {
       const treeView = fixture.debugElement.query(By.css('nz-tree-view'));
       expect(treeView.nativeElement.classList).not.toContain('ant-tree-block-node');
-      testComponent.blockNode = true;
+      testComponent.blockNode.set(true);
       fixture.changeDetectorRef.markForCheck();
       await fixture.whenStable();
       expect(treeView.nativeElement.classList).toContain('ant-tree-block-node');
@@ -331,8 +331,8 @@ const flattenNodes = [
     <nz-tree-view
       [nzDataSource]="dataSource"
       [nzLevelAccessor]="levelAccessor"
-      [nzDirectoryTree]="directoryTree"
-      [nzBlockNode]="blockNode"
+      [nzDirectoryTree]="directoryTree()"
+      [nzBlockNode]="blockNode()"
     >
       <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding [nzExpandable]="false">
         <nz-tree-node-option
@@ -357,8 +357,7 @@ const flattenNodes = [
         </nz-tree-node-option>
       </nz-tree-node>
     </nz-tree-view>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestTreeViewBasicWithLevelAccessorComponent implements OnInit {
   @ViewChild(NzTreeViewComponent, { static: true }) tree!: NzTreeViewComponent<FlatNode>;
@@ -378,8 +377,8 @@ export class NzTestTreeViewBasicWithLevelAccessorComponent implements OnInit {
   );
   selectListSelection = new SelectionModel<FlatNode>(true);
   dataSource!: NzTreeViewFlatDataSource<TreeNode, FlatNode>;
-  directoryTree: boolean = false;
-  blockNode: boolean = false;
+  readonly directoryTree = signal(false);
+  readonly blockNode = signal(false);
 
   ngOnInit(): void {
     this.dataSource = new NzTreeViewFlatDataSource(this.tree, this.treeFlattener, TREE_DATA);
@@ -409,8 +408,7 @@ export class NzTestTreeViewBasicWithLevelAccessorComponent implements OnInit {
         </nz-tree-node-option>
       </nz-tree-node>
     </nz-tree-view>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestTreeViewLineComponent implements OnInit {
   @ViewChild(NzTreeViewComponent, { static: true }) tree!: NzTreeViewComponent<FlatNode>;

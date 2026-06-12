@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, provideZoneChangeDetection } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NzInputModule } from './input.module';
@@ -13,10 +13,7 @@ describe('input-password', () => {
   let fixture: ComponentFixture<InputPasswordTestComponent>;
 
   beforeEach(() => {
-    // todo: use zoneless
-    TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection()]
-    });
+    TestBed.configureTestingModule({});
   });
 
   beforeEach(() => {
@@ -33,7 +30,7 @@ describe('input-password', () => {
   it('should be toggle visible by two-way binding', () => {
     const inputElement = fixture.nativeElement.querySelector('input');
     expect(inputElement.type).toEqual('password');
-    component.visible = true;
+    component.visible.set(true);
     fixture.detectChanges();
     expect(inputElement.type).toEqual('text');
   });
@@ -42,29 +39,29 @@ describe('input-password', () => {
     const inputElement = fixture.nativeElement.querySelector('input');
     const toggleElement = fixture.nativeElement.querySelector('.ant-input-password-icon');
     expect(inputElement.type).toEqual('password');
-    expect(component.visible).toBe(false);
+    expect(component.visible()).toBe(false);
     toggleElement.click();
     fixture.detectChanges();
     expect(inputElement.type).toEqual('text');
-    expect(component.visible).toBe(true);
+    expect(component.visible()).toBe(true);
     toggleElement.click();
     fixture.detectChanges();
     expect(inputElement.type).toEqual('password');
-    expect(component.visible).toBe(false);
+    expect(component.visible()).toBe(false);
   });
 
   it('should be hide toggle', () => {
     expect(fixture.nativeElement.querySelector('.ant-input-password-icon')).toBeTruthy();
-    component.visibilityToggle = false;
+    component.visibilityToggle.set(false);
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.ant-input-password-icon')).toBeFalsy();
   });
 
   it('should be custom icon', () => {
-    component.customeIcon = true;
+    component.customeIcon.set(true);
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.ant-input-password-icon').textContent.trim()).toEqual('show');
-    component.visible = true;
+    component.visible.set(true);
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.ant-input-password-icon').textContent.trim()).toEqual('hide');
   });
@@ -73,17 +70,20 @@ describe('input-password', () => {
 @Component({
   imports: [NzInputModule],
   template: `
-    <nz-input-password [nzVisibilityToggle]="visibilityToggle" [(nzVisible)]="visible">
+    <nz-input-password
+      [nzVisibilityToggle]="visibilityToggle()"
+      [nzVisible]="visible()"
+      (nzVisibleChange)="visible.set($event)"
+    >
       <input nz-input />
-      @if (customeIcon) {
+      @if (customeIcon()) {
         <ng-template nzInputPasswordIcon let-visible>{{ visible ? 'hide' : 'show' }}</ng-template>
       }
     </nz-input-password>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class InputPasswordTestComponent {
-  visibilityToggle = true;
-  visible = false;
-  customeIcon = false;
+  readonly visibilityToggle = signal(true);
+  readonly visible = signal(false);
+  readonly customeIcon = signal(false);
 }

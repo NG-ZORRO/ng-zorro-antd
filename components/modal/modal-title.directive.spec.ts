@@ -4,15 +4,8 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  provideZoneChangeDetection,
-  TemplateRef,
-  ViewChild,
-  inject
-} from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject as testingInject, TestBed } from '@angular/core/testing';
+import { Component, TemplateRef, ViewChild, inject, signal } from '@angular/core';
+import { ComponentFixture, inject as testingInject, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -30,9 +23,8 @@ describe('modal title directive', () => {
   let modalService: NzModalService;
 
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [NzModalService, provideNoopAnimations(), provideZoneChangeDetection()]
+      providers: [NzModalService, provideNoopAnimations()]
     });
   });
 
@@ -56,7 +48,7 @@ describe('modal title directive', () => {
   it('should work with template', () => {
     testComponent.showModal();
     fixture.detectChanges();
-    expect(testComponent.isVisible).toBe(true);
+    expect(testComponent.isVisible()).toBe(true);
     const modalRef = testComponent.modalComponent.getModalRef();
     expect(modalRef!.getConfig().nzTitle).toEqual(testComponent.modalTitleDir);
 
@@ -64,19 +56,19 @@ describe('modal title directive', () => {
     fixture.detectChanges();
   });
 
-  it('should work with template when init opened', fakeAsync(() => {
+  it('should work with template when init opened', async () => {
     const initOpenedComponentFixture = TestBed.createComponent(TestDirectiveTitleWithInitOpenedComponent);
     const initOpenedComponent = initOpenedComponentFixture.componentInstance;
     initOpenedComponentFixture.detectChanges();
-    expect(initOpenedComponent.isVisible).toBe(true);
-    flush();
+    expect(initOpenedComponent.isVisible()).toBe(true);
+    await initOpenedComponentFixture.whenStable();
     initOpenedComponentFixture.detectChanges();
     const modalRef = initOpenedComponent.modalComponent.getModalRef();
 
     expect(modalRef!.getConfig().nzTitle).toEqual(initOpenedComponent.modalTitleDir);
 
     initOpenedComponentFixture.detectChanges();
-  }));
+  });
 
   it('should work with service', () => {
     const modalRef = modalService.create({ nzContent: TestDirectiveTitleInServiceComponent, nzTitle: '' });
@@ -90,51 +82,48 @@ describe('modal title directive', () => {
 @Component({
   imports: [NzModalModule],
   template: `
-    <nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()">
+    <nz-modal [nzVisible]="isVisible()" (nzVisibleChange)="isVisible.set($event)" (nzOnCancel)="handleCancel()">
       <div>
         <p>Modal Content</p>
       </div>
       <div *nzModalTitle>Custom Modal Title</div>
     </nz-modal>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class TestDirectiveTitleComponent {
-  isVisible = false;
+  readonly isVisible = signal(false);
   @ViewChild(NzModalComponent) modalComponent!: NzModalComponent;
   @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) modalTitleDir!: TemplateRef<NzSafeAny>;
 
   handleCancel(): void {
-    this.isVisible = false;
+    this.isVisible.set(false);
   }
 
   showModal(): void {
-    this.isVisible = true;
+    this.isVisible.set(true);
   }
 }
 
 @Component({
   imports: [NzModalModule],
   template: `
-    <nz-modal [(nzVisible)]="isVisible">
+    <nz-modal [nzVisible]="isVisible()" (nzVisibleChange)="isVisible.set($event)">
       <div>
         <p>Modal Content</p>
       </div>
       <div *nzModalTitle>Custom Modal Title</div>
     </nz-modal>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class TestDirectiveTitleWithInitOpenedComponent {
-  isVisible = true;
+  readonly isVisible = signal(true);
   @ViewChild(NzModalComponent) modalComponent!: NzModalComponent;
   @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) modalTitleDir!: TemplateRef<NzSafeAny>;
 }
 
 @Component({
   imports: [NzModalModule],
-  template: `<div *nzModalTitle>Custom Modal Title</div>`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<div *nzModalTitle>Custom Modal Title</div>`
 })
 class TestDirectiveTitleInServiceComponent {
   readonly nzModalRef = inject(NzModalRef);

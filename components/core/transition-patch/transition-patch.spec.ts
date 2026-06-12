@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -37,7 +37,7 @@ describe('transition-patch', () => {
     const component = fixture.componentInstance;
     const buttonElement = fixture.debugElement.query(By.directive(NzTransitionPatchDirective)).nativeElement;
     expect(buttonElement.getAttribute('hidden')).toBeFalsy();
-    component.hidden = true;
+    component.hidden.set(true);
     fixture.detectChanges();
     expect(buttonElement.getAttribute('hidden')).toBe('');
   });
@@ -47,7 +47,7 @@ describe('transition-patch', () => {
     const component = fixture.componentInstance;
     const buttonElement = fixture.debugElement.query(By.directive(NzTransitionPatchDirective)).nativeElement;
     expect(buttonElement.getAttribute('hidden')).toBeFalsy();
-    component.hidden = undefined;
+    component.hidden.set(undefined);
     fixture.detectChanges();
     expect(buttonElement.hasAttribute('hidden')).toBeFalse();
   });
@@ -55,30 +55,26 @@ describe('transition-patch', () => {
 
 @Component({
   imports: [NzButtonModule, NzTransitionPatchModule],
-  template: `<button nz-button></button>`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<button nz-button></button>`
 })
 export class TestTransitionPatchComponent {}
 
 @Component({
   imports: [NzButtonModule, NzTransitionPatchModule],
-  template: `<button nz-button hidden></button>`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<button nz-button hidden></button>`
 })
 export class TestTransitionPatchHiddenComponent {}
 
 @Component({
   imports: [NzButtonModule, NzTransitionPatchModule],
-  template: `<button nz-button hidden="abc"></button>`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<button nz-button hidden="abc"></button>`
 })
 export class TestTransitionPatchRestoreComponent {}
 
 @Component({
   imports: [NzButtonModule, NzTransitionPatchModule],
-  template: `<button nz-button [hidden]="hidden"></button>`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<button nz-button [hidden]="hidden()"></button>`
 })
 export class TestTransitionPatchHiddenBindingComponent {
-  hidden?: boolean = false;
+  readonly hidden = signal<boolean | undefined>(false);
 }

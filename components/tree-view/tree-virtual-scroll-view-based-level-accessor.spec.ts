@@ -5,7 +5,7 @@
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { CdkTreeNodeOutletContext } from '@angular/cdk/tree';
-import { ChangeDetectionStrategy, Component, OnInit, TrackByFunction, ViewChild } from '@angular/core';
+import { Component, OnInit, signal, TrackByFunction, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -48,7 +48,7 @@ describe('virtual scroll based nzLevelAccessor', () => {
       // viewport size = 180
       expect(viewport.getViewportSize()).toBe(180);
       // itemSize = 30, nums of initial nodes = 100
-      expect(viewport._totalContentHeight()).toBe(`${testComponent.itemSize * 100}px`);
+      expect(viewport._totalContentHeight()).toBe(`${testComponent.itemSize() * 100}px`);
       // maxBufferPx / 30 + 180 / itemSize = 4 + 6 = 10
       expect(fixture.debugElement.queryAll(By.css('nz-tree-node')).length).toBe(10);
       expect(viewport.getRenderedRange()).toEqual({
@@ -79,22 +79,26 @@ describe('virtual scroll based nzLevelAccessor', () => {
 
     it('should render correct nodes when scroll', async () => {
       await finishInit(fixture);
-      await triggerScroll(viewport, testComponent.itemSize * 10);
+      await triggerScroll(viewport, testComponent.itemSize() * 10);
       await fixture.whenStable();
       // start: 10 - minBufferPx / 30 = 8, end: 10 + 180 / 30 + maxBufferPx / 30 = 20
       expect(viewport.getRenderedRange()).toEqual({
         start: 8,
         end: 20
       });
-      expect(viewport.getOffsetToRenderedContentStart()).toBe(testComponent.itemSize * 10 - testComponent.minBufferPx);
+      expect(viewport.getOffsetToRenderedContentStart()).toBe(
+        testComponent.itemSize() * 10 - testComponent.minBufferPx()
+      );
       expect(fixture.debugElement.query(By.css('nz-tree-node')).componentInstance.data.name).toBe('0-8');
-      await triggerScroll(viewport, testComponent.itemSize * 25);
+      await triggerScroll(viewport, testComponent.itemSize() * 25);
       await fixture.whenStable();
       expect(viewport.getRenderedRange()).toEqual({
         start: 23,
         end: 35
       });
-      expect(viewport.getOffsetToRenderedContentStart()).toBe(testComponent.itemSize * 25 - testComponent.minBufferPx);
+      expect(viewport.getOffsetToRenderedContentStart()).toBe(
+        testComponent.itemSize() * 25 - testComponent.minBufferPx()
+      );
       expect(fixture.debugElement.query(By.css('nz-tree-node')).componentInstance.data.name).toBe('0-23');
     });
 
@@ -125,14 +129,14 @@ describe('virtual scroll based nzLevelAccessor', () => {
     });
 
     it('should nzItemSize work', async () => {
-      testComponent.itemSize *= 2; // 60
+      testComponent.itemSize.set(testComponent.itemSize() * 2); // 60
       await finishInit(fixture);
       expect(viewport.getRenderedRange()).toEqual({
         start: 0,
         // 180 / 60 + maxBufferPx / 60 = 3 + 2 = 5
         end: 5
       });
-      await triggerScroll(viewport, testComponent.itemSize * 5);
+      await triggerScroll(viewport, testComponent.itemSize() * 5);
       await fixture.whenStable();
       expect(viewport.getRenderedRange()).toEqual({
         // 5 - minBufferPx / 60 = 5 - 1 = 4
@@ -143,15 +147,15 @@ describe('virtual scroll based nzLevelAccessor', () => {
     });
 
     it('should nzMinBufferPx and nzMaxBufferPx work', async () => {
-      testComponent.minBufferPx = testComponent.itemSize; // 30
-      testComponent.maxBufferPx = testComponent.itemSize; // 30
+      testComponent.minBufferPx.set(testComponent.itemSize()); // 30
+      testComponent.maxBufferPx.set(testComponent.itemSize()); // 30
       await finishInit(fixture);
       expect(viewport.getRenderedRange()).toEqual({
         start: 0,
         // 180 / 30 + maxBufferPx / 30 = 6 + 1 = 7
         end: 7
       });
-      await triggerScroll(viewport, testComponent.itemSize * 5);
+      await triggerScroll(viewport, testComponent.itemSize() * 5);
       await fixture.whenStable();
       expect(viewport.getRenderedRange()).toEqual({
         // 5 - minBufferPx / itemSize = 5 - 1 = 4
@@ -165,7 +169,7 @@ describe('virtual scroll based nzLevelAccessor', () => {
       await finishInit(fixture);
       const treeView = fixture.debugElement.query(By.css('nz-tree-virtual-scroll-view'));
       expect(treeView.nativeElement.classList).not.toContain('ant-tree-directory');
-      testComponent.directoryTree = true;
+      testComponent.directoryTree.set(true);
       fixture.changeDetectorRef.markForCheck();
       await fixture.whenStable();
       expect(treeView.nativeElement.classList).toContain('ant-tree-directory');
@@ -176,7 +180,7 @@ describe('virtual scroll based nzLevelAccessor', () => {
       await finishInit(fixture);
       const treeView = fixture.debugElement.query(By.css('nz-tree-virtual-scroll-view'));
       expect(treeView.nativeElement.classList).not.toContain('ant-tree-block-node');
-      testComponent.blockNode = true;
+      testComponent.blockNode.set(true);
       fixture.changeDetectorRef.markForCheck();
       await fixture.whenStable();
       expect(treeView.nativeElement.classList).toContain('ant-tree-block-node');
@@ -193,7 +197,7 @@ describe('virtual scroll based nzLevelAccessor', () => {
       expect(fixture.debugElement.query(By.css('nz-tree-node')).componentInstance.data.name).toBe('v1-0-0');
 
       // set trackBy to null, default use node self instead
-      testComponent.trackBy = null!;
+      testComponent.trackBy.set(null!);
       // change name format from 'v1-0-x' to 'v2-0-x'
       testComponent.dataSource.setData(dig('v2-0'));
       await finishInit(fixture);
@@ -202,7 +206,7 @@ describe('virtual scroll based nzLevelAccessor', () => {
       expect(fixture.debugElement.query(By.css('nz-tree-node')).componentInstance.data.name).toBe('v2-0-0');
 
       // rerender new data depends on whether the index is the same (always same)
-      testComponent.trackBy = (index: number, _node: FlatNode) => index;
+      testComponent.trackBy.set((index: number, _node: FlatNode) => index);
       // change name format from 'v2-0-x' to 'v3-0-x'
       testComponent.dataSource.setData(dig('v3-0'));
       await finishInit(fixture);
@@ -304,12 +308,12 @@ const TREE_DATA: TreeNode[] = dig();
     <nz-tree-virtual-scroll-view
       [nzDataSource]="dataSource"
       [nzLevelAccessor]="levelAccessor"
-      [nzItemSize]="itemSize"
-      [nzMinBufferPx]="minBufferPx"
-      [nzMaxBufferPx]="maxBufferPx"
-      [nzDirectoryTree]="directoryTree"
-      [nzBlockNode]="blockNode"
-      [nzTrackBy]="trackBy"
+      [nzItemSize]="itemSize()"
+      [nzMinBufferPx]="minBufferPx()"
+      [nzMaxBufferPx]="maxBufferPx()"
+      [nzDirectoryTree]="directoryTree()"
+      [nzBlockNode]="blockNode()"
+      [nzTrackBy]="trackBy()"
     >
       <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding [nzExpandable]="false">
         <nz-tree-node-toggle nzTreeNodeNoopToggle />
@@ -323,8 +327,7 @@ const TREE_DATA: TreeNode[] = dig();
         {{ node.name }}
       </nz-tree-node>
     </nz-tree-virtual-scroll-view>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestTreeViewVirtualScrollWithLevelAccessorComponent implements OnInit {
   @ViewChild(NzTreeVirtualScrollViewComponent, { static: true }) tree!: NzTreeVirtualScrollViewComponent<FlatNode>;
@@ -335,12 +338,12 @@ export class NzTestTreeViewVirtualScrollWithLevelAccessorComponent implements On
     name: node.name,
     level
   });
-  directoryTree: boolean = false;
-  blockNode: boolean = false;
-  itemSize = 30;
-  minBufferPx = 30 * 2;
-  maxBufferPx = 30 * 4;
-  trackBy: TrackByFunction<FlatNode> = (_index: number, value: FlatNode): NzSafeAny => value;
+  readonly directoryTree = signal(false);
+  readonly blockNode = signal(false);
+  readonly itemSize = signal(30);
+  readonly minBufferPx = signal(30 * 2);
+  readonly maxBufferPx = signal(30 * 4);
+  readonly trackBy = signal<TrackByFunction<FlatNode>>((_index: number, value: FlatNode): NzSafeAny => value);
   treeFlattener = new NzTreeFlattener(
     this.transformer,
     node => node.level,

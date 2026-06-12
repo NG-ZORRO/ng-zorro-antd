@@ -3,14 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ApplicationRef,
-  ChangeDetectionStrategy,
-  Component,
-  provideZoneChangeDetection,
-  signal,
-  type WritableSignal
-} from '@angular/core';
+import { Component, signal, type WritableSignal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -36,9 +29,8 @@ describe('space compact', () => {
   let fixture: ComponentFixture<SpaceCompactTestComponent>;
 
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideZoneChangeDetection()]
+      providers: [provideNoopAnimations()]
     });
     fixture = TestBed.createComponent(SpaceCompactTestComponent);
     component = fixture.componentInstance;
@@ -100,8 +92,8 @@ describe('space compact', () => {
     expect(nzInputWrapper!.classList).not.toContain('ant-input-compact-first-item');
     expect(nzTreeSelect!.classList).not.toContain('ant-select-compact-last-item');
 
-    component.showFirst = false;
-    component.showLast = false;
+    component.showFirst.set(false);
+    component.showLast.set(false);
     fixture.detectChanges();
 
     await Promise.resolve();
@@ -123,7 +115,7 @@ describe('space compact', () => {
     const nzTreeSelect = spaceCompactElement.querySelector('nz-tree-select');
     const nzButton = spaceCompactElement.querySelector('button[nz-button]');
 
-    component.size = 'small';
+    component.size.set('small');
     fixture.detectChanges();
 
     expect(nzInput!.classList).toContain('ant-input-sm');
@@ -139,7 +131,7 @@ describe('space compact', () => {
     expect(nzTreeSelect!.classList).toContain('ant-select-sm');
     expect(nzButton!.classList).toContain('ant-btn-sm');
 
-    component.size = 'large';
+    component.size.set('large');
     fixture.detectChanges();
 
     expect(nzInput!.classList).toContain('ant-input-lg');
@@ -160,7 +152,7 @@ describe('space compact', () => {
     const spaceCompactElement = fixture.nativeElement;
     expect(spaceCompactElement.querySelector('.ant-space-compact').classList).not.toContain('ant-space-compact-block');
 
-    component.block = true;
+    component.block.set(true);
     fixture.detectChanges();
 
     expect(spaceCompactElement.querySelector('.ant-space-compact').classList).toContain('ant-space-compact-block');
@@ -172,9 +164,8 @@ describe('space compact direction', () => {
   let fixture: ComponentFixture<SpaceCompactDirectionTestComponent>;
 
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideZoneChangeDetection()]
+      providers: [provideNoopAnimations()]
     });
     fixture = TestBed.createComponent(SpaceCompactDirectionTestComponent);
     component = fixture.componentInstance;
@@ -187,16 +178,13 @@ describe('space compact direction', () => {
       'ant-space-compact-vertical'
     );
 
-    component.direction = 'vertical';
+    component.direction.set('vertical');
     fixture.detectChanges();
 
     expect(spaceCompactElement.querySelector('.ant-space-compact').classList).toContain('ant-space-compact-vertical');
   });
 
   it('should be apply direction classes for child components', () => {
-    // Running change detection (first time)
-    TestBed.inject(ApplicationRef).tick();
-    // detect signal changes
     fixture.detectChanges();
 
     const spaceCompactElement: HTMLElement = fixture.nativeElement;
@@ -213,7 +201,7 @@ describe('space compact direction', () => {
     expect(lastBtn.classList).not.toContain('ant-btn-compact-vertical-item');
     expect(lastBtn.classList).not.toContain('ant-btn-compact-vertical-last-item');
 
-    component.direction = 'vertical';
+    component.direction.set('vertical');
     fixture.detectChanges();
 
     expect(firstBtn.classList).not.toContain('ant-btn-compact-item');
@@ -241,8 +229,8 @@ describe('space compact direction', () => {
     NzTimePickerModule
   ],
   template: `
-    <nz-space-compact [nzSize]="size" [nzBlock]="block">
-      @if (showFirst) {
+    <nz-space-compact [nzSize]="size()" [nzBlock]="block()">
+      @if (showFirst()) {
         <input nz-input />
       }
       <nz-input-wrapper>
@@ -257,32 +245,30 @@ describe('space compact direction', () => {
       <nz-cascader [nzOptions]="[]" />
       <nz-select />
       <nz-tree-select [nzNodes]="[]" />
-      @if (showLast) {
+      @if (showLast()) {
         <button nz-button nzType="primary">btn</button>
       }
     </nz-space-compact>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class SpaceCompactTestComponent {
-  block: boolean = false;
-  size: NzSizeLDSType = 'default';
-  showFirst = true;
-  showLast = true;
+  readonly block = signal(false);
+  readonly size = signal<NzSizeLDSType>('default');
+  readonly showFirst = signal(true);
+  readonly showLast = signal(true);
 }
 
 @Component({
   imports: [NzSpaceModule, NzButtonModule],
   template: `
-    <nz-space-compact [nzDirection]="direction">
+    <nz-space-compact [nzDirection]="direction()">
       <button nz-button nzType="primary">btn</button>
       <button nz-button nzType="primary">btn</button>
     </nz-space-compact>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class SpaceCompactDirectionTestComponent {
-  direction: NzSpaceDirection = 'horizontal';
+  readonly direction = signal<NzSpaceDirection>('horizontal');
 }
 
 describe('finalSize', () => {
@@ -300,11 +286,7 @@ describe('finalSize', () => {
 
   it('should set correctly the size from the formSize signal', () => {
     TestBed.configureTestingModule({
-      providers: [
-        provideNzNoAnimation(),
-        provideZoneChangeDetection(),
-        { provide: NZ_FORM_SIZE, useValue: formSizeSignal }
-      ]
+      providers: [provideNzNoAnimation(), { provide: NZ_FORM_SIZE, useValue: formSizeSignal }]
     });
     fixture = TestBed.createComponent(SpaceCompactTestComponent);
     spaceCompactElement = fixture.debugElement.query(By.directive(NzSpaceCompactComponent)).nativeElement;
@@ -322,11 +304,11 @@ describe('finalSize', () => {
 
   it('should set correctly the size from the component input', () => {
     TestBed.configureTestingModule({
-      providers: [provideNzNoAnimation(), provideZoneChangeDetection()]
+      providers: [provideNzNoAnimation()]
     });
     fixture = TestBed.createComponent(SpaceCompactTestComponent);
     spaceCompactElement = fixture.debugElement.query(By.directive(NzSpaceCompactComponent)).nativeElement;
-    fixture.componentInstance.size = 'large';
+    fixture.componentInstance.size.set('large');
     fixture.detectChanges();
 
     const nzInput = spaceCompactElement.querySelector('input[nz-input]');
@@ -338,15 +320,11 @@ describe('finalSize', () => {
 
   it('should prioritize formSize over component input size', () => {
     TestBed.configureTestingModule({
-      providers: [
-        provideNzNoAnimation(),
-        provideZoneChangeDetection(),
-        { provide: NZ_FORM_SIZE, useValue: formSizeSignal }
-      ]
+      providers: [provideNzNoAnimation(), { provide: NZ_FORM_SIZE, useValue: formSizeSignal }]
     });
     fixture = TestBed.createComponent(SpaceCompactTestComponent);
     spaceCompactElement = fixture.debugElement.query(By.directive(NzSpaceCompactComponent)).nativeElement;
-    fixture.componentInstance.size = 'large';
+    fixture.componentInstance.size.set('large');
     fixture.detectChanges();
 
     formSizeSignal.set('small');

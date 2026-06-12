@@ -3,12 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Component, DebugElement, signal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzNoAnimationDirective, provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
-import { testDirectionality } from 'ng-zorro-antd/core/testing';
+import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NgStyleInterface, NzSizeDSType } from 'ng-zorro-antd/core/types';
 
 import { NzBadgeComponent } from './badge.component';
@@ -19,9 +19,8 @@ import { NzBadgeStatusType } from './types';
 
 describe('badge', () => {
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzNoAnimation(), provideZoneChangeDetection()]
+      providers: [provideNzNoAnimation()]
     });
   });
 
@@ -50,7 +49,7 @@ describe('badge', () => {
         'ant-badge-multiple-words'
       );
       expect(badgeElement.nativeElement.querySelector('.current').innerText).toBe('5');
-      testComponent.count = 10;
+      testComponent.count.set(10);
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').classList).toContain('ant-badge-multiple-words');
       expect(badgeElement.nativeElement.querySelectorAll('.current')[0].innerText).toBe('1');
@@ -58,23 +57,23 @@ describe('badge', () => {
     });
 
     it('should title work', () => {
-      testComponent.overflow = 99;
-      testComponent.count = 1000;
+      testComponent.overflow.set(99);
+      testComponent.count.set(1000);
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').getAttribute('title')).toBe('1000');
-      testComponent.title = 'test';
+      testComponent.title.set('test');
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').getAttribute('title')).toBe('test');
     });
 
     it('should be no title attribute when `nzTitle` is null', () => {
-      testComponent.title = null;
+      testComponent.title.set(null);
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').getAttribute('title')).toBeFalsy();
     });
 
     it('should offset work', () => {
-      testComponent.offset = [10, 10];
+      testComponent.offset.set([10, 10]);
       fixture.detectChanges();
       const style = getComputedStyle(badgeElement.nativeElement.querySelector('nz-badge-sup'));
       expect(style.right).toBe('-10px');
@@ -82,83 +81,83 @@ describe('badge', () => {
     });
 
     it('should overflow work', () => {
-      testComponent.overflow = 4;
+      testComponent.overflow.set(4);
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').innerText).toBe('4+');
-      testComponent.overflow = 99;
-      testComponent.count = 100;
+      testComponent.overflow.set(99);
+      testComponent.count.set(100);
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').innerText).toBe('99+');
-      testComponent.overflow = 99;
-      testComponent.count = 99;
+      testComponent.overflow.set(99);
+      testComponent.count.set(99);
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').innerText).not.toBe('99+');
     });
 
-    it('should showZero work', fakeAsync(() => {
-      testComponent.count = 0;
+    it('should showZero work', async () => {
+      testComponent.count.set(0);
       fixture.detectChanges();
-      tick();
+      await updateNonSignalsInput(fixture);
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
-      testComponent.showZero = true;
+      testComponent.showZero.set(true);
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('.current').innerText).toBe('0');
-    }));
+    });
 
-    it('should negative number not display', fakeAsync(() => {
-      testComponent.count = -10;
+    it('should negative number not display', async () => {
+      testComponent.count.set(-10);
       fixture.detectChanges();
-      tick();
+      await updateNonSignalsInput(fixture);
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
-      testComponent.showZero = true;
+      testComponent.showZero.set(true);
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('.current').innerText).toBe('0');
-    }));
+    });
 
     it('should dot work', () => {
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').classList).not.toContain('ant-badge-dot');
-      testComponent.dot = true;
+      testComponent.dot.set(true);
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').classList).toContain('ant-badge-dot');
     });
 
-    it('should no wrapper work', fakeAsync(() => {
-      testComponent.standalone = true;
-      testComponent.style = { backgroundColor: '#52c41a' };
+    it('should no wrapper work', async () => {
+      testComponent.standalone.set(true);
+      testComponent.style.set({ backgroundColor: '#52c41a' });
       fixture.detectChanges();
-      tick(1000);
+      await updateNonSignalsInput(fixture, 1000);
       fixture.detectChanges();
       badgeElement = fixture.debugElement.query(By.directive(NzBadgeComponent));
       expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').style.backgroundColor).toBe('rgb(82, 196, 26)');
-    }));
+    });
 
-    it('should disable animation for inner elements when `noAnimation` is `true` ', fakeAsync(() => {
-      testComponent.noAnimation = true;
+    it('should disable animation for inner elements when `noAnimation` is `true` ', async () => {
+      testComponent.noAnimation.set(true);
       fixture.detectChanges();
-      tick(1000);
+      await updateNonSignalsInput(fixture, 1000);
       expect(badgeElement.nativeElement.classList).toContain('nz-animate-disabled');
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup .ant-scroll-number-only').classList).toContain(
         'nz-animate-disabled'
       );
       fixture.detectChanges();
-    }));
+    });
 
     it('should status work', () => {
-      testComponent.standalone = true;
-      testComponent.count = 0;
+      testComponent.standalone.set(true);
+      testComponent.count.set(0);
       const statusList = ['success', 'processing', 'default', 'error', 'warning'];
       statusList.forEach(status => {
-        testComponent.status = status;
+        testComponent.status.set(status);
         fixture.detectChanges();
         expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).toContain(
           `ant-badge-status-${status}`
         );
       });
-      testComponent.text = 'test';
+      testComponent.text.set('test');
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text').innerText).toBe('test');
     });
@@ -166,7 +165,7 @@ describe('badge', () => {
     it('should size work', () => {
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').classList).toContain('ant-badge-count');
-      testComponent.size = 'small';
+      testComponent.size.set('small');
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').classList).toContain('ant-badge-count-sm');
     });
@@ -175,20 +174,20 @@ describe('badge', () => {
       const color = badgePresetColors[0];
       const component: NzBadgeComponent = badgeElement.componentInstance;
 
-      testComponent.color = color;
+      testComponent.color.set(color);
       fixture.detectChanges();
       expect(component.presetColor).toEqual(color);
 
-      testComponent.color = undefined;
+      testComponent.color.set(undefined);
       fixture.detectChanges();
       expect(component.presetColor).toEqual(null);
     });
 
-    it('should display correct of nzColor related change', fakeAsync(() => {
+    it('should display correct of nzColor related change', () => {
       let color: string | undefined;
-      testComponent.standalone = true;
-      testComponent.count = 0;
-      testComponent.status = 'success';
+      testComponent.standalone.set(true);
+      testComponent.count.set(0);
+      testComponent.status.set('success');
       fixture.detectChanges();
       expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).toContain(
@@ -197,8 +196,8 @@ describe('badge', () => {
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text').innerText).toBe('');
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
 
-      testComponent.status = '';
-      testComponent.text = 'test';
+      testComponent.status.set('');
+      testComponent.text.set('test');
       fixture.detectChanges();
       expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot')).toBeNull();
@@ -206,7 +205,7 @@ describe('badge', () => {
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
 
       color = 'blue';
-      testComponent.color = color;
+      testComponent.color.set(color);
       fixture.detectChanges();
       expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).toContain(
@@ -215,9 +214,9 @@ describe('badge', () => {
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text').innerText).toBe('test');
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
 
-      testComponent.standalone = false;
+      testComponent.standalone.set(false);
       color = '#f5222d';
-      testComponent.color = color;
+      testComponent.color.set(color);
       fixture.detectChanges();
       expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).not.toContain(
@@ -229,42 +228,42 @@ describe('badge', () => {
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text').innerText).toBe('test');
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
 
-      testComponent.text = '';
-      testComponent.showZero = true;
+      testComponent.text.set('');
+      testComponent.showZero.set(true);
       fixture.detectChanges();
       expect(badgeElement.nativeElement.classList).not.toContain('ant-badge-not-a-wrapper');
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot')).toBeNull();
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text')).toBeNull();
 
-      testComponent.count = 5;
+      testComponent.count.set(5);
       fixture.detectChanges();
       expect(badgeElement.nativeElement.classList).not.toContain('ant-badge-not-a-wrapper');
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot')).toBeNull();
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-text')).toBeNull();
-    }));
+    });
 
     it('should hex nzColor work', () => {
-      testComponent.count = 0;
-      testComponent.color = '#f5222d';
+      testComponent.count.set(0);
+      testComponent.color.set('#f5222d');
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').style.backgroundColor).toBe(
         'rgb(245, 34, 45)'
       );
 
-      testComponent.count = 5;
+      testComponent.count.set(5);
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').style.backgroundColor).toBe('rgb(245, 34, 45)');
     });
 
     it('should nzStyle work even if nzColor is not provided', () => {
-      testComponent.color = undefined;
-      testComponent.status = 'success'; // must set nzStatus to make sure status dot is rendered
-      testComponent.style = { backgroundColor: '#52c41a' };
+      testComponent.color.set(undefined);
+      testComponent.status.set('success'); // must set nzStatus to make sure status dot is rendered
+      testComponent.style.set({ backgroundColor: '#52c41a' });
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup').style.backgroundColor).toBe('rgb(82, 196, 26)');
 
-      testComponent.standalone = true;
-      testComponent.count = 0;
+      testComponent.standalone.set(true);
+      testComponent.count.set(0);
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').style.backgroundColor).toBe(
         'rgb(82, 196, 26)'
@@ -314,39 +313,38 @@ describe('badge', () => {
   imports: [NzNoAnimationDirective, NzBadgeModule],
   template: `
     <nz-badge
-      [nzCount]="count"
-      [nzStatus]="status"
-      [nzText]="text"
-      [nzShowZero]="showZero"
-      [nzOverflowCount]="overflow"
-      [nzNoAnimation]="noAnimation"
-      [nzStyle]="style"
-      [nzDot]="dot"
-      [nzOffset]="offset"
-      [nzTitle]="title"
-      [nzStandalone]="standalone"
-      [nzSize]="size"
-      [nzColor]="color"
+      [nzCount]="count()"
+      [nzStatus]="status()"
+      [nzText]="text()"
+      [nzShowZero]="showZero()"
+      [nzOverflowCount]="overflow()"
+      [nzNoAnimation]="noAnimation()"
+      [nzStyle]="style()"
+      [nzDot]="dot()"
+      [nzOffset]="offset()"
+      [nzTitle]="title()"
+      [nzStandalone]="standalone()"
+      [nzSize]="size()"
+      [nzColor]="color()"
     >
-      @if (!standalone) {
+      @if (!standalone()) {
         <a></a>
       }
     </nz-badge>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestBadgeBasicComponent {
-  count = 5;
-  dot = false;
-  standalone = false;
-  overflow = 20;
-  showZero = false;
-  status!: NzBadgeStatusType | string;
-  style!: NgStyleInterface;
-  text!: string;
-  title?: string | null;
-  offset?: [number, number];
-  size: NzSizeDSType = 'default';
-  noAnimation = true;
-  color?: string;
+  readonly count = signal(5);
+  readonly dot = signal(false);
+  readonly standalone = signal(false);
+  readonly overflow = signal(20);
+  readonly showZero = signal(false);
+  readonly status = signal<NzBadgeStatusType | string | undefined>(undefined);
+  readonly style = signal<NgStyleInterface | null>(null);
+  readonly text = signal<string | undefined>(undefined);
+  readonly title = signal<string | null | undefined>(undefined);
+  readonly offset = signal<[number, number] | undefined>(undefined);
+  readonly size = signal<NzSizeDSType>('default');
+  readonly noAnimation = signal(true);
+  readonly color = signal<string | undefined>(undefined);
 }

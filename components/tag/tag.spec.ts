@@ -3,21 +3,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Component, DebugElement, signal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
-import { testDirectionality } from 'ng-zorro-antd/core/testing';
+import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 
 import { NzTagComponent } from './tag.component';
 import { NzTagModule } from './tag.module';
 
 describe('tag', () => {
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideZoneChangeDetection()]
+      providers: [provideNoopAnimations()]
     });
   });
 
@@ -41,45 +40,45 @@ describe('tag', () => {
     it('should checkable work', () => {
       fixture.detectChanges();
       expect(tag.nativeElement.classList).not.toContain('ant-tag-checkable');
-      testComponent.mode = 'checkable';
+      testComponent.mode.set('checkable');
       fixture.detectChanges();
-      expect(testComponent.checked).toBe(false);
+      expect(testComponent.checked()).toBe(false);
       expect(testComponent.checkedChange).toHaveBeenCalledTimes(0);
       expect(tag.nativeElement.classList).toContain('ant-tag-checkable');
       expect(tag.nativeElement.classList).not.toContain('ant-tag-checkable-checked');
       tag.nativeElement.click();
       fixture.detectChanges();
-      expect(testComponent.checked).toBe(true);
+      expect(testComponent.checked()).toBe(true);
       expect(testComponent.checkedChange).toHaveBeenCalledTimes(1);
       expect(tag.nativeElement.classList).toContain('ant-tag-checkable');
       expect(tag.nativeElement.classList).toContain('ant-tag-checkable-checked');
     });
 
-    it('should closeable work', fakeAsync(() => {
+    it('should closeable work', async () => {
       fixture.detectChanges();
       expect(tag.nativeElement.querySelector('.anticon-close')).toBeNull();
-      testComponent.mode = 'closeable';
+      testComponent.mode.set('closeable');
       fixture.detectChanges();
       expect(tag.nativeElement.querySelector('.anticon-close')).toBeDefined();
       tag.nativeElement.querySelector('.anticon-close').click();
       fixture.detectChanges();
       expect(testComponent.onClose).toHaveBeenCalledTimes(1);
-      tick(1000);
+      await updateNonSignalsInput(fixture);
       fixture.detectChanges();
       expect(fixture.nativeElement.querySelector('nz-tag')).toBeFalsy();
-    }));
+    });
 
     it('should color work', () => {
       fixture.detectChanges();
       expect(tag.nativeElement.classList).not.toContain('ant-tag-has-color');
-      testComponent.color = 'green';
+      testComponent.color.set('green');
       fixture.detectChanges();
       expect(tag.nativeElement.classList).toContain('ant-tag-green');
-      testComponent.color = '#f50';
+      testComponent.color.set('#f50');
       fixture.detectChanges();
       expect(tag.nativeElement.classList).not.toContain('ant-tag-green');
       expect(tag.nativeElement.style.backgroundColor).toBe('rgb(255, 85, 0)');
-      testComponent.color = 'green';
+      testComponent.color.set('green');
       fixture.detectChanges();
       expect(tag.nativeElement.classList).toContain('ant-tag-green');
       expect(tag.nativeElement.style.backgroundColor).toBe('');
@@ -87,33 +86,33 @@ describe('tag', () => {
 
     it('should status color work', () => {
       fixture.detectChanges();
-      testComponent.color = 'success';
+      testComponent.color.set('success');
       fixture.detectChanges();
       expect(tag.nativeElement.classList).toContain('ant-tag-success');
-      testComponent.color = 'processing';
+      testComponent.color.set('processing');
       fixture.detectChanges();
       expect(tag.nativeElement.classList).toContain('ant-tag-processing');
-      testComponent.color = 'invalid';
+      testComponent.color.set('invalid');
       fixture.detectChanges();
       expect(tag.nativeElement.classList).not.toContain('ant-tag-invalid');
     });
 
     // https://github.com/NG-ZORRO/ng-zorro-antd/issues/1176
     it('should nzColor accept empty string', () => {
-      testComponent.color = 'green';
+      testComponent.color.set('green');
       fixture.detectChanges();
       expect(tag.nativeElement.classList).toContain('ant-tag-green');
-      testComponent.color = '';
+      testComponent.color.set('');
       fixture.detectChanges();
       expect(tag.nativeElement.classList).not.toContain('ant-tag-has-color');
-      testComponent.color = undefined;
+      testComponent.color.set(undefined);
       fixture.detectChanges();
       expect(tag.nativeElement.classList).not.toContain('ant-tag-has-color');
     });
 
     it('should have bordered by default', () => {
       expect(tag.nativeElement.classList).not.toContain('ant-tag-borderless');
-      testComponent.bordered = false;
+      testComponent.bordered.set(false);
       fixture.detectChanges();
       expect(tag.nativeElement.classList).toContain('ant-tag-borderless');
     });
@@ -129,15 +128,15 @@ describe('tag', () => {
       tag = fixture.debugElement.query(By.directive(NzTagComponent));
     });
 
-    it('should close prevent default', fakeAsync(() => {
+    it('should close prevent default', async () => {
       fixture.detectChanges();
       expect(tag.nativeElement.querySelector('.anticon-close')).toBeDefined();
       tag.nativeElement.querySelector('.anticon-close').click();
       fixture.detectChanges();
-      tick(1000);
+      await updateNonSignalsInput(fixture);
       fixture.detectChanges();
       expect(tag.nativeElement.querySelector('.anticon-close')).toBeDefined();
-    }));
+    });
   });
 
   testDirectionality(() => NzTestTagBasicComponent, By.directive(NzTagComponent), 'ant-tag');
@@ -148,23 +147,22 @@ describe('tag', () => {
   selector: 'nz-test-basic-tag',
   template: `
     <nz-tag
-      [nzMode]="mode"
-      [(nzChecked)]="checked"
-      [nzColor]="color"
-      [nzBordered]="bordered"
-      (nzCheckedChange)="checkedChange($event)"
+      [nzMode]="mode()"
+      [nzChecked]="checked()"
+      (nzCheckedChange)="checked.set($event); checkedChange($event)"
+      [nzColor]="color()"
+      [nzBordered]="bordered()"
       (nzOnClose)="onClose()"
     >
       Tag 1
     </nz-tag>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestTagBasicComponent {
-  mode: 'default' | 'closeable' | 'checkable' = 'default';
-  color: string | undefined;
-  checked = false;
-  bordered = true;
+  mode = signal<'default' | 'closeable' | 'checkable'>('default');
+  color = signal<string | undefined>(undefined);
+  checked = signal(false);
+  bordered = signal(true);
   onClose = jasmine.createSpy('on close');
   afterClose = jasmine.createSpy('after close');
   checkedChange = jasmine.createSpy('after close');
@@ -172,8 +170,7 @@ export class NzTestTagBasicComponent {
 
 @Component({
   imports: [NzTagModule],
-  template: `<nz-tag nzMode="closeable" (nzOnClose)="onClose($event)">Tag 1</nz-tag>`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<nz-tag nzMode="closeable" (nzOnClose)="onClose($event)">Tag 1</nz-tag>`
 })
 export class NzTestTagPreventComponent {
   onClose(e: MouseEvent): void {
