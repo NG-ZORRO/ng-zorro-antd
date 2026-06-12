@@ -16,6 +16,38 @@ tag: '{{version}}'
 
 ---
 
+## 22.0.0-alpha.0
+
+`2026-06-12`
+
+支持 Angular v22
+
+> **注意**: v22 仍然处于预览阶段，未来版本可能会包含破坏性变更。
+
+### ⚠ BREAKING CHANGES
+
+Remove the following APIs which were marked as deprecated in the previous version:
+
+| Module                        | API                                                                                  |
+| ----------------------------- | ------------------------------------------------------------------------------------ |
+| `ng-zorro-antd/button`        | `NzButtonComponent#nzSearch`                                                         |
+| `ng-zorro-antd/cascader`      | `NzCascaderComponent#nzDisplayWith`                                                  |
+| `ng-zorro-antd/collapse`      | `nz-collapse-panel[nzDisabled]`                                                      |
+| `ng-zorro-antd/core/form`     | `NzFormNoStatusService`                                                              |
+| `ng-zorro-antd/core/services` | `NzBreakpointKey`                                                                    |
+| `ng-zorro-antd/dropdown`      | `NzDropDownModule`                                                                   |
+| `ng-zorro-antd/grid`          | `EmbeddedProperty`                                                                   |
+| `ng-zorro-antd/input`         | `textarea[nzAutosize]`, `AutoSizeType`, `NzAutosizeDirective`                        |
+| `ng-zorro-antd/input`         | `nz-input-group`, `NzInputGroupComponent`, `NzInputGroupWhitSuffixOrPrefixDirective` |
+| `ng-zorro-antd/input`         | `[nz-input-group-slot]`, `NzInputGroupSlotComponent`                                 |
+| `ng-zorro-antd/input`         | `NzInputDirective#nzStepperless`                                                     |
+| `ng-zorro-antd/message`       | `NzMessageData#state`                                                                |
+| `ng-zorro-antd/modal`         | `nzOnOk` / `nzOnCancel` input usage                                                  |
+| `ng-zorro-antd/tooltip`       | `cdkConnectedOverlayPush`                                                            |
+| `ng-zorro-antd/transfer`      | `NzTransferSearchComponent`, `[nz-transfer-search]`                                  |
+| `ng-zorro-antd/upload`        | `nz-upload[nzTransformFile]`, `NzUploadTransformFileType`                            |
+| `ng-zorro-antd/upload`        | `ZipButtonOptions#transformFile`                                                     |
+
 ## 21.3.1
 
 `2026-06-05`
