@@ -3,16 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ApplicationRef,
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  provideZoneChangeDetection,
-  signal,
-  WritableSignal
-} from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ApplicationRef, Component, signal, WritableSignal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
@@ -28,7 +20,7 @@ describe('button', () => {
   beforeEach(() => {
     // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
+      providers: [provideNzIconsTesting()]
     });
   });
 
@@ -49,67 +41,67 @@ describe('button', () => {
 
     it('should apply classname based on nzDanger', () => {
       expect(buttonElement.classList).not.toContain('ant-btn-dangerous');
-      component.nzDanger = true;
+      component.nzDanger.set(true);
       fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-dangerous');
     });
 
     it('should apply classname based on nzGhost', () => {
       expect(buttonElement.classList).not.toContain('ant-btn-background-ghost');
-      component.nzGhost = true;
+      component.nzGhost.set(true);
       fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-background-ghost');
     });
 
     it('should apply classname based on nzLoading', () => {
       expect(buttonElement.classList).not.toContain('ant-btn-loading');
-      component.nzLoading = true;
+      component.nzLoading.set(true);
       fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-loading');
     });
 
     it('should apply classname based on nzBlock', () => {
       expect(buttonElement.classList).not.toContain('ant-btn-block');
-      component.nzBlock = true;
+      component.nzBlock.set(true);
       fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-block');
     });
 
     it('should apply classname based on nzType', () => {
-      component.nzType = 'default';
+      component.nzType.set('default');
       fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-default');
-      component.nzType = 'primary';
+      component.nzType.set('primary');
       fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-primary');
-      component.nzType = 'link';
+      component.nzType.set('link');
       fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-link');
-      component.nzType = 'dashed';
+      component.nzType.set('dashed');
       fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-dashed');
-      component.nzType = null;
+      component.nzType.set(null);
       fixture.detectChanges();
       expect(buttonElement.className).toBe('ant-btn');
     });
 
     it('should apply classname based on nzShape', () => {
-      component.nzShape = 'round';
+      component.nzShape.set('round');
       fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-round');
-      component.nzShape = 'circle';
+      component.nzShape.set('circle');
       fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-circle');
     });
 
     it('should apply classname based on nzSize', () => {
-      component.nzSize = 'large';
+      component.nzSize.set('large');
       fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-lg');
-      component.nzSize = 'small';
+      component.nzSize.set('small');
       fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-sm');
-      component.nzSize = 'default';
+      component.nzSize.set('default');
       fixture.detectChanges();
       expect(buttonElement.className).toBe('ant-btn');
     });
@@ -122,25 +114,30 @@ describe('button', () => {
       fixture = TestBed.createComponent(TestButtonBindingComponent);
     });
 
-    it('should hide icon when loading correct', fakeAsync(() => {
-      fixture.detectChanges();
-      const buttonElement = fixture.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
-      expect(buttonElement.classList.contains('ant-btn-loading')).toBe(false);
-      expect(buttonElement.classList).not.toContain('ant-btn-icon-only');
-      expect(buttonElement.firstElementChild.querySelector('svg')).not.toBe(null);
-      expect(buttonElement.firstElementChild!.classList.contains('anticon-poweroff')).toBe(true);
-      expect(buttonElement.firstElementChild!.classList.contains('anticon-loading')).toBe(false);
-      buttonElement.click();
-      fixture.detectChanges();
-      expect(buttonElement.classList.contains('ant-btn-loading')).toBe(true);
-      expect(buttonElement.firstElementChild!.classList.contains('ant-btn-loading-icon')).toBe(true);
-      expect(buttonElement.querySelector('.anticon-poweroff').style.cssText).toBe('display: none;');
-      tick(1000);
-      fixture.detectChanges();
-      expect(buttonElement.classList.contains('ant-btn-loading')).toBe(false);
-      expect(buttonElement.firstElementChild!.classList.contains('ant-btn-loading-icon')).toBe(false);
-      expect(buttonElement.querySelector('.anticon-poweroff').style.cssText).toBe('');
-    }));
+    it('should hide icon when loading correct', () => {
+      jasmine.clock().install();
+      try {
+        fixture.detectChanges();
+        const buttonElement = fixture.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
+        expect(buttonElement.classList.contains('ant-btn-loading')).toBe(false);
+        expect(buttonElement.classList).not.toContain('ant-btn-icon-only');
+        expect(buttonElement.firstElementChild.querySelector('svg')).not.toBe(null);
+        expect(buttonElement.firstElementChild!.classList.contains('anticon-poweroff')).toBe(true);
+        expect(buttonElement.firstElementChild!.classList.contains('anticon-loading')).toBe(false);
+        buttonElement.click();
+        fixture.detectChanges();
+        expect(buttonElement.classList.contains('ant-btn-loading')).toBe(true);
+        expect(buttonElement.firstElementChild!.classList.contains('ant-btn-loading-icon')).toBe(true);
+        expect(buttonElement.querySelector('.anticon-poweroff').style.cssText).toBe('display: none;');
+        jasmine.clock().tick(1000);
+        fixture.detectChanges();
+        expect(buttonElement.classList.contains('ant-btn-loading')).toBe(false);
+        expect(buttonElement.firstElementChild!.classList.contains('ant-btn-loading-icon')).toBe(false);
+        expect(buttonElement.querySelector('.anticon-poweroff').style.cssText).toBe('');
+      } finally {
+        jasmine.clock().uninstall();
+      }
+    });
   });
 
   describe('insert span', () => {
@@ -226,12 +223,12 @@ describe('button', () => {
       const spy = spyOn(appRef, 'tick').and.callThrough();
       buttonElement.dispatchEvent(new MouseEvent('click'));
       buttonElement.dispatchEvent(new MouseEvent('click'));
-      // Previously, it would've caused `tick()` to be called 2 times, because 2 click events have been triggered.
+      // Previously, it would've caused ApplicationRef.tick to be called twice.
       expect(spy).toHaveBeenCalledTimes(0);
     });
 
-    it('prevent default and stop propagation when the button state is loading', fakeAsync(() => {
-      component.nzLoading = true;
+    it('prevent default and stop propagation when the button state is loading', () => {
+      component.nzLoading.set(true);
       fixture.detectChanges();
       const event = new MouseEvent('click');
       const preventDefaultSpy = spyOn(event, 'preventDefault').and.callThrough();
@@ -239,7 +236,7 @@ describe('button', () => {
       buttonElement.dispatchEvent(event);
       expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
       expect(stopImmediatePropagationSpy).toHaveBeenCalledTimes(1);
-    }));
+    });
   });
 });
 
@@ -255,7 +252,7 @@ describe('anchor', () => {
   });
 
   it('should prevent default and stop propagation when the anchor is disabled', () => {
-    component.disabled = true;
+    component.disabled.set(true);
     fixture.detectChanges();
     const event = new MouseEvent('click');
     const preventDefaultSpy = spyOn(event, 'preventDefault').and.callThrough();
@@ -306,7 +303,7 @@ describe('finalSize', () => {
   it('should set correctly the size from the component input', () => {
     fixture = TestBed.createComponent(TestButtonFinalSizeComponent);
     buttonElement = fixture.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
-    fixture.componentInstance.size = 'large';
+    fixture.componentInstance.size.set('large');
     fixture.detectChanges();
     expect(buttonElement.classList).toContain('ant-btn-lg');
   });
@@ -317,45 +314,43 @@ describe('finalSize', () => {
   template: `
     <button
       nz-button
-      [nzType]="nzType"
-      [nzGhost]="nzGhost"
-      [nzLoading]="nzLoading"
-      [nzDanger]="nzDanger"
-      [nzShape]="nzShape"
-      [nzBlock]="nzBlock"
-      [nzSize]="nzSize"
+      [nzType]="nzType()"
+      [nzGhost]="nzGhost()"
+      [nzLoading]="nzLoading()"
+      [nzDanger]="nzDanger()"
+      [nzShape]="nzShape()"
+      [nzBlock]="nzBlock()"
+      [nzSize]="nzSize()"
     >
       button
     </button>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class TestButtonComponent {
-  @Input() nzBlock: boolean = false;
-  @Input() nzGhost: boolean = false;
-  @Input() nzLoading: boolean = false;
-  @Input() nzDanger: boolean = false;
-  @Input() nzType: NzButtonType = null;
-  @Input() nzShape: NzButtonShape = null;
-  @Input() nzSize: NzButtonSize = 'default';
+  readonly nzBlock = signal(false);
+  readonly nzGhost = signal(false);
+  readonly nzLoading = signal(false);
+  readonly nzDanger = signal(false);
+  readonly nzType = signal<NzButtonType>(null);
+  readonly nzShape = signal<NzButtonShape>(null);
+  readonly nzSize = signal<NzButtonSize>('default');
 }
 
 // https://github.com/NG-ZORRO/ng-zorro-antd/issues/2191
 @Component({
   imports: [NzIconModule, NzButtonModule],
   template: `
-    <button nz-button nzType="primary" (click)="load()" [nzLoading]="loading">
+    <button nz-button nzType="primary" (click)="load()" [nzLoading]="loading()">
       <nz-icon nzType="poweroff" />
       {{ 'Click me!' }}
     </button>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class TestButtonBindingComponent {
-  loading = false;
+  readonly loading = signal(false);
   load(): void {
-    this.loading = true;
-    setTimeout(() => (this.loading = false), 1000);
+    this.loading.set(true);
+    setTimeout(() => this.loading.set(false), 1000);
   }
 }
 
@@ -367,8 +362,7 @@ export class TestButtonBindingComponent {
       text
       <nz-icon nzType="caret-down" />
     </button>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class TestButtonWithIconComponent {}
 
@@ -378,8 +372,7 @@ export class TestButtonWithIconComponent {}
     <button nz-button>
       <nz-icon nzType="caret-down" />
     </button>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class TestButtonIconOnlyComponent {}
 
@@ -389,8 +382,7 @@ export class TestButtonIconOnlyComponent {}
     <button nz-button>
       <u nz-icon nzType="up"></u>
     </button>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class TestButtonIconOnlyWithAnyTagComponent {}
 
@@ -401,8 +393,7 @@ export class TestButtonIconOnlyWithAnyTagComponent {}
       <nz-icon nzType="down" />
       <!-- comment -->
     </button>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class TestButtonIconOnlyWithCommentComponent {}
 
@@ -413,8 +404,7 @@ export class TestButtonIconOnlyWithCommentComponent {}
       <nz-icon nzType="down" />
       text
     </button>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class TestButtonIconOnlyWithTextComponent {}
 
@@ -424,8 +414,7 @@ export class TestButtonIconOnlyWithTextComponent {}
     <button nz-button>
       <span>text</span>
     </button>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class TestButtonIconOnlyWithoutIconComponent {}
 
@@ -435,25 +424,22 @@ export class TestButtonIconOnlyWithoutIconComponent {}
     <button nz-button nzLoading>
       <nz-icon nzType="caret-down" />
     </button>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class TestButtonIconOnlyLoadingComponent {}
 
 @Component({
   imports: [NzButtonModule],
-  template: '<a nz-button [disabled]="disabled">anchor</a>',
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: '<a nz-button [disabled]="disabled()">anchor</a>'
 })
 export class TestAnchorComponent {
-  disabled = false;
+  readonly disabled = signal(false);
 }
 
 @Component({
   imports: [NzButtonModule],
-  template: ` <button nz-button [nzSize]="size">Button</button> `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: ` <button nz-button [nzSize]="size()">Button</button> `
 })
 export class TestButtonFinalSizeComponent {
-  size: NzButtonSize = 'default';
+  readonly size = signal<NzButtonSize>('default');
 }

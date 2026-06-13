@@ -3,19 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DebugElement,
-  TemplateRef,
-  ViewChild,
-  inject,
-  provideZoneChangeDetection
-} from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { Component, DebugElement, TemplateRef, ViewChild, inject, signal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NZ_CONFIG, NzConfigService } from 'ng-zorro-antd/core/config';
+import { updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import en_US from 'ng-zorro-antd/i18n/languages/en_US';
 import { NzListModule } from 'ng-zorro-antd/list';
@@ -26,13 +19,6 @@ import { NzEmptyComponent } from './empty.component';
 import { NzEmptyModule } from './empty.module';
 
 describe('empty', () => {
-  beforeEach(() => {
-    // todo: use zoneless
-    TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection()]
-    });
-  });
-
   describe('basic', () => {
     let fixture: ComponentFixture<NzEmptyTestBasicComponent>;
     let testComponent: NzEmptyTestBasicComponent;
@@ -61,9 +47,9 @@ describe('empty', () => {
     });
 
     it('should render image, content and footer as template', () => {
-      testComponent.image = testComponent.imageTpl;
-      testComponent.content = testComponent.contentTpl;
-      testComponent.footer = testComponent.footerTpl;
+      testComponent.image.set(testComponent.imageTpl);
+      testComponent.content.set(testComponent.contentTpl);
+      testComponent.footer.set(testComponent.footerTpl);
 
       fixture.detectChanges();
 
@@ -86,9 +72,9 @@ describe('empty', () => {
     });
 
     it('should render image, content and footer as string and change `alt`', () => {
-      testComponent.image = 'https://ng.ant.design/assets/img/logo.svg';
-      testComponent.content = 'zorro icon';
-      testComponent.footer = 'Footer';
+      testComponent.image.set('https://ng.ant.design/assets/img/logo.svg');
+      testComponent.content.set('zorro icon');
+      testComponent.footer.set('Footer');
       fixture.detectChanges();
 
       expect(emptyComponent.nativeElement.classList.contains('ant-empty')).toBe(true);
@@ -112,7 +98,7 @@ describe('empty', () => {
     });
 
     it('should render empty string as content', () => {
-      testComponent.content = '';
+      testComponent.content.set('');
       fixture.detectChanges();
 
       const contentEl = emptyComponent.nativeElement.querySelector('.ant-empty-description');
@@ -146,17 +132,17 @@ describe('empty', () => {
         testComponent = fixture.debugElement.componentInstance;
       });
 
-      it("should components' prop has priority", fakeAsync(() => {
-        const refresh = (): void => {
+      it("should components' prop has priority", async () => {
+        const refresh = async (): Promise<void> => {
           fixture.detectChanges();
-          tick();
+          await updateNonSignalsInput(fixture);
           fixture.detectChanges();
 
           embedComponent = fixture.debugElement.query(By.directive(NzEmbedEmptyComponent));
           emptyComponent = fixture.debugElement.query(By.directive(NzEmptyComponent));
         };
 
-        refresh();
+        await refresh();
 
         // Default.
         expect(embedComponent).toBeTruthy();
@@ -169,24 +155,24 @@ describe('empty', () => {
         expect(imageEl.firstElementChild.tagName).toBe('NZ-EMPTY-SIMPLE');
 
         // Prop.
-        testComponent.noResult = 'list';
-        refresh();
+        testComponent.noResult.set('list');
+        await refresh();
         expect(embedComponent).toBeTruthy();
         expect(emptyComponent).toBeFalsy();
         expect(embedComponent.nativeElement.innerText).toBe('list');
 
         // Null.
-        testComponent.noResult = null!;
-        refresh();
+        testComponent.noResult.set(null!);
+        await refresh();
         expect(embedComponent).toBeTruthy();
         expect(emptyComponent).toBeFalsy();
         expect(embedComponent.nativeElement.innerText).toBe('');
-      }));
+      });
 
-      it('should support string, template and component', fakeAsync(() => {
-        const refresh = (): void => {
+      it('should support string, template and component', async () => {
+        const refresh = async (): Promise<void> => {
           fixture.detectChanges();
-          tick();
+          await updateNonSignalsInput(fixture);
           fixture.detectChanges();
 
           embedComponent = fixture.debugElement.query(By.directive(NzEmbedEmptyComponent));
@@ -195,14 +181,14 @@ describe('empty', () => {
 
         // String.
         testComponent.configService.set('empty', { nzDefaultEmptyContent: 'empty' });
-        refresh();
+        await refresh();
         expect(embedComponent).toBeTruthy();
         expect(emptyComponent).toBeFalsy();
         expect(embedComponent.nativeElement.innerText).toBe('empty');
 
         // Template.
         testComponent.changeToTemplate();
-        refresh();
+        await refresh();
         expect(embedComponent).toBeTruthy();
         expect(emptyComponent).toBeFalsy();
         const divEl = embedComponent.nativeElement.firstElementChild;
@@ -223,7 +209,7 @@ describe('empty', () => {
 
         // Reset.
         testComponent.reset();
-        refresh();
+        await refresh();
         expect(embedComponent).toBeTruthy();
         expect(emptyComponent).toBeTruthy();
         expect(emptyComponent.nativeElement.classList.contains('ant-empty')).toBe(true);
@@ -232,7 +218,7 @@ describe('empty', () => {
         expect(imageEl.tagName).toBe('DIV');
         expect(imageEl.classList.contains('ant-empty-image')).toBe(true);
         expect(imageEl.firstElementChild.tagName).toBe('NZ-EMPTY-SIMPLE');
-      }));
+      });
     });
 
     /**
@@ -256,17 +242,17 @@ describe('empty', () => {
         testComponent = fixture.debugElement.componentInstance;
       });
 
-      it('should support injection', fakeAsync(() => {
-        const refresh = (): void => {
+      it('should support injection', async () => {
+        const refresh = async (): Promise<void> => {
           fixture.detectChanges();
-          tick(100);
+          await updateNonSignalsInput(fixture);
           fixture.detectChanges();
 
           embedComponent = fixture.debugElement.query(By.directive(NzEmbedEmptyComponent));
           emptyComponent = fixture.debugElement.query(By.directive(NzEmptyComponent));
         };
 
-        refresh();
+        await refresh();
 
         // Component.
         expect(embedComponent).toBeTruthy();
@@ -275,7 +261,7 @@ describe('empty', () => {
         expect(componentEl).toBeTruthy();
         expect(componentEl.tagName).toBe('NZ-EMPTY-TEST-CUSTOM');
         expect(componentEl.innerText).toBe(`I'm in component list`);
-      }));
+      });
     });
   });
 });
@@ -283,40 +269,38 @@ describe('empty', () => {
 @Component({
   imports: [NzEmptyModule],
   template: `
-    <nz-empty [nzNotFoundImage]="image" [nzNotFoundContent]="content" [nzNotFoundFooter]="footer">
+    <nz-empty [nzNotFoundImage]="image()" [nzNotFoundContent]="content()" [nzNotFoundFooter]="footer()">
       <ng-template #imageTpl>Image</ng-template>
       <ng-template #contentTpl>Content</ng-template>
       <ng-template #footerTpl>Footer</ng-template>
     </nz-empty>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzEmptyTestBasicComponent {
   @ViewChild('imageTpl', { static: false }) imageTpl!: TemplateRef<void>;
   @ViewChild('contentTpl', { static: false }) contentTpl!: TemplateRef<void>;
   @ViewChild('footerTpl', { static: false }) footerTpl!: TemplateRef<void>;
 
-  image!: TemplateRef<void> | string;
-  content?: TemplateRef<void> | string;
-  footer?: TemplateRef<void> | string;
+  readonly image = signal<TemplateRef<void> | string | null>(null);
+  readonly content = signal<TemplateRef<void> | string | undefined>(undefined);
+  readonly footer = signal<TemplateRef<void> | string | undefined>(undefined);
 }
 
 @Component({
   imports: [NzListModule],
   template: `
-    <nz-list [nzDataSource]="[]" [nzNoResult]="noResult" />
+    <nz-list [nzDataSource]="[]" [nzNoResult]="noResult()" />
     <ng-template #tpl let-component>
       <div>I am in template {{ component }}</div>
     </ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzEmptyTestServiceComponent {
   public readonly configService = inject(NzConfigService);
 
   @ViewChild('tpl', { static: false }) template!: TemplateRef<string>;
 
-  noResult!: string;
+  readonly noResult = signal<string | undefined>(undefined);
   reset(): void {
     this.configService.set('empty', { nzDefaultEmptyContent: undefined });
   }
@@ -328,8 +312,7 @@ export class NzEmptyTestServiceComponent {
 
 @Component({
   selector: 'nz-empty-test-custom',
-  template: `<div>I'm in component {{ name }}</div>`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<div>I'm in component {{ name }}</div>`
 })
 export class NzEmptyTestCustomComponent {
   readonly name = inject(NZ_EMPTY_COMPONENT_NAME);

@@ -5,8 +5,8 @@
 
 import { ESCAPE, LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Overlay, OverlayContainer } from '@angular/cdk/overlay';
-import { ChangeDetectionStrategy, Component, DebugElement, NgZone, ViewChild, inject } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject as testingInject, TestBed, tick } from '@angular/core/testing';
+import { Component, DebugElement, NgZone, ViewChild, inject, signal } from '@angular/core';
+import { ComponentFixture, inject as testingInject, TestBed } from '@angular/core/testing';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import {
@@ -62,15 +62,15 @@ describe('image', () => {
   });
 
   it('should only latest src work', async () => {
-    context.src = 'error.png';
-    context.placeholder = null;
+    context.src.set('error.png');
+    context.placeholder.set(null);
     await updateNonSignalsInput(fixture);
 
     const image = debugElement.nativeElement.querySelector('img');
     await fixture.whenStable();
 
     const oldBackLoadImage = context.nzImage.backLoadImage;
-    context.src = SRC;
+    context.src.set(SRC);
     await updateNonSignalsInput(fixture, 1000);
 
     context.nzImage.backLoadImage.dispatchEvent(new Event('load'));
@@ -84,14 +84,14 @@ describe('image', () => {
   });
 
   it('should keep placeholder when latest src is loading', async () => {
-    context.src = SRC;
-    context.placeholder = PLACEHOLDER;
+    context.src.set(SRC);
+    context.placeholder.set(PLACEHOLDER);
     await updateNonSignalsInput(fixture);
 
     const image = debugElement.nativeElement.querySelector('img');
     const oldBackLoadImage = context.nzImage.backLoadImage;
     const SECOND_SRC = 'https://test.com/SECOND_SRC.png';
-    context.src = SECOND_SRC;
+    context.src.set(SECOND_SRC);
     await updateNonSignalsInput(fixture, 1000);
 
     oldBackLoadImage.dispatchEvent(new Event('load'));
@@ -125,16 +125,16 @@ describe('image placeholder', () => {
   xit('should placeholder src work', () => {
     const image = debugElement.nativeElement.querySelector('img');
     const spy = spyOnProperty(image, 'src', 'set').and.callThrough();
-    context.src = SRC;
-    context.placeholder = PLACEHOLDER;
+    context.src.set(SRC);
+    context.placeholder.set(PLACEHOLDER);
     fixture.detectChanges();
     expect(spy).toHaveBeenCalled();
     expect(spy).toHaveBeenCalledWith(PLACEHOLDER);
   });
 
   it('should hide placeholder when image loaded', async () => {
-    context.src = QUICK_SRC;
-    context.placeholder = PLACEHOLDER;
+    context.src.set(QUICK_SRC);
+    context.placeholder.set(PLACEHOLDER);
     const imageComponent = context.nzImage;
     const imageElement = imageComponent.getElement().nativeElement;
     await updateNonSignalsInput(fixture, 300);
@@ -164,8 +164,8 @@ describe('image fallback', () => {
   });
 
   it('should fallback src work', async () => {
-    context.src = 'error.png';
-    context.fallback = FALLBACK;
+    context.src.set('error.png');
+    context.fallback.set(FALLBACK);
     await updateNonSignalsInput(fixture);
 
     context.image.backLoadImage.dispatchEvent(new ErrorEvent('error'));
@@ -230,21 +230,21 @@ describe('image preview', () => {
 
   function tickChanges(time: number = 300): void {
     fixture.detectChanges();
-    tick(time);
+    jasmine.clock().tick(time);
     fixture.detectChanges();
   }
 
   describe('nzDisablePreview', () => {
     it('should nzDisablePreview work outside group', async () => {
-      context.firstSrc = QUICK_SRC;
-      context.disablePreview = true;
+      context.firstSrc.set(QUICK_SRC);
+      context.disablePreview.set(true);
       await updateNonSignalsInput(fixture);
 
       context.triggerPreview();
       await fixture.whenStable();
       expect(getPreviewRootElement()).toBeFalsy();
 
-      context.disablePreview = false;
+      context.disablePreview.set(false);
       await updateNonSignalsInput(fixture);
 
       context.triggerPreview();
@@ -253,8 +253,8 @@ describe('image preview', () => {
     });
 
     it('should nzDisablePreview work inside group', async () => {
-      context.firstSrc = QUICK_SRC;
-      context.disablePreview = true;
+      context.firstSrc.set(QUICK_SRC);
+      context.disablePreview.set(true);
       await updateNonSignalsInput(fixture);
 
       const image = debugElement.nativeElement.querySelector('img');
@@ -262,7 +262,7 @@ describe('image preview', () => {
       await fixture.whenStable();
       expect(getPreviewRootElement()).toBeFalsy();
 
-      context.disablePreview = false;
+      context.disablePreview.set(false);
       await updateNonSignalsInput(fixture);
 
       image.click();
@@ -273,7 +273,7 @@ describe('image preview', () => {
 
   describe('tool actions', () => {
     it('should rotate, zoom and close and flip work', async () => {
-      context.firstSrc = QUICK_SRC;
+      context.firstSrc.set(QUICK_SRC);
       await updateNonSignalsInput(fixture);
       const image = debugElement.nativeElement.querySelector('img');
       image.click();
@@ -317,8 +317,8 @@ describe('image preview', () => {
     });
 
     it('should zoom in/out based on the zoom step value', async () => {
-      context.firstSrc = QUICK_SRC;
-      context.zoomStep = 2;
+      context.firstSrc.set(QUICK_SRC);
+      context.zoomStep.set(2);
       await updateNonSignalsInput(fixture);
 
       const image = debugElement.nativeElement.querySelectorAll('img');
@@ -341,8 +341,8 @@ describe('image preview', () => {
     });
 
     it('should have a default value of 0.5 for zoomStep', async () => {
-      context.firstSrc = QUICK_SRC;
-      context.zoomStep = null;
+      context.firstSrc.set(QUICK_SRC);
+      context.zoomStep.set(null);
       await updateNonSignalsInput(fixture);
 
       context.triggerPreview();
@@ -359,8 +359,8 @@ describe('image preview', () => {
     });
 
     it('should the groupZoomStep variable be set for each image"s zoomStep', async () => {
-      context.firstSrc = QUICK_SRC;
-      context.groupZoomStep = 5;
+      context.firstSrc.set(QUICK_SRC);
+      context.groupZoomStep.set(5);
       await updateNonSignalsInput(fixture);
 
       context.triggerPreview();
@@ -377,9 +377,9 @@ describe('image preview', () => {
     });
 
     it('should the groupZoomStep variable be set for each image"s zoomStep Except those that already have a zoomStep value', async () => {
-      context.firstSrc = QUICK_SRC;
-      context.groupZoomStep = 5;
-      context.zoomStep = 3;
+      context.firstSrc.set(QUICK_SRC);
+      context.groupZoomStep.set(5);
+      context.zoomStep.set(3);
       await updateNonSignalsInput(fixture);
 
       const image = debugElement.nativeElement.querySelectorAll('img');
@@ -398,7 +398,7 @@ describe('image preview', () => {
 
     it('should global config work', async () => {
       configService.set('image', { nzScaleStep: 10 });
-      context.firstSrc = QUICK_SRC;
+      context.firstSrc.set(QUICK_SRC);
       await updateNonSignalsInput(fixture);
 
       const image = debugElement.nativeElement.querySelectorAll('img');
@@ -415,19 +415,23 @@ describe('image preview', () => {
       expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(11, 11, 1) rotate(0deg)');
     });
 
-    // depends on NgZone.runOutsideAngular, keep using `fakeAsync` here
-    it('should detect mouse zoom direction correctly', fakeAsync(() => {
-      context.images = [{ src: QUICK_SRC }];
-      context.createByService();
-      const previewInstance = context.previewRef!.previewInstance;
-      tickChanges();
-      dispatchMouseEvent(previewInstance.imagePreviewWrapper.nativeElement, 'mousedown');
-      expect(previewInstance.isDragging()).toEqual(true);
-      let isZoomingInside = previewInstance['isZoomedInWithMouseWheel'](10);
-      expect(isZoomingInside).toBeFalsy();
-      isZoomingInside = previewInstance['isZoomedInWithMouseWheel'](-10);
-      expect(isZoomingInside).toBeTruthy();
-    }));
+    it('should detect mouse zoom direction correctly', () => {
+      jasmine.clock().install();
+      try {
+        context.images = [{ src: QUICK_SRC }];
+        context.createByService();
+        const previewInstance = context.previewRef!.previewInstance;
+        tickChanges();
+        dispatchMouseEvent(previewInstance.imagePreviewWrapper.nativeElement, 'mousedown');
+        expect(previewInstance.isDragging()).toEqual(true);
+        let isZoomingInside = previewInstance['isZoomedInWithMouseWheel'](10);
+        expect(isZoomingInside).toBeFalsy();
+        isZoomingInside = previewInstance['isZoomedInWithMouseWheel'](-10);
+        expect(isZoomingInside).toBeTruthy();
+      } finally {
+        jasmine.clock().uninstall();
+      }
+    });
 
     it('should call correct methods when zooming in or out', async () => {
       context.images = [{ src: QUICK_SRC }];
@@ -451,21 +455,26 @@ describe('image preview', () => {
       expect(previewInstance['reCenterImage']).toHaveBeenCalled();
     });
 
-    it('should close image preview when escape is pressed', fakeAsync(() => {
-      context.images = [{ src: QUICK_SRC }];
-      context.createByService();
-      const previewInstance = context.previewRef!.previewInstance;
-      tickChanges();
-      spyOn(previewInstance, 'onClose');
+    it('should close image preview when escape is pressed', () => {
+      jasmine.clock().install();
+      try {
+        context.images = [{ src: QUICK_SRC }];
+        context.createByService();
+        const previewInstance = context.previewRef!.previewInstance;
+        tickChanges();
+        spyOn(previewInstance, 'onClose');
 
-      dispatchKeyboardEvent(document, 'keydown', ESCAPE);
-      tick();
+        dispatchKeyboardEvent(document, 'keydown', ESCAPE);
+        jasmine.clock().tick(0);
 
-      expect(previewInstance.onClose).toHaveBeenCalled();
-    }));
+        expect(previewInstance.onClose).toHaveBeenCalled();
+      } finally {
+        jasmine.clock().uninstall();
+      }
+    });
 
     it('should container click work', async () => {
-      context.firstSrc = QUICK_SRC;
+      context.firstSrc.set(QUICK_SRC);
       await updateNonSignalsInput(fixture);
 
       const image = debugElement.nativeElement.querySelector('img');
@@ -481,8 +490,8 @@ describe('image preview', () => {
     });
 
     it('should preview group work', async () => {
-      context.firstSrc = SRC;
-      context.secondSrc = QUICK_SRC;
+      context.firstSrc.set(SRC);
+      context.secondSrc.set(QUICK_SRC);
       await updateNonSignalsInput(fixture);
 
       const images = debugElement.nativeElement.querySelectorAll('img');
@@ -568,19 +577,23 @@ describe('image preview', () => {
   });
 
   describe('Drag', () => {
-    // depends on NgZone.runOutsideAngular, keep using `fakeAsync` here
-    it('should drag released work', fakeAsync(() => {
-      context.images = [{ src: QUICK_SRC }];
-      context.createByService();
-      const previewInstance = context.previewRef!.previewInstance;
-      tickChanges();
-      previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
-      expect(previewInstance.isDragging()).toEqual(true);
-      spyOn(previewInstance, 'onDragEnd').and.callFake(function () {
-        return true;
-      });
-      expect(previewInstance.position).toEqual({ x: 0, y: 0 });
-    }));
+    it('should drag released work', () => {
+      jasmine.clock().install();
+      try {
+        context.images = [{ src: QUICK_SRC }];
+        context.createByService();
+        const previewInstance = context.previewRef!.previewInstance;
+        tickChanges();
+        previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
+        expect(previewInstance.isDragging()).toEqual(true);
+        spyOn(previewInstance, 'onDragEnd').and.callFake(function () {
+          return true;
+        });
+        expect(previewInstance.position).toEqual({ x: 0, y: 0 });
+      } finally {
+        jasmine.clock().uninstall();
+      }
+    });
 
     it('should onDragEnd be called after drag is ended', async () => {
       context.images = [{ src: QUICK_SRC }];
@@ -603,7 +616,7 @@ describe('image preview', () => {
       spyOn<NzSafeAny>(previewInstance, 'reCenterImage');
       await fixture.whenStable();
 
-      context.zoomStep = 0.25;
+      context.zoomStep.set(0.25);
       await updateNonSignalsInput(fixture);
 
       (previewInstance as NzSafeAny).zoom = 1.1;
@@ -729,63 +742,65 @@ describe('image preview', () => {
 @Component({
   selector: 'test-image-basic',
   imports: [NzImageModule],
-  template: `<img alt="" nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" />`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<img alt="" nz-image [nzSrc]="src()" [nzPlaceholder]="placeholder()" />`
 })
 export class TestImageBasicComponent {
   @ViewChild(NzImageDirective) nzImage!: NzImageDirective;
-  src = '';
-  placeholder: string | null = '';
+  readonly src = signal('');
+  readonly placeholder = signal<string | null>('');
 }
 
 @Component({
   selector: 'test-image-placeholder',
   imports: [NzImageModule],
-  template: `<img alt="" nz-image [nzSrc]="src" [nzPlaceholder]="placeholder" [nzDisablePreview]="disablePreview" />`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<img
+    alt=""
+    nz-image
+    [nzSrc]="src()"
+    [nzPlaceholder]="placeholder()"
+    [nzDisablePreview]="disablePreview()"
+  />`
 })
 export class TestImagePlaceholderComponent {
   @ViewChild(NzImageDirective) nzImage!: NzImageDirective;
-  src = '';
-  placeholder = '';
-  disablePreview = true;
+  readonly src = signal('');
+  readonly placeholder = signal('');
+  readonly disablePreview = signal(true);
 }
 
 @Component({
   selector: 'test-image-fallback',
   imports: [NzImageModule],
-  template: `<img alt="" nz-image [nzSrc]="src" [nzFallback]="fallback" />`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<img alt="" nz-image [nzSrc]="src()" [nzFallback]="fallback()" />`
 })
 export class TestImageFallbackComponent {
   @ViewChild(NzImageDirective) image!: NzImageDirective;
-  src = '';
-  fallback = '';
+  readonly src = signal('');
+  readonly fallback = signal('');
 }
 
 @Component({
   selector: 'test-image-preview-group',
   imports: [NzImageModule],
   template: `
-    <nz-image-group [nzScaleStep]="groupZoomStep">
-      <img alt="" nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" />
-      <img alt="" nz-image [nzSrc]="secondSrc" [nzDisablePreview]="disablePreview" [nzScaleStep]="zoomStep" />
+    <nz-image-group [nzScaleStep]="groupZoomStep()">
+      <img alt="" nz-image [nzSrc]="firstSrc()" [nzDisablePreview]="disablePreview()" />
+      <img alt="" nz-image [nzSrc]="secondSrc()" [nzDisablePreview]="disablePreview()" [nzScaleStep]="zoomStep()" />
     </nz-image-group>
-    <img alt="" nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" [nzScaleStep]="zoomStep" />
-    <img alt="" nz-image [nzSrc]="firstSrc" [nzDisablePreview]="disablePreview" />
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+    <img alt="" nz-image [nzSrc]="firstSrc()" [nzDisablePreview]="disablePreview()" [nzScaleStep]="zoomStep()" />
+    <img alt="" nz-image [nzSrc]="firstSrc()" [nzDisablePreview]="disablePreview()" />
+  `
 })
 export class TestImagePreviewGroupComponent {
   private readonly nzImageService = inject(NzImageService);
 
-  disablePreview = false;
-  firstSrc = '';
-  secondSrc = '';
+  readonly disablePreview = signal(false);
+  readonly firstSrc = signal('');
+  readonly secondSrc = signal('');
   previewRef: NzImagePreviewRef | null = null;
   images: NzImage[] = [];
-  zoomStep: number | null = null;
-  groupZoomStep: number | null = null;
+  readonly zoomStep = signal<number | null>(null);
+  readonly groupZoomStep = signal<number | null>(null);
 
   @ViewChild(NzImageGroupComponent) nzImageGroup!: NzImageGroupComponent;
   @ViewChild(NzImageDirective) nzImage!: NzImageDirective;
