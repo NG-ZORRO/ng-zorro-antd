@@ -6,8 +6,8 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzFormModule } from 'ng-zorro-antd/form';
 
 import { NzFormItemComponent } from './form-item.component';
@@ -15,7 +15,7 @@ import { NzFormItemComponent } from './form-item.component';
 describe('nz-form-item', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
   });
 

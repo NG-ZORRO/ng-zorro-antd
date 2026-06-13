@@ -4,11 +4,11 @@
  */
 
 import { NgTemplateOutlet } from '@angular/common';
-import { AfterViewInit, Component, computed, DebugElement, signal, TemplateRef, ViewChild } from '@angular/core';
+import { Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzFormModule } from 'ng-zorro-antd/form/form.module';
 
 import { NzFormDirective, NzFormLayoutType } from './form.directive';
@@ -17,7 +17,7 @@ import { NzRequiredMark } from './types';
 describe('form', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
   });
 
@@ -243,7 +243,7 @@ export class NzTestFormLabelIntegrateComponent {
 @Component({
   imports: [NzFormModule, NgTemplateOutlet],
   template: `
-    <form nz-form [nzRequiredMark]="nzRequiredMarkValue()">
+    <form nz-form [nzRequiredMark]="useCustomTemplate() ? customRequiredMarkTemplate : requiredMark()">
       <nz-form-item class="required-label">
         <nz-form-label nzRequired>
           <span class="label-content">Required Field</span>
@@ -266,20 +266,7 @@ export class NzTestFormLabelIntegrateComponent {
     </ng-template>
   `
 })
-export class NzTestFormRequiredMarkComponent implements AfterViewInit {
+export class NzTestFormRequiredMarkComponent {
   readonly requiredMark = signal<NzRequiredMark>(true);
   readonly useCustomTemplate = signal(false);
-
-  @ViewChild('customRequiredMarkTemplate', { static: true })
-  customRequiredMarkTemplate!: TemplateRef<{ $implicit: TemplateRef<void>; required: boolean }>;
-
-  nzRequiredMarkValue = computed(() =>
-    this.useCustomTemplate() ? this.customRequiredMarkTemplate : this.requiredMark()
-  );
-
-  ngAfterViewInit(): void {
-    if (this.useCustomTemplate()) {
-      this.requiredMark.set(this.customRequiredMarkTemplate);
-    }
-  }
 }

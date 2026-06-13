@@ -3,15 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  AnimationCallbackEvent,
-  ChangeDetectionStrategy,
-  Component,
-  DebugElement,
-  inject,
-  provideZoneChangeDetection
-} from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { AnimationCallbackEvent, Component, DebugElement, inject, signal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   AbstractControl,
   FormBuilder,
@@ -42,10 +35,7 @@ const statusMap = {
 
 describe('form-control', () => {
   beforeEach(() => {
-    // todo: use zoneless
-    TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection()]
-    });
+    TestBed.configureTestingModule({});
   });
 
   describe('static status', () => {
@@ -68,7 +58,7 @@ describe('form-control', () => {
     it('should status work', () => {
       const statusList: Array<keyof typeof statusMap> = ['warning', 'validating', 'pending', 'error', 'success'];
       statusList.forEach(status => {
-        testComponent.status = status;
+        testComponent.status.set(status);
         fixture.detectChanges();
         expect(formItem.nativeElement.classList).toContain(statusMap[status]);
       });
@@ -249,7 +239,7 @@ describe('form-control', () => {
 
       fixture.detectChanges();
 
-      testComponent.formAutoTips = {
+      testComponent.formAutoTips.set({
         'zh-cn': {
           required: '请输入',
           email: '邮箱格式不正确'
@@ -258,7 +248,7 @@ describe('form-control', () => {
           required: 'Input is required',
           email: 'The input is not valid email'
         }
-      };
+      });
       fixture.detectChanges();
 
       formGroup.get('username')!.setValue('');
@@ -276,7 +266,7 @@ describe('form-control', () => {
 
       fixture.detectChanges();
 
-      testComponent.showConfirmPassword = true;
+      testComponent.showConfirmPassword.set(true);
       fixture.detectChanges();
 
       formGroup.get('username')!.setValue('');
@@ -340,7 +330,7 @@ describe('form-control', () => {
       );
     });
 
-    it('should nzDisableAutoTips work ', fakeAsync(() => {
+    it('should nzDisableAutoTips work ', async () => {
       formGroup.get('username')!.markAsDirty();
       formGroup.get('mobile')!.markAsDirty();
       formGroup.get('email')!.markAsDirty();
@@ -352,7 +342,7 @@ describe('form-control', () => {
 
       fixture.detectChanges();
 
-      testComponent.passwordDisableAutoTips = true;
+      testComponent.passwordDisableAutoTips.set(true);
       fixture.detectChanges();
 
       formGroup.get('password')!.updateValueAndValidity();
@@ -362,7 +352,7 @@ describe('form-control', () => {
         'Please input your password!'
       );
 
-      testComponent.formDisableAutoTips = true;
+      testComponent.formDisableAutoTips.set(true);
       fixture.detectChanges();
 
       formGroup.get('username')!.setValue('12345');
@@ -370,16 +360,16 @@ describe('form-control', () => {
       formGroup.get('email')!.setValue('12345');
 
       fixture.detectChanges();
-      tick(300 + 50);
+      await new Promise(resolve => setTimeout(resolve, 300 + 50));
       fixture.detectChanges();
 
       expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain')).toBeNull();
       expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain')).toBeNull();
       expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain')).toBeNull();
-    }));
+    });
 
     it('should nzErrorTip change work', () => {
-      testComponent.passwordDisableAutoTips = true;
+      testComponent.passwordDisableAutoTips.set(true);
 
       formGroup.get('password')!.markAsDirty();
       formGroup.get('password')!.updateValueAndValidity();
@@ -391,7 +381,7 @@ describe('form-control', () => {
       );
 
       const passwordErrorTip = '请输入密码';
-      testComponent.passwordErrorTip = passwordErrorTip;
+      testComponent.passwordErrorTip.set(passwordErrorTip);
 
       fixture.detectChanges();
 
@@ -408,7 +398,7 @@ describe('form-control', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        providers: [provideZoneChangeDetection(), provideNzNoAnimation()]
+        providers: [provideNzNoAnimation()]
       });
       fixture = TestBed.createComponent(NzTestNoopAnimationsFormControlComponent);
       formGroup = fixture.componentInstance.formGroup;
@@ -443,14 +433,13 @@ describe('form-control', () => {
   imports: [NzFormModule],
   template: `
     <nz-form-item>
-      <nz-form-control [nzHasFeedback]="hasFeedback" [nzValidateStatus]="status" />
+      <nz-form-control [nzHasFeedback]="hasFeedback()" [nzValidateStatus]="status()" />
     </nz-form-item>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestStaticFormControlComponent {
-  hasFeedback = false;
-  status = 'success';
+  readonly hasFeedback = signal(false);
+  readonly status = signal<'success' | 'warning' | 'validating' | 'pending' | 'error'>('success');
 }
 
 @Component({
@@ -471,27 +460,17 @@ export class NzTestStaticFormControlComponent {
         <input formControlName="input2" />
       </nz-form-control>
     </form>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestReactiveFormControlComponent {
   private readonly formBuilder = inject(FormBuilder);
 
-  formGroup: FormGroup<{
-    input: FormControl<string | null>;
-    input2: FormControl<string | null>;
-    input3: FormControl<string | null>;
-  }>;
-  validateStatus: FormControl<string | null>;
-
-  constructor() {
-    this.formGroup = this.formBuilder.group({
-      input: this.formBuilder.control('', [Validators.required]),
-      input2: this.formBuilder.control('', [Validators.required]),
-      input3: this.formBuilder.control('', [Validators.required])
-    });
-    this.validateStatus = this.formGroup.controls.input2;
-  }
+  formGroup = this.formBuilder.group({
+    input: this.formBuilder.control('', [Validators.required]),
+    input2: this.formBuilder.control('', [Validators.required]),
+    input3: this.formBuilder.control('', [Validators.required])
+  });
+  validateStatus = this.formGroup.controls.input2;
 }
 
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1170 **/
@@ -505,17 +484,15 @@ export class NzTestReactiveFormControlComponent {
         </nz-form-control>
       </nz-form-item>
     </form>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestReactiveFormControlInitStatusComponent {
   private readonly formBuilder = inject(FormBuilder);
-  formGroup: FormGroup;
+  formGroup = this.formBuilder.group({
+    input: ['', [Validators.required]]
+  });
 
   constructor() {
-    this.formGroup = this.formBuilder.group({
-      input: ['', [Validators.required]]
-    });
     this.formGroup.controls.input.markAsDirty();
   }
 }
@@ -523,7 +500,7 @@ export class NzTestReactiveFormControlInitStatusComponent {
 @Component({
   imports: [ReactiveFormsModule, NzFormModule, NzInputModule],
   template: `
-    <form [formGroup]="formGroup" nz-form [nzAutoTips]="formAutoTips" [nzDisableAutoTips]="formDisableAutoTips">
+    <form [formGroup]="formGroup" nz-form [nzAutoTips]="formAutoTips()" [nzDisableAutoTips]="formDisableAutoTips()">
       <nz-form-item>
         <nz-form-control #control>
           <input nz-input formControlName="username" />
@@ -540,11 +517,11 @@ export class NzTestReactiveFormControlInitStatusComponent {
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-control [nzDisableAutoTips]="passwordDisableAutoTips" [nzErrorTip]="passwordErrorTip">
+        <nz-form-control [nzDisableAutoTips]="passwordDisableAutoTips()" [nzErrorTip]="passwordErrorTip()">
           <input nz-input type="password" formControlName="password" />
         </nz-form-control>
       </nz-form-item>
-      @if (showConfirmPassword) {
+      @if (showConfirmPassword()) {
         <nz-form-item>
           <nz-form-control>
             <input nz-input type="password" formControlName="confirmPassword" />
@@ -552,28 +529,25 @@ export class NzTestReactiveFormControlInitStatusComponent {
         </nz-form-item>
       }
     </form>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestReactiveFormAutoTipsComponent {
   private readonly formBuilder = inject(FormBuilder);
   public readonly i18n = inject(NzI18nService);
 
-  formGroup: FormGroup<{
-    username: FormControl<string | null>;
-    mobile: FormControl<string | null>;
-    email: FormControl<string | null>;
-    password: FormControl<string | null>;
-    confirmPassword: FormControl<string | null>;
-  }>;
+  formGroup = this.formBuilder.group({
+    username: this.formBuilder.control('', [MyValidators.required, MyValidators.minLength(6)]),
+    mobile: this.formBuilder.control('', [MyValidators.required, MyValidators.mobile]),
+    email: this.formBuilder.control('', [MyValidators.required, MyValidators.email]),
+    password: this.formBuilder.control('', [MyValidators.required]),
+    confirmPassword: this.formBuilder.control('', [MyValidators.required])
+  });
 
-  showConfirmPassword = false;
-
-  formDisableAutoTips = false;
-  passwordDisableAutoTips = false;
-  passwordErrorTip = 'Please input your password!';
-
-  formAutoTips = {
+  readonly showConfirmPassword = signal(false);
+  readonly formDisableAutoTips = signal(false);
+  readonly passwordDisableAutoTips = signal(false);
+  readonly passwordErrorTip = signal('Please input your password!');
+  readonly formAutoTips = signal({
     'zh-cn': {
       required: '必填项',
       email: '邮箱格式不正确'
@@ -582,7 +556,7 @@ export class NzTestReactiveFormAutoTipsComponent {
       required: 'Input is required',
       email: 'The input is not valid email'
     }
-  };
+  });
   emailAutoTips = {
     'zh-cn': {
       email: '请输入正确的邮箱'
@@ -594,17 +568,6 @@ export class NzTestReactiveFormAutoTipsComponent {
       required: '请输入邮箱/Input is required'
     }
   };
-
-  constructor() {
-    const { required, minLength, email, mobile } = MyValidators;
-    this.formGroup = this.formBuilder.group({
-      username: ['', [required, minLength(6)]],
-      mobile: ['', [required, mobile]],
-      email: ['', [required, email]],
-      password: ['', [required]],
-      confirmPassword: ['', [required]]
-    });
-  }
 }
 
 export type MyErrorsOptions = { 'zh-cn': string; en: string } & Record<string, NzSafeAny>;
@@ -623,13 +586,11 @@ export class MyValidators extends Validators {
   static mobile(control: AbstractControl): MyValidationErrors | null {
     const value = control.value;
 
-    if (isEmptyInputValue(value)) {
+    if (isEmptyInputValue(value) || isMobile(value)) {
       return null;
     }
 
-    return isMobile(value)
-      ? null
-      : { mobile: { 'zh-cn': `手机号码格式不正确`, en: `Mobile phone number is not valid` } };
+    return { mobile: { 'zh-cn': `手机号码格式不正确`, en: `Mobile phone number is not valid` } };
   }
 }
 
@@ -651,16 +612,11 @@ function isMobile(value: string): boolean {
         </nz-form-control>
       </nz-form-item>
     </form>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestNoopAnimationsFormControlComponent {
   private readonly formBuilder = inject(FormBuilder);
-  formGroup: FormGroup<{ input: FormControl<string | null> }>;
-
-  constructor() {
-    this.formGroup = this.formBuilder.group({
-      input: this.formBuilder.control('', [Validators.required])
-    });
-  }
+  formGroup = this.formBuilder.group({
+    input: this.formBuilder.control('', [Validators.required])
+  });
 }
