@@ -596,6 +596,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       if (this.nzShowSearch || this.isMultiple) {
         this.focusOnInput();
       }
+      this.cdr.markForCheck();
     }
   }
 

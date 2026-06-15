@@ -3,12 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, NO_ERRORS_SCHEMA, provideZoneChangeDetection } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Component, NO_ERRORS_SCHEMA, signal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzSizeDSType } from 'ng-zorro-antd/core/types';
@@ -29,9 +29,8 @@ import { NzDemoCardTabsComponent } from './demo/tabs';
 
 describe('card', () => {
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideNzIconsTesting(), provideZoneChangeDetection()],
+      providers: [provideNzNoAnimation(), provideNzIconsTesting()],
       schemas: [NO_ERRORS_SCHEMA]
     });
   });
@@ -126,7 +125,7 @@ describe('card', () => {
     const card = fixture.debugElement.query(By.directive(NzCardComponent));
     fixture.detectChanges();
     expect(card.nativeElement.classList).not.toContain('ant-card-small');
-    fixture.componentInstance.size = 'small';
+    fixture.componentInstance.size.set('small');
     fixture.detectChanges();
     expect(card.nativeElement.classList).toContain('ant-card-small');
   });
@@ -137,16 +136,15 @@ describe('card', () => {
 @Component({
   imports: [NzCardModule],
   template: `
-    <nz-card [nzSize]="size">
+    <nz-card [nzSize]="size()">
       <p>Card content</p>
       <p>Card content</p>
       <p>Card content</p>
     </nz-card>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class TestCardSizeComponent {
-  size: NzSizeDSType = 'default';
+  readonly size = signal<NzSizeDSType>('default');
 }
 
 describe('card component', () => {
@@ -170,11 +168,10 @@ describe('card component', () => {
     component = fixture.componentInstance;
   });
 
-  it('should call markForCheck when changing nzConfig', fakeAsync(() => {
+  it('should call markForCheck when changing nzConfig', () => {
     spyOn(component['cdr'], 'markForCheck');
     fixture.detectChanges();
     configChangeEvent$.next();
-    tick();
     expect(component['cdr'].markForCheck).toHaveBeenCalled();
-  }));
+  });
 });

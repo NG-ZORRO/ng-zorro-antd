@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import { Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -17,9 +17,8 @@ import { NzFloatButtonModule } from './float-button.module';
 
 describe('nz-float-button-group', () => {
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
+      providers: [provideNzIconsTesting()]
     });
   });
 
@@ -43,7 +42,7 @@ describe('nz-float-button-group', () => {
     });
 
     it('nzShape', () => {
-      testComponent.nzShape = 'square';
+      testComponent.nzShape.set('square');
       fixture.detectChanges();
       expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-square');
       const innerButtons = [
@@ -56,38 +55,38 @@ describe('nz-float-button-group', () => {
     });
 
     it('nzTrigger hover', () => {
-      testComponent.nzTrigger = 'hover';
+      testComponent.nzTrigger.set('hover');
       fixture.detectChanges();
       resultEl.nativeElement.getElementsByClassName('ant-float-btn')[0].dispatchEvent(new MouseEvent('mouseover'));
       fixture.detectChanges();
       expect(resultEl.nativeElement.getElementsByClassName('anticon')[0].getAttribute('nztype') === 'close').toBe(true);
-      expect(testComponent.isClick).toBe(true);
+      expect(testComponent.isClick()).toBe(true);
       resultEl.nativeElement.dispatchEvent(new MouseEvent('mouseleave'));
       fixture.detectChanges();
       expect(resultEl.nativeElement.getElementsByClassName('anticon')[0].getAttribute('nztype') === 'close').toBe(
         false
       );
-      expect(testComponent.isClick).toBe(false);
+      expect(testComponent.isClick()).toBe(false);
     });
 
     it('nzTrigger click', () => {
-      testComponent.nzTrigger = 'click';
+      testComponent.nzTrigger.set('click');
       fixture.detectChanges();
       resultEl.nativeElement.getElementsByClassName('ant-btn')[0].dispatchEvent(new MouseEvent('click'));
       fixture.detectChanges();
       expect(resultEl.nativeElement.getElementsByClassName('anticon')[0].getAttribute('nztype') === 'close').toBe(true);
-      expect(testComponent.isClick).toBe(true);
+      expect(testComponent.isClick()).toBe(true);
       resultEl.nativeElement.getElementsByClassName('ant-btn')[0].dispatchEvent(new MouseEvent('click'));
       fixture.detectChanges();
       expect(resultEl.nativeElement.getElementsByClassName('anticon')[0].getAttribute('nztype') === 'close').toBe(
         false
       );
-      expect(testComponent.isClick).toBe(false);
+      expect(testComponent.isClick()).toBe(false);
     });
 
     it('nzOpen true', () => {
-      testComponent.nzOpen = true;
-      testComponent.nzTrigger = 'click';
+      testComponent.nzOpen.set(true);
+      testComponent.nzTrigger.set('click');
       fixture.detectChanges();
       const openChangeSpy = spyOn(groupComponent.nzOpenChange, 'emit');
       resultEl.nativeElement.getElementsByClassName('ant-btn')[0].dispatchEvent(new MouseEvent('click'));
@@ -98,8 +97,8 @@ describe('nz-float-button-group', () => {
     });
 
     it('nzOpen false', () => {
-      testComponent.nzOpen = false;
-      testComponent.nzTrigger = 'click';
+      testComponent.nzOpen.set(false);
+      testComponent.nzTrigger.set('click');
       fixture.detectChanges();
       const openChangeSpy = spyOn(groupComponent.nzOpenChange, 'emit');
       resultEl.nativeElement.getElementsByClassName('ant-btn')[0].dispatchEvent(new MouseEvent('click'));
@@ -112,8 +111,8 @@ describe('nz-float-button-group', () => {
     });
 
     it('nzOpenChange should emit in controlled mode', () => {
-      testComponent.nzOpen = true;
-      testComponent.nzTrigger = 'click';
+      testComponent.nzOpen.set(true);
+      testComponent.nzTrigger.set('click');
       fixture.detectChanges();
       const openChangeSpy = spyOn(groupComponent.nzOpenChange, 'emit');
       resultEl.nativeElement.getElementsByClassName('ant-btn')[0].dispatchEvent(new MouseEvent('click'));
@@ -123,45 +122,45 @@ describe('nz-float-button-group', () => {
 
     describe('float-button-group placement', () => {
       it('should set correct class for nzPlacement top', () => {
-        testComponent.nzTrigger = 'click';
-        testComponent.nzPlacement = 'top';
+        testComponent.nzTrigger.set('click');
+        testComponent.nzPlacement.set('top');
         fixture.detectChanges();
         expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-top');
         // is not menu mode
-        testComponent.nzTrigger = null;
+        testComponent.nzTrigger.set(null);
         fixture.detectChanges();
         expect(resultEl.nativeElement.classList).not.toContain('ant-float-btn-group-top');
       });
 
       it('should set correct class for nzPlacement bottom', () => {
-        testComponent.nzTrigger = 'click';
-        testComponent.nzPlacement = 'bottom';
+        testComponent.nzTrigger.set('click');
+        testComponent.nzPlacement.set('bottom');
         fixture.detectChanges();
         expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-bottom');
         // is not menu mode
-        testComponent.nzTrigger = null;
+        testComponent.nzTrigger.set(null);
         fixture.detectChanges();
         expect(resultEl.nativeElement.classList).not.toContain('ant-float-btn-group-bottom');
       });
 
       it('should set correct class for nzPlacement left', () => {
-        testComponent.nzTrigger = 'click';
-        testComponent.nzPlacement = 'left';
+        testComponent.nzTrigger.set('click');
+        testComponent.nzPlacement.set('left');
         fixture.detectChanges();
         expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-left');
         // is not menu mode
-        testComponent.nzTrigger = null;
+        testComponent.nzTrigger.set(null);
         fixture.detectChanges();
         expect(resultEl.nativeElement.classList).not.toContain('ant-float-btn-group-left');
       });
 
       it('should set correct class for nzPlacement right', () => {
-        testComponent.nzTrigger = 'click';
-        testComponent.nzPlacement = 'right';
+        testComponent.nzTrigger.set('click');
+        testComponent.nzPlacement.set('right');
         fixture.detectChanges();
         expect(resultEl.nativeElement.classList).toContain('ant-float-btn-group-right');
         // is not menu mode
-        testComponent.nzTrigger = null;
+        testComponent.nzTrigger.set(null);
         fixture.detectChanges();
         expect(resultEl.nativeElement.classList).not.toContain('ant-float-btn-group-right');
       });
@@ -172,7 +171,7 @@ describe('nz-float-button-group', () => {
         const { enterAnimation, leaveAnimation } = groupComponent;
         expect(enterAnimation()).toBe('ant-float-btn-enter-top');
         expect(leaveAnimation()).toBe('ant-float-btn-leave-top');
-        testComponent.nzPlacement = 'right';
+        testComponent.nzPlacement.set('right');
         fixture.detectChanges();
         expect(enterAnimation()).toBe('ant-float-btn-enter-right');
         expect(leaveAnimation()).toBe('ant-float-btn-leave-right');
@@ -193,24 +192,23 @@ describe('nz-float-button-group', () => {
   template: `
     <nz-float-button-group
       nzIcon="question-circle"
-      [nzShape]="nzShape"
-      [nzTrigger]="nzTrigger"
-      [nzOpen]="nzOpen"
-      [nzPlacement]="nzPlacement"
+      [nzShape]="nzShape()"
+      [nzTrigger]="nzTrigger()"
+      [nzOpen]="nzOpen()"
+      [nzPlacement]="nzPlacement()"
       (nzOnOpenChange)="onClick($event)"
     />
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestFloatButtonGroupBasicComponent {
-  nzShape: NzShapeSCType = 'circle';
-  nzTrigger: 'click' | 'hover' | null = null;
-  nzOpen: boolean | null = null;
-  nzPlacement: NzFourDirectionType = 'top';
+  readonly nzShape = signal<NzShapeSCType>('circle');
+  readonly nzTrigger = signal<'click' | 'hover' | null>(null);
+  readonly nzOpen = signal<boolean | null>(null);
+  readonly nzPlacement = signal<NzFourDirectionType>('top');
 
-  isClick: boolean = false;
+  readonly isClick = signal(false);
 
   onClick(value: boolean): void {
-    this.isClick = value;
+    this.isClick.set(value);
   }
 }

@@ -4,7 +4,7 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
-import { ChangeDetectionStrategy, Component, signal, WritableSignal } from '@angular/core';
+import { Component, signal, WritableSignal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -294,8 +294,7 @@ describe('grid', () => {
     <div nz-row [nzGutter]="gutter()" [nzJustify]="justify()" [nzAlign]="align()" [nzWrap]="wrap()">
       <div nz-col></div>
     </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class TestGridComponent {
   gutter = signal<Gutter | [Gutter, Gutter] | null>(null);
@@ -326,8 +325,7 @@ export class TestGridComponent {
         [nzXXXl]="xxxl()"
       ></div>
     </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class TestColComponent {
   span = signal<number | null>(null);

@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import { Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -14,9 +14,8 @@ import { NzQRCodeModule } from './qrcode.module';
 
 describe('qrcode', () => {
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
+      providers: [provideNzIconsTesting()]
     });
   });
 
@@ -33,27 +32,27 @@ describe('qrcode', () => {
     });
 
     it('qr code bordered', () => {
-      testComponent.bordered = false;
+      testComponent.bordered.set(false);
       fixture.detectChanges();
       expect(resultEl.nativeElement.classList).not.toContain('ant-qrcode-border');
     });
 
     it('qr code width', () => {
-      testComponent.size = 200;
+      testComponent.size.set(200);
       fixture.detectChanges();
       const widthView = resultEl.nativeElement.querySelector('.ant-qrcode > nz-qrcode-canvas > canvas');
       expect(widthView.style.width).toBe('200px');
     });
 
     it('qr code type', () => {
-      testComponent.type = 'svg';
+      testComponent.type.set('svg');
       fixture.detectChanges();
       const widthView = resultEl.nativeElement.querySelector('.ant-qrcode > nz-qrcode-svg > svg');
       expect(widthView.nodeName).toBe('svg');
     });
 
     it('qr code custom status', () => {
-      testComponent.statusRender = 'custom status';
+      testComponent.statusRender.set('custom status');
       fixture.detectChanges();
       const statusView = resultEl.nativeElement.querySelector('.ant-qrcode-mask');
       expect(statusView.innerText).toBe('custom status');
@@ -63,7 +62,7 @@ describe('qrcode', () => {
       const statusList: Array<'active' | 'expired' | 'loading' | 'scanned'> = ['expired', 'loading', 'scanned'];
 
       for (let i = 0; i < statusList.length; i++) {
-        testComponent.status = statusList[i];
+        testComponent.status.set(statusList[i]);
         fixture.detectChanges();
         const statusView = resultEl.nativeElement.querySelector('.ant-qrcode-mask');
         if (i === 1) {
@@ -78,21 +77,22 @@ describe('qrcode', () => {
 
 @Component({
   imports: [NzQRCodeModule],
-  template: `<nz-qrcode
-    [nzValue]="value"
-    [nzSize]="size"
-    [nzType]="type"
-    [nzBordered]="bordered"
-    [nzStatus]="status"
-    [nzStatusRender]="statusRender"
-  />`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `
+    <nz-qrcode
+      [nzValue]="value"
+      [nzSize]="size()"
+      [nzType]="type()"
+      [nzBordered]="bordered()"
+      [nzStatus]="status()"
+      [nzStatusRender]="statusRender()"
+    />
+  `
 })
 export class NzTestQrCodeBasicComponent {
   value: string = 'https://ng.ant.design/';
-  type: 'svg' | 'canvas' = 'canvas';
-  size: number = 160;
-  bordered: boolean = true;
-  statusRender: string | null = null;
-  status: 'active' | 'expired' | 'loading' | 'scanned' = 'active';
+  readonly type = signal<'svg' | 'canvas'>('canvas');
+  readonly size = signal(160);
+  readonly bordered = signal(true);
+  readonly statusRender = signal<string | null>(null);
+  readonly status = signal<'active' | 'expired' | 'loading' | 'scanned'>('active');
 }

@@ -4,13 +4,11 @@
  */
 
 import { Location } from '@angular/common';
-import { provideZoneChangeDetection } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { testDirectionality } from 'ng-zorro-antd/core/testing';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzDemoPageHeaderBasicComponent } from './demo/basic';
@@ -24,18 +22,8 @@ describe('page-header', () => {
   let location: Location;
 
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideNzIconsTesting(), provideZoneChangeDetection()]
-    });
-    [
-      NzDemoPageHeaderBasicComponent,
-      NzDemoPageHeaderBreadcrumbComponent,
-      NzDemoPageHeaderContentComponent,
-      NzDemoPageHeaderGhostComponent,
-      NzDemoPageHeaderResponsiveComponent
-    ].forEach(comp => {
-      (comp as NzSafeAny).ɵcmp.onPush = false;
+      providers: [provideNoopAnimations(), provideNzIconsTesting()]
     });
     location = TestBed.inject(Location);
     spyOn(location, 'getState').and.returnValue({ navigationId: 2 });
@@ -87,28 +75,26 @@ describe('page-header', () => {
     expect(location.back).toHaveBeenCalled();
   });
 
-  it('should not show the back button if there is no history of navigation', fakeAsync(() => {
+  it('should not show the back button if there is no history of navigation', async () => {
     const fixture = TestBed.createComponent(NzDemoPageHeaderResponsiveComponent);
     const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
     spyOn(location, 'getState').and.returnValue({ navigationId: 1 });
-    fixture.detectChanges();
+    fixture.autoDetectChanges();
     pageHeader.componentInstance.ngAfterViewInit();
-    tick();
-    fixture.detectChanges();
+    await fixture.whenStable();
     const back = pageHeader.nativeElement.querySelector('.ant-page-header-back-button');
     expect(back).toBeNull();
-  }));
+  });
 
-  it('should show the back button if there is history of navigation', fakeAsync(() => {
+  it('should show the back button if there is history of navigation', async () => {
     const fixture = TestBed.createComponent(NzDemoPageHeaderResponsiveComponent);
     const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
-    fixture.detectChanges();
+    fixture.autoDetectChanges();
     pageHeader.componentInstance.ngAfterViewInit();
-    tick();
-    fixture.detectChanges();
+    await fixture.whenStable();
     const back = pageHeader.nativeElement.querySelector('.ant-page-header-back-button');
     expect(back as HTMLDivElement).toBeTruthy();
-  }));
+  });
 
   it('should content work', () => {
     const fixture = TestBed.createComponent(NzDemoPageHeaderContentComponent);
@@ -171,5 +157,5 @@ describe('page-header', () => {
 });
 
 testDirectionality(() => NzDemoPageHeaderBasicComponent, By.directive(NzPageHeaderComponent), 'ant-page-header', {
-  providers: [provideNoopAnimations(), provideNzIconsTesting(), provideZoneChangeDetection()]
+  providers: [provideNoopAnimations(), provideNzIconsTesting()]
 });

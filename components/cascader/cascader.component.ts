@@ -1128,6 +1128,7 @@ export class NzCascaderComponent
     if (this.nzDisabled) {
       this.closeMenu();
     }
+    this.cdr.markForCheck();
   }
 
   closeMenu(): void {
