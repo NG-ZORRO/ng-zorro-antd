@@ -12,6 +12,10 @@ import { NzTreeNode, NzTreeNodeKey } from './nz-tree-base-node';
 import { flattenTreeData, isCheckDisabled, isInArray } from './nz-tree-base-util';
 import { NzFormatEmitEvent } from './nz-tree-base.definitions';
 
+type BooleanKeys<T> = {
+  [K in keyof T]-?: T[K] extends boolean ? K : never;
+}[keyof T];
+
 @Injectable()
 export class NzTreeBaseService {
   DRAG_SIDE_RANGE = 0.25;
@@ -37,10 +41,11 @@ export class NzTreeBaseService {
    */
   initTree(nzNodes: NzTreeNode[]): void {
     this.rootNodes = nzNodes;
-    this.expandedNodeList = [];
-    this.selectedNodeList = [];
+    this.expandedNodeList = this.filterNodesRecursively(nzNodes, 'isExpanded');
+    this.selectedNodeList = this.filterNodesRecursively(nzNodes, 'isSelected');
+    this.checkedNodeList = this.filterNodesRecursively(nzNodes, 'isChecked');
     this.halfCheckedNodeList = [];
-    this.checkedNodeList = [];
+    this.refreshCheckState(this.isCheckStrictly); // set halfCheckedNodeList
     this.matchedNodeList = [];
   }
 
@@ -566,5 +571,15 @@ export class NzTreeBaseService {
       }
     };
     calc(node.getParentNode());
+  }
+
+  filterNodesRecursively(nodes: NzTreeNode[], propertyName: BooleanKeys<NzTreeNode>): NzTreeNode[] {
+    if (nodes == null) return [];
+    const reducer = (acc: NzTreeNode[], node: NzTreeNode): NzTreeNode[] => {
+      if (node[propertyName]) acc.push(node);
+      if (node.children.length > 0) node.children.reduce(reducer, acc);
+      return acc;
+    };
+    return nodes.reduce(reducer, []);
   }
 }
