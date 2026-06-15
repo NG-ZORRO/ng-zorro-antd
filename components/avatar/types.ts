@@ -3,11 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import type { NzShapeSCType } from 'ng-zorro-antd/core/types';
+
+import type { NzAvatarSize } from './avatar.component';
 
 export interface NzAvatarProps {
   shape?: NzShapeSCType;
-  size?: NzSizeLDSType | number;
+  size?: NzAvatarSize;
   gap?: number;
   src?: string;
   srcSet?: string;
