@@ -9,8 +9,8 @@ import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NZ_DATE_CONFIG } from 'ng-zorro-antd/i18n/date-config';
@@ -24,7 +24,7 @@ registerLocaleData(zh);
 describe('calendar', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 0 } }]
+      providers: [provideNzNoAnimation(), { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 0 } }]
     });
   });
 
@@ -438,7 +438,6 @@ class NzTestCalendarValueComponent {
 })
 class NzTestCalendarFullscreenComponent {
   readonly fullscreen = signal(true);
-  card = false;
 }
 
 @Component({

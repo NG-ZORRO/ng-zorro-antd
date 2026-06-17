@@ -7,8 +7,8 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, TemplateRef, signal } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -30,9 +30,8 @@ describe('check-list', () => {
   }
 
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideNzIconsTesting()]
+      providers: [provideNzNoAnimation(), provideNzIconsTesting()]
     });
   });
 
@@ -46,13 +45,15 @@ describe('check-list', () => {
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
-    jasmine.clock().install();
   }));
+
+  beforeEach(() => jasmine.clock().install());
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
-    jasmine.clock().uninstall();
   });
+
+  afterEach(() => jasmine.clock().uninstall());
 
   it('basic', () => {
     expect(resultEl.nativeElement.classList).toContain('ant-check-list');

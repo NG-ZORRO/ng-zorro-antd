@@ -7,9 +7,9 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { Observable } from 'rxjs';
+import { delay, of, Observable } from 'rxjs';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzAutoFocusType } from 'ng-zorro-antd/popconfirm/popconfirm';
@@ -24,9 +24,8 @@ describe('popconfirm', () => {
   let overlayContainerElement: HTMLElement;
 
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations()]
+      providers: [provideNzIconsTesting(), provideNzNoAnimation()]
     });
     fixture = TestBed.createComponent(NzPopconfirmTestNewComponent);
     component = fixture.componentInstance;
@@ -36,13 +35,15 @@ describe('popconfirm', () => {
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
-    jasmine.clock().install();
   }));
+
+  beforeEach(() => jasmine.clock().install());
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
-    jasmine.clock().uninstall();
   });
+
+  afterEach(() => jasmine.clock().uninstall());
 
   function getTitleText(): Element | null {
     return overlayContainerElement.querySelector('.ant-popover-message-title');
@@ -226,15 +227,7 @@ describe('popconfirm', () => {
     expect(component.confirm).toHaveBeenCalledTimes(0);
     expect(component.cancel).toHaveBeenCalledTimes(0);
 
-    component.beforeConfirm.set(
-      () =>
-        new Observable(observer => {
-          setTimeout(() => {
-            observer.next(true);
-            observer.complete();
-          }, 200);
-        })
-    );
+    component.beforeConfirm.set(() => of(true).pipe(delay(200)));
 
     dispatchMouseEvent(getTooltipTrigger(1), 'click');
     jasmine.clock().tick(200 + 10);

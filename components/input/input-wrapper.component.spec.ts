@@ -3,10 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, provideZoneChangeDetection, viewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Component, ElementRef, signal, viewChild } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
+import { updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType, NzVariant } from 'ng-zorro-antd/core/types';
 
 import { NzCountConfig } from './input-wrapper.component';
@@ -15,13 +16,6 @@ import { NzInputModule } from './input.module';
 describe('input-wrapper', () => {
   let component: InputWithAffixesAndAddonsTestComponent;
   let fixture: ComponentFixture<InputWithAffixesAndAddonsTestComponent>;
-
-  beforeEach(() => {
-    // todo: use zoneless
-    TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection()]
-    });
-  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InputWithAffixesAndAddonsTestComponent);
@@ -135,17 +129,22 @@ describe('input-wrapper', () => {
     });
   });
 
-  it('should be handle focus / blur', () => {
+  it('should be handle focus / blur', async () => {
+    await stabilize(fixture);
     let inputElement = component.withContentAffixes().nativeElement.querySelector('input')!;
     inputElement.focus();
+    await stabilize(fixture);
     expect(component.withContentAffixes().nativeElement.classList).toContain('ant-input-affix-wrapper-focused');
     inputElement.blur();
+    await stabilize(fixture);
     expect(component.withContentAffixes().nativeElement.classList).not.toContain('ant-input-affix-wrapper-focused');
 
     inputElement = component.withContentMix().nativeElement.querySelector('input')!;
     inputElement.focus();
+    await stabilize(fixture);
     expect(component.withContentMix().nativeElement.querySelector('.ant-input-affix-wrapper-focused')).toBeTruthy();
     inputElement.blur();
+    await stabilize(fixture);
     expect(component.withContentMix().nativeElement.querySelector('.ant-input-affix-wrapper-focused')).toBeFalsy();
   });
 });
@@ -154,13 +153,6 @@ describe('input-wrapper allow clear', () => {
   let component: InputAllowClearTestComponent;
   let fixture: ComponentFixture<InputAllowClearTestComponent>;
   let clearIconElement: HTMLElement;
-
-  beforeEach(() => {
-    // todo: use zoneless
-    TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection()]
-    });
-  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InputAllowClearTestComponent);
@@ -172,50 +164,48 @@ describe('input-wrapper allow clear', () => {
   it('should be show clear icon when input has value', async () => {
     expect(clearIconElement.classList).toContain('ant-input-clear-icon-hidden');
     component.value = 'test';
-    fixture.detectChanges();
-    await fixture.whenStable();
+    await stabilize(fixture);
     expect(clearIconElement.classList).not.toContain('ant-input-clear-icon-hidden');
     component.value = '';
-    fixture.detectChanges();
-    await fixture.whenStable();
+    await stabilize(fixture);
     expect(clearIconElement.classList).toContain('ant-input-clear-icon-hidden');
   });
 
-  it('should be clear input value when click clear icon', () => {
+  it('should be clear input value when click clear icon', async () => {
     component.value = 'test';
-    fixture.detectChanges();
+    await stabilize(fixture);
     clearIconElement.click();
-    fixture.detectChanges();
+    await stabilize(fixture);
     expect(component.value).toBe('');
     expect(clearIconElement.classList).toContain('ant-input-clear-icon-hidden');
   });
 
-  it('should be not show clear icon when input is disabled or readonly', () => {
+  it('should be not show clear icon when input is disabled or readonly', async () => {
     component.value = 'test';
     component.disabled = true;
     component.readonly = false;
-    fixture.detectChanges();
+    await stabilize(fixture);
     expect(clearIconElement.classList).toContain('ant-input-clear-icon-hidden');
     component.disabled = false;
     component.readonly = true;
-    fixture.detectChanges();
+    await stabilize(fixture);
     expect(clearIconElement.classList).toContain('ant-input-clear-icon-hidden');
   });
 
-  it('should be not show clear icon when nzAllowClear is false', () => {
+  it('should be not show clear icon when nzAllowClear is false', async () => {
     component.value = 'test';
     component.allowClear = false;
-    fixture.detectChanges();
+    await stabilize(fixture);
     expect(fixture.nativeElement.querySelector('.ant-input-clear-icon')).toBeFalsy();
   });
 
-  it('should be emit nzClear event when click clear icon', () => {
+  it('should be emit nzClear event when click clear icon', async () => {
     spyOn(component, 'onClear');
     component.value = 'test';
-    fixture.detectChanges();
+    await stabilize(fixture);
     expect(component.onClear).not.toHaveBeenCalled();
     clearIconElement.click();
-    fixture.detectChanges();
+    await stabilize(fixture);
     expect(component.onClear).toHaveBeenCalled();
   });
 });
@@ -223,12 +213,6 @@ describe('input-wrapper allow clear', () => {
 describe('input-wrapper with count config', () => {
   let fixture: ComponentFixture<InputWithCountTestComponent>;
   let component: InputWithCountTestComponent;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection()]
-    });
-  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InputWithCountTestComponent);
@@ -248,7 +232,7 @@ describe('input-wrapper with count config', () => {
       expect(component.withShowCount().nativeElement.querySelector('.ant-input-show-count-suffix')).toBeTruthy();
     });
 
-    it('should be correct counting', fakeAsync(() => {
+    it('should be correct counting', async () => {
       component.value = '';
       component.showCount = true;
       fixture.detectChanges();
@@ -258,14 +242,12 @@ describe('input-wrapper with count config', () => {
       );
 
       component.value = 'Hello';
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(component.withShowCount().nativeElement.classList).not.toContain('ant-input-out-of-range');
       expect(component.withShowCount().nativeElement.querySelector('.ant-input-show-count-suffix').textContent).toEqual(
         '5'
       );
-    }));
+    });
   });
 
   describe('should be work with count / max', () => {
@@ -281,37 +263,30 @@ describe('input-wrapper with count config', () => {
       expect(component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix')).toBeTruthy();
     });
 
-    it('should be correct counting', fakeAsync(() => {
-      component.value = 'Hello';
+    it('should be correct counting', async () => {
       component.showCount = true;
       component.countConfig = { max: 10 };
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
+      component.value = 'Hello';
+      await stabilize(fixture);
       expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
       expect(
         component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
       ).toEqual('5/10');
 
       component.value = 'Hello World';
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(component.withCountConfig().nativeElement.classList).toContain('ant-input-out-of-range');
       expect(
         component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
       ).toEqual('11/10');
 
-      component.value = 'Hello World';
       component.countConfig = { max: 20 };
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
       expect(
         component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
       ).toEqual('11/20');
-    }));
+    });
   });
 
   describe('should be work with count / max / strategy / formatter', () => {
@@ -327,67 +302,55 @@ describe('input-wrapper with count config', () => {
       expect(component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix')).toBeTruthy();
     });
 
-    it('should be correct counting', fakeAsync(() => {
-      component.value = 'Hello';
+    it('should be correct counting', async () => {
       component.showCount = true;
       component.countConfig = { max: 10, strategy: countStrategyFn };
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
+      component.value = 'Hello';
+      await stabilize(fixture);
       expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
       expect(
         component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
       ).toEqual('5/10');
 
-      component.value = 'HelloWorld';
       component.countConfig = { max: 10, strategy: countStrategyFn };
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
+      component.value = 'HelloWorld';
+      await stabilize(fixture);
       expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
       expect(
         component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
       ).toEqual('10/10');
-    }));
+    });
 
-    it('should be work count strategy', fakeAsync(() => {
+    it('should be work count strategy', async () => {
       component.showCount = true;
       component.countConfig = { max: 10, strategy: countStrategyFn };
       component.value = 'Hello';
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
       expect(
         component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
       ).toEqual('5/10');
 
       component.value = '🔥🔥🔥';
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
       expect(
         component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
       ).toEqual('3/10');
 
       component.value = 'Hello🔥🔥🔥';
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
       expect(
         component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
       ).toEqual('8/10');
-    }));
+    });
 
-    it('should be work exceedFormatter', fakeAsync(() => {
+    it('should be work exceedFormatter', async () => {
       component.showCount = true;
       component.countConfig = { max: 10, strategy: countStrategyFn, exceedFormatter: exceedFormatterFn };
       component.value = 'HelloWorld NG-ZORRO';
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
       expect(
         component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
@@ -395,32 +358,66 @@ describe('input-wrapper with count config', () => {
       expect(component.withCountConfig().nativeElement.querySelector('.ant-input').value).toEqual('HelloWorld');
 
       component.value = 'Hello🔥🔥🔥🔥🔥World';
-      fixture.detectChanges();
-      tick(200);
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(component.withCountConfig().nativeElement.classList).not.toContain('ant-input-out-of-range');
       expect(
         component.withCountConfig().nativeElement.querySelector('.ant-input-show-count-suffix').textContent
       ).toEqual('10/10');
       expect(component.withCountConfig().nativeElement.querySelector('.ant-input').value).toEqual('Hello🔥🔥🔥🔥🔥');
-    }));
+    });
   });
 });
+
+async function stabilize<T>(fixture: ComponentFixture<T>): Promise<void> {
+  await updateNonSignalsInput(fixture);
+  fixture.detectChanges();
+}
 
 @Component({
   imports: [NzInputModule, FormsModule],
   template: `
     <nz-input-wrapper [nzAllowClear]="allowClear" (nzClear)="onClear()">
-      <input nz-input [(ngModel)]="value" [disabled]="disabled" [readonly]="readonly" />
+      <input nz-input [ngModel]="value" (ngModelChange)="value = $event" [disabled]="disabled" [readonly]="readonly" />
     </nz-input-wrapper>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class InputAllowClearTestComponent {
-  allowClear = true;
-  disabled = false;
-  readonly = false;
-  value = '';
+  readonly valueSignal = signal('');
+  readonly allowClearSignal = signal(true);
+  readonly disabledSignal = signal(false);
+  readonly readonlySignal = signal(false);
+
+  get value(): string {
+    return this.valueSignal();
+  }
+
+  set value(value: string) {
+    this.valueSignal.set(value);
+  }
+
+  get allowClear(): boolean {
+    return this.allowClearSignal();
+  }
+
+  set allowClear(value: boolean) {
+    this.allowClearSignal.set(value);
+  }
+
+  get disabled(): boolean {
+    return this.disabledSignal();
+  }
+
+  set disabled(value: boolean) {
+    this.disabledSignal.set(value);
+  }
+
+  get readonly(): boolean {
+    return this.readonlySignal();
+  }
+
+  set readonly(value: boolean) {
+    this.readonlySignal.set(value);
+  }
 
   onClear(): void {}
 }
@@ -463,14 +460,45 @@ class InputAllowClearTestComponent {
     <nz-input-wrapper #onlyInput>
       <input nz-input [nzSize]="size" [nzVariant]="variant" [disabled]="disabled" [readonly]="readonly" />
     </nz-input-wrapper>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class InputWithAffixesAndAddonsTestComponent {
-  size: NzSizeLDSType = 'default';
-  disabled = false;
-  readonly = false;
-  variant: NzVariant = 'outlined';
+  readonly sizeSignal = signal<NzSizeLDSType>('default');
+  readonly disabledSignal = signal(false);
+  readonly readonlySignal = signal(false);
+  readonly variantSignal = signal<NzVariant>('outlined');
+
+  get size(): NzSizeLDSType {
+    return this.sizeSignal();
+  }
+
+  set size(value: NzSizeLDSType) {
+    this.sizeSignal.set(value);
+  }
+
+  get disabled(): boolean {
+    return this.disabledSignal();
+  }
+
+  set disabled(value: boolean) {
+    this.disabledSignal.set(value);
+  }
+
+  get readonly(): boolean {
+    return this.readonlySignal();
+  }
+
+  set readonly(value: boolean) {
+    this.readonlySignal.set(value);
+  }
+
+  get variant(): NzVariant {
+    return this.variantSignal();
+  }
+
+  set variant(value: NzVariant) {
+    this.variantSignal.set(value);
+  }
 
   readonly withPropAffixes = viewChild.required('withPropAffixes', { read: ElementRef });
   readonly withContentAffixes = viewChild.required('withContentAffixes', { read: ElementRef });
@@ -485,20 +513,42 @@ class InputWithAffixesAndAddonsTestComponent {
   imports: [FormsModule, NzInputModule],
   template: `
     <nz-input-wrapper #withShowCount [nzShowCount]="showCount">
-      <input nz-input [(ngModel)]="value" />
+      <input nz-input [ngModel]="value" (ngModelChange)="value = $event" />
     </nz-input-wrapper>
 
     <nz-input-wrapper #withCountConfig [nzShowCount]="showCount" [nzCount]="countConfig">
-      <input nz-input [(ngModel)]="value" />
+      <input nz-input [ngModel]="value" (ngModelChange)="value = $event" />
     </nz-input-wrapper>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class InputWithCountTestComponent {
-  value = '';
-  showCount = false;
+  readonly valueSignal = signal('');
+  readonly showCountSignal = signal(false);
+  readonly countConfigSignal = signal<NzCountConfig>({});
 
-  countConfig: NzCountConfig = {};
+  get value(): string {
+    return this.valueSignal();
+  }
+
+  set value(value: string) {
+    this.valueSignal.set(value);
+  }
+
+  get showCount(): boolean {
+    return this.showCountSignal();
+  }
+
+  set showCount(value: boolean) {
+    this.showCountSignal.set(value);
+  }
+
+  get countConfig(): NzCountConfig {
+    return this.countConfigSignal();
+  }
+
+  set countConfig(value: NzCountConfig) {
+    this.countConfigSignal.set(value);
+  }
 
   readonly withShowCount = viewChild.required('withShowCount', { read: ElementRef });
   readonly withCountConfig = viewChild.required('withCountConfig', { read: ElementRef });

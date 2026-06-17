@@ -46,22 +46,23 @@ describe('context-menu', () => {
     })
   );
 
+  async function stabilize<T>(fixture: ComponentFixture<T>): Promise<void> {
+    fixture.detectChanges();
+    await updateNonSignalsInput(fixture);
+    fixture.detectChanges();
+  }
+
   it('should create dropdown', async () => {
     const fixture = createComponent(NzTestDropdownContextMenuComponent);
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
     fixture.detectChanges();
-    expect(() => {
-      const fakeEvent = createMouseEvent('contextmenu', 300, 300);
-      const component = fixture.componentInstance;
-      const viewRef = component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
-      expect(viewRef).toBeTruthy();
-      fixture.detectChanges();
-      return updateNonSignalsInput(fixture, 1000).then(() => {
-        fixture.detectChanges();
-        expect(overlayContainerElement.textContent).toContain('1st menu item');
-      });
-    }).not.toThrowError();
+    const fakeEvent = createMouseEvent('contextmenu', 300, 300);
+    const component = fixture.componentInstance;
+    const viewRef = component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
+    expect(viewRef).toBeTruthy();
+    await stabilize(fixture);
+    expect(overlayContainerElement.textContent).toContain('1st menu item');
   });
 
   it('should only one dropdown exist', async () => {
@@ -69,25 +70,16 @@ describe('context-menu', () => {
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
     fixture.detectChanges();
-    expect(() => {
-      let fakeEvent = createMouseEvent('contextmenu', 0, 0);
-      const component = fixture.componentInstance;
-      component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
-      fixture.detectChanges();
-      return updateNonSignalsInput(fixture, 1000)
-        .then(() => {
-          fixture.detectChanges();
-          expect(overlayContainerElement.textContent).toContain('1st menu item');
-          fakeEvent = createMouseEvent('contextmenu', window.innerWidth, window.innerHeight);
-          component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
-          fixture.detectChanges();
-          return updateNonSignalsInput(fixture, 1000);
-        })
-        .then(() => {
-          fixture.detectChanges();
-          expect(overlayContainerElement.textContent).toContain('1st menu item');
-        });
-    }).not.toThrowError();
+    let fakeEvent = createMouseEvent('contextmenu', 0, 0);
+    const component = fixture.componentInstance;
+    component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
+    await stabilize(fixture);
+    expect(overlayContainerElement.textContent).toContain('1st menu item');
+
+    fakeEvent = createMouseEvent('contextmenu', window.innerWidth, window.innerHeight);
+    component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
+    await stabilize(fixture);
+    expect(overlayContainerElement.textContent).toContain('1st menu item');
   });
 
   it('should dropdown close when scroll', async () => {
@@ -97,24 +89,15 @@ describe('context-menu', () => {
     ]);
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
-    expect(() => {
-      const fakeEvent = createMouseEvent('contextmenu', 0, 0);
-      const component = fixture.componentInstance;
-      component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
-      fixture.detectChanges();
-      return updateNonSignalsInput(fixture, 1000)
-        .then(() => {
-          fixture.detectChanges();
-          expect(overlayContainerElement.textContent).toContain('1st menu item');
-          scrolledSubject.next();
-          fixture.detectChanges();
-          return updateNonSignalsInput(fixture, 1000);
-        })
-        .then(() => {
-          fixture.detectChanges();
-          expect(overlayContainerElement.textContent).toBe('');
-        });
-    }).not.toThrowError();
+    const fakeEvent = createMouseEvent('contextmenu', 0, 0);
+    const component = fixture.componentInstance;
+    component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
+    await stabilize(fixture);
+    expect(overlayContainerElement.textContent).toContain('1st menu item');
+
+    scrolledSubject.next();
+    await stabilize(fixture);
+    expect(overlayContainerElement.textContent).toBe('');
   });
 
   it('should backdrop work with click', async () => {
@@ -122,24 +105,15 @@ describe('context-menu', () => {
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
     fixture.detectChanges();
-    expect(() => {
-      const fakeEvent = createMouseEvent('contextmenu', 300, 300);
-      const component = fixture.componentInstance;
-      component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
-      fixture.detectChanges();
-      return updateNonSignalsInput(fixture, 1000)
-        .then(() => {
-          fixture.detectChanges();
-          expect(overlayContainerElement.textContent).toContain('1st menu item');
-          document.body.click();
-          fixture.detectChanges();
-          return updateNonSignalsInput(fixture, 1000);
-        })
-        .then(() => {
-          fixture.detectChanges();
-          expect(overlayContainerElement.textContent).toBe('');
-        });
-    }).not.toThrowError();
+    const fakeEvent = createMouseEvent('contextmenu', 300, 300);
+    const component = fixture.componentInstance;
+    component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
+    await stabilize(fixture);
+    expect(overlayContainerElement.textContent).toContain('1st menu item');
+
+    document.body.click();
+    await stabilize(fixture);
+    expect(overlayContainerElement.textContent).toBe('');
   });
 
   it('should backdrop work with keyboard event ESCAPE', async () => {
@@ -148,24 +122,15 @@ describe('context-menu', () => {
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
     fixture.detectChanges();
-    expect(() => {
-      const fakeEvent = createMouseEvent('contextmenu', 300, 300);
-      const component = fixture.componentInstance;
-      component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
-      fixture.detectChanges();
-      return updateNonSignalsInput(fixture, 1000)
-        .then(() => {
-          fixture.detectChanges();
-          expect(overlayContainerElement.textContent).toContain('1st menu item');
-          dispatchEvent(document.body, keyboardEvent);
-          fixture.detectChanges();
-          return updateNonSignalsInput(fixture, 1000);
-        })
-        .then(() => {
-          fixture.detectChanges();
-          expect(overlayContainerElement.textContent).toBe('');
-        });
-    }).not.toThrowError();
+    const fakeEvent = createMouseEvent('contextmenu', 300, 300);
+    const component = fixture.componentInstance;
+    component.nzContextMenuService.create(fakeEvent, component.nzDropdownMenuComponent);
+    await stabilize(fixture);
+    expect(overlayContainerElement.textContent).toContain('1st menu item');
+
+    dispatchEvent(document.body, keyboardEvent);
+    await stabilize(fixture);
+    expect(overlayContainerElement.textContent).toBe('');
   });
 
   it('should not call the method close if the overlay is clicked inside', async () => {

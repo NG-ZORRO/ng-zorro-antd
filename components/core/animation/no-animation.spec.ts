@@ -31,7 +31,6 @@ describe('NzNoAnimationDirective', () => {
 
   describe('without NoopAnimations', () => {
     beforeEach(() => {
-      TestBed.configureTestingModule({});
       fixture = TestBed.createComponent(TestComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();

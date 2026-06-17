@@ -13,10 +13,6 @@ describe('input-password', () => {
   let fixture: ComponentFixture<InputPasswordTestComponent>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(InputPasswordTestComponent);
     component = fixture.componentInstance;
     fixture.autoDetectChanges();
@@ -70,11 +66,7 @@ describe('input-password', () => {
 @Component({
   imports: [NzInputModule],
   template: `
-    <nz-input-password
-      [nzVisibilityToggle]="visibilityToggle()"
-      [nzVisible]="visible()"
-      (nzVisibleChange)="visible.set($event)"
-    >
+    <nz-input-password [nzVisibilityToggle]="visibilityToggle()" [(nzVisible)]="visible">
       <input nz-input />
       @if (customeIcon()) {
         <ng-template nzInputPasswordIcon let-visible>{{ visible ? 'hide' : 'show' }}</ng-template>

@@ -31,8 +31,8 @@ function getType(dl: DebugElement): string {
 
 describe('avatar group', () => {
   let fixture: ComponentFixture<TestAvatarGroupComponent>;
-  beforeEach(async () => {
-    TestBed.configureTestingModule({});
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(TestAvatarGroupComponent);
     fixture.autoDetectChanges();
   });
@@ -66,10 +66,6 @@ describe('avatar', () => {
   });
 
   describe('#nzSrc', () => {
-    it('#nzSrc', () => {
-      expect(context).not.toBeNull();
-    });
-
     it('should tolerate error src', async () => {
       const event = createFakeEvent('error');
       expect(getType(dl)).toBe('image');

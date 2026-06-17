@@ -17,6 +17,7 @@ import {
 import { By } from '@angular/platform-browser';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
+import { nextAnimationFrame } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { en_US, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -34,10 +35,6 @@ const statusMap = {
 };
 
 describe('form-control', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-  });
-
   describe('static status', () => {
     let fixture: ComponentFixture<NzTestStaticFormControlComponent>;
     let testComponent: NzTestStaticFormControlComponent;
@@ -194,6 +191,10 @@ describe('form-control', () => {
     let formControls: DebugElement[];
 
     beforeEach(() => {
+      TestBed.configureTestingModule({
+        providers: [provideNzNoAnimation()]
+      });
+
       fixture = TestBed.createComponent(NzTestReactiveFormAutoTipsComponent);
       testComponent = fixture.componentInstance;
       formGroup = testComponent.formGroup;
@@ -358,9 +359,9 @@ describe('form-control', () => {
       formGroup.get('username')!.setValue('12345');
       formGroup.get('mobile')!.setValue('12345');
       formGroup.get('email')!.setValue('12345');
-
       fixture.detectChanges();
-      await new Promise(resolve => setTimeout(resolve, 300 + 50));
+      await nextAnimationFrame();
+      await fixture.whenStable();
       fixture.detectChanges();
 
       expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain')).toBeNull();
@@ -382,7 +383,6 @@ describe('form-control', () => {
 
       const passwordErrorTip = '请输入密码';
       testComponent.passwordErrorTip.set(passwordErrorTip);
-
       fixture.detectChanges();
 
       expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(

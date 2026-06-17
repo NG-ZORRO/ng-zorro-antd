@@ -8,7 +8,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 
 import { NzConfigService, provideNzConfig } from 'ng-zorro-antd/core/config';
-import { dispatchEvent, dispatchMouseEvent, sleep } from 'ng-zorro-antd/core/testing';
+import { dispatchEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 
 import { NzMessageComponent } from './message.component';
 import { NzMessageService } from './message.service';
@@ -40,6 +40,8 @@ describe('message', () => {
     testComponent = fixture.componentInstance;
   });
 
+  beforeEach(() => jasmine.clock().install());
+
   beforeEach(inject(
     [NzMessageService, OverlayContainer, NzConfigService],
     (m: NzMessageService, oc: OverlayContainer, c: NzConfigService) => {
@@ -52,6 +54,8 @@ describe('message', () => {
   afterEach(() => {
     messageService.remove();
   });
+
+  afterEach(() => jasmine.clock().uninstall());
 
   it('should open a message box with success', () => {
     messageService.success('SUCCESS');
@@ -107,7 +111,7 @@ describe('message', () => {
 
     expect(overlayContainerElement.textContent).toContain('EXISTS');
 
-    await sleep(1000);
+    jasmine.clock().tick(1000);
     await animationEnd();
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
   });
@@ -118,12 +122,12 @@ describe('message', () => {
 
     const messageElement = getMessageElement();
     dispatchMouseEvent(messageElement, 'mouseenter');
-    await sleep(2250);
+    jasmine.clock().tick(2250);
     await fixture.whenStable();
     expect(overlayContainerElement.textContent).toContain('EXISTS');
 
     dispatchMouseEvent(messageElement, 'mouseleave');
-    await sleep(2250);
+    jasmine.clock().tick(2250);
     await animationEnd();
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
   });
@@ -132,7 +136,7 @@ describe('message', () => {
     const filledMessage = messageService.success('SUCCESS', { nzDuration: 0 });
     overlayContainerElement = overlayContainer.getContainerElement();
 
-    await sleep(4500);
+    jasmine.clock().tick(4500);
     await fixture.whenStable();
     expect(overlayContainerElement.textContent).toContain('SUCCESS');
 
@@ -163,7 +167,7 @@ describe('message', () => {
 
   it('should destroy without animation', async () => {
     messageService.error('EXISTS', { nzDuration: 1000, nzAnimate: false });
-    await sleep(1000);
+    jasmine.clock().tick(1000);
     await fixture.whenStable();
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
   });

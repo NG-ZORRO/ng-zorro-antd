@@ -15,12 +15,7 @@ describe('NgxColorBlockComponent', () => {
   let resultEl: DebugElement;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(NzxTestColorBlockComponent);
-    fixture.detectChanges();
     component = fixture.componentInstance;
     resultEl = fixture.debugElement.query(By.directive(NgAntdColorBlockComponent));
   });

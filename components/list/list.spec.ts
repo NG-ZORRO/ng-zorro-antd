@@ -7,7 +7,7 @@ import { AsyncPipe } from '@angular/common';
 import { Component, DebugElement, signal, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Observable, timer } from 'rxjs';
+import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
@@ -59,12 +59,13 @@ describe('list', () => {
 
     describe('#nzHeader', () => {
       it('with string', () => {
-        expect(dl.query(By.css('.ant-list-header')) != null).toBe(true);
+        expect(dl.query(By.css('.ant-list-header'))).not.toBeNull();
       });
+
       it('with custom template', () => {
         const fixtureTemp = TestBed.createComponent(TestListWithTemplateComponent);
         fixtureTemp.detectChanges();
-        expect(fixtureTemp.debugElement.query(By.css('.list-header')) != null).toBe(true);
+        expect(fixtureTemp.debugElement.query(By.css('.list-header'))).not.toBeNull();
       });
     });
 
@@ -74,15 +75,18 @@ describe('list', () => {
         fixtureTemp = TestBed.createComponent(TestListWithTemplateComponent);
         fixtureTemp.detectChanges();
       });
+
       it('with string', () => {
         expect(dl.query(By.css('.ant-list-footer')) != null).toBe(true);
       });
+
       it('with custom template', () => {
         const footerEl = fixtureTemp.debugElement.query(By.css('.ant-list-footer'));
         expect((footerEl.nativeElement as HTMLDivElement).innerText).toBe(
           fixtureTemp.componentInstance.footer() as string
         );
       });
+
       it('change string to template', () => {
         const footerEl = fixtureTemp.debugElement.query(By.css('.ant-list-footer'));
         expect((footerEl.nativeElement as HTMLDivElement).innerText).toBe(
@@ -148,7 +152,7 @@ describe('list', () => {
       });
 
       it('should be ignore empty text when unspecified data source', () => {
-        context.data.set(undefined);
+        context.data.set(undefined!);
         fixture.detectChanges();
         expect(dl.queryAll(By.css('.ant-list-empty-text')).length).toBe(0);
       });
@@ -160,24 +164,30 @@ describe('list', () => {
     });
 
     it('#loadMore', () => {
-      expect(dl.query(By.css('.loadmore')) != null).toBe(true);
+      expect(dl.query(By.css('.loadmore'))).not.toBeNull();
     });
 
     it('#pagination', () => {
-      expect(dl.query(By.css('.pagination')) != null).toBe(true);
+      expect(dl.query(By.css('.pagination'))).not.toBeNull();
     });
 
     it('should be use split main and extra when item layout is vertical', () => {
       context.nzItemLayout.set('vertical');
       fixture.detectChanges();
-      expect(dl.query(By.css('.ant-list-item-main')) != null).toBe(true);
-      expect(dl.query(By.css('.ant-list-item-extra')) != null).toBe(true);
+      expect(dl.query(By.css('.ant-list-item-main'))).not.toBeNull();
+      expect(dl.query(By.css('.ant-list-item-extra'))).not.toBeNull();
     });
 
-    it('should display the asynchronous action', async () => {
-      await updateNonSignalsInput(fixture, 2000);
-      fixture.detectChanges();
-      expect(dl.query(By.css('.ant-list-item-action')) != null).toBe(true);
+    describe('asynchronous action', () => {
+      beforeEach(() => jasmine.clock().install());
+      afterEach(() => jasmine.clock().uninstall());
+
+      it('should display the asynchronous action', async () => {
+        jasmine.clock().tick(500);
+        await updateNonSignalsInput(fixture);
+        fixture.detectChanges();
+        expect(dl.query(By.css('.ant-list-item-action'))).not.toBeNull();
+      });
     });
   });
 
@@ -291,15 +301,14 @@ class TestListComponent {
   readonly nzLoading = signal(false);
   readonly nzSize = signal<NzSizeLDSType>('default');
   readonly nzSplit = signal(true);
-  readonly data = signal<string[] | undefined>([
+  readonly data = signal<string[]>([
     'Racing car sprays burning fuel into crowd.',
     'Japanese princess to wed commoner.',
-    'Racing car sprays burning fuel into crowd.',
-    'Japanese princess to wed commoner.'
+    'Australian walks 100km after outback crash.',
+    'Man charged over missing wedding girl.'
   ]);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  readonly nzGrid = signal<any>({ gutter: 16, span: 12 });
-  actions$: Observable<string[]> = timer(500).pipe(map(() => ['Edit', 'Delete']));
+  readonly nzGrid = signal({ gutter: 16, span: 12 });
+  readonly actions$ = timer(500).pipe(map(() => ['Edit', 'Delete']));
 }
 
 @Component({

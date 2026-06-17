@@ -20,7 +20,6 @@ import { NzInputModule } from './input.module';
 
 describe('input', () => {
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
       providers: [provideNzIconsTesting()]
     });
@@ -298,7 +297,6 @@ describe('input', () => {
     });
 
     it('should set correctly the size from the nzSize input', () => {
-      TestBed.configureTestingModule({});
       fixture = TestBed.createComponent(TestInputFinalSizeComponent);
       component = fixture.componentInstance;
       inputElement = fixture.debugElement.query(By.directive(NzInputDirective)).nativeElement;
@@ -368,7 +366,6 @@ describe('input', () => {
     });
 
     it('should use nzVariant when no formVariant is provided', () => {
-      TestBed.configureTestingModule({});
       fixture = TestBed.createComponent(TestInputFinalVariantComponent);
       component = fixture.componentInstance;
       inputElement = fixture.debugElement.query(By.directive(NzInputDirective)).nativeElement;
@@ -379,7 +376,6 @@ describe('input', () => {
     });
 
     it('should fallback to outlined when neither nzVariant nor formVariant is set', () => {
-      TestBed.configureTestingModule({});
       fixture = TestBed.createComponent(TestInputFinalVariantComponent);
       component = fixture.componentInstance;
       inputElement = fixture.debugElement.query(By.directive(NzInputDirective)).nativeElement;

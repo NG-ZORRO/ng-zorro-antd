@@ -111,7 +111,7 @@ describe('breadcrumb', () => {
 
       // Should generate 2 breadcrumbs when reaching out of the `data` scope.
       await router.navigate(['one', 'two', 'three', 'four']);
-      await flushFixture(fixture);
+      await stabilize(fixture);
       expect(breadcrumb.componentInstance.breadcrumbs.length).toBe(2);
 
       // TODO: pending this test because of Angular's bug: https://github.com/angular/angular/issues/25837
@@ -122,21 +122,21 @@ describe('breadcrumb', () => {
 
       // Should generate breadcrumbs correctly.
       await router.navigate(['one', 'two', 'three']);
-      await flushFixture(fixture);
+      await stabilize(fixture);
       expect(breadcrumb.componentInstance.breadcrumbs.length).toBe(2);
       await router.navigate(['one', 'two']);
-      await flushFixture(fixture);
+      await stabilize(fixture);
       expect(breadcrumb.componentInstance.breadcrumbs.length).toBe(1);
 
       // Shouldn't generate breadcrumb at all.
       await router.navigate(['one']);
-      await flushFixture(fixture);
+      await stabilize(fixture);
       expect(breadcrumb.componentInstance.breadcrumbs.length).toBe(0);
 
       await router.navigate(['/']);
-      await flushFixture(fixture);
+      await stabilize(fixture);
       await router.navigate([{ outlets: { nonPrimary: ['one', 'two'] } }]);
-      await flushFixture(fixture);
+      await stabilize(fixture);
       expect(router.url).toBe('/(nonPrimary:one/two)');
     });
 
@@ -152,12 +152,12 @@ describe('breadcrumb', () => {
       router.initialNavigation();
 
       // Should nzRouteLabel value is 'customBreadcrumb'
-      await flushFixture(fixture);
+      await stabilize(fixture);
       expect(breadcrumb.componentInstance.nzRouteLabel).toBe('customBreadcrumb');
 
       // Should generate 2 breadcrumbs when reaching out of the `data` scope.
       await router.navigate(['one', 'two', 'three', 'four']);
-      await flushFixture(fixture);
+      await stabilize(fixture);
       expect(breadcrumb.componentInstance.breadcrumbs.length).toBe(2);
       expect(breadcrumb.componentInstance.breadcrumbs[0].label).toBe('Layer 2');
       expect(breadcrumb.componentInstance.breadcrumbs[1].label).toBe('Layer 3');
@@ -175,12 +175,12 @@ describe('breadcrumb', () => {
       router.initialNavigation();
 
       // Should nzRouteLabel value is 'customBreadcrumb'
-      await flushFixture(fixture);
+      await stabilize(fixture);
       expect(breadcrumb.componentInstance.nzRouteLabel).toBe('customBreadcrumb');
 
       // Should generate 2 breadcrumbs when reaching out of the `data` scope.
       await router.navigate(['one', 'two', 'three', 'four']);
-      await flushFixture(fixture);
+      await stabilize(fixture);
       expect(breadcrumb.componentInstance.breadcrumbs.length).toBe(2);
       expect(breadcrumb.componentInstance.breadcrumbs[0].label).toBe('Layer 2 Layer 2');
       expect(breadcrumb.componentInstance.breadcrumbs[1].label).toBe('Layer 3 Layer 3');
@@ -199,7 +199,7 @@ describe('breadcrumb', () => {
 
       // Breadcrumb should contain added params by nzRouteFn
       await router.navigate(['one', 'two']);
-      await flushFixture(fixture);
+      await stabilize(fixture);
       expect(breadcrumb.componentInstance.breadcrumbs[0].url).toContain('active=true');
     });
 
@@ -214,14 +214,14 @@ describe('breadcrumb', () => {
       router = TestBed.inject(Router);
       router.initialNavigation();
 
-      await flushFixture(fixture);
+      await stabilize(fixture);
       expect(breadcrumb.componentInstance.nzRouteLabel).toBe('customBreadcrumb');
 
       await router.navigate(['one', 'two', 'three', 'four']);
-      await flushFixture(fixture);
+      await stabilize(fixture);
 
       fixture.debugElement.query(By.css('a')).nativeElement.click();
-      await flushFixture(fixture);
+      await stabilize(fixture);
       expect(router.url).toBe('/one/two');
     });
 
@@ -236,7 +236,7 @@ describe('breadcrumb', () => {
   testDirectionality(() => NzDemoBreadcrumbBasicComponent, By.directive(NzBreadCrumbComponent), 'ant-breadcrumb');
 });
 
-async function flushFixture(fixture: ComponentFixture<NzSafeAny>): Promise<void> {
+async function stabilize(fixture: ComponentFixture<NzSafeAny>): Promise<void> {
   fixture.detectChanges();
   await fixture.whenStable();
   fixture.detectChanges();
@@ -392,14 +392,13 @@ describe('breadcrumb', () => {
   let component: NzBreadCrumbComponent;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
     fixture = TestBed.createComponent(NzBreadCrumbComponent);
     component = fixture.componentInstance;
   });
 
   it('should have correct value for nextUrl', () => {
     spyOn(component, 'nzRouteFn');
-    const mockRout = {
+    const mockRoute = {
       children: [
         {
           outlet: PRIMARY_OUTLET,
@@ -414,7 +413,7 @@ describe('breadcrumb', () => {
       ]
     };
 
-    component['getBreadcrumbs'](mockRout as NzSafeAny, 'mockUrl', []);
+    component['getBreadcrumbs'](mockRoute as NzSafeAny, 'mockUrl', []);
 
     expect(component.nzRouteFn).toHaveBeenCalledWith('mockUrl');
   });

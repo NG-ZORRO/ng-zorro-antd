@@ -21,10 +21,6 @@ describe('nz-wave basic', () => {
   let waveTarget: HTMLElement;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(WaveContainerWithButtonComponent);
     fixture.detectChanges();
     waveTarget = fixture.componentInstance.trigger.nativeElement;
@@ -110,10 +106,6 @@ describe('nz-wave basic', () => {
 describe('nz-wave extra', () => {
   let fixture: ComponentFixture<WaveContainerWithExtraNodeComponent>;
   let waveTarget: HTMLElement;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WaveContainerWithExtraNodeComponent);

@@ -3,51 +3,43 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, inject, NgZone, provideZoneChangeDetection } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TestBed } from '@angular/core/testing';
 import { fromEvent } from 'rxjs';
-
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { fromEventOutsideAngular } from './from-event-outside-angular';
 
-@Component({
-  template: ``,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-class TestComponent {
-  readonly recorder: NzSafeAny[] = [];
+declare const Zone: ZoneLike;
 
-  constructor() {
-    const ngZone = inject(NgZone);
+interface ZoneLike {
+  current: ZoneInstance;
+  root: ZoneInstance;
+}
 
-    ngZone.run(() => {
-      fromEvent(document, 'click')
-        .pipe(takeUntilDestroyed())
-        .subscribe(() => {
-          this.recorder.push(['fromEvent in zone: ', NgZone.isInAngularZone()]);
-        });
-
-      fromEventOutsideAngular(document, 'click')
-        .pipe(takeUntilDestroyed())
-        .subscribe(() => {
-          this.recorder.push(['fromEventOutsideAngular in zone: ', NgZone.isInAngularZone()]);
-        });
-    });
-  }
+interface ZoneInstance {
+  name: string;
+  fork(zoneSpec: { name: string }): ZoneInstance;
+  run<T>(fn: () => T): T;
 }
 
 describe('fromEventOutsideAngular', () => {
   it('should add event listener outside of the Angular zone', () => {
-    TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection()]
-    });
-    const fixture = TestBed.createComponent(TestComponent);
-    document.body.click();
-    expect(fixture.componentInstance.recorder).toEqual([
-      ['fromEvent in zone: ', true],
-      ['fromEventOutsideAngular in zone: ', false]
+    const recorder: Array<[string, string]> = [];
+    const angularZone = Zone.current.fork({ name: 'angular' });
+
+    const subscriptions = angularZone.run(() => [
+      fromEvent(document, 'click').subscribe(() => {
+        recorder.push(['fromEvent zone: ', Zone.current.name]);
+      }),
+      fromEventOutsideAngular(document, 'click').subscribe(() => {
+        recorder.push(['fromEventOutsideAngular zone: ', Zone.current.name]);
+      })
     ]);
+
+    document.body.click();
+
+    expect(recorder).toEqual([
+      ['fromEvent zone: ', 'angular'],
+      ['fromEventOutsideAngular zone: ', '<root>']
+    ]);
+    subscriptions.forEach(subscription => subscription.unsubscribe());
   });
 });

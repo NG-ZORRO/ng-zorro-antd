@@ -9,16 +9,11 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzCronExpressionComponent } from 'ng-zorro-antd/cron-expression/cron-expression.component';
 import { NzCronExpressionModule } from 'ng-zorro-antd/cron-expression/cron-expression.module';
 import { NzCronExpressionSize } from 'ng-zorro-antd/cron-expression/typings';
 
 describe('cron-expression', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-  });
-
   describe('basic', () => {
     let fixture: ComponentFixture<NzTestCronExpressionComponent>;
     let testComponent: NzTestCronExpressionComponent;
@@ -26,17 +21,16 @@ describe('cron-expression', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCronExpressionComponent);
-      fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       resultEl = fixture.debugElement.query(By.directive(NzCronExpressionComponent));
     });
 
-    it('cron-expression basic', () => {
+    it('should render basic cron-expression', () => {
       fixture.detectChanges();
       expect(resultEl.nativeElement.querySelector('.ant-cron-expression-input-group').classList).toContain('ant-input');
     });
 
-    it('cron-expression nzSize', () => {
+    it('should nzSize work', () => {
       testComponent.nzSize.set('small');
       fixture.detectChanges();
       expect(resultEl.nativeElement.querySelector('.ant-cron-expression-input-group').classList).toContain(
@@ -49,7 +43,7 @@ describe('cron-expression', () => {
       );
     });
 
-    it('cron-expression nzDisabled', () => {
+    it('should nzDisabled work', () => {
       testComponent.nzDisabled.set(true);
       fixture.detectChanges();
       expect(resultEl.nativeElement.querySelector('.ant-cron-expression-input-group').classList).toContain(
@@ -57,7 +51,7 @@ describe('cron-expression', () => {
       );
     });
 
-    it('cron-expression nzBorderless', () => {
+    it('should nzBorderless work', () => {
       testComponent.nzBorderless.set(true);
       fixture.detectChanges();
       expect(resultEl.nativeElement.querySelector('.ant-cron-expression-input-group').classList).toContain(
@@ -65,43 +59,38 @@ describe('cron-expression', () => {
       );
     });
 
-    it('cron-expression nzCollapseDisable', () => {
-      expect(resultEl.nativeElement.querySelector('nz-cron-expression-preview')).not.toBe(null);
+    it('should nzCollapseDisable work', () => {
+      fixture.detectChanges();
+      expect(resultEl.nativeElement.querySelector('nz-cron-expression-preview')).not.toBeNull();
       testComponent.nzCollapseDisable.set(true);
       fixture.detectChanges();
-      expect(resultEl.nativeElement.querySelector('nz-cron-expression-preview')).toBe(null);
+      expect(resultEl.nativeElement.querySelector('nz-cron-expression-preview')).toBeNull();
     });
 
-    it('cron-expression nzExtra', () => {
+    it('should nzExtra work', () => {
       fixture.detectChanges();
-      expect(resultEl.nativeElement.querySelector('.ant-cron-expression-map')).not.toBe(null);
+      expect(resultEl.nativeElement.querySelector('.ant-cron-expression-map')).not.toBeNull();
     });
 
-    it('cron-expression nzSemantic', () => {
+    it('should nzSemantic work', () => {
       fixture.detectChanges();
       expect(resultEl.nativeElement.querySelector('.ant-cron-expression-preview-dateTime').innerText).toBe('Test');
     });
   });
 
   describe('type', () => {
-    let fixture: ComponentFixture<NzTestCronExpressionTypeComponent>;
-    let resultEl: DebugElement;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestCronExpressionTypeComponent);
+    it('should nzType work', () => {
+      const fixture = TestBed.createComponent(NzCronExpressionComponent);
+      const element = fixture.debugElement.nativeElement;
+      fixture.componentRef.setInput('nzType', 'spring');
       fixture.detectChanges();
-      resultEl = fixture.debugElement.query(By.directive(NzCronExpressionComponent));
-    });
+      expect(element.querySelectorAll('nz-cron-expression-input').length).toBe(6);
+      expect(element.querySelectorAll('nz-cron-expression-label').length).toBe(6);
 
-    it('cron-expression type', () => {
+      fixture.componentRef.setInput('nzType', 'linux');
       fixture.detectChanges();
-      expect(resultEl.nativeElement.querySelectorAll('nz-cron-expression-input').length).toBe(6);
-      expect(resultEl.nativeElement.querySelectorAll('nz-cron-expression-label').length).toBe(6);
-
-      fixture.componentRef.instance.nzType.set('linux');
-      fixture.detectChanges();
-      expect(resultEl.nativeElement.querySelectorAll('nz-cron-expression-input').length).toBe(5);
-      expect(resultEl.nativeElement.querySelectorAll('nz-cron-expression-label').length).toBe(5);
+      expect(element.querySelectorAll('nz-cron-expression-input').length).toBe(5);
+      expect(element.querySelectorAll('nz-cron-expression-label').length).toBe(5);
     });
   });
 
@@ -112,19 +101,17 @@ describe('cron-expression', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCronExpressionFormComponent);
-      fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       resultEl = fixture.debugElement.query(By.directive(NzCronExpressionComponent));
     });
 
-    it('cron-expression form', async () => {
-      await updateNonSignalsInput(fixture);
+    it('should work with form', async () => {
+      fixture.detectChanges();
       expect(resultEl.nativeElement.querySelector('.ant-cron-expression-input-group').classList).not.toContain(
         'ant-input-disabled'
       );
       testComponent.disable();
-      fixture.detectChanges();
-      await updateNonSignalsInput(fixture);
+      await fixture.whenStable();
       expect(resultEl.nativeElement.querySelector('.ant-cron-expression-input-group').classList).toContain(
         'ant-input-disabled'
       );
@@ -154,14 +141,6 @@ export class NzTestCronExpressionComponent {
   readonly nzDisabled = signal(false);
   readonly nzBorderless = signal(false);
   readonly nzCollapseDisable = signal(false);
-}
-
-@Component({
-  imports: [NzCronExpressionModule],
-  template: `<nz-cron-expression [nzType]="nzType()" />`
-})
-export class NzTestCronExpressionTypeComponent {
-  readonly nzType = signal<'linux' | 'spring'>('spring');
 }
 
 @Component({

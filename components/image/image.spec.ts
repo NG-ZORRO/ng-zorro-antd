@@ -415,9 +415,11 @@ describe('image preview', () => {
       expect(imageElement!.getAttribute('style')).toContain('transform: scale3d(11, 11, 1) rotate(0deg)');
     });
 
-    it('should detect mouse zoom direction correctly', () => {
-      jasmine.clock().install();
-      try {
+    describe('fake clock', () => {
+      beforeEach(() => jasmine.clock().install());
+      afterEach(() => jasmine.clock().uninstall());
+
+      it('should detect mouse zoom direction correctly', () => {
         context.images = [{ src: QUICK_SRC }];
         context.createByService();
         const previewInstance = context.previewRef!.previewInstance;
@@ -428,9 +430,7 @@ describe('image preview', () => {
         expect(isZoomingInside).toBeFalsy();
         isZoomingInside = previewInstance['isZoomedInWithMouseWheel'](-10);
         expect(isZoomingInside).toBeTruthy();
-      } finally {
-        jasmine.clock().uninstall();
-      }
+      });
     });
 
     it('should call correct methods when zooming in or out', async () => {
@@ -455,9 +455,11 @@ describe('image preview', () => {
       expect(previewInstance['reCenterImage']).toHaveBeenCalled();
     });
 
-    it('should close image preview when escape is pressed', () => {
-      jasmine.clock().install();
-      try {
+    describe('fake clock', () => {
+      beforeEach(() => jasmine.clock().install());
+      afterEach(() => jasmine.clock().uninstall());
+
+      it('should close image preview when escape is pressed', () => {
         context.images = [{ src: QUICK_SRC }];
         context.createByService();
         const previewInstance = context.previewRef!.previewInstance;
@@ -468,9 +470,7 @@ describe('image preview', () => {
         jasmine.clock().tick(0);
 
         expect(previewInstance.onClose).toHaveBeenCalled();
-      } finally {
-        jasmine.clock().uninstall();
-      }
+      });
     });
 
     it('should container click work', async () => {
@@ -577,9 +577,11 @@ describe('image preview', () => {
   });
 
   describe('Drag', () => {
-    it('should drag released work', () => {
-      jasmine.clock().install();
-      try {
+    describe('fake clock', () => {
+      beforeEach(() => jasmine.clock().install());
+      afterEach(() => jasmine.clock().uninstall());
+
+      it('should drag released work', () => {
         context.images = [{ src: QUICK_SRC }];
         context.createByService();
         const previewInstance = context.previewRef!.previewInstance;
@@ -590,9 +592,7 @@ describe('image preview', () => {
           return true;
         });
         expect(previewInstance.position).toEqual({ x: 0, y: 0 });
-      } finally {
-        jasmine.clock().uninstall();
-      }
+      });
     });
 
     it('should onDragEnd be called after drag is ended', async () => {

@@ -76,5 +76,5 @@ export class TestTransitionPatchRestoreComponent {}
   template: `<button nz-button [hidden]="hidden()"></button>`
 })
 export class TestTransitionPatchHiddenBindingComponent {
-  readonly hidden = signal<boolean | undefined>(false);
+  readonly hidden = signal<unknown>(false);
 }

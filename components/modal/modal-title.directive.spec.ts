@@ -6,9 +6,8 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild, inject, signal } from '@angular/core';
 import { ComponentFixture, inject as testingInject, TestBed } from '@angular/core/testing';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 
 import { NzModalRef } from './modal-ref';
 import { NzModalTitleDirective } from './modal-title.directive';
@@ -24,7 +23,7 @@ describe('modal title directive', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [NzModalService, provideNoopAnimations()]
+      providers: [NzModalService, provideNzNoAnimation()]
     });
   });
 
@@ -93,7 +92,7 @@ describe('modal title directive', () => {
 class TestDirectiveTitleComponent {
   readonly isVisible = signal(false);
   @ViewChild(NzModalComponent) modalComponent!: NzModalComponent;
-  @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) modalTitleDir!: TemplateRef<NzSafeAny>;
+  @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) modalTitleDir!: TemplateRef<void>;
 
   handleCancel(): void {
     this.isVisible.set(false);
@@ -118,7 +117,7 @@ class TestDirectiveTitleComponent {
 class TestDirectiveTitleWithInitOpenedComponent {
   readonly isVisible = signal(true);
   @ViewChild(NzModalComponent) modalComponent!: NzModalComponent;
-  @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) modalTitleDir!: TemplateRef<NzSafeAny>;
+  @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) modalTitleDir!: TemplateRef<void>;
 }
 
 @Component({
@@ -128,7 +127,7 @@ class TestDirectiveTitleWithInitOpenedComponent {
 class TestDirectiveTitleInServiceComponent {
   readonly nzModalRef = inject(NzModalRef);
 
-  @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) modalTitleDir!: TemplateRef<NzSafeAny>;
+  @ViewChild(NzModalTitleDirective, { static: true, read: TemplateRef }) modalTitleDir!: TemplateRef<void>;
 
   handleCancel(): void {
     this.nzModalRef.close();

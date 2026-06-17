@@ -6,10 +6,10 @@
 import { ApplicationRef, Component, DebugElement, OnInit, TemplateRef, ViewChild, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
@@ -39,9 +39,8 @@ describe('transfer', () => {
   let pageObject: TransferPageObject<AbstractTestTransferComponent>;
 
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations()]
+      providers: [provideNzIconsTesting(), provideNzNoAnimation()]
     });
     fixture = TestBed.createComponent(TestTransferComponent);
     debugElement = fixture.debugElement;
@@ -579,7 +578,7 @@ describe('transfer', () => {
 });
 
 testDirectionality(() => TestTransferComponent, By.directive(NzTransferComponent), 'ant-transfer', {
-  providers: [provideNzIconsTesting(), provideNoopAnimations()]
+  providers: [provideNzIconsTesting(), provideNzNoAnimation()]
 });
 
 interface AbstractTestTransferComponent {

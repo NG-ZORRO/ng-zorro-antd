@@ -8,6 +8,7 @@ import { Component, ElementRef, ViewChild, signal } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzElementPatchDirective } from 'ng-zorro-antd/core/element-patch';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 
@@ -22,9 +23,8 @@ describe('tooltip', () => {
   let overlayContainerElement: HTMLElement;
 
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
     fixture = TestBed.createComponent(NzTooltipTestComponent);
     component = fixture.componentInstance;
@@ -34,13 +34,15 @@ describe('tooltip', () => {
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
-    jasmine.clock().install();
   }));
+
+  beforeEach(() => jasmine.clock().install());
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
-    jasmine.clock().uninstall();
   });
+
+  afterEach(() => jasmine.clock().uninstall());
 
   function getTextContentOf(selector: string): string | null {
     const el = overlayContainerElement.querySelector(selector);

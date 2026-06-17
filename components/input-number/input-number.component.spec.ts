@@ -4,22 +4,13 @@
  */
 
 import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
-import {
-  ApplicationRef,
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  provideZoneChangeDetection,
-  signal,
-  viewChild,
-  type WritableSignal
-} from '@angular/core';
+import { ApplicationRef, Component, ElementRef, signal, viewChild, type WritableSignal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
-import { dispatchEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
+import { dispatchEvent, dispatchKeyboardEvent, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NZ_SPACE_COMPACT_SIZE } from 'ng-zorro-antd/space';
@@ -33,9 +24,8 @@ describe('input-number', () => {
   let hostElement: HTMLElement;
 
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
+      providers: [provideNzIconsTesting()]
     });
     fixture = TestBed.createComponent(InputNumberTestComponent);
     component = fixture.componentInstance;
@@ -386,7 +376,8 @@ describe('input-number', () => {
 
     component.value = 555;
     fixture.detectChanges();
-    await fixture.whenStable();
+    await updateNonSignalsInput(fixture);
+    fixture.detectChanges();
 
     component.inputNumber().focus({ cursor: 'start' });
     expect(input.selectionStart).toBe(0);
@@ -547,13 +538,13 @@ describe('input-number', () => {
 
   function upStepByHandler(eventInit?: MouseEventInit): void {
     const handler = hostElement.querySelector('.ant-input-number-handler-up')!;
-    handler.dispatchEvent(new MouseEvent('mousedown', eventInit));
-    handler.dispatchEvent(new MouseEvent('mouseup'));
+    handler.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, ...eventInit }));
+    handler.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
   }
   function downStepByHandler(eventInit?: MouseEventInit): void {
     const handler = hostElement.querySelector('.ant-input-number-handler-down')!;
-    handler.dispatchEvent(new MouseEvent('mousedown', eventInit));
-    handler.dispatchEvent(new MouseEvent('mouseup'));
+    handler.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, ...eventInit }));
+    handler.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
   }
 
   function upStepByKeyboard(): void {
@@ -584,9 +575,8 @@ describe('input-number with affixes or addons', () => {
   let fixture: ComponentFixture<InputNumberWithAffixesAndAddonsTestComponent>;
 
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
+      providers: [provideNzIconsTesting()]
     });
     fixture = TestBed.createComponent(InputNumberWithAffixesAndAddonsTestComponent);
     component = fixture.componentInstance;
@@ -704,6 +694,7 @@ describe('finalSize', () => {
     fixture.detectChanges();
     expect(inputNumberElement.classList).toContain('ant-input-number-lg');
   });
+
   it('should set correctly the size from the compactSize signal', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: NZ_SPACE_COMPACT_SIZE, useValue: compactSizeSignal }]
@@ -713,8 +704,8 @@ describe('finalSize', () => {
     fixture.detectChanges();
     expect(inputNumberElement.classList).toContain('ant-input-number-lg');
   });
+
   it('should set correctly the size from the size input ', () => {
-    TestBed.configureTestingModule({});
     fixture = TestBed.createComponent(TestInputNumberFinalSizeComponent);
     inputNumberElement = fixture.debugElement.query(By.directive(NzInputNumberComponent)).nativeElement;
     fixture.componentInstance.size = 'large';
@@ -754,7 +745,7 @@ describe('finalVariant', () => {
     });
     fixture = TestBed.createComponent(TestInputNumberFinalVariantComponent);
     inputNumberElement = fixture.debugElement.query(By.directive(NzInputNumberComponent)).nativeElement;
-    fixture.componentInstance.variant.set('borderless');
+    fixture.componentInstance.variant = 'borderless';
     fixture.detectChanges();
     formVariantSignal.set('filled');
     fixture.detectChanges();
@@ -763,10 +754,9 @@ describe('finalVariant', () => {
   });
 
   it('should use nzVariant when no formVariant is provided', () => {
-    TestBed.configureTestingModule({});
     fixture = TestBed.createComponent(TestInputNumberFinalVariantComponent);
     inputNumberElement = fixture.debugElement.query(By.directive(NzInputNumberComponent)).nativeElement;
-    fixture.componentInstance.variant.set('filled');
+    fixture.componentInstance.variant = 'filled';
     fixture.detectChanges();
     expect(inputNumberElement.classList).toContain('ant-input-number-filled');
   });
@@ -791,35 +781,170 @@ describe('finalVariant', () => {
       [nzControls]="controls"
       [nzParser]="parser"
       [nzFormatter]="formatter"
-      [(ngModel)]="value"
+      [ngModel]="value"
+      (ngModelChange)="value = $event"
       [disabled]="controlDisabled"
       [nzChangeOnWheel]="changeOnWheel"
       (nzOnStep)="onStep($event)"
     />
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class InputNumberTestComponent {
-  id: string | null = null;
-  size: NzSizeLDSType = 'default';
-  placeholder: string | null = null;
-  status: NzStatus = '';
-  step = 1;
-  min = Number.MIN_SAFE_INTEGER;
-  max = Number.MAX_SAFE_INTEGER;
-  precision: null | number = null;
-  disabled = false;
-  readonly = false;
-  variant: NzVariant = 'outlined';
-  keyboard = true;
-  controls = true;
-  changeOnWheel = true;
-  parser: ((value: string) => number) | undefined = undefined;
-  formatter: ((value: number) => string) | undefined = undefined;
-
+  readonly idSignal = signal<string | null>(null);
+  readonly sizeSignal = signal<NzSizeLDSType>('default');
+  readonly placeholderSignal = signal<string | null>(null);
+  readonly statusSignal = signal<NzStatus>('');
+  readonly stepSignal = signal(1);
+  readonly minSignal = signal(Number.MIN_SAFE_INTEGER);
+  readonly maxSignal = signal(Number.MAX_SAFE_INTEGER);
+  readonly precisionSignal = signal<null | number>(null);
+  readonly disabledSignal = signal(false);
+  readonly readonlySignal = signal(false);
+  readonly variantSignal = signal<NzVariant>('outlined');
+  readonly keyboardSignal = signal(true);
+  readonly controlsSignal = signal(true);
+  readonly changeOnWheelSignal = signal(true);
+  readonly parserSignal = signal<((value: string) => number) | undefined>(undefined);
+  readonly formatterSignal = signal<((value: number) => string) | undefined>(undefined);
+  readonly controlDisabledSignal = signal(false);
   value: number | null = null;
-  controlDisabled = false;
   inputNumber = viewChild.required(NzInputNumberComponent);
+
+  get id(): string | null {
+    return this.idSignal();
+  }
+
+  set id(value: string | null) {
+    this.idSignal.set(value);
+  }
+
+  get size(): NzSizeLDSType {
+    return this.sizeSignal();
+  }
+
+  set size(value: NzSizeLDSType) {
+    this.sizeSignal.set(value);
+  }
+
+  get placeholder(): string | null {
+    return this.placeholderSignal();
+  }
+
+  set placeholder(value: string | null) {
+    this.placeholderSignal.set(value);
+  }
+
+  get status(): NzStatus {
+    return this.statusSignal();
+  }
+
+  set status(value: NzStatus) {
+    this.statusSignal.set(value);
+  }
+
+  get step(): number {
+    return this.stepSignal();
+  }
+
+  set step(value: number) {
+    this.stepSignal.set(value);
+  }
+
+  get min(): number {
+    return this.minSignal();
+  }
+
+  set min(value: number) {
+    this.minSignal.set(value);
+  }
+
+  get max(): number {
+    return this.maxSignal();
+  }
+
+  set max(value: number) {
+    this.maxSignal.set(value);
+  }
+
+  get precision(): null | number {
+    return this.precisionSignal();
+  }
+
+  set precision(value: null | number) {
+    this.precisionSignal.set(value);
+  }
+
+  get disabled(): boolean {
+    return this.disabledSignal();
+  }
+
+  set disabled(value: boolean) {
+    this.disabledSignal.set(value);
+  }
+
+  get readonly(): boolean {
+    return this.readonlySignal();
+  }
+
+  set readonly(value: boolean) {
+    this.readonlySignal.set(value);
+  }
+
+  get variant(): NzVariant {
+    return this.variantSignal();
+  }
+
+  set variant(value: NzVariant) {
+    this.variantSignal.set(value);
+  }
+
+  get keyboard(): boolean {
+    return this.keyboardSignal();
+  }
+
+  set keyboard(value: boolean) {
+    this.keyboardSignal.set(value);
+  }
+
+  get controls(): boolean {
+    return this.controlsSignal();
+  }
+
+  set controls(value: boolean) {
+    this.controlsSignal.set(value);
+  }
+
+  get changeOnWheel(): boolean {
+    return this.changeOnWheelSignal();
+  }
+
+  set changeOnWheel(value: boolean) {
+    this.changeOnWheelSignal.set(value);
+  }
+
+  get parser(): ((value: string) => number) | undefined {
+    return this.parserSignal();
+  }
+
+  set parser(value: ((value: string) => number) | undefined) {
+    this.parserSignal.set(value);
+  }
+
+  get formatter(): ((value: number) => string) | undefined {
+    return this.formatterSignal();
+  }
+
+  set formatter(value: ((value: number) => string) | undefined) {
+    this.formatterSignal.set(value);
+  }
+
+  get controlDisabled(): boolean {
+    return this.controlDisabledSignal();
+  }
+
+  set controlDisabled(value: boolean) {
+    this.controlDisabledSignal.set(value);
+  }
 
   get displayValue(): string {
     return this.inputNumber()['displayValue']();
@@ -876,13 +1001,36 @@ class InputNumberTestComponent {
       <span nzInputAddonBefore>Before</span>
       <span nzInputAddonAfter>After</span>
     </nz-input-number>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class InputNumberWithAffixesAndAddonsTestComponent {
-  disabled = false;
-  readonly = false;
-  variant: NzVariant = 'outlined';
+  readonly disabledSignal = signal(false);
+  readonly readonlySignal = signal(false);
+  readonly variantSignal = signal<NzVariant>('outlined');
+
+  get disabled(): boolean {
+    return this.disabledSignal();
+  }
+
+  set disabled(value: boolean) {
+    this.disabledSignal.set(value);
+  }
+
+  get readonly(): boolean {
+    return this.readonlySignal();
+  }
+
+  set readonly(value: boolean) {
+    this.readonlySignal.set(value);
+  }
+
+  get variant(): NzVariant {
+    return this.variantSignal();
+  }
+
+  set variant(value: NzVariant) {
+    this.variantSignal.set(value);
+  }
 
   readonly withPropAffixes = viewChild.required('withPropAffixes', { read: ElementRef });
   readonly withContentAffixes = viewChild.required('withContentAffixes', { read: ElementRef });
@@ -894,18 +1042,33 @@ class InputNumberWithAffixesAndAddonsTestComponent {
 
 @Component({
   imports: [NzInputNumberModule],
-  template: `<nz-input-number [nzSize]="size" />`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  selector: 'nz-test-input-number-final-size',
+  template: `<nz-input-number [nzSize]="size" />`
 })
 class TestInputNumberFinalSizeComponent {
-  size: NzSizeLDSType = 'default';
+  readonly sizeSignal = signal<NzSizeLDSType>('default');
+
+  get size(): NzSizeLDSType {
+    return this.sizeSignal();
+  }
+
+  set size(value: NzSizeLDSType) {
+    this.sizeSignal.set(value);
+  }
 }
 
 @Component({
   imports: [NzInputNumberModule],
-  template: `<nz-input-number [nzVariant]="variant()" />`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<nz-input-number [nzVariant]="variant" />`
 })
 class TestInputNumberFinalVariantComponent {
-  readonly variant = signal<NzVariant | undefined>(undefined);
+  readonly variantSignal = signal<NzVariant | undefined>(undefined);
+
+  get variant(): NzVariant | undefined {
+    return this.variantSignal();
+  }
+
+  set variant(value: NzVariant | undefined) {
+    this.variantSignal.set(value);
+  }
 }

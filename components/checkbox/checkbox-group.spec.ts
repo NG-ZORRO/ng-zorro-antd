@@ -18,10 +18,6 @@ describe('checkbox group', () => {
   let hostElement: HTMLElement;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(CheckboxGroupTestComponent);
     component = fixture.componentInstance;
     hostElement = fixture.nativeElement.querySelector('nz-checkbox-group');
@@ -66,9 +62,7 @@ describe('checkbox group', () => {
 
   it('should be set disabled by ng control', async () => {
     component.controlDisabled.set(true);
-    fixture.detectChanges();
-    await updateNonSignalsInput(fixture);
-    fixture.detectChanges();
+    await fixture.whenStable();
     for (const element of getOptionElements()) {
       expect(element.classList).toContain('ant-checkbox-wrapper-disabled');
     }
@@ -76,9 +70,7 @@ describe('checkbox group', () => {
 
   it('should be change value', async () => {
     component.value.set(['A']);
-    fixture.detectChanges();
-    await updateNonSignalsInput(fixture);
-    fixture.detectChanges();
+    await fixture.whenStable();
     let checkedOptionElements = getOptionElements().filter(ele =>
       ele.classList.contains('ant-checkbox-wrapper-checked')
     );
@@ -86,18 +78,14 @@ describe('checkbox group', () => {
     expect(checkedOptionElements[0].textContent?.trim()).toBe('A');
 
     component.value.set(['A', 'B']);
-    fixture.detectChanges();
-    await updateNonSignalsInput(fixture);
-    fixture.detectChanges();
+    await fixture.whenStable();
     checkedOptionElements = getOptionElements().filter(ele => ele.classList.contains('ant-checkbox-wrapper-checked'));
     expect(checkedOptionElements.length).toBe(2);
     expect(checkedOptionElements[0].textContent?.trim()).toBe('A');
     expect(checkedOptionElements[1].textContent?.trim()).toBe('B');
 
     component.value.set([]);
-    fixture.detectChanges();
-    await updateNonSignalsInput(fixture);
-    fixture.detectChanges();
+    await fixture.whenStable();
     checkedOptionElements = getOptionElements().filter(ele => ele.classList.contains('ant-checkbox-wrapper-checked'));
     expect(checkedOptionElements.length).toBe(0);
   });
@@ -111,10 +99,6 @@ describe('checkbox group with custom layout', () => {
   let component: CheckboxGroupWithCustomLayoutTestComponent;
   let fixture: ComponentFixture<CheckboxGroupWithCustomLayoutTestComponent>;
   let hostElement: HTMLElement;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckboxGroupWithCustomLayoutTestComponent);

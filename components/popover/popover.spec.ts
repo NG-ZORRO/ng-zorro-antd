@@ -20,7 +20,6 @@ describe('popover', () => {
   let overlayContainerElement: HTMLElement;
 
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
       providers: [provideNoopAnimations()]
     });
@@ -32,13 +31,15 @@ describe('popover', () => {
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
-    jasmine.clock().install();
   }));
+
+  beforeEach(() => jasmine.clock().install());
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
-    jasmine.clock().uninstall();
   });
+
+  afterEach(() => jasmine.clock().uninstall());
 
   function getTextContentOf(selector: string): string | null {
     const el = overlayContainerElement.querySelector(selector);

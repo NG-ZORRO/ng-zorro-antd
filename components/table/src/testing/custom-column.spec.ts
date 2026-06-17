@@ -16,7 +16,6 @@ describe('nz-table-custom-column', () => {
   let resultEl: DebugElement;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
     fixture = TestBed.createComponent(NzCustomColumnTestTableComponent);
     fixture.detectChanges();
     testComponent = fixture.componentInstance;

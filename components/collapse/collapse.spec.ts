@@ -313,8 +313,7 @@ describe('collapse', () => {
     <ng-template #headerTemplate>template</ng-template>
     <nz-collapse [nzAccordion]="accordion()" [nzBordered]="bordered()">
       <nz-collapse-panel
-        [nzActive]="active01()"
-        (nzActiveChange)="active01.set($event)"
+        [(nzActive)]="active01"
         (nzActiveChange)="active01Change($event)"
         [nzHeader]="header"
         [nzShowArrow]="showArrow()"
@@ -322,11 +321,7 @@ describe('collapse', () => {
       >
         <p>Panel01</p>
       </nz-collapse-panel>
-      <nz-collapse-panel
-        [nzActive]="active02()"
-        (nzActiveChange)="active02.set($event)"
-        (nzActiveChange)="active02Change($event)"
-      >
+      <nz-collapse-panel [(nzActive)]="active02" (nzActiveChange)="active02Change($event)">
         <p>Panel02</p>
       </nz-collapse-panel>
     </nz-collapse>
@@ -384,8 +379,7 @@ export class NzTestCollapseIconComponent {}
   template: `
     <nz-collapse>
       <nz-collapse-panel
-        [nzActive]="active()"
-        (nzActiveChange)="active.set($event)"
+        [(nzActive)]="active"
         [nzCollapsible]="collapsible()"
         [nzShowArrow]="showArrow()"
         nzHeader="Header"

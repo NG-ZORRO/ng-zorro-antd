@@ -5,9 +5,9 @@
 
 import { PlatformLocation } from '@angular/common';
 import { ApplicationRef, DOCUMENT, NgZone } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
-import { MockNgZone } from 'ng-zorro-antd/core/testing';
+import { MockNgZone, nextAnimationFrame } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzScrollService } from './scroll';
@@ -107,6 +107,7 @@ describe('NzScrollService', () => {
       mockWin.window = mockWin;
       expect(scrollService.getScroll(mockWin)).toBe(10);
     });
+
     it('should be return scrollTop when target is html element', () => {
       const mockEl: NzSafeAny = { scrollTop: 10 };
       expect(scrollService.getScroll(mockEl)).toBe(10);
@@ -114,21 +115,16 @@ describe('NzScrollService', () => {
   });
 
   describe('change detection behavior', () => {
-    // The `requestAnimationFrame` is mocked as `setTimeout(fn, 16)`.
-    const tickAnimationFrame = (): void => tick(16);
-
-    it('should not trigger change detection when calling `scrollTo`', fakeAsync(() => {
+    it('should not trigger change detection when calling `scrollTo`', async () => {
       const appRef = TestBed.inject(ApplicationRef);
       spyOn(appRef, 'tick');
 
       scrollService.scrollTo();
-
-      tickAnimationFrame();
-
+      await nextAnimationFrame();
       expect(appRef.tick).not.toHaveBeenCalled();
-    }));
+    });
 
-    it('should call the custom callback within the Angular zone', fakeAsync(() => {
+    it('should call the custom callback within the Angular zone', async () => {
       let callbackCalled = false;
       spyOn(ngZone, 'run').and.callThrough();
 
@@ -139,10 +135,9 @@ describe('NzScrollService', () => {
         }
       });
 
-      tickAnimationFrame();
-
+      await nextAnimationFrame();
       expect(ngZone.run).toHaveBeenCalled();
       expect(callbackCalled).toBeTrue();
-    }));
+    });
   });
 });

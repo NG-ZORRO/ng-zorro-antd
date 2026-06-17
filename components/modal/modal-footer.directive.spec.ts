@@ -6,10 +6,9 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild, inject, signal } from '@angular/core';
 import { ComponentFixture, inject as testingInject, TestBed } from '@angular/core/testing';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 
 import { NzModalFooterDirective } from './modal-footer.directive';
 import { NzModalRef } from './modal-ref';
@@ -25,7 +24,7 @@ describe('modal footer directive', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [NzModalService, provideNoopAnimations()]
+      providers: [NzModalService, provideNzNoAnimation()]
     });
   });
 
@@ -104,7 +103,7 @@ class TestDirectiveFooterComponent {
   readonly isVisible = signal(false);
   @ViewChild(NzModalComponent) nzModalComponent!: NzModalComponent;
   @ViewChild(NzModalFooterDirective, { static: true, read: TemplateRef })
-  nzModalFooterDirective!: TemplateRef<NzSafeAny>;
+  nzModalFooterDirective!: TemplateRef<void>;
 
   handleCancel(): void {
     this.isVisible.set(false);
@@ -132,7 +131,7 @@ class TestDirectiveFooterWithInitOpenedComponent {
   readonly isVisible = signal(true);
   @ViewChild(NzModalComponent) nzModalComponent!: NzModalComponent;
   @ViewChild(NzModalFooterDirective, { static: true, read: TemplateRef })
-  nzModalFooterDirective!: TemplateRef<NzSafeAny>;
+  nzModalFooterDirective!: TemplateRef<void>;
 }
 
 @Component({
@@ -147,7 +146,7 @@ class TestDirectiveFooterInServiceComponent {
   public readonly nzModalRef = inject(NzModalRef);
 
   @ViewChild(NzModalFooterDirective, { static: true, read: TemplateRef })
-  nzModalFooterDirective!: TemplateRef<NzSafeAny>;
+  nzModalFooterDirective!: TemplateRef<void>;
 
   handleCancel(): void {
     this.nzModalRef.close();

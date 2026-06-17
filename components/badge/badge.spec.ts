@@ -128,7 +128,7 @@ describe('badge', () => {
       testComponent.standalone.set(true);
       testComponent.style.set({ backgroundColor: '#52c41a' });
       fixture.detectChanges();
-      await updateNonSignalsInput(fixture, 1000);
+      await updateNonSignalsInput(fixture);
       fixture.detectChanges();
       badgeElement = fixture.debugElement.query(By.directive(NzBadgeComponent));
       expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
@@ -138,7 +138,7 @@ describe('badge', () => {
     it('should disable animation for inner elements when `noAnimation` is `true` ', async () => {
       testComponent.noAnimation.set(true);
       fixture.detectChanges();
-      await updateNonSignalsInput(fixture, 1000);
+      await updateNonSignalsInput(fixture);
       expect(badgeElement.nativeElement.classList).toContain('nz-animate-disabled');
       expect(badgeElement.nativeElement.querySelector('nz-badge-sup .ant-scroll-number-only').classList).toContain(
         'nz-animate-disabled'

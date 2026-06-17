@@ -23,7 +23,6 @@ describe('upload-list', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        // todo: use zoneless
         providers: [provideNzIconsTesting(), provideNzNoAnimation()]
       });
       fixture = TestBed.createComponent(TestUploadListComponent);
@@ -31,12 +30,6 @@ describe('upload-list', () => {
       instance = dl.componentInstance;
       fixture.detectChanges();
     });
-
-    async function detectStableChanges(): Promise<void> {
-      fixture.detectChanges();
-      await fixture.whenStable();
-      fixture.detectChanges();
-    }
 
     describe('[listType]', () => {
       for (const type of ['text', 'picture', 'picture-card']) {
@@ -121,7 +114,7 @@ describe('upload-list', () => {
             }
           }
         ]);
-        await detectStableChanges();
+        await fixture.whenStable();
         const el = dl.query(By.css('.ant-upload-list-item-name')).nativeElement as HTMLElement;
         expect(el.attributes.getNamedItem('download')!.textContent).toBe('image');
       });
@@ -137,7 +130,7 @@ describe('upload-list', () => {
             linkProps: linkPropsString
           }
         ]);
-        await detectStableChanges();
+        await fixture.whenStable();
         const el = dl.query(By.css('.ant-upload-list-item-name')).nativeElement as HTMLElement;
         expect(el.attributes.getNamedItem('download')!.textContent).toBe('image');
       });
@@ -196,7 +189,7 @@ describe('upload-list', () => {
         instance.previewIsImage.set(() => true);
         instance.listType.set('picture');
         instance.items.set([{}]);
-        await detectStableChanges();
+        await fixture.whenStable();
         expect(instance.items()[0].isImageUrl).toBe(true);
       });
     });
@@ -219,7 +212,7 @@ describe('upload-list', () => {
 
         instance.listType.set('picture');
         instance.items.set([{ originFileObj: new File([''], '1.png', { type: 'image/' }), thumbUrl: undefined }]);
-        await detectStableChanges();
+        await fixture.whenStable();
         expect(instance.items()[0].thumbUrl.length).toBeGreaterThan(1);
       });
 
@@ -231,7 +224,7 @@ describe('upload-list', () => {
 
         instance.listType.set('picture');
         instance.items.set([{ originFileObj: new File([''], '1.png', { type: 'image/' }), thumbUrl: undefined }]);
-        await detectStableChanges();
+        await fixture.whenStable();
         expect(instance.items()[0].thumbUrl.length).toBeGreaterThan(1);
       });
 
@@ -246,7 +239,7 @@ describe('upload-list', () => {
         instance.previewFile.set(() => of('11'));
         instance.listType.set('picture');
         instance.items.set([{ originFileObj: new File([''], '1.png', { type: 'image/' }), thumbUrl: undefined }]);
-        await detectStableChanges();
+        await fixture.whenStable();
         expect(instance.items()[0].thumbUrl).toBe('11');
       });
     });

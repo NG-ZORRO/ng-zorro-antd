@@ -16,7 +16,6 @@ describe('nz-td', () => {
   let td: DebugElement;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
     fixture = TestBed.createComponent(NzTestTdComponent);
     fixture.detectChanges();
     testComponent = fixture.debugElement.componentInstance;

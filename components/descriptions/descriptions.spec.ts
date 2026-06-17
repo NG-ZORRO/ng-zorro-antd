@@ -9,18 +9,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { provideMockDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzDescriptionsComponent } from './descriptions.component';
 import { NzDescriptionsModule } from './descriptions.module';
 
-// eslint-disable-next-line  @typescript-eslint/no-explicit-any
-declare const viewport: any;
+declare const viewport: NzSafeAny;
 
 describe('descriptions', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-  });
-
   describe('with different spans', () => {
     let testComponent: NzTestDescriptionsComponent;
     let componentElement: HTMLElement;

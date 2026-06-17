@@ -37,7 +37,6 @@ describe('slider', () => {
   }
 
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
       providers: [provideNzIconsTesting(), provideNoopAnimations()]
     });

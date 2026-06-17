@@ -57,20 +57,15 @@ describe('drag service', () => {
     });
 
     afterEach(() => {
-      if (drag_) {
-        drag_.unsubscribe();
-      }
-
-      if (complete_) {
-        complete_.unsubscribe();
-      }
+      drag_?.unsubscribe();
+      complete_?.unsubscribe();
     });
 
     it('should mousedown work', async () => {
       component.drag(createMouseEvent('mousedown', 0, 0));
       dispatchMouseEvent(document, 'mousemove', 100, 0);
 
-      await tickMilliseconds(fixture, 20);
+      await stabilize(fixture, 20);
       expect(dragged).toBeTruthy();
 
       dispatchMouseEvent(document, 'mouseup');
@@ -81,7 +76,7 @@ describe('drag service', () => {
       component.drag(createTouchEvent('touchdown') as TouchEvent);
       dispatchTouchEvent(document, 'touchmove', 100, 0);
 
-      await tickMilliseconds(fixture, 20);
+      await stabilize(fixture, 20);
       expect(dragged).toBeTruthy();
 
       dispatchTouchEvent(document, 'touchend');
@@ -100,7 +95,7 @@ describe('drag service', () => {
       component.drag(createMouseEvent('mousedown', 0, 0));
       dispatchMouseEvent(document, 'mousemove', 4, 0);
 
-      await tickMilliseconds(fixture, 20);
+      await stabilize(fixture, 20);
       expect(dragged).toBeFalsy();
 
       dispatchMouseEvent(document, 'mouseup');
@@ -109,8 +104,8 @@ describe('drag service', () => {
   });
 });
 
-async function tickMilliseconds<T>(fixture: ComponentFixture<T>, milliseconds: number = 1): Promise<void> {
+async function stabilize<T>(fixture: ComponentFixture<T>, ms: number = 1): Promise<void> {
   fixture.detectChanges();
-  await updateNonSignalsInput(fixture, milliseconds);
+  await updateNonSignalsInput(fixture, ms);
   fixture.detectChanges();
 }

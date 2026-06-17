@@ -18,7 +18,6 @@ import { NzButtonComponent, NzButtonModule, NzButtonShape, NzButtonSize, NzButto
 
 describe('button', () => {
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
       providers: [provideNzIconsTesting()]
     });

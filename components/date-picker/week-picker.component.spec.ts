@@ -20,21 +20,19 @@ describe('week-picker', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideNzNoAnimation()]
     });
+
+    fixture = TestBed.createComponent(NzTestWeekPickerComponent);
+    fixtureInstance = fixture.componentInstance;
   });
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
   }));
-
-  beforeEach(async () => {
-    fixture = TestBed.createComponent(NzTestWeekPickerComponent);
-    fixtureInstance = fixture.componentInstance;
-  });
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
@@ -128,9 +126,9 @@ describe('week-picker', () => {
   imports: [NzDatePickerModule, FormsModule],
   template: `
     @if (useDatePicker()) {
-      <nz-date-picker nzMode="week" [ngModel]="value()" (ngModelChange)="value.set($event)" />
+      <nz-date-picker nzMode="week" [(ngModel)]="value" />
     } @else {
-      <nz-week-picker [ngModel]="value()" (ngModelChange)="value.set($event)" />
+      <nz-week-picker [(ngModel)]="value" />
     }
   `
 })

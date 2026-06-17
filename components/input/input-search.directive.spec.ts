@@ -18,10 +18,6 @@ describe('input-search', () => {
   let fixture: ComponentFixture<InputSearchTestComponent>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(InputSearchTestComponent);
     component = fixture.componentInstance;
     fixture.autoDetectChanges();
@@ -180,7 +176,7 @@ describe('input-search', () => {
   imports: [NzInputModule, FormsModule],
   template: `
     <nz-input-search nzAllowClear [nzLoading]="loading()" [nzEnterButton]="enterButton()" (nzSearch)="onSearch($event)">
-      <input nz-input [ngModel]="value()" (ngModelChange)="value.set($event)" [nzSize]="size()" />
+      <input nz-input [(ngModel)]="value" [nzSize]="size()" />
     </nz-input-search>
   `
 })

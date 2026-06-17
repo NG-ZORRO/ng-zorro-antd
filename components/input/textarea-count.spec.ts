@@ -13,10 +13,6 @@ import { NzInputModule } from 'ng-zorro-antd/input/input.module';
 import { NzTextareaCountComponent } from 'ng-zorro-antd/input/textarea-count.component';
 
 describe('textarea-count', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-  });
-
   describe('without-max-length', () => {
     let fixture: ComponentFixture<NzTestInputTextareaCountWithoutMaxComponent>;
     let testComponent: NzTestInputTextareaCountWithoutMaxComponent;
@@ -72,22 +68,22 @@ describe('textarea-count', () => {
   imports: [FormsModule, NzInputModule],
   template: `
     <nz-textarea-count>
-      <textarea rows="4" nz-input [ngModel]="inputValue()" (ngModelChange)="inputValue.set($event)"></textarea>
+      <textarea rows="4" nz-input [(ngModel)]="inputValue"></textarea>
     </nz-textarea-count>
   `
 })
 export class NzTestInputTextareaCountWithoutMaxComponent {
-  inputValue = signal('');
+  readonly inputValue = signal('');
 }
 
 @Component({
   imports: [FormsModule, NzInputModule],
   template: `
     <nz-textarea-count [nzMaxCharacterCount]="100">
-      <textarea rows="4" nz-input [ngModel]="inputValue()" (ngModelChange)="inputValue.set($event)"></textarea>
+      <textarea rows="4" nz-input [(ngModel)]="inputValue"></textarea>
     </nz-textarea-count>
   `
 })
 export class NzTestInputTextareaCountWithMaxComponent {
-  inputValue = signal('');
+  readonly inputValue = signal('');
 }

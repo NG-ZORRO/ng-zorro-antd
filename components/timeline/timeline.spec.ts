@@ -15,10 +15,6 @@ import { NzTimelineModule } from './timeline.module';
 import { NzTimelineMode } from './typings';
 
 describe('nz-timeline', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-  });
-
   describe('basic', () => {
     let fixture: ComponentFixture<NzTestTimelineBasicComponent>;
     let testComponent: NzTestTimelineBasicComponent;

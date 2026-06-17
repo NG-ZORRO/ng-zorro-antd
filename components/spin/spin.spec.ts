@@ -36,16 +36,12 @@ describe('spin', () => {
     });
 
     it('should className correct', async () => {
-      fixture.detectChanges();
-      await updateNonSignalsInput(fixture, 1000);
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(spin.nativeElement.querySelector('.ant-spin').firstElementChild!.classList).toContain('ant-spin-dot');
     });
 
     it('should size work', async () => {
-      fixture.detectChanges();
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await stabilize(fixture);
       testComponent.size.set('small');
       fixture.detectChanges();
       expect(spin.nativeElement.querySelector('.ant-spin').classList).toContain('ant-spin-sm');
@@ -55,18 +51,12 @@ describe('spin', () => {
     });
 
     it('should spinning work', async () => {
-      fixture.detectChanges();
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await stabilize(fixture);
       testComponent.spinning.set(false);
-      fixture.detectChanges();
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(spin.nativeElement.querySelector('.ant-spin')).toBeNull();
       testComponent.spinning.set(true);
-      fixture.detectChanges();
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(spin.nativeElement.querySelector('.ant-spin')).toBeDefined();
     });
 
@@ -85,44 +75,39 @@ describe('spin', () => {
       expect(spin.nativeElement.querySelector('.ant-spin-dot')).toBeDefined();
 
       testComponent.nzConfigService.set('spin', { nzIndicator: testComponent.indicatorTemplate });
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(spin.nativeElement.querySelector('.ant-spin-dot')).toBeNull();
       expect(spin.nativeElement.querySelector('.anticon-loading')).toBeDefined();
     });
 
-    it('should delay work', async () => {
-      testComponent.delay.set(500);
-      fixture.detectChanges();
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+    describe('delay', () => {
+      beforeEach(() => jasmine.clock().install());
+      afterEach(() => jasmine.clock().uninstall());
 
-      // true -> false
-      // This should work immediately
-      testComponent.spinning.set(false);
-      fixture.detectChanges();
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
-      expect(spin.nativeElement.querySelector('.ant-spin')).toBeNull();
+      it('should delay work', async () => {
+        testComponent.delay.set(500);
+        await stabilize(fixture);
 
-      // false -> true
-      // This should be debounced
-      testComponent.spinning.set(true);
-      fixture.detectChanges();
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
-      expect(spin.nativeElement.querySelector('.ant-spin')).toBeNull();
+        // true -> false
+        // This should work immediately
+        testComponent.spinning.set(false);
+        await stabilize(fixture);
+        expect(spin.nativeElement.querySelector('.ant-spin')).toBeNull();
 
-      fixture.detectChanges();
-      await updateNonSignalsInput(fixture, 1000);
-      fixture.detectChanges();
-      expect(spin.nativeElement.querySelector('.ant-spin')).toBeDefined();
+        // false -> true
+        // This should be debounced
+        testComponent.spinning.set(true);
+        await stabilize(fixture);
+        expect(spin.nativeElement.querySelector('.ant-spin')).toBeNull();
+
+        jasmine.clock().tick(500);
+        await stabilize(fixture);
+        expect(spin.nativeElement.querySelector('.ant-spin')).toBeDefined();
+      });
     });
 
     it('should wrapper work', async () => {
-      fixture.detectChanges();
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(spin.nativeElement.querySelector('.ant-spin').classList).toContain('ant-spin-spinning');
       expect(spin.nativeElement.querySelector('.ant-spin-container')).toBeDefined();
       testComponent.simple.set(true);
@@ -131,9 +116,7 @@ describe('spin', () => {
     });
 
     it('should tip work', async () => {
-      fixture.detectChanges();
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(spin.nativeElement.querySelector('.ant-spin-text')).toBeNull();
       testComponent.tip.set('tip');
       fixture.detectChanges();
@@ -143,6 +126,12 @@ describe('spin', () => {
 
   testDirectionality(() => NzTestSpinBasicComponent, By.css('.ant-spin'), 'ant-spin');
 });
+
+async function stabilize<T>(fixture: ComponentFixture<T>): Promise<void> {
+  fixture.detectChanges();
+  await updateNonSignalsInput(fixture);
+  fixture.detectChanges();
+}
 
 @Component({
   selector: 'nz-test-basic-spin',

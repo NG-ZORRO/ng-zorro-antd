@@ -6,9 +6,9 @@
 import { Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzColorBlockComponent, NzColorPickerModule } from 'ng-zorro-antd/color-picker';
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
 describe('color-block', () => {
@@ -18,7 +18,7 @@ describe('color-block', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
   });
 

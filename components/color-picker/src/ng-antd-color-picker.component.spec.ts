@@ -6,7 +6,8 @@
 import { Component, DebugElement, signal, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
+
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 
 import { NzPresetColor } from '../typings';
 import { Color } from './interfaces/color';
@@ -20,7 +21,7 @@ describe('NgxColorPickerComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
   });
 

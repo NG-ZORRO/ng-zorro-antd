@@ -25,10 +25,6 @@ describe('hash-code', () => {
   }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(NzTestHashCodeBasicComponent);
     fixture.detectChanges();
     testComponent = fixture.componentInstance;

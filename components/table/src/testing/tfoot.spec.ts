@@ -14,7 +14,6 @@ describe('tfoot', () => {
   let component: TestComponent;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
     fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
     component = fixture.componentInstance;

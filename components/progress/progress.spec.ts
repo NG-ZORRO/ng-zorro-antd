@@ -20,10 +20,6 @@ import {
 } from './typings';
 
 describe('progress', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-  });
-
   describe('progress line', () => {
     let fixture: ComponentFixture<NzTestProgressLineComponent>;
     let testComponent: NzTestProgressLineComponent;

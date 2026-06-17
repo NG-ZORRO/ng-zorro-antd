@@ -7,10 +7,10 @@ import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, signal, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, NgModel } from '@angular/forms';
+import { NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -24,7 +24,7 @@ registerLocaleData(zh);
 describe('calendar Header', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
   });
 
@@ -211,14 +211,14 @@ describe('calendar Header', () => {
 });
 
 @Component({
-  imports: [FormsModule, NzCalendarHeaderComponent],
+  imports: [NzCalendarHeaderComponent],
   template: `
     <nz-calendar-header />
     <nz-calendar-header [(mode)]="mode" />
   `
 })
 class NzTestCalendarHeaderModeComponent {
-  mode = signal<'month' | 'year'>('month');
+  readonly mode = signal<'month' | 'year'>('month');
 }
 
 @Component({

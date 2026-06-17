@@ -5,15 +5,8 @@
 
 import { CAPS_LOCK, ENTER, ESCAPE, TAB } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import {
-  ApplicationRef,
-  ChangeDetectionStrategy,
-  Component,
-  NgZone,
-  provideZoneChangeDetection,
-  ViewChild
-} from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { ApplicationRef, Component, NgZone, signal, ViewChild } from '@angular/core';
+import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
@@ -23,7 +16,8 @@ import {
   dispatchKeyboardEvent,
   dispatchMouseEvent,
   MockNgZone,
-  typeInElement
+  typeInElement,
+  updateNonSignalsInput
 } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -42,8 +36,6 @@ describe('typography', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        // todo: use zoneless
-        provideZoneChangeDetection(),
         provideNzIconsTesting(),
         provideNoopAnimations(),
         { provide: NgZone, useFactory: () => new MockNgZone() }
@@ -70,7 +62,7 @@ describe('typography', () => {
 
     dispatchMouseEvent(copyButton, 'mouseenter');
     fixture.detectChanges();
-    tick(1000);
+    jasmine.clock().tick(1000);
     fixture.detectChanges();
 
     onHover();
@@ -82,7 +74,14 @@ describe('typography', () => {
 
     dispatchMouseEvent(copyButton, 'mouseleave');
     fixture.detectChanges();
-    tick(3000);
+    jasmine.clock().tick(3000);
+    fixture.detectChanges();
+  }
+
+  async function renderNextFrame<T>(fixture: ComponentFixture<T>, ms: number = 100): Promise<void> {
+    fixture.detectChanges();
+    await updateNonSignalsInput(fixture, ms);
+    TestBed.inject(ApplicationRef).tick();
     fixture.detectChanges();
   }
 
@@ -136,23 +135,27 @@ describe('typography', () => {
       });
     });
 
-    it('should be set tooltips', fakeAsync(() => {
+    beforeEach(() => jasmine.clock().install());
+
+    afterEach(() => jasmine.clock().uninstall());
+
+    it('should be set tooltips', () => {
       const copyButton = componentElement.querySelector<HTMLButtonElement>('.custom-tooltips .ant-typography-copy')!;
       testCopyButton(
         fixture,
         copyButton,
         () => {
-          expect(overlayContainerElement.textContent).toContain(testComponent.tooltips![0]);
+          expect(overlayContainerElement.textContent).toContain(testComponent.tooltips()![0]);
         },
         () => {
-          expect(overlayContainerElement.textContent).toContain(testComponent.tooltips![1]);
+          expect(overlayContainerElement.textContent).toContain(testComponent.tooltips()![1]);
         }
       );
-    }));
+    });
 
-    it('should be hied all tooltips', fakeAsync(() => {
+    it('should be hied all tooltips', () => {
       const copyButton = componentElement.querySelector<HTMLButtonElement>('.custom-tooltips .ant-typography-copy')!;
-      testComponent.tooltips = null;
+      testComponent.tooltips.set(null);
       fixture.detectChanges();
 
       testCopyButton(
@@ -165,9 +168,9 @@ describe('typography', () => {
           expect(overlayContainerElement.textContent).toBeFalsy();
         }
       );
-    }));
+    });
 
-    it('should be set icons', fakeAsync(() => {
+    it('should be set icons', () => {
       const copyButton = componentElement.querySelector<HTMLButtonElement>('.custom-icons .ant-typography-copy')!;
       const icon = copyButton.querySelector('.anticon')!;
 
@@ -189,9 +192,9 @@ describe('typography', () => {
 
       // done
       expect(icon.className).toContain('meh');
-    }));
+    });
 
-    it('should only trigger once within 3000ms', fakeAsync(() => {
+    it('should only trigger once within 3000ms', () => {
       spyOn(testComponent, 'onCopy');
       const copyButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-copy');
       expect(testComponent.onCopy).toHaveBeenCalledTimes(0);
@@ -200,100 +203,96 @@ describe('typography', () => {
       copyButton!.click();
       fixture.detectChanges();
       expect(testComponent.onCopy).toHaveBeenCalledTimes(1);
-      tick(3000);
+      jasmine.clock().tick(3000);
       fixture.detectChanges();
       copyButton!.click();
       fixture.detectChanges();
       expect(testComponent.onCopy).toHaveBeenCalledTimes(2);
-      flush();
       fixture.detectChanges();
-    }));
+    });
   });
 
   describe('editable', () => {
     let fixture: ComponentFixture<NzTestTypographyEditComponent>;
     let testComponent: NzTestTypographyEditComponent;
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTypographyEditComponent);
       testComponent = fixture.componentInstance;
       componentElement = fixture.debugElement.nativeElement;
       fixture.detectChanges();
-    }));
-
-    afterEach(fakeAsync(() => {
-      flush();
-      fixture.detectChanges();
-    }));
+    });
 
     it('should discard changes when Esc keydown', () => {
       const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
       editButton!.click();
       fixture.detectChanges();
-      expect(testComponent.str).toBe('This is an editable text.');
+      expect(testComponent.str()).toBe('This is an editable text.');
       const textarea = componentElement.querySelector<HTMLTextAreaElement>('textarea')!;
       typeInElement('test', textarea);
       fixture.detectChanges();
       testComponent.nzTypographyComponent.textEditRef!.onCancel();
       fixture.detectChanges();
-      expect(testComponent.str).toBe('This is an editable text.');
+      expect(testComponent.str()).toBe('This is an editable text.');
     });
 
-    it('should be set icon', fakeAsync(() => {
+    it('should be set icon', () => {
       const icon = componentElement.querySelector<HTMLElement>('.anticon')!;
       expect(icon.className).toContain('edit');
 
-      testComponent.icon = 'smile';
+      testComponent.icon.set('smile');
       fixture.detectChanges();
 
       expect(icon.className).toContain('smile');
-    }));
+    });
 
-    it('should be set tooltip', fakeAsync(() => {
-      testComponent.tooltip = 'click to copy.';
+    it('should be set tooltip', () => {
+      jasmine.clock().install();
+      testComponent.tooltip.set('click to copy.');
       const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit')!;
 
       fixture.detectChanges();
 
       dispatchMouseEvent(editButton, 'mouseenter');
       fixture.detectChanges();
-      tick(1000);
+      jasmine.clock().tick(1000);
       fixture.detectChanges();
 
-      expect(overlayContainerElement.textContent).toContain(testComponent.tooltip);
+      expect(overlayContainerElement.textContent).toContain(testComponent.tooltip());
 
       dispatchMouseEvent(editButton, 'mouseleave');
       fixture.detectChanges();
-      tick(3000);
+      jasmine.clock().tick(3000);
       fixture.detectChanges();
-    }));
+      jasmine.clock().uninstall();
+    });
 
-    it('should edit work', fakeAsync(() => {
+    it('should edit work', async () => {
       const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
       editButton!.click();
       fixture.detectChanges();
-      flush();
+      await updateNonSignalsInput(fixture);
       fixture.detectChanges();
 
-      expect(testComponent.str).toBe('This is an editable text.');
+      expect(testComponent.str()).toBe('This is an editable text.');
       const textarea = componentElement.querySelector<HTMLTextAreaElement>('textarea')!;
       typeInElement('test', textarea);
       fixture.detectChanges();
       dispatchFakeEvent(textarea, 'blur');
 
       fixture.detectChanges();
-      flush();
+      await updateNonSignalsInput(fixture);
       fixture.detectChanges();
 
-      expect(testComponent.str).toBe('test');
-    }));
+      expect(testComponent.str()).toBe('test');
+    });
 
     it('should edit focus', () => {
       const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
       editButton!.click();
       fixture.detectChanges();
 
-      // `tick()` will handle over after next render hooks.
+      // Run one application pass to process the after-next-render focus hook.
       TestBed.inject(ApplicationRef).tick();
 
       const textarea = componentElement.querySelector<HTMLTextAreaElement>('textarea')! as HTMLTextAreaElement;
@@ -301,7 +300,7 @@ describe('typography', () => {
       expect(document.activeElement === textarea).toBe(true);
     });
 
-    it('should apply changes when Enter keydown', fakeAsync(() => {
+    it('should apply changes when Enter keydown', async () => {
       const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
       editButton!.click();
       fixture.detectChanges();
@@ -311,68 +310,71 @@ describe('typography', () => {
       const event = createKeyboardEvent('keydown', ENTER, textarea);
       testComponent.nzTypographyComponent.textEditRef!.onEnter(event);
 
-      flush();
+      await updateNonSignalsInput(fixture);
       fixture.detectChanges();
 
-      expect(testComponent.str).toBe('test');
-    }));
+      expect(testComponent.str()).toBe('test');
+    });
   });
 
   describe('ellipsis', () => {
     let fixture: ComponentFixture<NzTestTypographyEllipsisComponent>;
     let testComponent: NzTestTypographyEllipsisComponent;
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(async () => {
       viewport.set(1200, 1000);
       fixture = TestBed.createComponent(NzTestTypographyEllipsisComponent);
       testComponent = fixture.componentInstance;
       componentElement = fixture.debugElement.nativeElement;
-      fixture.detectChanges();
-      tick(16);
-      fixture.detectChanges();
-    }));
+      setHostWidth(1200);
+      await renderNextFrame(fixture);
+    });
 
-    it('should ellipsis work', fakeAsync(() => {
+    function setViewport(width: number, height: number): void {
+      viewport.set(width, height);
+      setHostWidth(width);
+    }
+
+    function setHostWidth(width: number): void {
+      componentElement.style.display = 'block';
+      componentElement.style.lineHeight = '22px';
+      componentElement.style.width = `${width}px`;
+    }
+
+    it('should ellipsis work', () => {
       componentElement.querySelectorAll('p').forEach(e => {
         expect(e.classList).toContain('ant-typography-ellipsis');
       });
-    }));
+    });
 
-    it('should css ellipsis', fakeAsync(() => {
+    it('should css ellipsis', () => {
       const singleLine = componentElement.querySelector('.single')!;
       const multipleLine = componentElement.querySelector('.multiple')!;
       const dynamicContent = componentElement.querySelector('.dynamic')!;
       expect(singleLine.classList).toContain('ant-typography-ellipsis-single-line');
       expect(multipleLine.classList).toContain('ant-typography-ellipsis-multiple-line');
-      testComponent.expandable = true;
+      testComponent.expandable.set(true);
       fixture.detectChanges();
       expect(singleLine.classList).not.toContain('ant-typography-ellipsis-single-line');
       expect(multipleLine.classList).not.toContain('ant-typography-ellipsis-multiple-line');
       expect(dynamicContent.classList).not.toContain('ant-typography-ellipsis-multiple-line');
-    }));
+    });
 
-    it('should resize when content changed', fakeAsync(() => {
-      testComponent.expandable = true;
-      fixture.detectChanges();
-      tick(16);
-      fixture.detectChanges();
+    it('should resize when content changed', async () => {
+      testComponent.expandable.set(true);
+      await renderNextFrame(fixture);
       const dynamicContent = componentElement.querySelector('.dynamic')! as HTMLParagraphElement;
       expect(dynamicContent.innerText.includes('...')).toBe(true);
-      testComponent.str = 'short content.';
-      fixture.detectChanges();
-      tick(16);
-      fixture.detectChanges();
+      testComponent.str.set('short content.');
+      await renderNextFrame(fixture);
       expect(dynamicContent.innerText.includes('...')).toBe(false);
-    }));
+    });
 
-    it('should expandable', fakeAsync(() => {
-      testComponent.expandable = true;
-      viewport.set(400, 1000);
+    it('should expandable', async () => {
+      testComponent.expandable.set(true);
+      setViewport(400, 1000);
       dispatchFakeEvent(window, 'resize');
-      fixture.detectChanges();
-      tick(16);
-      fixture.detectChanges();
-      tick(16);
+      await renderNextFrame(fixture, 40);
       componentElement.querySelectorAll('p').forEach((e, i) => {
         expect(e.classList).toContain('ant-typography-ellipsis');
         const expandBtn = e.querySelector('.ant-typography-expand') as HTMLAnchorElement;
@@ -382,110 +384,87 @@ describe('typography', () => {
         expect(e.classList).not.toContain('ant-typography-ellipsis');
         expect(testComponent.onExpand).toHaveBeenCalledTimes(i + 1);
       });
-    }));
+    });
 
-    it('should not resize when is expanded', fakeAsync(() => {
-      testComponent.expandable = true;
-      viewport.set(400, 1000);
+    it('should not resize when is expanded', async () => {
+      testComponent.expandable.set(true);
+      setViewport(400, 1000);
       dispatchFakeEvent(window, 'resize');
-      fixture.detectChanges();
-      tick(16);
-      fixture.detectChanges();
-      tick(16);
+      await renderNextFrame(fixture, 40);
       componentElement.querySelectorAll('p').forEach(e => {
         const expandBtn = e.querySelector('.ant-typography-expand') as HTMLAnchorElement;
         expandBtn!.click();
         fixture.detectChanges();
       });
-      testComponent.expandable = false;
-      fixture.detectChanges();
-      tick(16);
-      viewport.set(800, 1000);
+      testComponent.expandable.set(false);
+      await renderNextFrame(fixture);
+      setViewport(800, 1000);
       dispatchFakeEvent(window, 'resize');
-      fixture.detectChanges();
-      tick(32);
-      fixture.detectChanges();
+      await renderNextFrame(fixture, 40);
       componentElement.querySelectorAll('p').forEach(e => {
         expect(e.innerText.includes('...')).toBe(false);
       });
       viewport.reset();
-    }));
+    });
 
-    it('should resize work', fakeAsync(() => {
-      testComponent.expandable = true;
-      viewport.set(400, 1000);
+    it('should resize work', async () => {
+      testComponent.expandable.set(true);
+      setViewport(400, 1000);
       dispatchFakeEvent(window, 'resize');
-      fixture.detectChanges();
-      tick(16);
-      fixture.detectChanges();
-      tick(16);
+      await renderNextFrame(fixture, 40);
       componentElement.querySelectorAll('p').forEach(e => {
         expect(e.innerText.includes('...')).toBe(true);
       });
-      viewport.set(8000, 1000);
+      setViewport(8000, 1000);
       dispatchFakeEvent(window, 'resize');
-      fixture.detectChanges();
-      tick(32);
-      fixture.detectChanges();
+      await renderNextFrame(fixture, 40);
       componentElement.querySelectorAll('p').forEach(e => {
         expect(e.innerText.includes('...')).toBe(false);
       });
       expect(testComponent.onEllipsis).toHaveBeenCalledWith(false);
-      viewport.set(400, 1000);
+      setViewport(400, 1000);
       dispatchFakeEvent(window, 'resize');
-      fixture.detectChanges();
-      tick(32);
-      fixture.detectChanges();
-      viewport.set(800, 1000);
+      await renderNextFrame(fixture, 40);
+      setViewport(800, 1000);
       dispatchFakeEvent(window, 'resize');
-      fixture.detectChanges();
-      tick(32);
-      fixture.detectChanges();
+      await renderNextFrame(fixture, 40);
       componentElement.querySelectorAll('p').forEach(e => {
         expect(e.innerText.includes('...')).toBe(true);
       });
       expect(testComponent.onEllipsis).toHaveBeenCalledWith(true);
       viewport.reset();
-    }));
+    });
 
-    it('should suffix work', fakeAsync(() => {
-      testComponent.expandable = true;
-      testComponent.suffix = 'The suffix.';
+    it('should suffix work', async () => {
+      testComponent.expandable.set(true);
+      testComponent.suffix.set('The suffix.');
 
       {
-        viewport.set(8000, 1000);
+        setViewport(8000, 1000);
         dispatchFakeEvent(window, 'resize');
-        fixture.detectChanges();
-        tick(32);
-        fixture.detectChanges();
+        await renderNextFrame(fixture, 40);
         const el = componentElement.querySelector('.dynamic') as HTMLParagraphElement;
         expect(el.innerText.endsWith('The suffix.')).toBe(true);
         expect(el.innerText.includes('...')).toBe(false);
       }
 
       {
-        viewport.set(800, 1000);
+        setViewport(800, 1000);
         dispatchFakeEvent(window, 'resize');
-        fixture.detectChanges();
-        tick(32);
-        fixture.detectChanges();
+        await renderNextFrame(fixture, 40);
         const el = componentElement.querySelector('.dynamic') as HTMLParagraphElement;
         expect(el.innerText.includes('The suffix.')).toBe(true);
         expect(el.innerText.includes('...')).toBe(true);
-        testComponent.expandable = false;
-        fixture.detectChanges();
-        tick(32);
-        fixture.detectChanges();
+        testComponent.expandable.set(false);
+        await renderNextFrame(fixture, 40);
         expect(el.innerText.endsWith('The suffix.')).toBe(true);
         expect(el.innerText.includes('...')).toBe(true);
       }
 
       viewport.reset();
       dispatchFakeEvent(window, 'resize');
-      fixture.detectChanges();
-      tick(32);
-      fixture.detectChanges();
-    }));
+      await renderNextFrame(fixture, 40);
+    });
   });
 });
 
@@ -570,8 +549,7 @@ describe('change detection behavior', () => {
     <span nz-typography><u>Ant Design</u></span>
     <span nz-typography><del>Ant Design</del></span>
     <span nz-typography><strong>Ant Design</strong></span>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestTypographyComponent {}
 
@@ -588,15 +566,14 @@ export class NzTestTypographyComponent {}
       nzCopyable
       nzContent="Ant Design-4"
       (nzCopy)="onCopy($event)"
-      [nzCopyTooltips]="tooltips"
-      [nzCopyIcons]="icons"
+      [nzCopyTooltips]="tooltips()"
+      [nzCopyIcons]="icons()"
     ></p>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestTypographyCopyComponent {
-  tooltips: [string, string] | null = ['click here', 'coped'];
-  icons: [string, string] = ['meh', 'smile'];
+  readonly tooltips = signal<[string, string] | null>(['click here', 'coped']);
+  readonly icons = signal<[string, string]>(['meh', 'smile']);
   onCopy(_text: string): void {}
 }
 
@@ -606,29 +583,28 @@ export class NzTestTypographyCopyComponent {
     <p
       nz-paragraph
       nzEditable
-      [nzEditIcon]="icon"
-      [nzEditTooltip]="tooltip"
+      [nzEditIcon]="icon()"
+      [nzEditTooltip]="tooltip()"
       (nzContentChange)="onChange($event)"
-      [nzContent]="str"
+      [nzContent]="str()"
     ></p>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestTypographyEditComponent {
   @ViewChild(NzTypographyComponent, { static: false }) nzTypographyComponent!: NzTypographyComponent;
-  str = 'This is an editable text.';
-  icon = 'edit';
-  tooltip?: string | null;
+  readonly str = signal('This is an editable text.');
+  readonly icon = signal('edit');
+  readonly tooltip = signal<string | null | undefined>(undefined);
 
   onChange = (text: string): void => {
-    this.str = text;
+    this.str.set(text);
   };
 }
 
 @Component({
   imports: [NzTypographyModule],
   template: `
-    <p nz-paragraph nzEllipsis [nzExpandable]="expandable" (nzExpandChange)="onExpand()" class="single">
+    <p nz-paragraph nzEllipsis [nzExpandable]="expandable()" (nzExpandChange)="onExpand()" class="single">
       Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design
       language for background applications, is refined by Ant UED Team. Ant Design, a design language for background
       applications, is refined by Ant UED Team. Ant Design, a design language for background applications, is refined by
@@ -639,7 +615,7 @@ export class NzTestTypographyEditComponent {
     <p
       nz-paragraph
       nzEllipsis
-      [nzExpandable]="expandable"
+      [nzExpandable]="expandable()"
       [nzEllipsisRows]="3"
       (nzExpandChange)="onExpand()"
       class="multiple"
@@ -653,24 +629,23 @@ export class NzTestTypographyEditComponent {
     <p
       nz-paragraph
       nzEllipsis
-      [nzExpandable]="expandable"
+      [nzExpandable]="expandable()"
       [nzEllipsisRows]="2"
       (nzExpandChange)="onExpand()"
       (nzOnEllipsis)="onEllipsis($event)"
-      [nzContent]="str"
-      [nzSuffix]="suffix"
+      [nzContent]="str()"
+      [nzSuffix]="suffix()"
       class="dynamic"
     ></p>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestTypographyEllipsisComponent {
-  expandable = false;
+  readonly expandable = signal(false);
+  readonly suffix = signal<string | undefined>(undefined);
   onExpand = jasmine.createSpy('expand callback');
-  suffix?: string;
   onEllipsis = jasmine.createSpy('ellipsis callback');
   @ViewChild(NzTypographyComponent, { static: false }) nzTypographyComponent!: NzTypographyComponent;
-  str = new Array(5)
-    .fill('Ant Design, a design language for background applications, is refined by Ant UED Team.')
-    .join('');
+  readonly str = signal(
+    new Array(5).fill('Ant Design, a design language for background applications, is refined by Ant UED Team.').join('')
+  );
 }
