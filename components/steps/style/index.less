@@ -36,23 +36,28 @@
   overflow: hidden;
   vertical-align: top;
 
-  &-container {
-    outline: none;
+  &-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    padding-top: 0;
   }
 
   &:last-child {
     flex: none;
   }
 
-  &:last-child > &-container > &-tail,
-  &:last-child > &-container > &-content > &-title::after {
+  &:last-child > &-wrapper > &-section > &-header > &-rail {
     display: none;
   }
 
   &-icon,
-  &-content {
+  &-section {
     display: inline-block;
     vertical-align: top;
+  }
+
+  &-section {
+    flex: 1 1;
   }
 
   &-icon {
@@ -75,42 +80,18 @@
     }
   }
 
-  &-tail {
-    position: absolute;
-    top: 12px;
-    left: 0;
-    width: 100%;
-    padding: 0 10px;
-
-    &::after {
-      display: inline-block;
-      width: 100%;
-      height: 1px;
-      background: @border-color-split;
-      border-radius: 1px;
-      transition: background 0.3s;
-      content: '';
-    }
+  > &-wrapper > &-section > &-header > &-rail {
+    // Base styles - will be overridden in horizontal/vertical modes
+    display: none;
+    height: 1px;
   }
 
   &-title {
     position: relative;
     display: inline-block;
-    padding-right: 16px;
     color: @text-color;
     font-size: @font-size-lg;
     line-height: @steps-title-line-height;
-
-    &::after {
-      position: absolute;
-      top: (@steps-title-line-height / 2);
-      left: 100%;
-      display: block;
-      width: 9999px;
-      height: 1px;
-      background: @wait-tail-color;
-      content: '';
-    }
   }
 
   &-subtitle {
@@ -121,27 +102,27 @@
     font-size: @font-size-base;
   }
 
-  &-description {
+  &-content {
     color: @text-color-secondary;
     font-size: @font-size-base;
   }
   .step-item-status(wait);
   .step-item-status(process);
 
-  &-process > &-container > &-icon {
+  &-process > &-wrapper > &-icon {
     background: @process-icon-color;
     .@{steps-prefix-cls}-icon {
       color: @process-icon-text-color;
     }
   }
 
-  &-process > &-container > &-title {
+  &-process > &-wrapper > &-section > &-header > &-title {
     font-weight: 500;
   }
   .step-item-status(finish);
   .step-item-status(error);
 
-  &.@{steps-prefix-cls}-next-error .@{steps-prefix-cls}-item-title::after {
+  &.@{steps-prefix-cls}-next-error > &-wrapper > &-section > &-header > &-rail {
     background: @error-icon-color;
   }
 
@@ -153,13 +134,13 @@
 // ===================== Clickable =====================
 .@{steps-prefix-cls} .@{steps-prefix-cls}-item {
   &:not(.@{steps-prefix-cls}-item-active) {
-    & > .@{steps-prefix-cls}-item-container[role='button'] {
+    & > .@{steps-prefix-cls}-item-wrapper[role='button'] {
       cursor: pointer;
 
       .@{steps-prefix-cls}-item {
         &-title,
         &-subtitle,
-        &-description,
+        &-content,
         &-icon .@{steps-prefix-cls}-icon {
           transition: color 0.3s;
         }
@@ -169,7 +150,7 @@
         .@{steps-prefix-cls}-item {
           &-title,
           &-subtitle,
-          &-description {
+          &-content {
             color: @primary-color;
           }
         }
@@ -177,7 +158,7 @@
     }
 
     &:not(.@{steps-prefix-cls}-item-process) {
-      & > .@{steps-prefix-cls}-item-container[role='button']:hover {
+      & > .@{steps-prefix-cls}-item-wrapper[role='button']:hover {
         .@{steps-prefix-cls}-item {
           &-icon {
             border-color: @primary-color;
@@ -204,11 +185,36 @@
       padding-right: 0;
     }
 
-    &-tail {
-      display: none;
+    // In horizontal mode use the rail (after title+subtitle) for the line so it doesn't overlap subtitle
+    &-header {
+      position: relative;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      overflow: visible;
+
+      &-subtitle {
+        flex-shrink: 0;
+        margin-right: 0;
+      }
     }
 
-    &-description {
+    &-rail {
+      position: static;
+      display: block !important;
+      flex: 1;
+      width: auto;
+      height: 1px;
+      margin: 0;
+      margin-left: 16px;
+      padding: 0;
+      overflow: visible;
+      background: @wait-tail-color;
+      border-radius: 1px;
+      transition: background 0.3s;;
+    }
+
+    &-content {
       max-width: @steps-description-max-width;
       white-space: normal;
     }
@@ -230,17 +236,13 @@
       }
     }
   }
-  &-@{status} > &-container > &-content > &-title {
+  &-@{status} > &-wrapper > &-section > &-header > &-title {
     color: @@title-color;
-
-    &::after {
-      background-color: @@tail-color;
-    }
   }
-  &-@{status} > &-container > &-content > &-description {
+  &-@{status} > &-wrapper > &-section > &-content {
     color: @@description-color;
   }
-  &-@{status} > &-container > &-tail::after {
+  &-@{status} > &-wrapper > &-section > &-header > &-rail {
     background-color: @@tail-color;
   }
 }
