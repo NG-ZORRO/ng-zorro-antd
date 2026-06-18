@@ -170,8 +170,7 @@ describe('checkbox group with custom layout', () => {
       [nzOptions]="options()"
       [nzName]="name()"
       [nzDisabled]="disabled()"
-      [ngModel]="value()"
-      (ngModelChange)="value.set($event)"
+      [(ngModel)]="value"
       [disabled]="controlDisabled()"
     />
   `

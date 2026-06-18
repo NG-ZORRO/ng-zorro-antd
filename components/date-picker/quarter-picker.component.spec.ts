@@ -45,7 +45,7 @@ describe('quater-picker', () => {
     fixture = TestBed.createComponent(NzTestQuarterPickerComponent);
     fixtureInstance = fixture.componentInstance;
     // set initial mode
-    fixtureInstance.useSuite = 1;
+    fixtureInstance.useSuite.set(1);
     fixture.detectChanges();
   });
 
@@ -56,14 +56,14 @@ describe('quater-picker', () => {
   afterEach(() => jasmine.clock().uninstall());
 
   it('should show quarter panel', async () => {
-    fixtureInstance.nzFormat = undefined; // cover branch
+    fixtureInstance.nzFormat.set(undefined); // cover branch
     fixture.detectChanges();
     await openPickerByClickTrigger();
     expect(queryFromOverlay('.ant-picker-quarter-panel')).toBeDefined();
   });
 
   it('should change input value when click quarter', async () => {
-    fixtureInstance.nzValue = new Date('2024-04-04');
+    fixtureInstance.nzValue.set(new Date('2024-04-04'));
     await stabilize();
     await openPickerByClickTrigger();
     dispatchMouseEvent(queryFromOverlay('.ant-picker-cell'), 'click');
@@ -72,8 +72,8 @@ describe('quater-picker', () => {
   });
 
   it('should specified date provide by "value" be chosen', async () => {
-    fixtureInstance.useSuite = 3;
-    fixtureInstance.nzValue = new Date('2024-04-30');
+    fixtureInstance.useSuite.set(3);
+    fixtureInstance.nzValue.set(new Date('2024-04-30'));
     await stabilize(500);
     expect(queryFromOverlay('.ant-picker-quarter-panel td.ant-picker-cell-selected').textContent).toContain('Q2');
 
@@ -82,11 +82,11 @@ describe('quater-picker', () => {
     const cellText = cell.textContent!.trim();
     dispatchMouseEvent(cell, 'click');
     await stabilize(500);
-    expect(`Q${new CandyDate(fixtureInstance.nzValue).setMonth(0).getQuarter().toString()}`).toBe(cellText);
+    expect(`Q${new CandyDate(fixtureInstance.nzValue() as Date).setMonth(0).getQuarter().toString()}`).toBe(cellText);
   });
 
   it('should nz-quarter-picker work', async () => {
-    fixtureInstance.useSuite = 2;
+    fixtureInstance.useSuite.set(2);
     await fixture.whenRenderingDone();
     await stabilize(500);
     await openPickerByClickTrigger();
@@ -98,8 +98,8 @@ describe('quater-picker', () => {
   });
 
   it('should nz-range-picker "nzValue" work', async () => {
-    fixtureInstance.useSuite = 4;
-    fixtureInstance.nzValue = [new Date('2024-04-30'), new Date('2025-12-30')];
+    fixtureInstance.useSuite.set(4);
+    fixtureInstance.nzValue.set([new Date('2024-04-30'), new Date('2025-12-30')]);
     await fixture.whenRenderingDone();
     await stabilize(500);
     const panels = overlayContainerElement.querySelectorAll('.ant-picker-quarter-panel');
@@ -117,9 +117,9 @@ describe('quater-picker', () => {
   });
 
   it('should support year panel changes', async () => {
-    fixtureInstance.useSuite = 3;
+    fixtureInstance.useSuite.set(3);
 
-    fixtureInstance.nzValue = new Date('2024-04-30');
+    fixtureInstance.nzValue.set(new Date('2024-04-30'));
     await stabilize();
     await openPickerByClickTrigger();
     // Click year select to show year panel
@@ -143,12 +143,12 @@ describe('quater-picker', () => {
   });
 
   it('should support nzDisabledDate', async () => {
-    fixtureInstance.useSuite = 1;
-    fixtureInstance.nzValue = null;
+    fixtureInstance.useSuite.set(1);
+    fixtureInstance.nzValue.set(null);
     fixture.detectChanges();
     const compareDate = new Date('2024-8-01');
-    fixtureInstance.nzValue = new Date('2024-04-01');
-    fixtureInstance.nzDisabledDate = (current: Date) => isBefore(current, compareDate);
+    fixtureInstance.nzValue.set(new Date('2024-04-01'));
+    fixtureInstance.nzDisabledDate.set((current: Date) => isBefore(current, compareDate));
     await stabilize();
 
     await openPickerByClickTrigger();
@@ -160,7 +160,7 @@ describe('quater-picker', () => {
   });
 
   it('should support hover date cell style', async () => {
-    fixtureInstance.useSuite = 4;
+    fixtureInstance.useSuite.set(4);
     fixture.detectChanges();
     await openPickerByClickTrigger();
     await stabilize(500);
@@ -222,73 +222,32 @@ describe('quater-picker', () => {
 @Component({
   imports: [NzDatePickerModule, FormsModule],
   template: `
-    @switch (useSuiteSignal()) {
+    @switch (useSuite()) {
       @case (1) {
         <nz-date-picker
           nzMode="quarter"
-          [nzFormat]="nzFormatSignal()!"
-          [ngModel]="nzValueSignal()"
-          (ngModelChange)="nzValue = $event"
-          [nzDisabled]="nzDisabledSignal()"
-          [nzDisabledDate]="nzDisabledDateSignal()"
+          [nzFormat]="nzFormat()!"
+          [(ngModel)]="nzValue"
+          [nzDisabled]="nzDisabled()"
+          [nzDisabledDate]="nzDisabledDate()"
         />
       }
       @case (2) {
-        <nz-quarter-picker [ngModel]="nzValueSignal()" (ngModelChange)="nzValue = $event" />
+        <nz-quarter-picker [(ngModel)]="nzValue" />
       }
       @case (3) {
-        <nz-quarter-picker [ngModel]="nzValueSignal()" (ngModelChange)="nzValue = $event" nzOpen />
+        <nz-quarter-picker [(ngModel)]="nzValue" nzOpen />
       }
       @case (4) {
-        <nz-range-picker nzMode="quarter" [ngModel]="nzValueSignal()" (ngModelChange)="nzValue = $event" nzOpen />
+        <nz-range-picker nzMode="quarter" [(ngModel)]="nzValue" nzOpen />
       }
     }
   `
 })
 export class NzTestQuarterPickerComponent {
-  readonly useSuiteSignal = signal<1 | 2 | 3 | 4>(1);
-  readonly nzFormatSignal = signal<string | undefined>(undefined);
-  readonly nzValueSignal = signal<Date | Date[] | null>(null);
-  readonly nzDisabledSignal = signal(false);
-  readonly nzDisabledDateSignal = signal<((d: Date) => boolean) | undefined>(undefined);
-
-  get useSuite(): 1 | 2 | 3 | 4 {
-    return this.useSuiteSignal();
-  }
-
-  set useSuite(value: 1 | 2 | 3 | 4) {
-    this.useSuiteSignal.set(value);
-  }
-
-  get nzFormat(): string | undefined {
-    return this.nzFormatSignal();
-  }
-
-  set nzFormat(value: string | undefined) {
-    this.nzFormatSignal.set(value);
-  }
-
-  get nzValue(): Date | Date[] | null {
-    return this.nzValueSignal();
-  }
-
-  set nzValue(value: Date | Date[] | null) {
-    this.nzValueSignal.set(value);
-  }
-
-  get nzDisabled(): boolean {
-    return this.nzDisabledSignal();
-  }
-
-  set nzDisabled(value: boolean) {
-    this.nzDisabledSignal.set(value);
-  }
-
-  get nzDisabledDate(): ((d: Date) => boolean) | undefined {
-    return this.nzDisabledDateSignal();
-  }
-
-  set nzDisabledDate(value: ((d: Date) => boolean) | undefined) {
-    this.nzDisabledDateSignal.set(value);
-  }
+  readonly useSuite = signal<1 | 2 | 3 | 4>(1);
+  readonly nzFormat = signal<string | undefined>(undefined);
+  readonly nzValue = signal<Date | Date[] | null>(null);
+  readonly nzDisabled = signal(false);
+  readonly nzDisabledDate = signal<((d: Date) => boolean) | undefined>(undefined);
 }

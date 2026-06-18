@@ -1820,8 +1820,8 @@ describe('select finalVariant', () => {
   template: `
     <nz-select
       nzMode="default"
-      [ngModel]="value()"
-      (ngModelChange)="value.set($event); valueChange($event)"
+      [(ngModel)]="value"
+      (ngModelChange)="valueChange($event)"
       [nzSize]="nzSize()"
       [nzDropdownMatchSelectWidth]="nzDropdownMatchSelectWidth"
       [nzPlaceHolder]="nzPlaceHolder()"
@@ -1841,8 +1841,8 @@ describe('select finalVariant', () => {
       [nzServerSearch]="nzServerSearch()"
       [nzDisabled]="nzDisabled()"
       [nzBackdrop]="nzBackdrop()"
-      [nzOpen]="nzOpen()"
-      (nzOpenChange)="nzOpen.set($event); openChange($event)"
+      [(nzOpen)]="nzOpen"
+      (nzOpenChange)="openChange($event)"
       [nzPlacement]="nzPlacement()"
       [nzSelectOnTab]="nzSelectOnTab()"
       [nzMaxMultipleCount]="nzMaxMultipleCount()"
@@ -1924,16 +1924,16 @@ export class TestSelectTemplateDefaultComponent {
   template: `
     <nz-select
       nzMode="multiple"
-      [ngModel]="value()"
-      (ngModelChange)="value.set($event); valueChange($event)"
+      [(ngModel)]="value"
+      (ngModelChange)="valueChange($event)"
       [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon()"
       [nzTokenSeparators]="nzTokenSeparators()"
       [nzRemoveIcon]="nzRemoveIcon()"
       [nzMaxMultipleCount]="nzMaxMultipleCount()"
       [compareWith]="compareWith()"
       [nzAutoClearSearchValue]="nzAutoClearSearchValue()"
-      [nzOpen]="nzOpen()"
-      (nzOpenChange)="nzOpen.set($event); valueChange($event)"
+      [(nzOpen)]="nzOpen"
+      (nzOpenChange)="valueChange($event)"
     >
       @for (o of listOfOption(); track o) {
         <nz-option [nzValue]="o.nzValue" [nzLabel]="o.nzLabel" [nzDisabled]="o.nzDisabled" [nzHide]="o.nzHide" />
@@ -1962,8 +1962,8 @@ export class TestSelectTemplateMultipleComponent {
   template: `
     <nz-select
       nzMode="tags"
-      [ngModel]="value()"
-      (ngModelChange)="value.set($event); valueChange($event)"
+      [(ngModel)]="value"
+      (ngModelChange)="valueChange($event)"
       [nzSize]="nzSize()"
       [nzMaxTagCount]="nzMaxTagCount()"
       [nzTokenSeparators]="nzTokenSeparators()"
@@ -1992,8 +1992,8 @@ export class TestSelectTemplateTagsComponent {
   template: `
     <nz-select
       nzMode="default"
-      [ngModel]="value()"
-      (ngModelChange)="value.set($event); valueChange($event)"
+      [(ngModel)]="value"
+      (ngModelChange)="valueChange($event)"
       [nzOptions]="listOfOption()"
       [nzSize]="nzSize()"
       [nzDropdownMatchSelectWidth]="nzDropdownMatchSelectWidth"
@@ -2012,8 +2012,8 @@ export class TestSelectTemplateTagsComponent {
       [nzServerSearch]="nzServerSearch()"
       [nzDisabled]="nzDisabled()"
       [nzAutoClearSearchValue]="nzAutoClearSearchValue()"
-      [nzOpen]="nzOpen()"
-      (nzOpenChange)="nzOpen.set($event); openChange($event)"
+      [(nzOpen)]="nzOpen"
+      (nzOpenChange)="openChange($event)"
       (nzOnSearch)="searchValueChange($event)"
       (nzOnClear)="onClear()"
     />
@@ -2064,8 +2064,8 @@ export class TestSelectReactiveDefaultComponent {
   template: `
     <nz-select
       [nzMode]="nzMode()"
-      [ngModel]="value()"
-      (ngModelChange)="value.set($event); valueChange($event)"
+      [(ngModel)]="value"
+      (ngModelChange)="valueChange($event)"
       [nzOptions]="listOfOption()"
       [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon()"
       [nzTokenSeparators]="nzTokenSeparators()"
@@ -2073,8 +2073,8 @@ export class TestSelectReactiveDefaultComponent {
       [nzMaxMultipleCount]="nzMaxMultipleCount()"
       [compareWith]="compareWith()"
       [nzAutoClearSearchValue]="nzAutoClearSearchValue()"
-      [nzOpen]="nzOpen()"
-      (nzOpenChange)="nzOpen.set($event); valueChange($event)"
+      [(nzOpen)]="nzOpen"
+      (nzOpenChange)="valueChange($event)"
     />
     <ng-template #iconTemplate>icon</ng-template>
   `
@@ -2100,8 +2100,8 @@ export class TestSelectReactiveMultipleComponent {
   template: `
     <nz-select
       nzMode="tags"
-      [ngModel]="value()"
-      (ngModelChange)="value.set($event); valueChange($event)"
+      [(ngModel)]="value"
+      (ngModelChange)="valueChange($event)"
       [nzOptions]="listOfOption()"
       [nzSize]="nzSize()"
       [nzMaxTagCount]="nzMaxTagCount()"

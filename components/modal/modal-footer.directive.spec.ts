@@ -84,12 +84,7 @@ describe('modal footer directive', () => {
 @Component({
   imports: [NzModalModule, NzButtonModule],
   template: `
-    <nz-modal
-      [nzVisible]="isVisible()"
-      (nzVisibleChange)="isVisible.set($event)"
-      nzTitle="Custom Modal Title"
-      (nzOnCancel)="handleCancel()"
-    >
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="Custom Modal Title" (nzOnCancel)="handleCancel()">
       <div>
         <p>Modal Content</p>
       </div>
@@ -117,7 +112,7 @@ class TestDirectiveFooterComponent {
 @Component({
   imports: [NzModalModule, NzButtonModule],
   template: `
-    <nz-modal [nzVisible]="isVisible()" (nzVisibleChange)="isVisible.set($event)" nzTitle="Custom Modal Title">
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="Custom Modal Title">
       <div>
         <p>Modal Content</p>
       </div>

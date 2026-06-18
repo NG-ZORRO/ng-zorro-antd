@@ -115,27 +115,24 @@ describe('button', () => {
 
     it('should hide icon when loading correct', () => {
       jasmine.clock().install();
-      try {
-        fixture.detectChanges();
-        const buttonElement = fixture.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
-        expect(buttonElement.classList.contains('ant-btn-loading')).toBe(false);
-        expect(buttonElement.classList).not.toContain('ant-btn-icon-only');
-        expect(buttonElement.firstElementChild.querySelector('svg')).not.toBe(null);
-        expect(buttonElement.firstElementChild!.classList.contains('anticon-poweroff')).toBe(true);
-        expect(buttonElement.firstElementChild!.classList.contains('anticon-loading')).toBe(false);
-        buttonElement.click();
-        fixture.detectChanges();
-        expect(buttonElement.classList.contains('ant-btn-loading')).toBe(true);
-        expect(buttonElement.firstElementChild!.classList.contains('ant-btn-loading-icon')).toBe(true);
-        expect(buttonElement.querySelector('.anticon-poweroff').style.cssText).toBe('display: none;');
-        jasmine.clock().tick(1000);
-        fixture.detectChanges();
-        expect(buttonElement.classList.contains('ant-btn-loading')).toBe(false);
-        expect(buttonElement.firstElementChild!.classList.contains('ant-btn-loading-icon')).toBe(false);
-        expect(buttonElement.querySelector('.anticon-poweroff').style.cssText).toBe('');
-      } finally {
-        jasmine.clock().uninstall();
-      }
+      fixture.detectChanges();
+      const buttonElement = fixture.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
+      expect(buttonElement.classList.contains('ant-btn-loading')).toBe(false);
+      expect(buttonElement.classList).not.toContain('ant-btn-icon-only');
+      expect(buttonElement.firstElementChild.querySelector('svg')).not.toBe(null);
+      expect(buttonElement.firstElementChild!.classList.contains('anticon-poweroff')).toBe(true);
+      expect(buttonElement.firstElementChild!.classList.contains('anticon-loading')).toBe(false);
+      buttonElement.click();
+      fixture.detectChanges();
+      expect(buttonElement.classList.contains('ant-btn-loading')).toBe(true);
+      expect(buttonElement.firstElementChild!.classList.contains('ant-btn-loading-icon')).toBe(true);
+      expect(buttonElement.querySelector('.anticon-poweroff').style.cssText).toBe('display: none;');
+      jasmine.clock().tick(1000);
+      fixture.detectChanges();
+      expect(buttonElement.classList.contains('ant-btn-loading')).toBe(false);
+      expect(buttonElement.firstElementChild!.classList.contains('ant-btn-loading-icon')).toBe(false);
+      expect(buttonElement.querySelector('.anticon-poweroff').style.cssText).toBe('');
+      jasmine.clock().uninstall();
     });
   });
 

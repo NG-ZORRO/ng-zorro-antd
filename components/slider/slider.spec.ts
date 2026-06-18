@@ -9,8 +9,8 @@ import { Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import {
   dispatchFakeEvent,
   dispatchKeyboardEvent,
@@ -38,7 +38,7 @@ describe('slider', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations()]
+      providers: [provideNzIconsTesting(), provideNzNoAnimation()]
     });
   });
 
@@ -189,52 +189,43 @@ describe('slider', () => {
       overlayContainerElement = oc.getContainerElement();
     }));
 
+    beforeEach(() => jasmine.clock().install());
+    afterEach(() => jasmine.clock().uninstall());
+
     it('should always display tooltips if set to `always`', async () => {
-      jasmine.clock().install();
-      try {
-        testComponent.show.set('always');
-        fixture.detectChanges();
-        jasmine.clock().tick(400);
-        await fixture.whenStable();
-        fixture.detectChanges();
-        expect(overlayContainerElement.textContent).toContain('0');
+      testComponent.show.set('always');
+      fixture.detectChanges();
+      jasmine.clock().tick(400);
+      await fixture.whenStable();
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain('0');
 
-        dispatchClickEventSequence(sliderNativeElement, 0.13);
-        fixture.detectChanges();
-        await fixture.whenStable();
-        expect(overlayContainerElement.textContent).toContain('13');
+      dispatchClickEventSequence(sliderNativeElement, 0.13);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(overlayContainerElement.textContent).toContain('13');
 
-        // Always show tooltip even when the handle is not hovered.
-        fixture.detectChanges();
-        await fixture.whenStable();
-        expect(overlayContainerElement.textContent).toContain('13');
-
-        jasmine.clock().tick(400);
-      } finally {
-        jasmine.clock().uninstall();
-      }
+      // Always show tooltip even when the handle is not hovered.
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(overlayContainerElement.textContent).toContain('13');
     });
 
     it('should never display tooltips if set to `never`', () => {
-      jasmine.clock().install();
-      try {
-        const handlerHost = sliderNativeElement.querySelector('nz-slider-handle')!;
+      const handlerHost = sliderNativeElement.querySelector('nz-slider-handle')!;
 
-        testComponent.show.set('never');
-        jasmine.clock().tick(400);
-        fixture.detectChanges();
-        expect(overlayContainerElement.textContent).not.toContain('0');
+      testComponent.show.set('never');
+      jasmine.clock().tick(400);
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).not.toContain('0');
 
-        dispatchClickEventSequence(sliderNativeElement, 0.13);
-        fixture.detectChanges();
+      dispatchClickEventSequence(sliderNativeElement, 0.13);
+      fixture.detectChanges();
 
-        // Do not show tooltip even when the handle is hovered.
-        dispatchMouseEvent(handlerHost, 'mouseenter');
-        fixture.detectChanges();
-        expect(overlayContainerElement.textContent).not.toContain('13');
-      } finally {
-        jasmine.clock().uninstall();
-      }
+      // Do not show tooltip even when the handle is hovered.
+      dispatchMouseEvent(handlerHost, 'mouseenter');
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).not.toContain('13');
     });
   });
 
@@ -256,30 +247,26 @@ describe('slider', () => {
       overlayContainerElement = oc.getContainerElement();
     }));
 
+    beforeEach(() => jasmine.clock().install());
+    afterEach(() => jasmine.clock().uninstall());
+
     it('should preview template tooltip', async () => {
-      jasmine.clock().install();
-      try {
-        testComponent.show.set('always');
-        fixture.detectChanges();
-        jasmine.clock().tick(400);
-        await fixture.whenStable();
-        fixture.detectChanges();
-        expect(overlayContainerElement.textContent).toContain('Slider value: 0');
+      testComponent.show.set('always');
+      fixture.detectChanges();
+      jasmine.clock().tick(400);
+      await fixture.whenStable();
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain('Slider value: 0');
 
-        dispatchClickEventSequence(sliderNativeElement, 0.13);
-        fixture.detectChanges();
-        await fixture.whenStable();
-        expect(overlayContainerElement.textContent).toContain('Slider value: 13');
+      dispatchClickEventSequence(sliderNativeElement, 0.13);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(overlayContainerElement.textContent).toContain('Slider value: 13');
 
-        // Always show tooltip even when the handle is not hovered.
-        fixture.detectChanges();
-        await fixture.whenStable();
-        expect(overlayContainerElement.textContent).toContain('Slider value: 13');
-
-        jasmine.clock().tick(400);
-      } finally {
-        jasmine.clock().uninstall();
-      }
+      // Always show tooltip even when the handle is not hovered.
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(overlayContainerElement.textContent).toContain('Slider value: 13');
     });
   });
 
@@ -753,22 +740,19 @@ describe('slider', () => {
 
     it('should show/hide tooltip when enter/leave a handler', () => {
       jasmine.clock().install();
-      try {
-        const handlerHost = sliderNativeElement.querySelector('nz-slider-handle')!;
+      const handlerHost = sliderNativeElement.querySelector('nz-slider-handle')!;
 
-        dispatchClickEventSequence(sliderNativeElement, 0.13);
-        fixture.detectChanges();
+      dispatchClickEventSequence(sliderNativeElement, 0.13);
+      fixture.detectChanges();
 
-        dispatchMouseEvent(handlerHost, 'mouseenter');
-        fixture.detectChanges();
-        expect(overlayContainerElement.textContent).toContain('VALUE-13');
+      dispatchMouseEvent(handlerHost, 'mouseenter');
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain('VALUE-13');
 
-        dispatchMouseEvent(handlerHost, 'mouseleave');
-        jasmine.clock().tick(400);
-        expect(overlayContainerElement.textContent).not.toContain('VALUE-13');
-      } finally {
-        jasmine.clock().uninstall();
-      }
+      dispatchMouseEvent(handlerHost, 'mouseleave');
+      jasmine.clock().tick(400);
+      expect(overlayContainerElement.textContent).not.toContain('VALUE-13');
+      jasmine.clock().uninstall();
     });
 
     // fix #5699, Slider should work with decimals as well

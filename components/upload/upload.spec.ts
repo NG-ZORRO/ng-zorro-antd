@@ -441,101 +441,74 @@ describe('upload', () => {
         });
 
         describe('using promise', () => {
+          beforeEach(() => jasmine.clock().install());
+          afterEach(() => jasmine.clock().uninstall());
+
           it('should upload when promise resolves to true', () => {
-            jasmine.clock().install();
-            try {
-              let hookExecuted = false;
-              instance.beforeUpload.set((): Promise<boolean> => {
-                hookExecuted = true;
-                return Promise.resolve(true);
-              });
-              fixture.detectChanges();
-              pageObject.postSmall();
-              jasmine.clock().tick(0);
-              expect(hookExecuted).toBe(true);
-            } finally {
-              jasmine.clock().uninstall();
-            }
+            let hookExecuted = false;
+            instance.beforeUpload.set((): Promise<boolean> => {
+              hookExecuted = true;
+              return Promise.resolve(true);
+            });
+            fixture.detectChanges();
+            pageObject.postSmall();
+            jasmine.clock().tick(0);
+            expect(hookExecuted).toBe(true);
           });
 
           it('should upload when promise resolves to file', () => {
-            jasmine.clock().install();
-            try {
-              let hookExecuted = false;
-              instance.beforeUpload.set((file: NzUploadFile): Promise<NzUploadFile> => {
-                hookExecuted = true;
-                return Promise.resolve(file);
-              });
-              fixture.detectChanges();
-              pageObject.postSmall();
-              jasmine.clock().tick(0);
-              expect(hookExecuted).toBe(true);
-            } finally {
-              jasmine.clock().uninstall();
-            }
+            let hookExecuted = false;
+            instance.beforeUpload.set((file: NzUploadFile): Promise<NzUploadFile> => {
+              hookExecuted = true;
+              return Promise.resolve(file);
+            });
+            fixture.detectChanges();
+            pageObject.postSmall();
+            jasmine.clock().tick(0);
+            expect(hookExecuted).toBe(true);
           });
 
           it('should upload with blob when promise resolves to blob', () => {
-            jasmine.clock().install();
-            try {
-              let hookExecuted = false;
-              const testBlob = new Blob(['test content'], { type: 'text/plain' });
-              instance.beforeUpload.set((): Promise<Blob> => {
-                hookExecuted = true;
-                return Promise.resolve(testBlob);
-              });
-              fixture.detectChanges();
-              pageObject.postSmall();
-              jasmine.clock().tick(0);
-              expect(hookExecuted).toBe(true);
-            } finally {
-              jasmine.clock().uninstall();
-            }
+            let hookExecuted = false;
+            const testBlob = new Blob(['test content'], { type: 'text/plain' });
+            instance.beforeUpload.set((): Promise<Blob> => {
+              hookExecuted = true;
+              return Promise.resolve(testBlob);
+            });
+            fixture.detectChanges();
+            pageObject.postSmall();
+            jasmine.clock().tick(0);
+            expect(hookExecuted).toBe(true);
           });
 
           it('should cancel upload when promise resolves to false', () => {
-            jasmine.clock().install();
-            try {
-              expect(instance._nzChange).toBeUndefined();
-              instance.beforeUpload.set((): Promise<boolean> => Promise.resolve(false));
-              fixture.detectChanges();
-              pageObject.postSmall();
-              jasmine.clock().tick(0);
-              expect(instance._nzChange).toBeUndefined();
-            } finally {
-              jasmine.clock().uninstall();
-            }
+            expect(instance._nzChange).toBeUndefined();
+            instance.beforeUpload.set((): Promise<boolean> => Promise.resolve(false));
+            fixture.detectChanges();
+            pageObject.postSmall();
+            jasmine.clock().tick(0);
+            expect(instance._nzChange).toBeUndefined();
           });
 
           it('should work with promise that resolves to boolean true', () => {
-            jasmine.clock().install();
-            try {
-              let hookCalled = false;
-              instance.beforeUpload.set((): Promise<boolean> => {
-                hookCalled = true;
-                return Promise.resolve(true);
-              });
-              fixture.detectChanges();
-              pageObject.postSmall();
-              jasmine.clock().tick(0);
-              expect(hookCalled).toBe(true);
-            } finally {
-              jasmine.clock().uninstall();
-            }
+            let hookCalled = false;
+            instance.beforeUpload.set((): Promise<boolean> => {
+              hookCalled = true;
+              return Promise.resolve(true);
+            });
+            fixture.detectChanges();
+            pageObject.postSmall();
+            jasmine.clock().tick(0);
+            expect(hookCalled).toBe(true);
           });
 
           it('should cancel upload when promise rejects with false', () => {
-            jasmine.clock().install();
-            try {
-              expect(instance._nzChange).toBeUndefined();
-              instance.beforeUpload.set((): Promise<boolean> => Promise.reject(false));
-              fixture.detectChanges();
-              pageObject.postSmall();
-              jasmine.clock().tick(0);
-              expect(instance._nzChange).toBeUndefined();
-            } finally {
-              jasmine.clock().uninstall();
-            }
+            expect(instance._nzChange).toBeUndefined();
+            instance.beforeUpload.set((): Promise<boolean> => Promise.reject(false));
+            fixture.detectChanges();
+            pageObject.postSmall();
+            jasmine.clock().tick(0);
+            expect(instance._nzChange).toBeUndefined();
           });
         });
       });
@@ -1305,40 +1278,33 @@ describe('upload', () => {
         http = TestBed.inject(HttpTestingController);
       });
 
+      beforeEach(() => jasmine.clock().install());
+      afterEach(() => jasmine.clock().uninstall());
+
       it('should uploading a png file', () => {
-        jasmine.clock().install();
-        try {
-          spyOn<NzSafeAny>(comp.options, 'onStart');
-          spyOn<NzSafeAny>(comp.options, 'onProgress');
-          spyOn<NzSafeAny>(comp.options, 'onSuccess');
-          comp.onChange(PNG_SMALL as NzSafeAny);
-          jasmine.clock().tick(1);
-          const req = http.expectOne('/test');
-          req.event({ type: 1, loaded: 10, total: 100 });
-          req.flush('ok');
-          expect(comp.options.onProgress).toHaveBeenCalled();
-          expect(comp.options.onStart).toHaveBeenCalled();
-          expect(comp.options.onSuccess).toHaveBeenCalled();
-        } finally {
-          jasmine.clock().uninstall();
-        }
+        spyOn<NzSafeAny>(comp.options, 'onStart');
+        spyOn<NzSafeAny>(comp.options, 'onProgress');
+        spyOn<NzSafeAny>(comp.options, 'onSuccess');
+        comp.onChange(PNG_SMALL as NzSafeAny);
+        jasmine.clock().tick(1);
+        const req = http.expectOne('/test');
+        req.event({ type: 1, loaded: 10, total: 100 });
+        req.flush('ok');
+        expect(comp.options.onProgress).toHaveBeenCalled();
+        expect(comp.options.onStart).toHaveBeenCalled();
+        expect(comp.options.onSuccess).toHaveBeenCalled();
       });
 
       it('should contain the parameters of http request', () => {
-        jasmine.clock().install();
-        try {
-          comp.onChange(PNG_SMALL as NzSafeAny);
-          jasmine.clock().tick(1);
-          const req = http.expectOne('/test');
-          expect(req.request.withCredentials).toBe(true);
-          expect(req.request.headers.get('token')).toBe('asdf');
-          const body = req.request.body as FormData;
-          expect(body.has('avatar')).toBe(true);
-          expect(body.has('a')).toBe(true);
-          req.flush('ok');
-        } finally {
-          jasmine.clock().uninstall();
-        }
+        comp.onChange(PNG_SMALL as NzSafeAny);
+        jasmine.clock().tick(1);
+        const req = http.expectOne('/test');
+        expect(req.request.withCredentials).toBe(true);
+        expect(req.request.headers.get('token')).toBe('asdf');
+        const body = req.request.body as FormData;
+        expect(body.has('avatar')).toBe(true);
+        expect(body.has('a')).toBe(true);
+        req.flush('ok');
       });
 
       it('should filter size', () => {
@@ -1414,20 +1380,15 @@ describe('upload', () => {
       });
 
       it('should error when request error', () => {
-        jasmine.clock().install();
-        try {
-          spyOn<NzSafeAny>(comp.options, 'onStart');
-          spyOn<NzSafeAny>(comp.options, 'onSuccess');
-          spyOn<NzSafeAny>(comp.options, 'onError');
-          comp.onChange(PNG_SMALL as NzSafeAny);
-          jasmine.clock().tick(1);
-          http.expectOne('/test').error({ status: 403 } as unknown as ProgressEvent);
-          expect(comp.options.onStart).toHaveBeenCalled();
-          expect(comp.options.onError).toHaveBeenCalled();
-          expect(comp.options.onSuccess).not.toHaveBeenCalled();
-        } finally {
-          jasmine.clock().uninstall();
-        }
+        spyOn<NzSafeAny>(comp.options, 'onStart');
+        spyOn<NzSafeAny>(comp.options, 'onSuccess');
+        spyOn<NzSafeAny>(comp.options, 'onError');
+        comp.onChange(PNG_SMALL as NzSafeAny);
+        jasmine.clock().tick(1);
+        http.expectOne('/test').error({ status: 403 } as unknown as ProgressEvent);
+        expect(comp.options.onStart).toHaveBeenCalled();
+        expect(comp.options.onError).toHaveBeenCalled();
+        expect(comp.options.onSuccess).not.toHaveBeenCalled();
       });
 
       it('should custom request', () => {

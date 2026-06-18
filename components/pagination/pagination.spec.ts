@@ -420,11 +420,11 @@ describe('pagination', () => {
   template: `
     <nz-pagination
       [nzSimple]="simple()"
-      [nzPageIndex]="pageIndex()"
-      (nzPageIndexChange)="pageIndex.set($event); pageIndexChange($event)"
+      [(nzPageIndex)]="pageIndex"
+      (nzPageIndexChange)="pageIndexChange($event)"
       [nzDisabled]="disabled()"
-      [nzPageSize]="pageSize()"
-      (nzPageSizeChange)="pageSize.set($event); pageSizeChange($event)"
+      [(nzPageSize)]="pageSize"
+      (nzPageSizeChange)="pageSizeChange($event)"
       [nzSize]="size()"
       [nzTotal]="total()"
       [nzHideOnSinglePage]="hideOnSinglePage()"

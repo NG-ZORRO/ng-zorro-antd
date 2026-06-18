@@ -10,16 +10,10 @@ import { Component, DebugElement, signal, viewChild, ViewChild, WritableSignal }
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
-import {
-  dispatchFakeEvent,
-  dispatchMouseEvent,
-  testDirectionality,
-  typeInElement,
-  updateNonSignalsInput
-} from 'ng-zorro-antd/core/testing';
+import { dispatchFakeEvent, dispatchMouseEvent, testDirectionality, typeInElement } from 'ng-zorro-antd/core/testing';
 import { NzPlacement, NzStatus, NzVariant, type NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker';
 import { getPickerInput, getPickerOkButton } from 'ng-zorro-antd/date-picker/testing/util';
@@ -38,7 +32,7 @@ describe('time-picker', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
   });
 
@@ -51,6 +45,16 @@ describe('time-picker', () => {
     oc.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
+
+  beforeEach(() => jasmine.clock().install());
+  afterEach(() => jasmine.clock().uninstall());
+
+  async function stabilize<T>(fixture: ComponentFixture<T>, ms = 0): Promise<void> {
+    fixture.detectChanges();
+    jasmine.clock().tick(ms);
+    await fixture.whenStable();
+    fixture.detectChanges();
+  }
 
   describe('basic', () => {
     let testComponent: NzTestTimePickerComponent;
@@ -74,23 +78,24 @@ describe('time-picker', () => {
       fixture.detectChanges();
       testComponent.autoFocus.set(true);
       fixture.detectChanges();
-      expect(timeElement.nativeElement.querySelector('input').attributes.getNamedItem('autofocus').name).toBe(
-        'autofocus'
-      );
+      const input = timeElement.nativeElement.querySelector('input');
+      expect(input.attributes.getNamedItem('autofocus').name).toBe('autofocus');
       testComponent.autoFocus.set(false);
       fixture.detectChanges();
-      expect(timeElement.nativeElement.querySelector('input').attributes.getNamedItem('autofocus')).toBe(null);
+      expect(input.attributes.getNamedItem('autofocus')).toBe(null);
     });
 
     it('should focus and blur function work', () => {
       fixture.detectChanges();
-      expect(timeElement.nativeElement.querySelector('input') === document.activeElement).toBe(false);
+      const input = timeElement.nativeElement.querySelector('input');
+
+      expect(input === document.activeElement).toBe(false);
       testComponent.nzTimePickerComponent.focus();
       fixture.detectChanges();
-      expect(timeElement.nativeElement.querySelector('input') === document.activeElement).toBe(true);
+      expect(input === document.activeElement).toBe(true);
       testComponent.nzTimePickerComponent.blur();
       fixture.detectChanges();
-      expect(timeElement.nativeElement.querySelector('input') === document.activeElement).toBe(false);
+      expect(input === document.activeElement).toBe(false);
     });
 
     it('should disabled work', async () => {
@@ -103,7 +108,9 @@ describe('time-picker', () => {
       expect(timeElement.componentInstance.nzDisabled).toBeTruthy();
       testComponent.nzTimePickerComponent.focus();
       fixture.detectChanges();
-      expect(timeElement.nativeElement.querySelector('input') === document.activeElement).toBe(false);
+
+      const input = timeElement.nativeElement.querySelector('input');
+      expect(input === document.activeElement).toBe(false);
 
       testComponent.nzTimePickerComponent.setDisabledState(false);
       await stabilize(fixture);
@@ -112,7 +119,7 @@ describe('time-picker', () => {
       expect(timeElement.componentInstance.nzDisabled).toBeFalsy();
       testComponent.nzTimePickerComponent.focus();
       fixture.detectChanges();
-      expect(timeElement.nativeElement.querySelector('input') === document.activeElement).toBe(true);
+      expect(input === document.activeElement).toBe(true);
 
       testComponent.nzTimePickerComponent.setDisabledState(true);
       await stabilize(fixture);
@@ -121,7 +128,7 @@ describe('time-picker', () => {
       expect(timeElement.componentInstance.nzDisabled).toBeTruthy();
       testComponent.nzTimePickerComponent.focus();
       fixture.detectChanges();
-      expect(timeElement.nativeElement.querySelector('input') === document.activeElement).toBe(false);
+      expect(input === document.activeElement).toBe(false);
     });
 
     it('should readOnly work', () => {
@@ -199,14 +206,9 @@ describe('time-picker', () => {
     });
 
     it('should support custom suffixIcon', () => {
-      jasmine.clock().install();
-      try {
-        testComponent.nzSuffixIcon.set('calendar');
-        fixture.detectChanges();
-        expect(fixture.debugElement.query(By.css(`.anticon-calendar`))).toBeDefined();
-      } finally {
-        jasmine.clock().uninstall();
-      }
+      testComponent.nzSuffixIcon.set('calendar');
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css(`.anticon-calendar`))).toBeDefined();
     });
 
     it('should display string prefix as text content', () => {
@@ -236,89 +238,69 @@ describe('time-picker', () => {
       expect(prefixElement.nativeElement.textContent.trim()).toBe('End');
     });
 
-    it('should backdrop work', () => {
-      jasmine.clock().install();
-      try {
-        testComponent.nzBackdrop.set(true);
-        testComponent.open.set(true);
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
-        const boundingBox = overlayContainerElement.children[0];
-        expect(boundingBox.children[0].classList).toContain('cdk-overlay-backdrop');
-      } finally {
-        jasmine.clock().uninstall();
-      }
+    it('should backdrop work', async () => {
+      testComponent.nzBackdrop.set(true);
+      testComponent.open.set(true);
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
+      const boundingBox = overlayContainerElement.children[0];
+      expect(boundingBox.children[0].classList).toContain('cdk-overlay-backdrop');
     });
 
     it('should open with click and close with tab', () => {
-      jasmine.clock().install();
-      try {
-        dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
-        expect(getPickerContainer()).not.toBeNull();
+      dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
 
-        triggerInputBlur(fixture.debugElement);
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
+      triggerInputBlur(fixture.debugElement);
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
 
-        expect(getPickerContainer()).toBeNull();
-      } finally {
-        jasmine.clock().uninstall();
-      }
+      expect(getPickerContainer()).toBeNull();
     });
 
     it('should set default opening time when clicking ok', () => {
-      jasmine.clock().install();
-      try {
-        const onChange = spyOn(testComponent, 'onChange');
-        dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
-        expect(getPickerContainer()).not.toBeNull();
+      const onChange = spyOn(testComponent, 'onChange');
+      dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
 
-        const okButton = getPickerOkButton(fixture.debugElement);
-        expect(okButton).not.toBeNull();
-        dispatchFakeEvent(okButton, 'click');
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
-        const result = (onChange.calls.allArgs()[0] as Date[])[0];
-        expect(result.getHours()).toEqual(0);
-        expect(result.getMinutes()).toEqual(0);
-        expect(result.getSeconds()).toEqual(0);
-      } finally {
-        jasmine.clock().uninstall();
-      }
+      const okButton = getPickerOkButton(fixture.debugElement);
+      expect(okButton).not.toBeNull();
+      dispatchFakeEvent(okButton, 'click');
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
+      const result = (onChange.calls.allArgs()[0] as Date[])[0];
+      expect(result.getHours()).toEqual(0);
+      expect(result.getMinutes()).toEqual(0);
+      expect(result.getSeconds()).toEqual(0);
     });
 
     it('should not set time when clicking ok without default opening time', () => {
-      jasmine.clock().install();
-      try {
-        const onChange = spyOn(testComponent, 'onChange');
-        testComponent.defaultOpenValue.set(null!);
-        dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
-        expect(getPickerContainer()).not.toBeNull();
+      const onChange = spyOn(testComponent, 'onChange');
+      testComponent.defaultOpenValue.set(null!);
+      dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
 
-        const okButton = getPickerOkButton(fixture.debugElement);
-        expect(okButton).not.toBeNull();
-        dispatchFakeEvent(okButton, 'click');
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
+      const okButton = getPickerOkButton(fixture.debugElement);
+      expect(okButton).not.toBeNull();
+      dispatchFakeEvent(okButton, 'click');
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
 
-        const result = (onChange.calls.allArgs()[0] as Date[])[0];
-        expect(result).toBeNull();
-      } finally {
-        jasmine.clock().uninstall();
-      }
+      const result = (onChange.calls.allArgs()[0] as Date[])[0];
+      expect(result).toBeNull();
     });
 
     it('should set previous value when tabbing out with invalid input', async () => {
@@ -339,32 +321,27 @@ describe('time-picker', () => {
     });
 
     it('should set new value when tabbing out with valid input', () => {
-      jasmine.clock().install();
-      try {
-        const onChange = spyOn(testComponent, 'onChange');
-        testComponent.date.set(new Date('2020-03-27T13:49:54.917'));
+      const onChange = spyOn(testComponent, 'onChange');
+      testComponent.date.set(new Date('2020-03-27T13:49:54.917'));
 
-        fixture.detectChanges();
-        dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
-        const input = getPickerInput(fixture.debugElement);
-        typeInElement('20:10:30', input);
-        fixture.detectChanges();
+      fixture.detectChanges();
+      dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
+      const input = getPickerInput(fixture.debugElement);
+      typeInElement('20:10:30', input);
+      fixture.detectChanges();
 
-        triggerInputBlur(fixture.debugElement);
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
+      triggerInputBlur(fixture.debugElement);
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
 
-        const result = (onChange.calls.allArgs()[0] as Date[])[0];
-        expect(result.getHours()).toEqual(20);
-        expect(result.getMinutes()).toEqual(10);
-        expect(result.getSeconds()).toEqual(30);
-      } finally {
-        jasmine.clock().uninstall();
-      }
+      const result = (onChange.calls.allArgs()[0] as Date[])[0];
+      expect(result.getHours()).toEqual(20);
+      expect(result.getMinutes()).toEqual(10);
+      expect(result.getSeconds()).toEqual(30);
     });
 
     describe('should variant works', () => {
@@ -373,75 +350,54 @@ describe('time-picker', () => {
         fixture.detectChanges();
         expect(fixture.debugElement.query(By.css(`.ant-picker-outlined`))).toBeDefined();
       });
-      it('filled', () => {
-        fixture.detectChanges();
-        expect(fixture.debugElement.query(By.css(`.ant-picker-filled`))).toBeNull();
-        fixture.componentInstance.nzVariant.set('filled');
-        fixture.detectChanges();
-        expect(fixture.debugElement.query(By.css(`.ant-picker-filled`))).toBeDefined();
-      });
-      it('borderless', () => {
-        fixture.detectChanges();
-        expect(fixture.debugElement.query(By.css(`.ant-picker-borderless`))).toBeNull();
-        fixture.componentInstance.nzVariant.set('borderless');
-        fixture.detectChanges();
-        expect(fixture.debugElement.query(By.css(`.ant-picker-borderless`))).toBeDefined();
-      });
-      it('underlined', () => {
-        fixture.detectChanges();
-        expect(fixture.debugElement.query(By.css(`.ant-picker-underlined`))).toBeNull();
-        fixture.componentInstance.nzVariant.set('underlined');
-        fixture.detectChanges();
-        expect(fixture.debugElement.query(By.css(`.ant-picker-underlined`))).toBeDefined();
+
+      ['fill', 'borderless', 'underlined'].forEach(variant => {
+        it(variant, () => {
+          fixture.detectChanges();
+          expect(fixture.debugElement.query(By.css(`.ant-picker-${variant}`))).toBeNull();
+          fixture.componentInstance.nzVariant.set(variant as NzVariant);
+          fixture.detectChanges();
+          expect(fixture.debugElement.query(By.css(`.ant-picker-${variant}`))).toBeDefined();
+        });
       });
     });
 
     it('should not trigger blur after close panel', () => {
-      jasmine.clock().install();
-      try {
-        dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
-        expect(getPickerContainer()).not.toBeNull();
+      dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
 
-        const okButton = getPickerOkButton(fixture.debugElement);
-        expect(okButton).not.toBeNull();
-        dispatchFakeEvent(okButton, 'click');
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
+      const okButton = getPickerOkButton(fixture.debugElement);
+      expect(okButton).not.toBeNull();
+      dispatchFakeEvent(okButton, 'click');
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
 
-        expect(timeElement.nativeElement.querySelector('input') === document.activeElement).toBe(false);
-      } finally {
-        jasmine.clock().uninstall();
-      }
+      expect(timeElement.nativeElement.querySelector('input') === document.activeElement).toBe(false);
     });
 
     describe('setup I18n service', () => {
       let srv: NzI18nService;
 
-      beforeEach(inject([NzI18nService], (s: NzI18nService) => {
-        srv = s;
-      }));
+      beforeEach(() => {
+        srv = TestBed.inject(NzI18nService);
+      });
 
       it('should detect the language changes', () => {
-        jasmine.clock().install();
-        try {
-          let placeHolderValue: string | undefined;
-          placeHolderValue = timeElement.nativeElement.querySelector('input').placeholder;
+        let placeHolderValue: string | undefined;
+        placeHolderValue = timeElement.nativeElement.querySelector('input').placeholder;
 
-          expect(placeHolderValue).toBe('请选择时间');
+        expect(placeHolderValue).toBe('请选择时间');
 
-          srv.setLocale(en_GB);
-          jasmine.clock().tick(400);
-          fixture.detectChanges();
+        srv.setLocale(en_GB);
+        jasmine.clock().tick(400);
+        fixture.detectChanges();
 
-          placeHolderValue = timeElement.nativeElement.querySelector('input').placeholder;
-          expect(placeHolderValue).toBe('Select time');
-        } finally {
-          jasmine.clock().uninstall();
-        }
+        placeHolderValue = timeElement.nativeElement.querySelector('input').placeholder;
+        expect(placeHolderValue).toBe('Select time');
       });
     });
   });
@@ -481,46 +437,31 @@ describe('time-picker', () => {
     }
 
     it('should default to bottomLeft placement', () => {
-      jasmine.clock().install();
-      try {
-        expect(fixtureInstance.nzTimePickerComponent().nzPlacement()).toBe('bottomLeft');
-      } finally {
-        jasmine.clock().uninstall();
-      }
+      expect(fixtureInstance.nzTimePickerComponent().nzPlacement()).toBe('bottomLeft');
     });
 
     it('should support bottomLeft placement', () => {
-      jasmine.clock().install();
-      try {
-        fixtureInstance.nzPlacement.set('bottomLeft');
-        fixture.detectChanges();
-        openTimePicker();
+      fixtureInstance.nzPlacement.set('bottomLeft');
+      fixture.detectChanges();
+      openTimePicker();
 
-        const dropdown = queryFromOverlay('.ant-picker-dropdown');
-        expect(dropdown).toBeTruthy();
-        expect(fixtureInstance.nzTimePickerComponent().nzPlacement()).toBe('bottomLeft');
+      const dropdown = queryFromOverlay('.ant-picker-dropdown');
+      expect(dropdown).toBeTruthy();
+      expect(fixtureInstance.nzTimePickerComponent().nzPlacement()).toBe('bottomLeft');
 
-        closeTimePicker();
-      } finally {
-        jasmine.clock().uninstall();
-      }
+      closeTimePicker();
     });
 
     it('should support bottomRight placement', () => {
-      jasmine.clock().install();
-      try {
-        fixtureInstance.nzPlacement.set('bottomRight');
-        fixture.detectChanges();
-        openTimePicker();
+      fixtureInstance.nzPlacement.set('bottomRight');
+      fixture.detectChanges();
+      openTimePicker();
 
-        const dropdown = queryFromOverlay('.ant-picker-dropdown');
-        expect(dropdown).toBeTruthy();
-        expect(fixtureInstance.nzTimePickerComponent().nzPlacement()).toBe('bottomRight');
+      const dropdown = queryFromOverlay('.ant-picker-dropdown');
+      expect(dropdown).toBeTruthy();
+      expect(fixtureInstance.nzTimePickerComponent().nzPlacement()).toBe('bottomRight');
 
-        closeTimePicker();
-      } finally {
-        jasmine.clock().uninstall();
-      }
+      closeTimePicker();
     });
 
     it('should support topLeft placement', async () => {
@@ -738,40 +679,35 @@ describe('time-picker', () => {
     });
 
     it('should emit value when OK button is clicked with nzNeedConfirm enabled', () => {
-      jasmine.clock().install();
-      try {
-        const onChange = spyOn(testComponent, 'onChange');
-        testComponent.needConfirm.set(true);
-        testComponent.date.set(new Date('2020-03-27T10:30:00'));
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
+      const onChange = spyOn(testComponent, 'onChange');
+      testComponent.needConfirm.set(true);
+      testComponent.date.set(new Date('2020-03-27T10:30:00'));
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
 
-        dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
+      dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
 
-        expect(getPickerContainer()).not.toBeNull();
+      expect(getPickerContainer()).not.toBeNull();
 
-        // Select a different time
-        const timeCell = overlayContainerElement.querySelector('.ant-picker-time-panel-cell:nth-child(3)');
-        dispatchMouseEvent(timeCell!, 'click');
-        fixture.detectChanges();
+      // Select a different time
+      const timeCell = overlayContainerElement.querySelector('.ant-picker-time-panel-cell:nth-child(3)');
+      dispatchMouseEvent(timeCell!, 'click');
+      fixture.detectChanges();
 
-        // Click OK button
-        const okButton = getPickerOkButton(fixture.debugElement);
-        expect(okButton).not.toBeNull();
-        dispatchFakeEvent(okButton, 'click');
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
+      // Click OK button
+      const okButton = getPickerOkButton(fixture.debugElement);
+      expect(okButton).not.toBeNull();
+      dispatchFakeEvent(okButton, 'click');
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
 
-        expect(onChange).toHaveBeenCalled();
-        expect(getPickerContainer()).toBeNull();
-      } finally {
-        jasmine.clock().uninstall();
-      }
+      expect(onChange).toHaveBeenCalled();
+      expect(getPickerContainer()).toBeNull();
     });
 
     it('should revert to previous value when tabbing out without OK click with nzNeedConfirm enabled', async () => {
@@ -831,116 +767,101 @@ describe('time-picker', () => {
     });
 
     it('should emit value when tabbing out without nzNeedConfirm (default behavior)', () => {
-      jasmine.clock().install();
-      try {
-        const onChange = spyOn(testComponent, 'onChange');
-        testComponent.needConfirm.set(false);
-        testComponent.date.set(new Date('2020-03-27T10:30:00'));
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
+      const onChange = spyOn(testComponent, 'onChange');
+      testComponent.needConfirm.set(false);
+      testComponent.date.set(new Date('2020-03-27T10:30:00'));
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
 
-        dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
+      dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
 
-        expect(getPickerContainer()).not.toBeNull();
+      expect(getPickerContainer()).not.toBeNull();
 
-        // Select a different time
-        const timeCell = overlayContainerElement.querySelector('.ant-picker-time-panel-cell:nth-child(10)');
-        dispatchMouseEvent(timeCell!, 'click');
-        fixture.detectChanges();
+      // Select a different time
+      const timeCell = overlayContainerElement.querySelector('.ant-picker-time-panel-cell:nth-child(10)');
+      dispatchMouseEvent(timeCell!, 'click');
+      fixture.detectChanges();
 
-        // Tab out
-        triggerInputBlur(fixture.debugElement);
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
+      // Tab out
+      triggerInputBlur(fixture.debugElement);
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
 
-        expect(onChange).toHaveBeenCalled();
-        expect(getPickerContainer()).toBeNull();
-      } finally {
-        jasmine.clock().uninstall();
-      }
+      expect(onChange).toHaveBeenCalled();
+      expect(getPickerContainer()).toBeNull();
     });
 
     it('should emit value when OK button is clicked without nzNeedConfirm', () => {
-      jasmine.clock().install();
-      try {
-        const onChange = spyOn(testComponent, 'onChange');
-        testComponent.needConfirm.set(false);
-        fixture.detectChanges();
+      const onChange = spyOn(testComponent, 'onChange');
+      testComponent.needConfirm.set(false);
+      fixture.detectChanges();
 
-        dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
+      dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
 
-        expect(getPickerContainer()).not.toBeNull();
+      expect(getPickerContainer()).not.toBeNull();
 
-        const okButton = getPickerOkButton(fixture.debugElement);
-        expect(okButton).not.toBeNull();
-        dispatchFakeEvent(okButton, 'click');
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
+      const okButton = getPickerOkButton(fixture.debugElement);
+      expect(okButton).not.toBeNull();
+      dispatchFakeEvent(okButton, 'click');
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
 
-        expect(onChange).toHaveBeenCalled();
-        expect(getPickerContainer()).toBeNull();
-      } finally {
-        jasmine.clock().uninstall();
-      }
+      expect(onChange).toHaveBeenCalled();
+      expect(getPickerContainer()).toBeNull();
     });
 
     it('should handle multiple open/close cycles correctly with nzNeedConfirm', () => {
-      jasmine.clock().install();
-      try {
-        const onChange = spyOn(testComponent, 'onChange');
-        testComponent.needConfirm.set(true);
-        testComponent.date.set(new Date('2020-03-27T10:30:00'));
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
+      const onChange = spyOn(testComponent, 'onChange');
+      testComponent.needConfirm.set(true);
+      testComponent.date.set(new Date('2020-03-27T10:30:00'));
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
 
-        // First cycle: select and confirm
-        dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
+      // First cycle: select and confirm
+      dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
 
-        const timeCell1 = overlayContainerElement.querySelector('.ant-picker-time-panel-cell:nth-child(5)');
-        dispatchMouseEvent(timeCell1!, 'click');
-        fixture.detectChanges();
+      const timeCell1 = overlayContainerElement.querySelector('.ant-picker-time-panel-cell:nth-child(5)');
+      dispatchMouseEvent(timeCell1!, 'click');
+      fixture.detectChanges();
 
-        const okButton1 = getPickerOkButton(fixture.debugElement);
-        dispatchFakeEvent(okButton1, 'click');
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
+      const okButton1 = getPickerOkButton(fixture.debugElement);
+      dispatchFakeEvent(okButton1, 'click');
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
 
-        expect(onChange).toHaveBeenCalledTimes(1);
-        onChange.calls.reset();
+      expect(onChange).toHaveBeenCalledTimes(1);
+      onChange.calls.reset();
 
-        // Second cycle: select but don't confirm
-        dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
+      // Second cycle: select but don't confirm
+      dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
 
-        const timeCell2 = overlayContainerElement.querySelector('.ant-picker-time-panel-cell:nth-child(10)');
-        dispatchMouseEvent(timeCell2!, 'click');
-        fixture.detectChanges();
+      const timeCell2 = overlayContainerElement.querySelector('.ant-picker-time-panel-cell:nth-child(10)');
+      dispatchMouseEvent(timeCell2!, 'click');
+      fixture.detectChanges();
 
-        triggerInputBlur(fixture.debugElement);
-        fixture.detectChanges();
-        jasmine.clock().tick(500);
-        fixture.detectChanges();
+      triggerInputBlur(fixture.debugElement);
+      fixture.detectChanges();
+      jasmine.clock().tick(500);
+      fixture.detectChanges();
 
-        expect(onChange).not.toHaveBeenCalled();
-      } finally {
-        jasmine.clock().uninstall();
-      }
+      expect(onChange).not.toHaveBeenCalled();
     });
   });
 
@@ -957,14 +878,8 @@ describe('time-picker', () => {
   }
 });
 
-async function stabilize<T>(fixture: ComponentFixture<T>, ms = 0): Promise<void> {
-  fixture.detectChanges();
-  await updateNonSignalsInput(fixture, ms);
-  fixture.detectChanges();
-}
-
 testDirectionality(() => NzTestTimePickerComponent, By.directive(NzTimePickerComponent), 'ant-picker', {
-  providers: [provideNoopAnimations()]
+  providers: [provideNzNoAnimation()]
 });
 
 describe('time-picker size', () => {
@@ -1082,10 +997,10 @@ describe('finalVariant', () => {
   template: `
     <nz-time-picker
       [nzAutoFocus]="autoFocus()"
-      [ngModel]="date()"
-      (ngModelChange)="date.set($event); onChange($event)"
-      [nzOpen]="open()"
-      (nzOpenChange)="open.set($event); openChange($event)"
+      [(ngModel)]="date"
+      (ngModelChange)="onChange($event)"
+      [(nzOpen)]="open"
+      (nzOpenChange)="openChange($event)"
       [nzDisabled]="disabled()"
       [nzInputReadOnly]="nzInputReadOnly()"
       [nzUse12Hours]="use12Hours()"
@@ -1162,8 +1077,8 @@ export class NzTestTimePickerPrefixTemplateComponent {}
   imports: [NzTimePickerComponent, FormsModule],
   template: `
     <nz-time-picker
-      [ngModel]="date()"
-      (ngModelChange)="date.set($event); onChange($event)"
+      [(ngModel)]="date"
+      (ngModelChange)="onChange($event)"
       [nzNeedConfirm]="needConfirm()"
       [nzDefaultOpenValue]="defaultOpenValue()"
     />

@@ -60,7 +60,7 @@ describe('tabs', () => {
 
     it('should change selected index on click', () => {
       const component = fixture.debugElement.componentInstance;
-      component.selectedIndex = 0;
+      component.selectedIndex.set(0);
       checkSelectedIndex(0, fixture);
 
       // select the second tab
@@ -76,7 +76,7 @@ describe('tabs', () => {
 
     it('should support two-way binding for selectedIndex', async () => {
       const component = fixture.componentInstance;
-      component.selectedIndex = 0;
+      component.selectedIndex.set(0);
 
       fixture.detectChanges();
 
@@ -85,7 +85,7 @@ describe('tabs', () => {
       fixture.detectChanges();
       await stabilize(fixture);
 
-      expect(component.selectedIndex).toBe(1);
+      expect(component.selectedIndex()).toBe(1);
     });
 
     it('should update tab positions when selected index is changed', async () => {
@@ -98,14 +98,14 @@ describe('tabs', () => {
       expect(tabs[2].position).toBeGreaterThan(0);
 
       // Move to third tab
-      fixture.componentInstance.selectedIndex = 2;
+      fixture.componentInstance.selectedIndex.set(2);
       await stabilize(fixture);
       expect(tabs[0].position).toBeLessThan(0);
       expect(tabs[1].position).toBeLessThan(0);
       expect(tabs[2].position).toBe(0);
 
       // Move to the first tab
-      fixture.componentInstance.selectedIndex = 0;
+      fixture.componentInstance.selectedIndex.set(0);
       await stabilize(fixture);
       expect(tabs[0].position).toBe(0);
       expect(tabs[1].position).toBeGreaterThan(0);
@@ -117,12 +117,12 @@ describe('tabs', () => {
       const component: NzTabsComponent = fixture.debugElement.query(By.css('nz-tabs'))!.componentInstance;
 
       // Set the index to be negative, expect the first tab selected
-      fixture.componentInstance.selectedIndex = -1;
+      fixture.componentInstance.selectedIndex.set(-1);
       fixture.detectChanges();
       expect(component.nzSelectedIndex).toBe(0);
 
       // Set the index beyond the size of the tabs, expect the last tab selected
-      fixture.componentInstance.selectedIndex = 3;
+      fixture.componentInstance.selectedIndex.set(3);
       fixture.detectChanges();
       expect(component.nzSelectedIndex).toBe(2);
     });
@@ -131,14 +131,14 @@ describe('tabs', () => {
       const component = fixture.debugElement.componentInstance;
 
       expect(() => {
-        component.selectedIndex = NaN;
+        component.selectedIndex.set(NaN);
         fixture.detectChanges();
       }).not.toThrow();
     });
 
     it('should emit nzSelectedIndexChange event on click', async () => {
       const component = fixture.componentInstance;
-      component.selectedIndex = 0;
+      component.selectedIndex.set(0);
       spyOn(component, 'handleSelection');
 
       fixture.detectChanges();
@@ -152,12 +152,12 @@ describe('tabs', () => {
       await stabilize(fixture);
 
       expect(component.handleSelection).toHaveBeenCalledTimes(1);
-      expect(component.selectedIndex).toBe(1);
+      expect(component.selectedIndex()).toBe(1);
     });
 
     it('should emit nzSelectedIndexChange on arrow key navigation', async () => {
       const component = fixture.componentInstance;
-      component.selectedIndex = 0;
+      component.selectedIndex.set(0);
       spyOn(component, 'handleSelection');
       fixture.detectChanges();
 
@@ -194,7 +194,7 @@ describe('tabs', () => {
 
     it('should not emit nzSelectedIndexChange when key-event on navigation list outside', async () => {
       const component = fixture.componentInstance;
-      component.selectedIndex = 0;
+      component.selectedIndex.set(0);
       spyOn(component, 'handleSelection');
       fixture.detectChanges();
       fixture.detectChanges();
@@ -241,7 +241,7 @@ describe('tabs', () => {
     it('should set the correct size', () => {
       const component = fixture.debugElement.componentInstance;
       const tabSetElement = fixture.debugElement.query(By.css('.ant-tabs'))!.nativeElement!;
-      component.size = 'small';
+      component.size.set('small');
       fixture.detectChanges();
 
       expect(tabSetElement.classList).toContain('ant-tabs-small');
@@ -250,14 +250,14 @@ describe('tabs', () => {
     it('should set the correct type', () => {
       const component = fixture.debugElement.componentInstance;
       const tabSetElement = fixture.debugElement.query(By.css('.ant-tabs'))!.nativeElement!;
-      component.type = 'card';
+      component.type.set('card');
       fixture.detectChanges();
 
       expect(tabSetElement.classList).toContain('ant-tabs-card');
       expect(tabSetElement.classList).not.toContain('ant-tabs-editable');
       expect(tabSetElement.classList).not.toContain('ant-tabs-editable-card');
 
-      component.type = 'editable-card';
+      component.type.set('editable-card');
       fixture.detectChanges();
 
       expect(tabSetElement.classList).toContain('ant-tabs-card');
@@ -270,7 +270,7 @@ describe('tabs', () => {
 
       const component = fixture.debugElement.componentInstance;
       const tabsButtons = fixture.nativeElement.querySelectorAll('.ant-tabs-tab')! as HTMLElement[];
-      component.tabBarGutter = 10;
+      component.tabBarGutter.set(10);
       fixture.detectChanges();
 
       expect(tabsButtons.length).toBe(3);
@@ -295,7 +295,7 @@ describe('tabs', () => {
 
       const component = fixture.debugElement.componentInstance;
       const tabsNav = fixture.debugElement.query(By.css('nz-tabs-nav'))!.nativeElement;
-      component.tabBarStyle = { color: 'rgb(255, 0, 0)' };
+      component.tabBarStyle.set({ color: 'rgb(255, 0, 0)' });
 
       fixture.detectChanges();
       await stabilize(fixture, 200);
@@ -310,7 +310,7 @@ describe('tabs', () => {
 
       expect(tabSet.classList).not.toContain('ant-tabs-centered');
 
-      component.centered = true;
+      component.centered.set(true);
       fixture.detectChanges();
 
       expect(tabSet.classList).toContain('ant-tabs-centered');
@@ -318,8 +318,8 @@ describe('tabs', () => {
 
     it('should canDeactivate work', () => {
       const component = fixture.debugElement.componentInstance;
-      component.selectedIndex = 0;
-      component.canDeactivate = (_: number, next: number) => next !== 2;
+      component.selectedIndex.set(0);
+      component.canDeactivate.set((_: number, next: number) => next !== 2);
 
       fixture.detectChanges();
 
@@ -336,7 +336,7 @@ describe('tabs', () => {
 
     it('should emit add event', () => {
       const component = fixture.debugElement.componentInstance;
-      component.type = 'editable-card';
+      component.type.set('editable-card');
       spyOn(fixture.componentInstance, 'handleAdd');
       fixture.detectChanges();
 
@@ -349,7 +349,7 @@ describe('tabs', () => {
 
     it('should emit close event', () => {
       const component = fixture.debugElement.componentInstance;
-      component.type = 'editable-card';
+      component.type.set('editable-card');
       component.closable = true;
       spyOn(fixture.componentInstance, 'handleClose');
       fixture.detectChanges();
@@ -438,7 +438,7 @@ describe('tabs', () => {
 
     it('should not change selected index on click when disabled', async () => {
       const component = fixture.debugElement.componentInstance;
-      component.selectedIndex = 0;
+      component.selectedIndex.set(0);
       fixture.detectChanges();
 
       checkSelectedIndex(0, fixture);
@@ -458,7 +458,7 @@ describe('tabs', () => {
       checkSelectedIndex(1, fixture);
 
       component.disabled.set(true);
-      component.selectedIndex = 0;
+      component.selectedIndex.set(0);
       fixture.detectChanges();
       await stabilize(fixture);
 
@@ -491,7 +491,7 @@ describe('tabs', () => {
 
       // Add a new tab on the right and select it, expect an origin >= than 0 (animate right)
       fixture.componentInstance.tabs.update(tabs => [...tabs, { title: 'New tab', content: 'to right of index' }]);
-      fixture.componentInstance.selectedIndex = 4;
+      fixture.componentInstance.selectedIndex.set(4);
       fixture.detectChanges();
       await stabilize(fixture);
 
@@ -499,7 +499,7 @@ describe('tabs', () => {
       expect(tabs[3].origin).toBeGreaterThanOrEqual(0);
 
       // Add a new tab in the beginning and select it, expect an origin < than 0 (animate left)
-      fixture.componentInstance.selectedIndex = 0;
+      fixture.componentInstance.selectedIndex.set(0);
       fixture.detectChanges();
       await stabilize(fixture);
 
@@ -515,7 +515,7 @@ describe('tabs', () => {
       const component: NzTabsComponent = fixture.debugElement.query(By.css('nz-tabs'))!.componentInstance;
 
       const numberOfTabs = component.tabs.length;
-      fixture.componentInstance.selectedIndex = numberOfTabs - 1;
+      fixture.componentInstance.selectedIndex.set(numberOfTabs - 1);
       fixture.detectChanges();
       await stabilize(fixture);
 
@@ -525,14 +525,14 @@ describe('tabs', () => {
       await stabilize(fixture);
 
       expect(component.nzSelectedIndex).toBe(numberOfTabs - 2);
-      expect(fixture.componentInstance.selectedIndex).toBe(numberOfTabs - 2);
+      expect(fixture.componentInstance.selectedIndex()).toBe(numberOfTabs - 2);
     });
 
     it('should maintain the selected tab if a new tab is added', () => {
       fixture.detectChanges();
       const component: NzTabsComponent = fixture.debugElement.query(By.css('nz-tabs'))!.componentInstance;
 
-      fixture.componentInstance.selectedIndex = 1;
+      fixture.componentInstance.selectedIndex.set(1);
       fixture.detectChanges();
 
       // Add a new tab at the beginning.
@@ -545,7 +545,7 @@ describe('tabs', () => {
 
     it('should maintain the selected tab if a tab is removed', () => {
       // Select the second tab.
-      fixture.componentInstance.selectedIndex = 1;
+      fixture.componentInstance.selectedIndex.set(1);
       fixture.detectChanges();
 
       const component: NzTabsComponent = fixture.debugElement.query(By.css('nz-tabs'))!.componentInstance;
@@ -565,7 +565,7 @@ describe('tabs', () => {
       const component: NzTabsComponent = fixture.debugElement.query(By.css('nz-tabs'))!.componentInstance;
 
       fixture.componentInstance.tabs.update(tabs => [...tabs, { title: 'Last tab', content: 'at the end' }]);
-      fixture.componentInstance.selectedIndex = 3;
+      fixture.componentInstance.selectedIndex.set(3);
 
       fixture.detectChanges();
       await stabilize(fixture);
@@ -576,7 +576,7 @@ describe('tabs', () => {
 
     it('should not fire `selectedTabChange` when the amount of tabs changes', async () => {
       fixture.detectChanges();
-      fixture.componentInstance.selectedIndex = 1;
+      fixture.componentInstance.selectedIndex.set(1);
       fixture.detectChanges();
 
       // Add a new tab at the beginning.
@@ -590,9 +590,6 @@ describe('tabs', () => {
     });
 
     it('should show add btn after all tabs are removed', () => {
-      const component = fixture.debugElement.componentInstance;
-      component.closable = true;
-      component.type = 'editable-card';
       fixture.detectChanges();
       fixture.componentInstance.tabs.set([]);
       fixture.detectChanges();
@@ -683,7 +680,7 @@ describe('tabs', () => {
     it('should set transform to visible when selected invisible tab', async () => {
       const tabsList = element.querySelector('.ant-tabs-nav-list')! as HTMLElement;
       const translateX = getTranslate(tabsList.style.transform).x;
-      fixture.componentInstance.selectedIndex = 10;
+      fixture.componentInstance.selectedIndex.set(10);
       fixture.detectChanges();
       await stabilize(fixture, 10000);
       fixture.detectChanges();
@@ -703,7 +700,7 @@ describe('tabs', () => {
       expect(translateX).toBe(0);
       expect(translateY).toBe(0);
 
-      fixture.componentInstance.selectedIndex = 15;
+      fixture.componentInstance.selectedIndex.set(15);
       fixture.detectChanges();
       await stabilize(fixture, 10000);
       fixture.detectChanges();
@@ -869,11 +866,11 @@ describe('tabs', () => {
 
     it('should delay rendering and preserve DOM of tabpane', async () => {
       expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(1);
-      fixture.componentInstance.selectedIndex = 1;
+      fixture.componentInstance.selectedIndex.set(1);
       fixture.detectChanges();
       await stabilize(fixture, 300);
       expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(2);
-      fixture.componentInstance.selectedIndex = 2;
+      fixture.componentInstance.selectedIndex.set(2);
       fixture.detectChanges();
       await stabilize(fixture, 300);
       expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(3);
@@ -892,12 +889,12 @@ describe('tabs', () => {
       await stabilize(fixture, 300);
       expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(1);
 
-      fixture.componentInstance.selectedIndex = 1;
+      fixture.componentInstance.selectedIndex.set(1);
       fixture.detectChanges();
       await stabilize(fixture, 300);
       expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(1);
 
-      fixture.componentInstance.selectedIndex = 2;
+      fixture.componentInstance.selectedIndex.set(2);
       fixture.detectChanges();
       await stabilize(fixture, 300);
       expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(1);
@@ -962,9 +959,9 @@ describe('tabs', () => {
       fixture.detectChanges();
       await stabilize(fixture, 0);
 
-      comp.selectedIdx = 2;
+      comp.selectedIdx.set(2);
       await stabilize(fixture, 0);
-      expect(comp.selectedIdx).toBe(2);
+      expect(comp.selectedIdx()).toBe(2);
       await stabilize(fixture, 10000);
     });
   });
@@ -1063,17 +1060,17 @@ describe('tabs', () => {
   imports: [NzTabsModule],
   template: `
     <nz-tabs
-      [nzSelectedIndex]="selectedIndex"
-      (nzSelectedIndexChange)="selectedIndex = $event; handleSelection($event)"
+      [(nzSelectedIndex)]="selectedIndex"
+      (nzSelectedIndexChange)="handleSelection($event)"
       (nzClose)="handleClose($event)"
       (nzAdd)="handleAdd()"
       [nzTabPosition]="position()"
-      [nzType]="type"
-      [nzSize]="size"
-      [nzTabBarGutter]="tabBarGutter"
-      [nzTabBarStyle]="tabBarStyle"
-      [nzCentered]="centered"
-      [nzCanDeactivate]="canDeactivate"
+      [nzType]="type()"
+      [nzSize]="size()"
+      [nzTabBarGutter]="tabBarGutter()"
+      [nzTabBarStyle]="tabBarStyle()"
+      [nzCentered]="centered()"
+      [nzCanDeactivate]="canDeactivate()"
       [nzTabBarExtraContent]="extraTemplate"
     >
       <nz-tab nzTitle="Tab 0" nzClosable>Content of Tab Pane 0</nz-tab>
@@ -1086,72 +1083,24 @@ describe('tabs', () => {
   `
 })
 class SimpleTabsTestComponent {
-  private readonly selectedIndexSignal = signal(1);
-  get selectedIndex(): number {
-    return this.selectedIndexSignal();
-  }
-  set selectedIndex(value: number) {
-    this.selectedIndexSignal.set(value);
-  }
+  readonly selectedIndex = signal(1);
   readonly position = signal<NzTabPosition>('top');
-  private readonly sizeSignal = signal<NzSizeLDSType>('default');
-  private readonly typeSignal = signal<NzTabType>('line');
-  private readonly tabBarGutterSignal = signal<number | undefined>(undefined);
-  private readonly tabBarStyleSignal = signal<Record<string, string> | null>({});
-  private readonly centeredSignal = signal(false);
-  private readonly canDeactivateSignal = signal<NzSafeAny>(null);
-  get size(): NzSizeLDSType {
-    return this.sizeSignal();
-  }
-  set size(value: NzSizeLDSType) {
-    this.sizeSignal.set(value);
-  }
-  get type(): NzTabType {
-    return this.typeSignal();
-  }
-  set type(value: NzTabType) {
-    this.typeSignal.set(value);
-  }
-  get tabBarGutter(): number | undefined {
-    return this.tabBarGutterSignal();
-  }
-  set tabBarGutter(value: number | undefined) {
-    this.tabBarGutterSignal.set(value);
-  }
-  get tabBarStyle(): Record<string, string> | null {
-    return this.tabBarStyleSignal();
-  }
-  set tabBarStyle(value: Record<string, string> | null) {
-    this.tabBarStyleSignal.set(value);
-  }
-  get centered(): boolean {
-    return this.centeredSignal();
-  }
-  set centered(value: boolean) {
-    this.centeredSignal.set(value);
-  }
-  get canDeactivate(): NzSafeAny {
-    return this.canDeactivateSignal();
-  }
-  set canDeactivate(value: NzSafeAny) {
-    this.canDeactivateSignal.set(value);
-  }
+  readonly size = signal<NzSizeLDSType>('default');
+  readonly type = signal<NzTabType>('line');
+  readonly tabBarGutter = signal<number | undefined>(undefined);
+  readonly tabBarStyle = signal<Record<string, string> | null>({});
+  readonly centered = signal(false);
+  readonly canDeactivate = signal<NzSafeAny>(null);
 
   handleSelection(_event: number): void {}
-
   handleClose(_event: { index: number }): void {}
-
   handleAdd(): void {}
 }
 
 @Component({
   imports: [NzTabsModule],
   template: `
-    <nz-tabs
-      [nzSelectedIndex]="selectedIndex"
-      (nzSelectedIndexChange)="selectedIndex = $event"
-      [nzDestroyInactiveTabPane]="destroyInactiveTabPane()"
-    >
+    <nz-tabs [(nzSelectedIndex)]="selectedIndex" [nzDestroyInactiveTabPane]="destroyInactiveTabPane()">
       <nz-tab nzTitle="Tab 0" [nzForceRender]="forceRender()">Content of Tab Pane 0</nz-tab>
       <nz-tab nzTitle="Tab 1" [nzForceRender]="forceRender()">Content of Tab Pane 1</nz-tab>
       <nz-tab nzTitle="Tab 2" [nzForceRender]="forceRender()">Content of Tab Pane 2</nz-tab>
@@ -1159,13 +1108,7 @@ class SimpleTabsTestComponent {
   `
 })
 class SimpleTabsRenderingComponent {
-  private readonly selectedIndexSignal = signal(0);
-  get selectedIndex(): number {
-    return this.selectedIndexSignal();
-  }
-  set selectedIndex(value: number) {
-    this.selectedIndexSignal.set(value);
-  }
+  readonly selectedIndex = signal(0);
   readonly forceRender = signal(false);
   readonly destroyInactiveTabPane = signal(false);
 }
@@ -1173,12 +1116,7 @@ class SimpleTabsRenderingComponent {
 @Component({
   imports: [NzTabsModule],
   template: `
-    <nz-tabs
-      nzType="editable-card"
-      [nzSelectedIndex]="selectedIndex"
-      (nzSelectedIndexChange)="selectedIndex = $event"
-      [nzAddIcon]="addTemplate"
-    >
+    <nz-tabs nzType="editable-card" [(nzSelectedIndex)]="selectedIndex" [nzAddIcon]="addTemplate">
       <nz-tab nzTitle="Tab 0">Content of Tab Pane 0</nz-tab>
       <nz-tab nzClosable [nzTitle]="titleTemplate" [nzCloseIcon]="closeIconTemplate">
         <ng-template nz-tab>
@@ -1199,13 +1137,7 @@ class SimpleTabsRenderingComponent {
   `
 })
 class TemplateTabsTestComponent {
-  private readonly selectedIndexSignal = signal(1);
-  get selectedIndex(): number {
-    return this.selectedIndexSignal();
-  }
-  set selectedIndex(value: number) {
-    this.selectedIndexSignal.set(value);
-  }
+  readonly selectedIndex = signal(1);
 }
 
 @Component({
@@ -1213,8 +1145,8 @@ class TemplateTabsTestComponent {
   template: `
     <nz-tabs
       nzType="editable-card"
-      [nzSelectedIndex]="selectedIndex"
-      (nzSelectedIndexChange)="selectedIndex = $event; handleSelection($event)"
+      [(nzSelectedIndex)]="selectedIndex"
+      (nzSelectedIndexChange)="handleSelection($event)"
     >
       <nz-tab nzTitle="Tab 0">Content of Tab Pane 0</nz-tab>
       <nz-tab nzTitle="Tab 1" nzClosable [nzDisabled]="disabled()">Content of Tab Pane 1</nz-tab>
@@ -1223,13 +1155,7 @@ class TemplateTabsTestComponent {
   `
 })
 class DisableTabsTestComponent {
-  private readonly selectedIndexSignal = signal(1);
-  get selectedIndex(): number {
-    return this.selectedIndexSignal();
-  }
-  set selectedIndex(value: number) {
-    this.selectedIndexSignal.set(value);
-  }
+  readonly selectedIndex = signal(1);
   readonly disabled = signal(false);
   @ViewChildren(NzTabComponent) tabs!: QueryList<NzTabComponent>;
 
@@ -1240,8 +1166,8 @@ class DisableTabsTestComponent {
   imports: [NzTabsModule],
   template: `
     <nz-tabs
-      [nzSelectedIndex]="selectedIndex"
-      (nzSelectedIndexChange)="selectedIndex = $event; handleSelection($event)"
+      [(nzSelectedIndex)]="selectedIndex"
+      (nzSelectedIndexChange)="handleSelection($event)"
       nzType="editable-card"
     >
       @for (tab of tabs(); track tab) {
@@ -1253,13 +1179,7 @@ class DisableTabsTestComponent {
   `
 })
 class DynamicTabsTestComponent {
-  private readonly selectedIndexSignal = signal(1);
-  get selectedIndex(): number {
-    return this.selectedIndexSignal();
-  }
-  set selectedIndex(value: number) {
-    this.selectedIndexSignal.set(value);
-  }
+  readonly selectedIndex = signal(1);
   readonly tabs = signal([
     { title: 'Tab 0', content: 'Content of Tab Pane 0' },
     { title: 'Tab 1', content: 'Content of Tab Pane 1' },
@@ -1275,8 +1195,8 @@ class DynamicTabsTestComponent {
     <div style="width: 200px; height: 200px">
       <nz-tabs
         style="width: 200px; height: 200px"
-        [nzSelectedIndex]="selectedIndex"
-        (nzSelectedIndexChange)="selectedIndex = $event; handleSelection($event)"
+        [(nzSelectedIndex)]="selectedIndex"
+        (nzSelectedIndexChange)="handleSelection($event)"
         [nzTabPosition]="position()"
       >
         @for (_tab of tabs; track $index) {
@@ -1296,13 +1216,7 @@ class DynamicTabsTestComponent {
   `
 })
 class ScrollableTabsTestComponent {
-  private readonly selectedIndexSignal = signal(0);
-  get selectedIndex(): number {
-    return this.selectedIndexSignal();
-  }
-  set selectedIndex(value: number) {
-    this.selectedIndexSignal.set(value);
-  }
+  readonly selectedIndex = signal(0);
   readonly position = signal<NzTabPosition>('top');
   tabs: NzSafeAny[] = Array(30).fill(null);
   @ViewChild(NzTabsComponent, { static: true }) tabSet!: NzTabsComponent;
@@ -1399,13 +1313,9 @@ export class RouterTabsTestComponent {
 }
 
 @Component({
+  imports: [RouterLink, RouterOutlet, NzTabsModule],
   template: `
-    <nz-tabs
-      nzLinkRouter
-      [nzSelectedIndex]="selectedIdx"
-      (nzSelectedIndexChange)="selectedIdx = $event"
-      [nzLinkExact]="false"
-    >
+    <nz-tabs nzLinkRouter [(nzSelectedIndex)]="selectedIdx" [nzLinkExact]="false">
       @for (tab of tabs(); track tab.title) {
         <nz-tab>
           <a *nzTabLink nz-tab-link [routerLink]="tab.route">{{ tab.title }}</a>
@@ -1414,17 +1324,10 @@ export class RouterTabsTestComponent {
       }
     </nz-tabs>
     <router-outlet />
-  `,
-  imports: [RouterLink, RouterOutlet, NzTabsModule]
+  `
 })
 export class DynamicRouterTabsTestComponent {
-  private readonly selectedIdxSignal = signal(0);
-  get selectedIdx(): number {
-    return this.selectedIdxSignal();
-  }
-  set selectedIdx(value: number) {
-    this.selectedIdxSignal.set(value);
-  }
+  readonly selectedIdx = signal(0);
   readonly tabs = signal([
     {
       title: 'one',
@@ -1472,7 +1375,7 @@ function getTranslate(transformValue: string): { x: number; y: number } {
 @Component({
   imports: [NzTabsModule],
   template: `
-    <nz-tabs [nzSelectedIndex]="selectedIndex" (nzSelectedIndexChange)="selectedIndex = $event">
+    <nz-tabs [(nzSelectedIndex)]="selectedIndex">
       <button *nzTabBarExtraContent="'start'">Start Extra Action</button>
       <button *nzTabBarExtraContent="'end'">End Extra Action</button>
 
@@ -1483,24 +1386,13 @@ function getTranslate(transformValue: string): { x: number; y: number } {
   `
 })
 class SimpleTabsWithExtraContentComponent {
-  private readonly selectedIndexSignal = signal(0);
-  get selectedIndex(): number {
-    return this.selectedIndexSignal();
-  }
-  set selectedIndex(value: number) {
-    this.selectedIndexSignal.set(value);
-  }
+  readonly selectedIndex = signal(0);
 }
 
 @Component({
   imports: [NzTabsModule],
   template: `
-    <nz-tabs
-      [nzTabPosition]="position()"
-      [nzIndicator]="indicator()"
-      [nzSelectedIndex]="selectedIndex()"
-      (nzSelectedIndexChange)="selectedIndex.set($event)"
-    >
+    <nz-tabs [nzTabPosition]="position()" [nzIndicator]="indicator()" [(nzSelectedIndex)]="selectedIndex">
       <nz-tab nzTitle="Tab 0">Content of Tab Pane 0</nz-tab>
       <nz-tab nzTitle="Tab 1">Content of Tab Pane 1</nz-tab>
       <nz-tab nzTitle="Tab 2">Content of Tab Pane 2</nz-tab>

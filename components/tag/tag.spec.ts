@@ -148,8 +148,8 @@ describe('tag', () => {
   template: `
     <nz-tag
       [nzMode]="mode()"
-      [nzChecked]="checked()"
-      (nzCheckedChange)="checked.set($event); checkedChange($event)"
+      [(nzChecked)]="checked"
+      (nzCheckedChange)="checkedChange($event)"
       [nzColor]="color()"
       [nzBordered]="bordered()"
       (nzOnClose)="onClose()"

@@ -1292,7 +1292,7 @@ describe('NzDatePickerComponent', () => {
     beforeEach(() => fixtureInstance.useSuite.set(3));
 
     it('should specified date provide by "modelValue" be chosen', async () => {
-      fixtureInstance.modelValue = new Date('2018-11-11');
+      fixtureInstance.modelValue.set(new Date('2018-11-11'));
       await stabilize(10000);
       expect(getSelectedDayCell().textContent!.trim()).toBe('11');
 
@@ -1301,7 +1301,7 @@ describe('NzDatePickerComponent', () => {
       const cellText = cell.textContent!.trim();
       dispatchMouseEvent(cell, 'click');
       fixture.detectChanges();
-      expect(fixtureInstance.modelValue.getDate()).toBe(+cellText);
+      expect(fixtureInstance.modelValue()!.getDate()).toBe(+cellText);
     });
   });
 
@@ -1386,29 +1386,26 @@ describe('date-fns testing', () => {
 
   it('should parse input value with nzFormat', () => {
     jasmine.clock().install();
-    try {
-      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
-      fixtureInstance.nzFormat.set('dd.MM.yyyy');
-      fixture.detectChanges();
-      dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
-      fixture.detectChanges();
-      jasmine.clock().tick(500);
-      fixture.detectChanges();
-      const input = getPickerInput(fixture.debugElement);
-      expect(input).not.toBeNull();
-      typeInElement('25.10.2019', input);
-      fixture.detectChanges();
-      input.dispatchEvent(ENTER_EVENT);
-      fixture.detectChanges();
-      jasmine.clock().tick(10000);
-      expect(nzOnChange).toHaveBeenCalled();
-      const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
-      expect(result.getFullYear()).toBe(2019);
-      expect(result.getMonth() + 1).toBe(10);
-      expect(result.getDate()).toBe(25);
-    } finally {
-      jasmine.clock().uninstall();
-    }
+    const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+    fixtureInstance.nzFormat.set('dd.MM.yyyy');
+    fixture.detectChanges();
+    dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+    fixture.detectChanges();
+    jasmine.clock().tick(500);
+    fixture.detectChanges();
+    const input = getPickerInput(fixture.debugElement);
+    expect(input).not.toBeNull();
+    typeInElement('25.10.2019', input);
+    fixture.detectChanges();
+    input.dispatchEvent(ENTER_EVENT);
+    fixture.detectChanges();
+    jasmine.clock().tick(10000);
+    expect(nzOnChange).toHaveBeenCalled();
+    const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
+    expect(result.getFullYear()).toBe(2019);
+    expect(result.getMonth() + 1).toBe(10);
+    expect(result.getDate()).toBe(25);
+    jasmine.clock().uninstall();
   });
 });
 
@@ -1499,37 +1496,30 @@ describe('signal forms (formField)', () => {
     });
   });
 
+  beforeEach(() => jasmine.clock().install());
+  afterEach(() => jasmine.clock().uninstall());
+
   it('should display the initial value provided via [formField]', async () => {
-    jasmine.clock().install();
-    try {
-      fixture = TestBed.createComponent(NzTestDatePickerInSignalFormComponent);
-      fixture.componentInstance.model.set({ date: new Date('2020-04-08') });
-      fixture.detectChanges();
-      jasmine.clock().tick(10000);
-      await fixture.whenStable();
-      fixture.detectChanges();
-      expect(getPickerInput(fixture.debugElement).value!.trim()).toBe('2020-04-08');
-    } finally {
-      jasmine.clock().uninstall();
-    }
+    fixture = TestBed.createComponent(NzTestDatePickerInSignalFormComponent);
+    fixture.componentInstance.model.set({ date: new Date('2020-04-08') });
+    fixture.detectChanges();
+    jasmine.clock().tick(10000);
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(getPickerInput(fixture.debugElement).value!.trim()).toBe('2020-04-08');
   });
 
   it('should display a value assigned to the model after creation', async () => {
-    jasmine.clock().install();
-    try {
-      fixture = TestBed.createComponent(NzTestDatePickerInSignalFormComponent);
-      fixture.detectChanges();
-      jasmine.clock().tick(10000);
-      await fixture.whenStable();
-      fixture.componentInstance.model.set({ date: new Date('2020-04-08') });
-      fixture.detectChanges();
-      jasmine.clock().tick(10000);
-      await fixture.whenStable();
-      fixture.detectChanges();
-      expect(getPickerInput(fixture.debugElement).value!.trim()).toBe('2020-04-08');
-    } finally {
-      jasmine.clock().uninstall();
-    }
+    fixture = TestBed.createComponent(NzTestDatePickerInSignalFormComponent);
+    fixture.detectChanges();
+    jasmine.clock().tick(10000);
+    await fixture.whenStable();
+    fixture.componentInstance.model.set({ date: new Date('2020-04-08') });
+    fixture.detectChanges();
+    jasmine.clock().tick(10000);
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(getPickerInput(fixture.debugElement).value!.trim()).toBe('2020-04-08');
   });
 });
 
@@ -1543,9 +1533,11 @@ describe('finalSize', () => {
     compactSizeSignal = signal<NzSizeLDSType>('large');
     formSizeSignal = signal<NzSizeLDSType>('default');
   });
+
   afterEach(() => {
     TestBed.resetTestingModule();
   });
+
   it('should set correctly the size from the formSize signal', () => {
     TestBed.configureTestingModule({
       providers: [
@@ -1560,6 +1552,7 @@ describe('finalSize', () => {
     fixture.detectChanges();
     expect(datePickerElement.classList).toContain('ant-picker-large');
   });
+
   it('should set correctly the size from the compactSize signal', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: NZ_SPACE_COMPACT_SIZE, useValue: compactSizeSignal }]
@@ -1569,6 +1562,7 @@ describe('finalSize', () => {
     fixture.detectChanges();
     expect(datePickerElement.classList).toContain('ant-picker-large');
   });
+
   it('should set correctly the size from the component input', () => {
     fixture = TestBed.createComponent(TestDatePickerFinalSizeComponent);
     datePickerElement = fixture.debugElement.query(By.directive(NzDatePickerComponent)).nativeElement;
@@ -1691,7 +1685,7 @@ describe('finalVariant', () => {
         <nz-date-picker [nzOpen]="nzOpen()" (nzOnOpenChange)="nzOnOpenChange($event)" />
       }
       @case (3) {
-        <nz-date-picker nzOpen [ngModel]="modelValueSignal()" (ngModelChange)="modelValue = $event" />
+        <nz-date-picker nzOpen [(ngModel)]="modelValue" />
       }
       @case (4) {
         <nz-date-picker [formControl]="$any(control())" [nzDisabled]="nzDisabled()" />
@@ -1758,15 +1752,7 @@ class NzTestDatePickerComponent {
   readonly nzOpen = signal<boolean>(false);
 
   // --- Suite 3
-  readonly modelValueSignal = signal<Date | null>(null);
-
-  get modelValue(): Date {
-    return this.modelValueSignal()!;
-  }
-
-  set modelValue(value: Date | null) {
-    this.modelValueSignal.set(value);
-  }
+  readonly modelValue = signal<Date | null>(null);
 
   // --- Suite 4
   readonly control = signal<FormControl<Date | null> | undefined>(undefined);

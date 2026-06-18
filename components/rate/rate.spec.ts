@@ -57,7 +57,7 @@ describe('rate', () => {
     });
 
     it('should allow half work', async () => {
-      testComponent.allowHalf = false;
+      testComponent.allowHalf.set(false);
       fixture.detectChanges();
       expect(testComponent.value).toBe(0);
       testComponent.value = 3.5;
@@ -65,7 +65,7 @@ describe('rate', () => {
       expect(rate.nativeElement.firstElementChild.children[3].classList).toContain('ant-rate-star-full');
       expect(rate.nativeElement.firstElementChild.children[4].classList).toContain('ant-rate-star-zero');
 
-      testComponent.allowHalf = true;
+      testComponent.allowHalf.set(true);
       testComponent.value = 0;
       await stabilize(fixture);
       rate.nativeElement.firstElementChild.children[3].firstElementChild.children[1].click();
@@ -75,7 +75,7 @@ describe('rate', () => {
     });
 
     it('should allow clear work', async () => {
-      testComponent.allowClear = false;
+      testComponent.allowClear.set(false);
       fixture.detectChanges();
       expect(testComponent.value).toBe(0);
       rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
@@ -85,7 +85,7 @@ describe('rate', () => {
       rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
       await stabilize(fixture);
       expect(testComponent.value).toBe(4);
-      testComponent.allowClear = true;
+      testComponent.allowClear.set(true);
       fixture.detectChanges();
       rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
       await stabilize(fixture);
@@ -93,7 +93,7 @@ describe('rate', () => {
     });
 
     it('should disable work', async () => {
-      testComponent.disabled = true;
+      testComponent.disabled.set(true);
       fixture.detectChanges();
       expect(testComponent.value).toBe(0);
       rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
@@ -110,7 +110,7 @@ describe('rate', () => {
       await stabilize(fixture);
       expect(testComponent.value).toBe(4);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
-      testComponent.count = 10;
+      testComponent.count.set(10);
       await stabilize(fixture);
       expect(rate.nativeElement.firstElementChild.children.length).toBe(10);
       expect(testComponent.value).toBe(4);
@@ -119,10 +119,10 @@ describe('rate', () => {
 
     it('should autofocus work', () => {
       fixture.detectChanges();
-      testComponent.autoFocus = true;
+      testComponent.autoFocus.set(true);
       fixture.detectChanges();
       expect(rate.nativeElement.querySelector('ul').attributes.getNamedItem('autofocus').name).toBe('autofocus');
-      testComponent.autoFocus = false;
+      testComponent.autoFocus.set(false);
       fixture.detectChanges();
       expect(rate.nativeElement.querySelector('ul').attributes.getNamedItem('autofocus')).toBe(null);
     });
@@ -155,7 +155,7 @@ describe('rate', () => {
       fixture.detectChanges();
       expect(testComponent.onHoverChange).toHaveBeenCalledTimes(2);
       expect(rate.nativeElement.firstElementChild.children[3].classList).toContain('ant-rate-star-zero');
-      testComponent.disabled = true;
+      testComponent.disabled.set(true);
       fixture.detectChanges();
       dispatchFakeEvent(rate.nativeElement.firstElementChild.children[2].firstElementChild, 'mouseover');
       expect(testComponent.onHoverChange).toHaveBeenCalledTimes(2);
@@ -176,7 +176,7 @@ describe('rate', () => {
       fixture.detectChanges();
       expect(testComponent.value).toBe(0);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(2);
-      testComponent.allowHalf = true;
+      testComponent.allowHalf.set(true);
       fixture.detectChanges();
       dispatchKeyboardEvent(rate.nativeElement.firstElementChild, 'keydown', RIGHT_ARROW);
       fixture.detectChanges();
@@ -217,7 +217,7 @@ describe('rate', () => {
     });
 
     it('should be disable if form is enable and nzDisable set to true initially', async () => {
-      testComponent.disabled = true;
+      testComponent.disabled.set(true);
       await stabilize(fixture);
       const rate = fixture.debugElement.query(By.directive(NzRateComponent));
       expect(rate.nativeElement.firstElementChild!.classList).toContain('ant-rate-disabled');
@@ -231,7 +231,7 @@ describe('rate', () => {
     });
 
     it('should set disabled work', async () => {
-      testComponent.disabled = true;
+      testComponent.disabled.set(true);
       await stabilize(fixture);
 
       const rate = fixture.debugElement.query(By.directive(NzRateComponent));
@@ -297,67 +297,27 @@ async function stabilize<T>(fixture: ComponentFixture<T>): Promise<void> {
       (nzOnFocus)="onFocus($event)"
       (nzOnHoverChange)="onHoverChange($event)"
       (nzOnKeyDown)="onKeyDown($event)"
-      [nzCount]="count"
-      [nzAllowHalf]="allowHalf"
-      [nzAllowClear]="allowClear"
-      [nzDisabled]="disabled"
-      [nzAutoFocus]="autoFocus"
+      [nzCount]="count()"
+      [nzAllowHalf]="allowHalf()"
+      [nzAllowClear]="allowClear()"
+      [nzDisabled]="disabled()"
+      [nzAutoFocus]="autoFocus()"
     />
   `
 })
 export class NzTestRateBasicComponent {
   @ViewChild(NzRateComponent, { static: false }) nzRateComponent!: NzRateComponent;
-  readonly countSignal = signal(5);
-  readonly autoFocusSignal = signal(false);
-  readonly allowHalfSignal = signal(false);
-  readonly allowClearSignal = signal(false);
-  readonly disabledSignal = signal(false);
+  readonly count = signal(5);
+  readonly autoFocus = signal(false);
+  readonly allowHalf = signal(false);
+  readonly allowClear = signal(false);
+  readonly disabled = signal(false);
   value = 0;
   modelChange = jasmine.createSpy('model change callback');
   onBlur = jasmine.createSpy('blur callback');
   onFocus = jasmine.createSpy('focus callback');
   onHoverChange = jasmine.createSpy('hover change callback');
   onKeyDown = jasmine.createSpy('keydown callback');
-
-  get count(): number {
-    return this.countSignal();
-  }
-
-  set count(value: number) {
-    this.countSignal.set(value);
-  }
-
-  get autoFocus(): boolean {
-    return this.autoFocusSignal();
-  }
-
-  set autoFocus(value: boolean) {
-    this.autoFocusSignal.set(value);
-  }
-
-  get allowHalf(): boolean {
-    return this.allowHalfSignal();
-  }
-
-  set allowHalf(value: boolean) {
-    this.allowHalfSignal.set(value);
-  }
-
-  get allowClear(): boolean {
-    return this.allowClearSignal();
-  }
-
-  set allowClear(value: boolean) {
-    this.allowClearSignal.set(value);
-  }
-
-  get disabled(): boolean {
-    return this.disabledSignal();
-  }
-
-  set disabled(value: boolean) {
-    this.disabledSignal.set(value);
-  }
 }
 
 @Component({
@@ -365,22 +325,14 @@ export class NzTestRateBasicComponent {
   selector: 'nz-test-rate-form',
   template: `
     <form>
-      <nz-rate [formControl]="formControl" [nzDisabled]="disabled" />
+      <nz-rate [formControl]="formControl" [nzDisabled]="disabled()" />
     </form>
   `
 })
 export class NzTestRateFormComponent {
   formControl = new FormControl(1);
 
-  readonly disabledSignal = signal(false);
-
-  get disabled(): boolean {
-    return this.disabledSignal();
-  }
-
-  set disabled(value: boolean) {
-    this.disabledSignal.set(value);
-  }
+  readonly disabled = signal(false);
 
   disable(): void {
     this.formControl.disable();

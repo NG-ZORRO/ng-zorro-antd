@@ -158,27 +158,28 @@ describe('range-picker', () => {
 
     it('should support nzAllowClear and work properly', async () => {
       const clearBtnSelector = By.css(`.${PREFIX_CLASS}-clear`);
-      const initial = (fixtureInstance.modelValue = [new Date(), new Date()]);
+      const initial = [new Date(), new Date()];
+      fixtureInstance.modelValue.set(initial);
       fixtureInstance.nzAllowClear.set(false);
       await stabilize();
       expect(debugElement.query(clearBtnSelector)).toBeNull();
 
       fixtureInstance.nzAllowClear.set(true);
       await stabilize();
-      expect(fixtureInstance.modelValue).toBe(initial);
+      expect(fixtureInstance.modelValue()).toBe(initial);
       expect(debugElement.query(clearBtnSelector)).toBeDefined();
 
       const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
       debugElement.query(clearBtnSelector).nativeElement.click();
       fixture.detectChanges();
-      expect(fixtureInstance.modelValue.length).toBe(0);
+      expect((fixtureInstance.modelValue() as Date[]).length).toBe(0);
       expect(nzOnChange).toHaveBeenCalledWith([]);
       expect(debugElement.query(clearBtnSelector)).toBeFalsy();
     });
 
     it('should support clear input value when set default value', async () => {
       const clearBtnSelector = By.css(`.${PREFIX_CLASS}-clear`);
-      fixtureInstance.modelValue = [new Date(), new Date()];
+      fixtureInstance.modelValue.set([new Date(), new Date()]);
       fixtureInstance.nzAllowClear.set(true);
       await stabilize();
 
@@ -197,7 +198,7 @@ describe('range-picker', () => {
     it('should support nzDisabled', async () => {
       // Make sure picker clear button shown up
       fixtureInstance.nzAllowClear.set(true);
-      fixtureInstance.modelValue = [new Date(), new Date()];
+      fixtureInstance.modelValue.set([new Date(), new Date()]);
 
       fixtureInstance.nzDisabled.set(true);
       await stabilize();
@@ -234,7 +235,7 @@ describe('range-picker', () => {
     it('should support nzDisabledDate', async () => {
       fixture.detectChanges();
       const compareDate = new Date('2018-11-15 00:00:00');
-      fixtureInstance.modelValue = [new Date('2018-11-11 12:12:12'), null!];
+      fixtureInstance.modelValue.set([new Date('2018-11-11 12:12:12'), null!]);
       fixtureInstance.nzDisabledDate.set((current: Date) => isSameDay(current, compareDate));
       await stabilize(10000);
       openPickerByClickTrigger();
@@ -297,7 +298,7 @@ describe('range-picker', () => {
 
     it('should support nzValue', async () => {
       fixtureInstance.nzDefaultPickerValue.set([new Date('2012-03-18'), new Date('2019-12-12')]);
-      fixtureInstance.modelValue = [new Date('2018-11-11'), new Date('2018-12-11')];
+      fixtureInstance.modelValue.set([new Date('2018-11-11'), new Date('2018-12-11')]);
       await stabilize(10000);
       openPickerByClickTrigger();
       expect(getFirstSelectedDayCell().textContent!.trim()).toBe('11');
@@ -366,7 +367,7 @@ describe('range-picker', () => {
     });
 
     it('should support nzOnChange', () => {
-      fixtureInstance.modelValue = [new Date('2018-11-11'), new Date('2018-11-11')];
+      fixtureInstance.modelValue.set([new Date('2018-11-11'), new Date('2018-11-11')]);
       const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
       fixture.detectChanges();
       jasmine.clock().tick(10000);
@@ -391,7 +392,7 @@ describe('range-picker', () => {
     });
 
     it('should not call nzOnChange if values do not change', () => {
-      fixtureInstance.modelValue = [new Date('2018-11-11'), new Date('2018-11-11')];
+      fixtureInstance.modelValue.set([new Date('2018-11-11'), new Date('2018-11-11')]);
       const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
       fixture.detectChanges();
       jasmine.clock().tick(10000);
@@ -416,7 +417,7 @@ describe('range-picker', () => {
 
     it('should support nzInline', () => {
       const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
-      fixtureInstance.modelValue = [new Date('2018-11-11'), new Date('2018-11-11')];
+      fixtureInstance.modelValue.set([new Date('2018-11-11'), new Date('2018-11-11')]);
       fixtureInstance.nzInline.set(true);
       fixture.detectChanges();
       jasmine.clock().tick(10000);
@@ -468,7 +469,7 @@ describe('range-picker', () => {
     beforeEach(() => fixtureInstance.useSuite.set(1));
 
     it('should support date panel changes', async () => {
-      fixtureInstance.modelValue = [new Date('2018-6-11'), new Date('2018-12-12')];
+      fixtureInstance.modelValue.set([new Date('2018-6-11'), new Date('2018-12-12')]);
       await stabilize();
       openPickerByClickTrigger();
       // Click previous year button
@@ -494,7 +495,7 @@ describe('range-picker', () => {
     });
 
     it('should support keep initValue when reopen panel', async () => {
-      fixtureInstance.modelValue = [new Date('2018-6-11'), new Date('2018-12-12')];
+      fixtureInstance.modelValue.set([new Date('2018-6-11'), new Date('2018-12-12')]);
       await stabilize();
       openPickerByClickTrigger();
       // Click next year button * 2
@@ -532,7 +533,7 @@ describe('range-picker', () => {
     });
 
     it('should support nzShowTime', async () => {
-      fixtureInstance.modelValue = [new Date('2018-11-11 11:22:33'), new Date('2018-12-12 11:22:33')];
+      fixtureInstance.modelValue.set([new Date('2018-11-11 11:22:33'), new Date('2018-12-12 11:22:33')]);
       fixtureInstance.nzShowTime.set(true);
       await stabilize();
       openPickerByClickTrigger();
@@ -624,7 +625,7 @@ describe('range-picker', () => {
     });
 
     it('should support nzShowTime.nzFormat', () => {
-      fixtureInstance.modelValue = [new Date('2018-11-11'), new Date('2018-12-12')];
+      fixtureInstance.modelValue.set([new Date('2018-11-11'), new Date('2018-12-12')]);
       fixtureInstance.nzShowTime.set({ nzFormat: 'HH:mm' });
       fixture.detectChanges();
       openPickerByClickTrigger();
@@ -634,7 +635,7 @@ describe('range-picker', () => {
     });
 
     it('should support nzDisabledTime and nzShowTime.nzHideDisabledOptions', () => {
-      fixtureInstance.modelValue = [new Date('2018-11-11 11:11:11'), new Date('2018-12-12 12:12:12')];
+      fixtureInstance.modelValue.set([new Date('2018-11-11 11:11:11'), new Date('2018-12-12 12:12:12')]);
       fixtureInstance.nzShowTime.set(true);
       fixtureInstance.nzDisabledTime.set((_current: Date, partial: 'start' | 'end') =>
         partial === 'start'
@@ -745,7 +746,7 @@ describe('range-picker', () => {
     });
 
     it('should support nzOnPanelChange', async () => {
-      fixtureInstance.modelValue = [new Date('2018-10-11 11:22:34'), new Date('2018-11-12 11:22:33')];
+      fixtureInstance.modelValue.set([new Date('2018-10-11 11:22:34'), new Date('2018-11-12 11:22:33')]);
       const spy = spyOn(fixtureInstance, 'nzOnPanelChange');
       await stabilize();
       openPickerByClickTrigger();
@@ -778,7 +779,7 @@ describe('range-picker', () => {
     });
 
     it('should support nzOnPanelChange when click on prev button', async () => {
-      fixtureInstance.modelValue = [new Date('2018-10-11 11:22:34'), new Date('2018-11-12 11:22:33')];
+      fixtureInstance.modelValue.set([new Date('2018-10-11 11:22:34'), new Date('2018-11-12 11:22:33')]);
       spyOn(fixtureInstance, 'nzOnPanelChange');
       await stabilize();
       openPickerByClickTrigger();
@@ -791,7 +792,7 @@ describe('range-picker', () => {
     });
 
     it('should support nzOnPanelChange when click on next button', async () => {
-      fixtureInstance.modelValue = [new Date('2018-10-11 11:22:34'), new Date('2018-11-12 11:22:33')];
+      fixtureInstance.modelValue.set([new Date('2018-10-11 11:22:34'), new Date('2018-11-12 11:22:33')]);
       spyOn(fixtureInstance, 'nzOnPanelChange');
       await stabilize();
       openPickerByClickTrigger();
@@ -804,7 +805,7 @@ describe('range-picker', () => {
     });
 
     it('should support nzOnPanelChange when click on super prev button', async () => {
-      fixtureInstance.modelValue = [new Date('2018-10-11 11:22:34'), new Date('2018-11-12 11:22:33')];
+      fixtureInstance.modelValue.set([new Date('2018-10-11 11:22:34'), new Date('2018-11-12 11:22:33')]);
       spyOn(fixtureInstance, 'nzOnPanelChange');
       await stabilize();
       openPickerByClickTrigger();
@@ -817,7 +818,7 @@ describe('range-picker', () => {
     });
 
     it('should support nzOnPanelChange when click on super next button', async () => {
-      fixtureInstance.modelValue = [new Date('2018-10-11 11:22:34'), new Date('2018-11-12 11:22:33')];
+      fixtureInstance.modelValue.set([new Date('2018-10-11 11:22:34'), new Date('2018-11-12 11:22:33')]);
       spyOn(fixtureInstance, 'nzOnPanelChange');
       await stabilize();
       openPickerByClickTrigger();
@@ -831,7 +832,7 @@ describe('range-picker', () => {
 
     it('should support nzOnOk', async () => {
       spyOn(fixtureInstance, 'nzOnOk');
-      fixtureInstance.modelValue = [new Date('2018-11-11 11:22:33'), new Date('2018-12-12 11:22:33')];
+      fixtureInstance.modelValue.set([new Date('2018-11-11 11:22:33'), new Date('2018-12-12 11:22:33')]);
       fixtureInstance.nzShowTime.set(true);
       await stabilize();
       openPickerByClickTrigger();
@@ -840,11 +841,12 @@ describe('range-picker', () => {
       dispatchMouseEvent(overlayContainerElement.querySelector('.ant-picker-ok > button')!, 'click');
       fixture.detectChanges();
       jasmine.clock().tick(500);
-      expect(fixtureInstance.nzOnOk).toHaveBeenCalledWith(fixtureInstance.modelValue);
+      expect(fixtureInstance.nzOnOk).toHaveBeenCalledWith(fixtureInstance.modelValue());
     });
 
     it('should select date from start to end with side effects', async () => {
-      const initial = (fixtureInstance.modelValue = [new Date('2018-05-15'), new Date('2018-06-15')]);
+      const initial = [new Date('2018-05-15'), new Date('2018-06-15')];
+      fixtureInstance.modelValue.set(initial);
       fixtureInstance.nzDisabledDate.set((current: Date) => differenceInDays(current, initial[0]) < 0);
       fixtureInstance.nzShowTime.set(true);
       await stabilize();
@@ -858,7 +860,7 @@ describe('range-picker', () => {
     });
 
     it('should display expected date when the range values are the same day (include the scenario of timepicker)', async () => {
-      fixtureInstance.modelValue = [new Date('2018-05-15'), new Date('2018-05-15')];
+      fixtureInstance.modelValue.set([new Date('2018-05-15'), new Date('2018-05-15')]);
       fixtureInstance.nzShowTime.set(true);
       await stabilize();
       openPickerByClickTrigger();
@@ -924,7 +926,7 @@ describe('range-picker', () => {
 
     it('should custom input time range', () => {
       const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
-      fixtureInstance.modelValue = [new Date('2019-11-11 11:22:33'), new Date('2019-12-12 11:22:33')];
+      fixtureInstance.modelValue.set([new Date('2019-11-11 11:22:33'), new Date('2019-12-12 11:22:33')]);
       fixtureInstance.nzShowTime.set(true);
       fixture.detectChanges();
       openPickerByClickTrigger();
@@ -947,7 +949,7 @@ describe('range-picker', () => {
 
     it('if sort order is wrong, output in reverse order', () => {
       const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
-      fixtureInstance.modelValue = [];
+      fixtureInstance.modelValue.set([]);
       fixture.detectChanges();
       openPickerByClickTrigger();
 
@@ -969,7 +971,7 @@ describe('range-picker', () => {
     });
 
     it('should not change value when click ESC', () => {
-      fixtureInstance.modelValue = [new Date('2018-09-11'), new Date('2020-09-12')];
+      fixtureInstance.modelValue.set([new Date('2018-09-11'), new Date('2020-09-12')]);
       fixture.detectChanges();
       jasmine.clock().tick(0); // Wait writeValue() tobe done
       fixture.detectChanges();
@@ -1032,7 +1034,7 @@ describe('range-picker', () => {
     beforeEach(() => fixtureInstance.useSuite.set(3));
 
     it('should specified date provide by "modelValue" be chosen', async () => {
-      fixtureInstance.modelValue = [new Date('2018-11-11'), new Date('2018-12-12')];
+      fixtureInstance.modelValue.set([new Date('2018-11-11'), new Date('2018-12-12')]);
       await stabilize();
       expect(getFirstSelectedDayCell().textContent!.trim()).toBe('11');
 
@@ -1044,7 +1046,7 @@ describe('range-picker', () => {
       fixture.detectChanges();
       dispatchMouseEvent(right, 'click');
       fixture.detectChanges();
-      expect(fixtureInstance.modelValue[0]!.getDate()).toBe(+leftText);
+      expect((fixtureInstance.modelValue() as Date[])[0]!.getDate()).toBe(+leftText);
     });
   });
 
@@ -1256,8 +1258,8 @@ describe('range-picker', () => {
           [nzSize]="$any(nzSize())"
           [nzSeparator]="nzSeparator()"
           (nzOnOpenChange)="nzOnOpenChange($event)"
-          [ngModel]="modelValueSignal()"
-          (ngModelChange)="modelValue = $event; modelValueChange($event)"
+          [(ngModel)]="modelValue"
+          (ngModelChange)="modelValueChange($event)"
           [nzDateRender]="nzDateRender()"
           [nzDisabledTime]="nzDisabledTime()"
           [nzRenderExtraFooter]="nzRenderExtraFooter()"
@@ -1277,10 +1279,10 @@ describe('range-picker', () => {
         <nz-range-picker [nzOpen]="nzOpen()" />
       }
       @case (3) {
-        <nz-range-picker nzOpen [ngModel]="modelValueSignal()" (ngModelChange)="modelValue = $event" />
+        <nz-range-picker nzOpen [(ngModel)]="modelValue" />
       }
       @case (4) {
-        <nz-range-picker [ngModel]="modelValueSignal()" (ngModelChange)="modelValue = $event" />
+        <nz-range-picker [(ngModel)]="modelValue" />
         <nz-date-picker [ngModel]="singleValue" />
       }
       @case (5) {
@@ -1310,15 +1312,7 @@ class NzTestRangePickerComponent {
 
   nzOnOpenChange(_: boolean): void {}
 
-  readonly modelValueSignal = signal<CompatibleDate>([]);
-
-  get modelValue(): CompatibleDate {
-    return this.modelValueSignal();
-  }
-
-  set modelValue(value: CompatibleDate) {
-    this.modelValueSignal.set(value);
-  }
+  readonly modelValue = signal<CompatibleDate>([]);
 
   modelValueChange(_: Date[]): void {}
 

@@ -81,7 +81,7 @@ describe('modal title directive', () => {
 @Component({
   imports: [NzModalModule],
   template: `
-    <nz-modal [nzVisible]="isVisible()" (nzVisibleChange)="isVisible.set($event)" (nzOnCancel)="handleCancel()">
+    <nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()">
       <div>
         <p>Modal Content</p>
       </div>
@@ -106,7 +106,7 @@ class TestDirectiveTitleComponent {
 @Component({
   imports: [NzModalModule],
   template: `
-    <nz-modal [nzVisible]="isVisible()" (nzVisibleChange)="isVisible.set($event)">
+    <nz-modal [(nzVisible)]="isVisible">
       <div>
         <p>Modal Content</p>
       </div>

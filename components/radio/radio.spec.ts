@@ -42,28 +42,28 @@ describe('radio', () => {
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
       radio.nativeElement.click();
       await stabilize(fixture, 100);
-      expect(testComponent.value).toBe(true);
+      expect(testComponent.value()).toBe(true);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
       radio.nativeElement.click();
       await stabilize(fixture, 100);
-      expect(testComponent.value).toBe(true);
+      expect(testComponent.value()).toBe(true);
       expect(testComponent.modelChange).toHaveBeenCalledWith(true);
     });
 
     it('should disabled work', async () => {
-      testComponent.disabled = true;
+      testComponent.disabled.set(true);
       fixture.detectChanges();
       expect(radio.nativeElement.firstElementChild!.classList).not.toContain('ant-radio-checked');
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
       radio.nativeElement.click();
       await stabilize(fixture);
       expect(radio.nativeElement.firstElementChild!.classList).not.toContain('ant-radio-checked');
-      expect(testComponent.value).toBe(false);
+      expect(testComponent.value()).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     });
 
     it('should not run change detection if the radio is disabled', () => {
-      testComponent.disabled = true;
+      testComponent.disabled.set(true);
       fixture.detectChanges();
       const appRef = TestBed.inject(ApplicationRef);
       spyOn(appRef, 'tick');
@@ -78,10 +78,10 @@ describe('radio', () => {
 
     it('should autofocus work', () => {
       fixture.detectChanges();
-      testComponent.autoFocus = true;
+      testComponent.autoFocus.set(true);
       fixture.detectChanges();
       expect(radio.nativeElement.querySelector('input').attributes.getNamedItem('autofocus').name).toBe('autofocus');
-      testComponent.autoFocus = false;
+      testComponent.autoFocus.set(false);
       fixture.detectChanges();
       expect(radio.nativeElement.querySelector('input').attributes.getNamedItem('autofocus')).toBe(null);
     });
@@ -137,32 +137,32 @@ describe('radio', () => {
 
     it('should click work', async () => {
       fixture.detectChanges();
-      expect(testComponent.value).toBe('A');
+      expect(testComponent.value()).toBe('A');
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
       radios[1].nativeElement.click();
       await stabilize(fixture, 100);
-      expect(testComponent.value).toBe('B');
+      expect(testComponent.value()).toBe('B');
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
       radios[1].nativeElement.click();
       await stabilize(fixture, 100);
-      expect(testComponent.value).toBe('B');
+      expect(testComponent.value()).toBe('B');
       expect(testComponent.modelChange).toHaveBeenCalledWith('B');
     });
 
     it('should disable work', async () => {
-      testComponent.disabled = true;
+      testComponent.disabled.set(true);
       await stabilize(fixture);
-      expect(testComponent.value).toBe('A');
+      expect(testComponent.value()).toBe('A');
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
       radios[1].nativeElement.click();
       await stabilize(fixture);
       expect(radios[1].nativeElement.firstElementChild!.classList).not.toContain('ant-radio-button-checked');
-      expect(testComponent.value).toBe('A');
+      expect(testComponent.value()).toBe('A');
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     });
 
     it('should name work', async () => {
-      testComponent.name = 'test';
+      testComponent.name.set('test');
       await stabilize(fixture);
       expect(radios.every(radio => radio.nativeElement.querySelector('input').name === 'test')).toBe(true);
     });
@@ -181,25 +181,25 @@ describe('radio', () => {
     });
 
     it('should group disable work', async () => {
-      testComponent.disabled = true;
+      testComponent.disabled.set(true);
       await stabilize(fixture);
-      expect(testComponent.value).toBe('A');
+      expect(testComponent.value()).toBe('A');
       radios[1].nativeElement.click();
       await stabilize(fixture);
       expect(radios[1].nativeElement.firstElementChild!.classList).not.toContain('ant-radio-button-checked');
-      expect(testComponent.value).toBe('A');
+      expect(testComponent.value()).toBe('A');
     });
 
     it('should single disable work', async () => {
-      testComponent.disabled = false;
+      testComponent.disabled.set(false);
       fixture.detectChanges();
-      testComponent.singleDisabled = true;
+      testComponent.singleDisabled.set(true);
       fixture.detectChanges();
-      expect(testComponent.value).toBe('A');
+      expect(testComponent.value()).toBe('A');
       radios[2].nativeElement.click();
       await stabilize(fixture);
       expect(radios[2].nativeElement.firstElementChild!.classList).not.toContain('ant-radio-button-checked');
-      expect(testComponent.value).toBe('A');
+      expect(testComponent.value()).toBe('A');
     });
   });
 
@@ -248,7 +248,7 @@ describe('radio', () => {
     });
 
     it('should set disabled work', async () => {
-      testComponent.disabled = true;
+      testComponent.disabled.set(true);
       await stabilize(fixture);
       const radio = fixture.debugElement.query(By.directive(NzRadioComponent));
       const inputElement = radio.nativeElement.querySelector('input') as HTMLInputElement;
@@ -310,7 +310,7 @@ describe('radio', () => {
     });
 
     it('should set disabled work', async () => {
-      testComponent.nzDisabled = true;
+      testComponent.nzDisabled.set(true);
       await stabilize(fixture);
       const radios = fixture.debugElement.queryAll(By.directive(NzRadioComponent));
       const radioGroup: NzRadioGroupComponent = fixture.debugElement.query(
@@ -395,7 +395,7 @@ describe('radio', () => {
     });
 
     it('should prioritize formSize > nzSize', () => {
-      component.size = 'default';
+      component.size.set('default');
       formSize.set('large');
       fixture.detectChanges();
       expect(radioGroupElement.classList).toContain('ant-radio-group-large');
@@ -426,8 +426,8 @@ async function stabilize<T>(fixture: ComponentFixture<T>, ms?: number): Promise<
       nz-radio
       [(ngModel)]="value"
       (ngModelChange)="modelChange($event)"
-      [nzDisabled]="disabled"
-      [nzAutoFocus]="autoFocus"
+      [nzDisabled]="disabled()"
+      [nzAutoFocus]="autoFocus()"
     >
       Radio
     </label>
@@ -435,34 +435,10 @@ async function stabilize<T>(fixture: ComponentFixture<T>, ms?: number): Promise<
 })
 export class NzTestRadioSingleComponent {
   @ViewChild(NzRadioComponent, { static: false }) nzRadioComponent!: NzRadioComponent;
-  readonly valueSignal = signal(false);
-  readonly autoFocusSignal = signal(false);
-  readonly disabledSignal = signal(false);
+  readonly value = signal(false);
+  readonly autoFocus = signal(false);
+  readonly disabled = signal(false);
   modelChange = jasmine.createSpy('change callback');
-
-  get value(): boolean {
-    return this.valueSignal();
-  }
-
-  set value(value: boolean) {
-    this.valueSignal.set(value);
-  }
-
-  get autoFocus(): boolean {
-    return this.autoFocusSignal();
-  }
-
-  set autoFocus(value: boolean) {
-    this.autoFocusSignal.set(value);
-  }
-
-  get disabled(): boolean {
-    return this.disabledSignal();
-  }
-
-  set disabled(value: boolean) {
-    this.disabledSignal.set(value);
-  }
 }
 
 @Component({
@@ -478,9 +454,9 @@ export class NzTestRadioButtonComponent {}
     <nz-radio-group
       [(ngModel)]="value"
       (ngModelChange)="modelChange($event)"
-      [nzName]="name!"
-      [nzDisabled]="disabled"
-      [nzSize]="size"
+      [nzName]="name()!"
+      [nzDisabled]="disabled()"
+      [nzSize]="size()"
     >
       <label nz-radio-button nzValue="A">A</label>
       <label nz-radio-button nzValue="B">B</label>
@@ -490,65 +466,25 @@ export class NzTestRadioButtonComponent {}
   `
 })
 export class NzTestRadioGroupComponent {
-  readonly sizeSignal = signal<NzSizeLDSType>('default');
-  readonly valueSignal = signal('A');
-  readonly disabledSignal = signal(false);
-  readonly nameSignal = signal<string | undefined>(undefined);
+  readonly size = signal<NzSizeLDSType>('default');
+  readonly value = signal('A');
+  readonly disabled = signal(false);
+  readonly name = signal<string | undefined>(undefined);
   modelChange = jasmine.createSpy('change callback');
-
-  get size(): NzSizeLDSType {
-    return this.sizeSignal();
-  }
-
-  set size(value: NzSizeLDSType) {
-    this.sizeSignal.set(value);
-  }
-
-  get value(): string {
-    return this.valueSignal();
-  }
-
-  set value(value: string) {
-    this.valueSignal.set(value);
-  }
-
-  get disabled(): boolean {
-    return this.disabledSignal();
-  }
-
-  set disabled(value: boolean) {
-    this.disabledSignal.set(value);
-  }
-
-  get name(): string | undefined {
-    return this.nameSignal();
-  }
-
-  set name(value: string | undefined) {
-    this.nameSignal.set(value);
-  }
 }
 
 @Component({
   imports: [ReactiveFormsModule, NzRadioModule],
   template: `
     <form>
-      <label nz-radio [formControl]="formControl" [nzDisabled]="disabled"></label>
+      <label nz-radio [formControl]="formControl" [nzDisabled]="disabled()"></label>
     </form>
   `
 })
 export class NzTestRadioFormComponent {
   formControl = new FormControl(false);
 
-  readonly disabledSignal = signal(false);
-
-  get disabled(): boolean {
-    return this.disabledSignal();
-  }
-
-  set disabled(value: boolean) {
-    this.disabledSignal.set(value);
-  }
+  readonly disabled = signal(false);
 
   disable(): void {
     this.formControl.disable();
@@ -563,7 +499,7 @@ export class NzTestRadioFormComponent {
   imports: [ReactiveFormsModule, NzRadioModule],
   template: `
     <form>
-      <nz-radio-group [formControl]="formControl" [nzDisabled]="nzDisabled">
+      <nz-radio-group [formControl]="formControl" [nzDisabled]="nzDisabled()">
         <label nz-radio-button nzValue="A" [nzDisabled]="true">A</label>
         <label nz-radio-button nzValue="B">B</label>
         <label nz-radio-button nzValue="C">C</label>
@@ -574,15 +510,7 @@ export class NzTestRadioFormComponent {
 })
 export class NzTestRadioGroupFormComponent {
   formControl = new FormControl('B');
-  readonly nzDisabledSignal = signal(false);
-
-  get nzDisabled(): boolean {
-    return this.nzDisabledSignal();
-  }
-
-  set nzDisabled(value: boolean) {
-    this.nzDisabledSignal.set(value);
-  }
+  readonly nzDisabled = signal(false);
 
   disable(): void {
     this.formControl.disable();
@@ -598,60 +526,20 @@ export class NzTestRadioGroupFormComponent {
 @Component({
   imports: [FormsModule, NzRadioModule],
   template: `
-    <nz-radio-group [(ngModel)]="value" [nzName]="name!" [nzDisabled]="disabled" [nzSize]="size">
+    <nz-radio-group [(ngModel)]="value" [nzName]="name()!" [nzDisabled]="disabled()" [nzSize]="size()">
       <label nz-radio-button nzValue="A">A</label>
       <label nz-radio-button nzValue="B">B</label>
-      <label nz-radio-button nzValue="C" [nzDisabled]="singleDisabled">C</label>
+      <label nz-radio-button nzValue="C" [nzDisabled]="singleDisabled()">C</label>
       <label nz-radio-button nzValue="D">D</label>
     </nz-radio-group>
   `
 })
 export class NzTestRadioGroupDisabledComponent {
-  readonly sizeSignal = signal<NzSizeLDSType>('default');
-  readonly valueSignal = signal('A');
-  readonly disabledSignal = signal(false);
-  readonly nameSignal = signal<string | undefined>(undefined);
-  readonly singleDisabledSignal = signal(false);
-
-  get size(): NzSizeLDSType {
-    return this.sizeSignal();
-  }
-
-  set size(value: NzSizeLDSType) {
-    this.sizeSignal.set(value);
-  }
-
-  get value(): string {
-    return this.valueSignal();
-  }
-
-  set value(value: string) {
-    this.valueSignal.set(value);
-  }
-
-  get disabled(): boolean {
-    return this.disabledSignal();
-  }
-
-  set disabled(value: boolean) {
-    this.disabledSignal.set(value);
-  }
-
-  get name(): string | undefined {
-    return this.nameSignal();
-  }
-
-  set name(value: string | undefined) {
-    this.nameSignal.set(value);
-  }
-
-  get singleDisabled(): boolean {
-    return this.singleDisabledSignal();
-  }
-
-  set singleDisabled(value: boolean) {
-    this.singleDisabledSignal.set(value);
-  }
+  readonly size = signal<NzSizeLDSType>('default');
+  readonly value = signal('A');
+  readonly disabled = signal(false);
+  readonly name = signal<string | undefined>(undefined);
+  readonly singleDisabled = signal(false);
 }
 
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1735 **/
@@ -678,22 +566,14 @@ export class NzTestRadioGroupDisabledFormComponent {
     <nz-radio-group [(ngModel)]="value" nzButtonStyle="solid">
       <label nz-radio-button nzValue="A">A</label>
       <label nz-radio-button nzValue="B">B</label>
-      <label nz-radio-button nzValue="C" [nzDisabled]="singleDisabled">C</label>
+      <label nz-radio-button nzValue="C" [nzDisabled]="singleDisabled()">C</label>
       <label nz-radio-button nzValue="D">D</label>
     </nz-radio-group>
   `
 })
 export class NzTestRadioGroupSolidComponent {
   value = 'A';
-  readonly singleDisabledSignal = signal(false);
-
-  get singleDisabled(): boolean {
-    return this.singleDisabledSignal();
-  }
-
-  set singleDisabled(value: boolean) {
-    this.singleDisabledSignal.set(value);
-  }
+  readonly singleDisabled = signal(false);
 }
 
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/7254 */
@@ -733,16 +613,8 @@ export class NzTestRadioGroupLabelNgModelComponent {
 @Component({
   imports: [NzRadioModule],
   selector: 'nz-test-radio-group-final-size',
-  template: `<nz-radio-group [nzSize]="size" />`
+  template: `<nz-radio-group [nzSize]="size()" />`
 })
 export class TestRadioGroupFinalSizeComponent {
-  readonly sizeSignal = signal<NzSizeLDSType>('default');
-
-  get size(): NzSizeLDSType {
-    return this.sizeSignal();
-  }
-
-  set size(value: NzSizeLDSType) {
-    this.sizeSignal.set(value);
-  }
+  readonly size = signal<NzSizeLDSType>('default');
 }

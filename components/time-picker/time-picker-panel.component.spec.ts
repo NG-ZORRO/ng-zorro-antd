@@ -318,8 +318,7 @@ async function stabilize<T>(fixture: ComponentFixture<T>, ms?: number): Promise<
   imports: [NzTimePickerPanelComponent, FormsModule],
   template: `
     <nz-time-picker-panel
-      [ngModel]="value()"
-      (ngModelChange)="value.set($event)"
+      [(ngModel)]="value"
       [format]="format()"
       [nzDefaultOpenValue]="openValue()"
       [nzSecondStep]="secondStep()"
@@ -342,8 +341,7 @@ export class NzTestTimePanelComponent {
   imports: [NzTimePickerPanelComponent, FormsModule],
   template: `
     <nz-time-picker-panel
-      [ngModel]="value()"
-      (ngModelChange)="value.set($event)"
+      [(ngModel)]="value"
       [format]="format()"
       [nzDisabledHours]="disabledHours()"
       [nzDisabledMinutes]="disabledMinutes"
@@ -390,8 +388,7 @@ export class NzTestTimePanelDisabledComponent {
   imports: [NzTimePickerPanelComponent, FormsModule],
   template: `
     <nz-time-picker-panel
-      [ngModel]="value()"
-      (ngModelChange)="value.set($event)"
+      [(ngModel)]="value"
       [nzUse12Hours]="true"
       [nzDefaultOpenValue]="openValue()"
       [nzHourStep]="hourStep()"
@@ -412,8 +409,7 @@ export class NzTest12HourTimePanelComponent {
   template: `
     <nz-time-picker-panel
       [format]="format()"
-      [ngModel]="value()"
-      (ngModelChange)="value.set($event)"
+      [(ngModel)]="value"
       [nzUse12Hours]="true"
       [nzDisabledHours]="disabledHours()"
       [nzDisabledMinutes]="disabledMinutes"

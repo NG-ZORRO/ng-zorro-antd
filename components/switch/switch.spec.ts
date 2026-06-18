@@ -74,7 +74,7 @@ describe('switch', () => {
       switchButton.click();
       expect(testComponent.value).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(2);
-      testComponent.control = true;
+      testComponent.control.set(true);
       fixture.detectChanges();
       switchButton.click();
       expect(testComponent.value).toBe(false);
@@ -82,7 +82,7 @@ describe('switch', () => {
     });
 
     it('should disable work', async () => {
-      testComponent.disabled = true;
+      testComponent.disabled.set(true);
       fixture.detectChanges();
       expect(testComponent.value).toBe(false);
       (switchElement.nativeElement.firstElementChild! as HTMLButtonElement).click();
@@ -92,7 +92,7 @@ describe('switch', () => {
     });
 
     it('should loading work', async () => {
-      testComponent.loading = true;
+      testComponent.loading.set(true);
       fixture.detectChanges();
       expect(switchElement.nativeElement.firstElementChild!.classList).toContain('ant-switch-loading');
       expect(testComponent.value).toBe(false);
@@ -103,7 +103,7 @@ describe('switch', () => {
     });
 
     it('should size work', () => {
-      testComponent.size = 'small';
+      testComponent.size.set('small');
       fixture.detectChanges();
       expect(switchElement.nativeElement.firstElementChild!.classList).toContain('ant-switch-small');
     });
@@ -135,22 +135,22 @@ describe('switch', () => {
       fixture.detectChanges();
       expect(testComponent.value).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(4);
-      testComponent.control = true;
+      testComponent.control.set(true);
       fixture.detectChanges();
       dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', ENTER);
       fixture.detectChanges();
       expect(testComponent.value).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(4);
-      testComponent.control = false;
-      testComponent.loading = true;
+      testComponent.control.set(false);
+      testComponent.loading.set(true);
       fixture.detectChanges();
       dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', ENTER);
       fixture.detectChanges();
       expect(testComponent.value).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(4);
-      testComponent.control = false;
-      testComponent.loading = false;
-      testComponent.disabled = true;
+      testComponent.control.set(false);
+      testComponent.loading.set(false);
+      testComponent.disabled.set(true);
       fixture.detectChanges();
       dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', ENTER);
       fixture.detectChanges();
@@ -178,7 +178,7 @@ describe('switch', () => {
     });
     describe('change detection behavior', () => {
       it('should not run change detection on `click` events if the switch is disabled', () => {
-        testComponent.disabled = true;
+        testComponent.disabled.set(true);
         fixture.detectChanges();
 
         const appRef = TestBed.inject(ApplicationRef);
@@ -193,7 +193,7 @@ describe('switch', () => {
         expect(event.preventDefault).toHaveBeenCalled();
       });
       it('should not run change detection on `keydown` events if the switch is disabled', async () => {
-        testComponent.disabled = true;
+        testComponent.disabled.set(true);
         await stabilize(fixture);
 
         const switchButton = switchElement.nativeElement.querySelector('.ant-switch');
@@ -210,7 +210,7 @@ describe('switch', () => {
         expect(appRef.tick).not.toHaveBeenCalled();
         expect(event.preventDefault).not.toHaveBeenCalled();
 
-        testComponent.disabled = false;
+        testComponent.disabled.set(false);
         await stabilize(fixture);
 
         const enabledEvent = createKeyboardEvent('keydown', SPACE);
@@ -273,7 +273,7 @@ describe('switch', () => {
     });
 
     it('should set disabled work', async () => {
-      testComponent.disabled = true;
+      testComponent.disabled.set(true);
       await stabilize(fixture);
       const switchElement = fixture.debugElement.query(By.directive(NzSwitchComponent));
       const buttonElement = switchElement.nativeElement.firstElementChild! as HTMLButtonElement;
@@ -335,7 +335,7 @@ describe('finalSize', () => {
   it('should set correctly the size from the component input', () => {
     fixture = TestBed.createComponent(NzTestSwitchBasicComponent);
     switchElement = fixture.debugElement.query(By.directive(NzSwitchComponent)).nativeElement;
-    fixture.componentInstance.size = 'small';
+    fixture.componentInstance.size.set('small');
     fixture.detectChanges();
     expect(switchElement.firstElementChild!.classList).toContain('ant-switch-small');
   });
@@ -355,10 +355,10 @@ async function stabilize<T>(fixture: ComponentFixture<T>): Promise<void> {
     <nz-switch
       [(ngModel)]="value"
       (ngModelChange)="modelChange($event)"
-      [nzDisabled]="disabled"
-      [nzLoading]="loading"
-      [nzSize]="size"
-      [nzControl]="control"
+      [nzDisabled]="disabled()"
+      [nzLoading]="loading()"
+      [nzSize]="size()"
+      [nzControl]="control()"
       [nzCheckedChildren]="checkedChildren"
       [nzUnCheckedChildren]="unCheckedChildren"
     />
@@ -371,43 +371,11 @@ export class NzTestSwitchBasicComponent {
   checkedChildren = 'on';
   unCheckedChildren = 'off';
   value = false;
-  readonly controlSignal = signal(false);
-  readonly disabledSignal = signal(false);
-  readonly sizeSignal = signal<NzSizeDSType>('default');
-  readonly loadingSignal = signal(false);
+  readonly control = signal(false);
+  readonly disabled = signal(false);
+  readonly size = signal<NzSizeDSType>('default');
+  readonly loading = signal(false);
   modelChange = jasmine.createSpy('model change callback');
-
-  get control(): boolean {
-    return this.controlSignal();
-  }
-
-  set control(value: boolean) {
-    this.controlSignal.set(value);
-  }
-
-  get disabled(): boolean {
-    return this.disabledSignal();
-  }
-
-  set disabled(value: boolean) {
-    this.disabledSignal.set(value);
-  }
-
-  get size(): NzSizeDSType {
-    return this.sizeSignal();
-  }
-
-  set size(value: NzSizeDSType) {
-    this.sizeSignal.set(value);
-  }
-
-  get loading(): boolean {
-    return this.loadingSignal();
-  }
-
-  set loading(value: boolean) {
-    this.loadingSignal.set(value);
-  }
 }
 
 @Component({
@@ -425,22 +393,14 @@ export class NzTestSwitchTemplateComponent {}
   selector: 'nz-test-switch-form',
   template: `
     <form>
-      <nz-switch [formControl]="formControl" [nzDisabled]="disabledSignal()" />
+      <nz-switch [formControl]="formControl" [nzDisabled]="disabled()" />
     </form>
   `
 })
 export class NzTestSwitchFormComponent {
   formControl = new FormControl(true);
 
-  readonly disabledSignal = signal(false);
-
-  get disabled(): boolean {
-    return this.disabledSignal();
-  }
-
-  set disabled(value: boolean) {
-    this.disabledSignal.set(value);
-  }
+  readonly disabled = signal(false);
 
   disable(): void {
     this.formControl.disable();

@@ -406,7 +406,7 @@ describe('calendar', () => {
   imports: [NzCalendarModule],
   template: `
     <nz-calendar />
-    <nz-calendar [nzMode]="mode()" (nzModeChange)="mode.set($event)" />
+    <nz-calendar [(nzMode)]="mode" />
   `
 })
 class NzTestCalendarModeComponent {

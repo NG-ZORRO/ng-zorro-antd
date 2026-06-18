@@ -158,13 +158,13 @@ describe('nz-td', () => {
   imports: [NzTableModule],
   template: `
     <td
-      [nzChecked]="checked()"
-      (nzCheckedChange)="checked.set($event); checkedChange($event)"
+      [(nzChecked)]="checked"
+      (nzCheckedChange)="checkedChange($event)"
       [nzIndeterminate]="indeterminate()"
       [nzLabel]="label()"
       [nzDisabled]="disabled()"
-      [nzExpand]="expand()"
-      (nzExpandChange)="expand.set($event); expandChange($event)"
+      [(nzExpand)]="expand"
+      (nzExpandChange)="expandChange($event)"
       [nzIndentSize]="indentSize()"
       [nzLeft]="left()"
       [nzRight]="right()"
