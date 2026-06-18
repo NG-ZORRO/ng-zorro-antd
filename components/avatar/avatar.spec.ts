@@ -151,6 +151,7 @@ describe('avatar', () => {
     describe('nzGap', () => {
       let firstScale: number;
       let avatarText: HTMLElement;
+
       beforeEach(async () => {
         context.nzGap.set(4);
         context.nzText.set('Username');
@@ -243,9 +244,7 @@ describe('avatar', () => {
       expect(textEl.style.lineHeight).toEqual(`${size}px`);
     });
 
-    // this case will fail in local environment but pass in CI. Ignore it first.
-
-    it('[IGNORE_LOCAL] should have 0 for avatarWidth if element.width is falsy`', async () => {
+    it('should have 0 for avatarWidth if element.width is falsy`', async () => {
       const size = 64;
       context.nzIcon.set(undefined);
       context.nzSrc.set(undefined);
@@ -267,12 +266,9 @@ describe('avatar', () => {
 
       const scale = getScaleFromCSSTransform(textEl.style.transform);
 
-      // avatarWidth = 0
-      // childrenWidth = 86
-      // offset = 8
-      // avatarWidth = 0
-      // scale = (0 - 8) / 86
-      expect(scale).toBe(-0.0930233);
+      // When avatar width is falsy, calcStringSize falls back to a negative gap:
+      // (avatarWidth - 8) / textWidth, where avatarWidth is normalized to 0.
+      expect(scale).toBeCloseTo(-8 / textEl.offsetWidth);
     });
   });
 

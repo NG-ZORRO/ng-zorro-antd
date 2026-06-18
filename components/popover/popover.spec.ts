@@ -34,12 +34,11 @@ describe('popover', () => {
   }));
 
   beforeEach(() => jasmine.clock().install());
+  afterEach(() => jasmine.clock().uninstall());
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
   });
-
-  afterEach(() => jasmine.clock().uninstall());
 
   function getTextContentOf(selector: string): string | null {
     const el = overlayContainerElement.querySelector(selector);

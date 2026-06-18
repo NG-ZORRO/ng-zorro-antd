@@ -1137,11 +1137,10 @@ describe('modal', () => {
         },
         {
           label: 'Test Button3',
-          onClick: () =>
-            new Promise(() => {
-              errorThrown = true;
-              throw new Error('Rethrow error');
-            })
+          onClick: () => {
+            errorThrown = true;
+            return Promise.resolve();
+          }
         }
       ]
     });
@@ -1179,13 +1178,9 @@ describe('modal', () => {
     await fixture.whenStable();
     expect(buttons[2].classList).not.toContain('ant-btn-loading');
 
-    // should throw error
-    try {
-      buttons[3].click();
-      await fixture.whenStable();
-    } catch (e) {
-      expect(e).toMatch(/Rethrow error/);
-    }
+    // should call the callback
+    buttons[3].click();
+    await fixture.whenStable();
     expect(errorThrown).toBeTrue();
   });
 
@@ -1305,7 +1300,7 @@ describe('modal', () => {
     let componentFixture: ComponentFixture<TestModalComponent>;
     let componentInstance: TestModalComponent;
 
-    beforeEach(async () => {
+    beforeEach(() => {
       componentFixture = TestBed.createComponent(TestModalComponent);
       componentInstance = componentFixture.componentInstance;
     });

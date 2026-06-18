@@ -25,9 +25,6 @@ describe('modal title directive', () => {
     TestBed.configureTestingModule({
       providers: [NzModalService, provideNzNoAnimation()]
     });
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(TestDirectiveTitleComponent);
     testComponent = fixture.componentInstance;
     fixture.detectChanges();
@@ -50,23 +47,18 @@ describe('modal title directive', () => {
     expect(testComponent.isVisible()).toBe(true);
     const modalRef = testComponent.modalComponent.getModalRef();
     expect(modalRef!.getConfig().nzTitle).toEqual(testComponent.modalTitleDir);
-
-    testComponent.handleCancel();
-    fixture.detectChanges();
   });
 
   it('should work with template when init opened', async () => {
-    const initOpenedComponentFixture = TestBed.createComponent(TestDirectiveTitleWithInitOpenedComponent);
-    const initOpenedComponent = initOpenedComponentFixture.componentInstance;
-    initOpenedComponentFixture.detectChanges();
+    const fixture = TestBed.createComponent(TestDirectiveTitleWithInitOpenedComponent);
+    const initOpenedComponent = fixture.componentInstance;
+    fixture.detectChanges();
     expect(initOpenedComponent.isVisible()).toBe(true);
-    await initOpenedComponentFixture.whenStable();
-    initOpenedComponentFixture.detectChanges();
+
+    await fixture.whenStable();
+    fixture.detectChanges();
     const modalRef = initOpenedComponent.modalComponent.getModalRef();
-
     expect(modalRef!.getConfig().nzTitle).toEqual(initOpenedComponent.modalTitleDir);
-
-    initOpenedComponentFixture.detectChanges();
   });
 
   it('should work with service', () => {

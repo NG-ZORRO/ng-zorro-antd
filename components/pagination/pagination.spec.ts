@@ -9,12 +9,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
-import {
-  createKeyboardEvent,
-  dispatchKeyboardEvent,
-  testDirectionality,
-  updateNonSignalsInput
-} from 'ng-zorro-antd/core/testing';
+import { createKeyboardEvent, dispatchKeyboardEvent, testDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import en_US from 'ng-zorro-antd/i18n/languages/en_US';
 import { NzI18nService } from 'ng-zorro-antd/i18n/nz-i18n.service';
@@ -382,6 +377,7 @@ describe('pagination', () => {
   });
 
   it('should auto resize work', async () => {
+    jasmine.clock().install();
     const fixture = TestBed.createComponent(NzTestPaginationAutoResizeComponent);
     const pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
 
@@ -393,11 +389,13 @@ describe('pagination', () => {
     viewport.set(350, 350);
     window.dispatchEvent(new Event('resize'));
     fixture.detectChanges();
-    await updateNonSignalsInput(fixture, 1000);
+    jasmine.clock().tick(1000);
+    await fixture.whenStable();
     fixture.detectChanges();
     paginationElement = pagination.nativeElement;
     expect(paginationElement.classList).toContain('ant-pagination-mini');
     viewport.reset();
+    jasmine.clock().uninstall();
   });
 
   it('#i18n', () => {
@@ -406,10 +404,10 @@ describe('pagination', () => {
     fixture.detectChanges();
     TestBed.inject(NzI18nService).setLocale(en_US);
     fixture.detectChanges();
-    const prevText = (dl.query(By.css('.ant-pagination-prev')).nativeElement as HTMLElement).title;
-    expect(prevText).toBe(en_US.Pagination.prev_page);
-    const nextText = (dl.query(By.css('.ant-pagination-next')).nativeElement as HTMLElement).title;
-    expect(nextText).toBe(en_US.Pagination.next_page);
+    const prevBtn = dl.query(By.css('.ant-pagination-prev')).nativeElement as HTMLElement;
+    expect(prevBtn.title).toBe(en_US.Pagination.prev_page);
+    const nextBtn = dl.query(By.css('.ant-pagination-next')).nativeElement as HTMLElement;
+    expect(nextBtn.title).toBe(en_US.Pagination.next_page);
   });
 
   testDirectionality(() => NzTestPaginationComponent, By.directive(NzPaginationComponent), 'ant-pagination');

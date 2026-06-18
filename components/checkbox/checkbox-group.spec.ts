@@ -190,7 +190,7 @@ class CheckboxGroupTestComponent {
 @Component({
   imports: [NzCheckboxModule, FormsModule],
   template: `
-    <nz-checkbox-group [nzDisabled]="disabled()" [ngModel]="value()" (ngModelChange)="value.set($event)">
+    <nz-checkbox-group [nzDisabled]="disabled()" [(ngModel)]="value">
       <label nz-checkbox nzValue="A">A</label>
       <label nz-checkbox nzValue="B">B</label>
       <label nz-checkbox nzValue="C">C</label>

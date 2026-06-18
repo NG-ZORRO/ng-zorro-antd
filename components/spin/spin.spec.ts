@@ -80,30 +80,27 @@ describe('spin', () => {
       expect(spin.nativeElement.querySelector('.anticon-loading')).toBeDefined();
     });
 
-    describe('delay', () => {
-      beforeEach(() => jasmine.clock().install());
-      afterEach(() => jasmine.clock().uninstall());
+    it('should delay work', async () => {
+      jasmine.clock().install();
+      testComponent.delay.set(500);
+      await stabilize(fixture);
 
-      it('should delay work', async () => {
-        testComponent.delay.set(500);
-        await stabilize(fixture);
+      // true -> false
+      // This should work immediately
+      testComponent.spinning.set(false);
+      await stabilize(fixture);
+      expect(spin.nativeElement.querySelector('.ant-spin')).toBeNull();
 
-        // true -> false
-        // This should work immediately
-        testComponent.spinning.set(false);
-        await stabilize(fixture);
-        expect(spin.nativeElement.querySelector('.ant-spin')).toBeNull();
+      // false -> true
+      // This should be debounced
+      testComponent.spinning.set(true);
+      await stabilize(fixture);
+      expect(spin.nativeElement.querySelector('.ant-spin')).toBeNull();
 
-        // false -> true
-        // This should be debounced
-        testComponent.spinning.set(true);
-        await stabilize(fixture);
-        expect(spin.nativeElement.querySelector('.ant-spin')).toBeNull();
-
-        jasmine.clock().tick(500);
-        await stabilize(fixture);
-        expect(spin.nativeElement.querySelector('.ant-spin')).toBeDefined();
-      });
+      jasmine.clock().tick(500);
+      await stabilize(fixture);
+      expect(spin.nativeElement.querySelector('.ant-spin')).toBeDefined();
+      jasmine.clock().uninstall();
     });
 
     it('should wrapper work', async () => {

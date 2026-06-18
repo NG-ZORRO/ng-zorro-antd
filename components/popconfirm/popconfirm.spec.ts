@@ -38,12 +38,11 @@ describe('popconfirm', () => {
   }));
 
   beforeEach(() => jasmine.clock().install());
+  afterEach(() => jasmine.clock().uninstall());
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
   });
-
-  afterEach(() => jasmine.clock().uninstall());
 
   function getTitleText(): Element | null {
     return overlayContainerElement.querySelector('.ant-popover-message-title');

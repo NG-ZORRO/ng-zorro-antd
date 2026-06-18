@@ -125,7 +125,7 @@ describe('alert', () => {
     let fixture: ComponentFixture<NzDemoTestBannerComponent>;
     let alert: DebugElement;
 
-    beforeEach(async () => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoTestBannerComponent);
       alert = fixture.debugElement.query(By.directive(NzAlertComponent));
       fixture.autoDetectChanges();

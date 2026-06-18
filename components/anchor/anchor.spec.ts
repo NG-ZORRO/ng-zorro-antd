@@ -127,6 +127,7 @@ describe('anchor', () => {
         const linkList = dl.queryAll(By.css('nz-affix'));
         expect(linkList.length).toBe(1);
       });
+
       it(`is [false]`, async () => {
         let linkList = dl.queryAll(By.css('nz-affix'));
         expect(linkList.length).toBe(1);
@@ -161,12 +162,14 @@ describe('anchor', () => {
         context.nzAffix.set(false);
         await updateNonSignalsInput(fixture);
       });
+
       it('should be show ink when [false]', async () => {
         context.nzShowInkInFixed.set(false);
         await updateNonSignalsInput(fixture);
         page.scrollTo();
         expect(dl.query(By.css('.ant-anchor-fixed')) == null).toBe(false);
       });
+
       it('should be hide ink when [true]', async () => {
         context.nzShowInkInFixed.set(true);
         await updateNonSignalsInput(fixture);
@@ -182,6 +185,7 @@ describe('anchor', () => {
         await updateNonSignalsInput(fixture);
         expect(window.addEventListener).toHaveBeenCalled();
       });
+
       it('with string', async () => {
         spyOn(context, '_click');
         const el = document.querySelector('#target')!;
@@ -205,6 +209,7 @@ describe('anchor', () => {
         page.to('#basic-target');
         expect(context._change).toHaveBeenCalled();
       });
+
       it('should emit nzChange when scrolling to the anchor', async () => {
         spyOn(context, '_change');
         expect(context._change).not.toHaveBeenCalled();
@@ -231,6 +236,7 @@ describe('anchor', () => {
     it(`should show custom template of [nzTemplate]`, () => {
       expect(dl.query(By.css('.nzTemplate-title')) != null).toBe(true);
     });
+
     it(`should show custom template of [nzTitle]`, () => {
       expect(dl.query(By.css('.nzTitle-title')) != null).toBe(true);
     });

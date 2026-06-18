@@ -1499,7 +1499,7 @@ class TestUploadComponent {
   readonly nzType = signal<NzUploadType>('select');
   readonly nzLimit = signal(0);
   readonly nzSize = signal(0);
-  readonly nzFileType = signal<NzSafeAny | undefined>(undefined);
+  readonly nzFileType = signal<NzSafeAny>(undefined);
   nzAccept = 'image/png';
   readonly nzAction = signal<string | ((file: NzUploadFile) => string | Observable<string>)>('/upload');
   _beforeUpload = false;
@@ -1510,7 +1510,7 @@ class TestUploadComponent {
     return true;
   });
   nzCustomRequest: NzSafeAny;
-  readonly nzData = signal<NzSafeAny | undefined>(undefined);
+  readonly nzData = signal<NzSafeAny>(undefined);
   readonly nzFilter = signal<UploadFilter[]>([]);
   private readonly nzFileListValue = signal<NzUploadFile[] | null>([]);
 

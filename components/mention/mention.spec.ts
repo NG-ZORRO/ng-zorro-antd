@@ -744,6 +744,12 @@ testDirectionality(() => NzTestSimpleMentionComponent, By.directive(NzMentionCom
   providers: [provideNzNoAnimation(), provideNzIconsTesting()]
 });
 
+async function stabilize<T>(fixture: ComponentFixture<T>, ms?: number): Promise<void> {
+  fixture.detectChanges();
+  await updateNonSignalsInput(fixture, ms);
+  fixture.detectChanges();
+}
+
 describe('finalVariant', () => {
   let fixture: ComponentFixture<NzTestFinalVariantMentionComponent>;
   let mentionHtmlElement: HTMLElement;
@@ -975,10 +981,4 @@ class NzTestClearMentionComponent {
 class NzTestFinalVariantMentionComponent {
   readonly variant = signal<NzVariant | undefined>(undefined);
   readonly suggestions = signal(['angular', 'ant-design', 'mention']);
-}
-
-async function stabilize<T>(fixture: ComponentFixture<T>, ms?: number): Promise<void> {
-  fixture.detectChanges();
-  await updateNonSignalsInput(fixture, ms);
-  fixture.detectChanges();
 }

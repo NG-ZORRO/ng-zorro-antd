@@ -51,7 +51,7 @@ describe('NzScrollService', () => {
 
     document = TestBed.inject<MockDocument>(DOCUMENT);
     scrollService = TestBed.inject(NzScrollService);
-    ngZone = TestBed.inject(NgZone) as MockNgZone;
+    ngZone = TestBed.inject(NgZone) as unknown as MockNgZone;
   });
 
   describe('#setScrollTop', () => {

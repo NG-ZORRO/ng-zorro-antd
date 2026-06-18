@@ -1715,7 +1715,7 @@ class NzTestDatePickerComponent {
   readonly nzInputReadOnly = signal<boolean>(false);
   readonly nzFormat = signal<string | undefined>(undefined);
   readonly nzDisabledDate = signal<((d: Date) => boolean) | undefined>(undefined);
-  readonly nzLocale = signal<NzSafeAny | undefined>(undefined);
+  readonly nzLocale = signal<NzSafeAny>(undefined);
   readonly nzPlaceHolder = signal<string | undefined>(undefined);
   readonly nzPopupStyle = signal<NgStyleInterface | undefined>(undefined);
   readonly nzDropdownClassName = signal<string | undefined>(undefined);
@@ -1729,9 +1729,9 @@ class NzTestDatePickerComponent {
 
   readonly nzValue = signal<Date | null>(null);
   readonly nzDefaultPickerValue = signal<Date | null>(null);
-  readonly nzDateRender = signal<NzSafeAny | undefined>(undefined);
+  readonly nzDateRender = signal<NzSafeAny>(undefined);
   readonly nzShowTime = signal<boolean | object>(false);
-  readonly nzDisabledTime = signal<NzSafeAny | undefined>(undefined);
+  readonly nzDisabledTime = signal<NzSafeAny>(undefined);
   readonly nzRenderExtraFooter = signal<string | (() => TemplateRef<void> | string) | undefined>(undefined);
   readonly nzShowToday = signal(false);
   readonly nzShowNow = signal(false);

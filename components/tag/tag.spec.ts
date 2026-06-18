@@ -8,7 +8,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
-import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
+import { testDirectionality } from 'ng-zorro-antd/core/testing';
 
 import { NzTagComponent } from './tag.component';
 import { NzTagModule } from './tag.module';
@@ -40,12 +40,14 @@ describe('tag', () => {
     it('should checkable work', () => {
       fixture.detectChanges();
       expect(tag.nativeElement.classList).not.toContain('ant-tag-checkable');
+
       testComponent.mode.set('checkable');
       fixture.detectChanges();
       expect(testComponent.checked()).toBe(false);
       expect(testComponent.checkedChange).toHaveBeenCalledTimes(0);
       expect(tag.nativeElement.classList).toContain('ant-tag-checkable');
       expect(tag.nativeElement.classList).not.toContain('ant-tag-checkable-checked');
+
       tag.nativeElement.click();
       fixture.detectChanges();
       expect(testComponent.checked()).toBe(true);
@@ -60,24 +62,27 @@ describe('tag', () => {
       testComponent.mode.set('closeable');
       fixture.detectChanges();
       expect(tag.nativeElement.querySelector('.anticon-close')).toBeDefined();
+
       tag.nativeElement.querySelector('.anticon-close').click();
       fixture.detectChanges();
       expect(testComponent.onClose).toHaveBeenCalledTimes(1);
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(fixture.nativeElement.querySelector('nz-tag')).toBeFalsy();
     });
 
     it('should color work', () => {
       fixture.detectChanges();
       expect(tag.nativeElement.classList).not.toContain('ant-tag-has-color');
+
       testComponent.color.set('green');
       fixture.detectChanges();
       expect(tag.nativeElement.classList).toContain('ant-tag-green');
+
       testComponent.color.set('#f50');
       fixture.detectChanges();
       expect(tag.nativeElement.classList).not.toContain('ant-tag-green');
       expect(tag.nativeElement.style.backgroundColor).toBe('rgb(255, 85, 0)');
+
       testComponent.color.set('green');
       fixture.detectChanges();
       expect(tag.nativeElement.classList).toContain('ant-tag-green');
@@ -89,9 +94,11 @@ describe('tag', () => {
       testComponent.color.set('success');
       fixture.detectChanges();
       expect(tag.nativeElement.classList).toContain('ant-tag-success');
+
       testComponent.color.set('processing');
       fixture.detectChanges();
       expect(tag.nativeElement.classList).toContain('ant-tag-processing');
+
       testComponent.color.set('invalid');
       fixture.detectChanges();
       expect(tag.nativeElement.classList).not.toContain('ant-tag-invalid');
@@ -102,9 +109,11 @@ describe('tag', () => {
       testComponent.color.set('green');
       fixture.detectChanges();
       expect(tag.nativeElement.classList).toContain('ant-tag-green');
+
       testComponent.color.set('');
       fixture.detectChanges();
       expect(tag.nativeElement.classList).not.toContain('ant-tag-has-color');
+
       testComponent.color.set(undefined);
       fixture.detectChanges();
       expect(tag.nativeElement.classList).not.toContain('ant-tag-has-color');
@@ -133,8 +142,7 @@ describe('tag', () => {
       expect(tag.nativeElement.querySelector('.anticon-close')).toBeDefined();
       tag.nativeElement.querySelector('.anticon-close').click();
       fixture.detectChanges();
-      await updateNonSignalsInput(fixture);
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(tag.nativeElement.querySelector('.anticon-close')).toBeDefined();
     });
   });
@@ -159,10 +167,10 @@ describe('tag', () => {
   `
 })
 export class NzTestTagBasicComponent {
-  mode = signal<'default' | 'closeable' | 'checkable'>('default');
-  color = signal<string | undefined>(undefined);
-  checked = signal(false);
-  bordered = signal(true);
+  readonly mode = signal<'default' | 'closeable' | 'checkable'>('default');
+  readonly color = signal<string | undefined>(undefined);
+  readonly checked = signal(false);
+  readonly bordered = signal(true);
   onClose = jasmine.createSpy('on close');
   afterClose = jasmine.createSpy('after close');
   checkedChange = jasmine.createSpy('after close');

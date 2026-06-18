@@ -10,7 +10,7 @@ import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
-import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
+import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 import en_US from 'ng-zorro-antd/i18n/languages/en_US';
@@ -69,10 +69,7 @@ describe('transfer', () => {
       fixture.detectChanges();
 
       expect(
-        instance.comp.nzSelectedKeys.every(e => {
-          const data = instance.comp.nzDataSource.find(d => d.key === e);
-          return !!data?.checked;
-        })
+        instance.comp.nzSelectedKeys.every(e => !!instance.comp.nzDataSource.find(d => d.key === e)?.checked)
       ).toBe(true);
     });
 
@@ -258,7 +255,7 @@ describe('transfer', () => {
     });
 
     describe('#nzDisabled', () => {
-      it('should working', async () => {
+      it('should work', async () => {
         instance.nzDisabled.set(true);
         fixture.autoDetectChanges();
         await fixture.whenStable();
@@ -425,14 +422,11 @@ describe('transfer', () => {
       fixture = TestBed.createComponent(Test996Component);
       pageObject = new TransferPageObject(fixture);
       fixture.detectChanges();
-      expect(
-        pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox').classList
-      ).not.toContain('ant-checkbox-checked');
+      const checkbox = pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox');
+      expect(checkbox.classList).not.toContain('ant-checkbox-checked');
       pageObject.checkItem('right', 1);
-      await updateNonSignalsInput(fixture, 50);
-      expect(pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox').classList).toContain(
-        'ant-checkbox-checked'
-      );
+      await fixture.whenStable();
+      expect(checkbox.classList).toContain('ant-checkbox-checked');
     });
   });
 
