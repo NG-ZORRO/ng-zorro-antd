@@ -7,10 +7,10 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { cloneDeep } from 'lodash';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -31,7 +31,7 @@ export async function waitForNextAnimationFrame(): Promise<void> {
 describe('tree-view based on nzChildrenAccessor', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations()]
+      providers: [provideNzIconsTesting(), provideNzNoAnimation()]
     });
   });
 

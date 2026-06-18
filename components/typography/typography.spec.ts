@@ -8,8 +8,8 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { ApplicationRef, Component, NgZone, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import {
   createKeyboardEvent,
   dispatchFakeEvent,
@@ -37,7 +37,7 @@ describe('typography', () => {
     TestBed.configureTestingModule({
       providers: [
         provideNzIconsTesting(),
-        provideNoopAnimations(),
+        provideNzNoAnimation(),
         { provide: NgZone, useFactory: () => new MockNgZone() }
       ]
     });
@@ -476,7 +476,7 @@ describe('change detection behavior', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations()]
+      providers: [provideNzIconsTesting(), provideNzNoAnimation()]
     });
   });
 

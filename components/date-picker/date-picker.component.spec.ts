@@ -21,11 +21,11 @@ import { ComponentFixture, TestBed, inject as testingInject } from '@angular/cor
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { form, FormField } from '@angular/forms/signals';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import isSameDay from 'date-fns/isSameDay';
 import { enUS } from 'date-fns/locale';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
 import {
   dispatchFakeEvent,
@@ -64,7 +64,7 @@ describe('NzDatePickerComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
   });
 
@@ -1374,7 +1374,7 @@ describe('date-fns testing', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), { provide: NZ_DATE_LOCALE, useValue: enUS }]
+      providers: [provideNzNoAnimation(), { provide: NZ_DATE_LOCALE, useValue: enUS }]
     });
   });
 
@@ -1416,7 +1416,7 @@ describe('date-picker status', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
   });
 
@@ -1449,7 +1449,7 @@ describe('in form', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
   });
 
@@ -1492,7 +1492,7 @@ describe('signal forms (formField)', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
   });
 

@@ -7,8 +7,8 @@ import { Platform } from '@angular/cdk/platform';
 import { Component, DebugElement, DOCUMENT, ElementRef, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { sleep, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzDirectionVHType, NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -27,7 +27,7 @@ describe('anchor', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
     fixture = TestBed.createComponent(TestComponent);
     dl = fixture.debugElement;

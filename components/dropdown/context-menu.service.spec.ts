@@ -7,9 +7,9 @@ import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer, ScrollDispatcher } from '@angular/cdk/overlay';
 import { Component, Provider, Type, ViewChild, inject } from '@angular/core';
 import { ComponentFixture, inject as testingInject, TestBed } from '@angular/core/testing';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import {
   createKeyboardEvent,
   createMouseEvent,
@@ -28,7 +28,7 @@ describe('context-menu', () => {
 
   function createComponent<T>(component: Type<T>, providers: Provider[] = []): ComponentFixture<T> {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), ...providers]
+      providers: [provideNzNoAnimation(), ...providers]
     });
 
     testingInject([OverlayContainer], (oc: OverlayContainer) => {

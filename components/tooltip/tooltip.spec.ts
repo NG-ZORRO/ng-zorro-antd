@@ -6,7 +6,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild, signal } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzElementPatchDirective } from 'ng-zorro-antd/core/element-patch';
@@ -335,7 +334,7 @@ describe('origin', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
     const fixture = TestBed.createComponent(NzTestTooltipTargetComponent);
     component = fixture.componentInstance;
@@ -352,7 +351,7 @@ describe('arrow', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
     const fixture = TestBed.createComponent(NzTestTooltipArrowComponent);
     component = fixture.componentInstance;

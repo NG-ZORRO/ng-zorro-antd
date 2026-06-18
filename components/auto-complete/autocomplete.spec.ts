@@ -23,9 +23,9 @@ import {
 import { ComponentFixture, inject as testingInject, TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import {
   createKeyboardEvent,
   dispatchFakeEvent,
@@ -53,7 +53,7 @@ describe('auto-complete', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideNoopAnimations(),
+        provideNzNoAnimation(),
         { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
         {
           provide: NgZone,
@@ -585,7 +585,7 @@ describe('auto-complete', () => {
       let options = getOptions();
       options[0].click();
 
-      // `tick()` will handle over after next render hooks.
+      // Run application change detection after next render hooks.
       TestBed.inject(ApplicationRef).tick();
 
       const componentOptions = fixture.componentInstance.optionComponents.toArray();
@@ -609,7 +609,7 @@ describe('auto-complete', () => {
       let options = getOptions();
       options[0].click();
 
-      // `tick()` will handle over after next render hooks.
+      // Run application change detection after next render hooks.
       TestBed.inject(ApplicationRef).tick();
 
       const componentOptions = fixture.componentInstance.optionComponents.toArray();

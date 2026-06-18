@@ -8,7 +8,6 @@ import { Component, DebugElement, signal, WritableSignal } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzColorPickerComponent, NzColorPickerModule } from 'ng-zorro-antd/color-picker';
@@ -348,7 +347,7 @@ describe('nz-color-picker form', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
     fixture = TestBed.createComponent(NzTestColorPickerFormComponent);
     fixture.detectChanges();
@@ -391,7 +390,7 @@ describe('nz-color-picker with presets', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
     fixture = TestBed.createComponent(NzTestColorPickerPresetsComponent);
     fixture.detectChanges();
@@ -541,7 +540,7 @@ describe('nz-color-picker form size', () => {
 
   it('should apply size from NZ_FORM_SIZE signal', () => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), { provide: NZ_FORM_SIZE, useValue: formSizeSignal }]
+      providers: [provideNzNoAnimation(), { provide: NZ_FORM_SIZE, useValue: formSizeSignal }]
     });
     fixture = TestBed.createComponent(NzTestColorPickerFormSizeComponent);
     colorPickerElement = fixture.debugElement.query(By.directive(NzColorPickerComponent)).nativeElement;
@@ -556,7 +555,7 @@ describe('nz-color-picker form size', () => {
 
   it('should apply small size from NZ_FORM_SIZE signal', () => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), { provide: NZ_FORM_SIZE, useValue: formSizeSignal }]
+      providers: [provideNzNoAnimation(), { provide: NZ_FORM_SIZE, useValue: formSizeSignal }]
     });
     fixture = TestBed.createComponent(NzTestColorPickerFormSizeComponent);
     colorPickerElement = fixture.debugElement.query(By.directive(NzColorPickerComponent)).nativeElement;
@@ -572,7 +571,7 @@ describe('nz-color-picker form size', () => {
   it('should prioritize NZ_FORM_SIZE over nzSize input', () => {
     formSizeSignal.set('large');
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), { provide: NZ_FORM_SIZE, useValue: formSizeSignal }]
+      providers: [provideNzNoAnimation(), { provide: NZ_FORM_SIZE, useValue: formSizeSignal }]
     });
     fixture = TestBed.createComponent(NzTestColorPickerFormSizeComponent);
     colorPickerElement = fixture.debugElement.query(By.directive(NzColorPickerComponent)).nativeElement;
@@ -586,7 +585,7 @@ describe('nz-color-picker form size', () => {
 
   it('should use nzSize input when NZ_FORM_SIZE is not provided', () => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
     fixture = TestBed.createComponent(NzTestColorPickerFormSizeComponent);
     colorPickerElement = fixture.debugElement.query(By.directive(NzColorPickerComponent)).nativeElement;
@@ -600,7 +599,7 @@ describe('nz-color-picker form size', () => {
   it('should update size when NZ_FORM_SIZE signal changes', () => {
     formSizeSignal.set('small');
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), { provide: NZ_FORM_SIZE, useValue: formSizeSignal }]
+      providers: [provideNzNoAnimation(), { provide: NZ_FORM_SIZE, useValue: formSizeSignal }]
     });
     fixture = TestBed.createComponent(NzTestColorPickerFormSizeComponent);
     colorPickerElement = fixture.debugElement.query(By.directive(NzColorPickerComponent)).nativeElement;
@@ -620,7 +619,7 @@ describe('nz-color-picker form size', () => {
   it('should apply default size when NZ_FORM_SIZE is undefined', () => {
     formSizeSignal.set(undefined);
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), { provide: NZ_FORM_SIZE, useValue: formSizeSignal }]
+      providers: [provideNzNoAnimation(), { provide: NZ_FORM_SIZE, useValue: formSizeSignal }]
     });
     fixture = TestBed.createComponent(NzTestColorPickerFormSizeComponent);
     colorPickerElement = fixture.debugElement.query(By.directive(NzColorPickerComponent)).nativeElement;

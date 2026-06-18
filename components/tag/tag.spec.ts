@@ -6,8 +6,8 @@
 import { Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 
 import { NzTagComponent } from './tag.component';
@@ -16,7 +16,7 @@ import { NzTagModule } from './tag.module';
 describe('tag', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
   });
 

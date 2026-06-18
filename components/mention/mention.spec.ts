@@ -10,7 +10,6 @@ import { ApplicationRef, Component, DebugElement, NgZone, signal, ViewChild, typ
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
@@ -43,7 +42,7 @@ describe('mention', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideNoopAnimations(),
+        provideNzNoAnimation(),
         provideNzIconsTesting(),
         provideMockDirectionality(),
         { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },

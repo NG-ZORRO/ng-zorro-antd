@@ -5,12 +5,12 @@
 
 import { Component, ElementRef, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 
 import { NzWaveDirective } from './nz-wave.directive';
 import { NzWaveModule } from './nz-wave.module';
+import { provideNzNoAnimation } from '../animation';
 
 const WAVE_ATTRIBUTE_NAME = 'ant-click-animating-without-extra-node';
 const WAVE_ATTRIBUTE_NAME_EXTRA_NODE = 'ant-click-animating';
@@ -181,7 +181,7 @@ describe('nz-wave noAnimation', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
   });
 
