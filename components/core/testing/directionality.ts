@@ -81,17 +81,17 @@ export function testDirectionality<T>(
       await fixture.whenStable();
       const debugElement = fixture.debugElement.query(predicate);
       expect(debugElement).toBeTruthy();
-      expect(debugElement.nativeElement.classList.contains(rtlClass)).toBeFalse();
+      expect(debugElement.nativeElement.classList.contains(rtlClass)).toBe(false);
 
       dir.valueSignal.set('rtl');
       detectChanges();
       await fixture.whenStable();
-      expect(debugElement.nativeElement.classList.contains(rtlClass)).toBeTrue();
+      expect(debugElement.nativeElement.classList.contains(rtlClass)).toBe(true);
 
       dir.valueSignal.set('ltr');
       detectChanges();
       await fixture.whenStable();
-      expect(debugElement.nativeElement.classList.contains(rtlClass)).toBeFalse();
+      expect(debugElement.nativeElement.classList.contains(rtlClass)).toBe(false);
     });
   });
 }

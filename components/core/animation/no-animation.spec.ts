@@ -38,7 +38,7 @@ describe('NzNoAnimationDirective', () => {
 
     it('should not add animation disabled class when nzNoAnimation is false', () => {
       const element = fixture.nativeElement.querySelector('[data-testid="test-element"]');
-      expect(element.classList.contains(NZ_NO_ANIMATION_CLASS)).toBeFalse();
+      expect(element.classList.contains(NZ_NO_ANIMATION_CLASS)).toBe(false);
     });
 
     it('should add animation disabled class when nzNoAnimation is true', async () => {
@@ -46,7 +46,7 @@ describe('NzNoAnimationDirective', () => {
       fixture.detectChanges();
       await fixture.whenStable();
       const element = fixture.nativeElement.querySelector('[data-testid="test-element"]');
-      expect(element.classList.contains(NZ_NO_ANIMATION_CLASS)).toBeTrue();
+      expect(element.classList.contains(NZ_NO_ANIMATION_CLASS)).toBe(true);
     });
   });
 
@@ -62,7 +62,7 @@ describe('NzNoAnimationDirective', () => {
 
     it('should add animation disabled class even when nzNoAnimation is false', () => {
       const element = fixture.nativeElement.querySelector('[data-testid="test-element"]');
-      expect(element.classList.contains(NZ_NO_ANIMATION_CLASS)).toBeTrue();
+      expect(element.classList.contains(NZ_NO_ANIMATION_CLASS)).toBe(true);
     });
 
     it('should keep animation disabled class when nzNoAnimation is true', async () => {
@@ -70,7 +70,7 @@ describe('NzNoAnimationDirective', () => {
       fixture.detectChanges();
       await fixture.whenStable();
       const element = fixture.nativeElement.querySelector('[data-testid="test-element"]');
-      expect(element.classList.contains(NZ_NO_ANIMATION_CLASS)).toBeTrue();
+      expect(element.classList.contains(NZ_NO_ANIMATION_CLASS)).toBe(true);
     });
   });
 });
@@ -92,7 +92,7 @@ describe('provideNzNoAnimation', () => {
     fixture.detectChanges();
 
     const element = fixture.nativeElement.querySelector('[data-testid="test-element"]');
-    expect(element.classList.contains(NZ_NO_ANIMATION_CLASS)).toBeTrue();
+    expect(element.classList.contains(NZ_NO_ANIMATION_CLASS)).toBe(true);
   });
 });
 

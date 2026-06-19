@@ -217,9 +217,9 @@ describe('input', () => {
       fixture.componentInstance.feedback.set(false);
       fixture.detectChanges();
       expect(inputElement.nativeElement.classList).toContain('ant-input-status-validating');
-      expect(
-        inputElement.nativeElement.nextSibling?.classList?.contains('ant-form-item-feedback-icon') ?? false
-      ).toBeFalse();
+      expect(inputElement.nativeElement.nextSibling?.classList?.contains('ant-form-item-feedback-icon') ?? false).toBe(
+        false
+      );
     });
   });
 

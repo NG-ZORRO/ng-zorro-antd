@@ -1189,7 +1189,7 @@ describe('modal', () => {
     // should call the callback
     buttons[3].click();
     await fixture.whenStable();
-    expect(errorThrown).toBeTrue();
+    expect(errorThrown).toBe(true);
   });
 
   describe('confirm', () => {

@@ -78,7 +78,7 @@ describe('transfer', () => {
     it('nzOneWay', () => {
       instance.nzOneWay.set(true);
       fixture.detectChanges();
-      expect(!pageObject.rightList.querySelector('.ant-transfer-list-header .ant-transfer-list-checkbox')).toBeTrue();
+      expect(!pageObject.rightList.querySelector('.ant-transfer-list-header .ant-transfer-list-checkbox')).toBe(true);
       expect(debugElement.queryAll(By.css('.ant-transfer-operation .ant-btn')).length).toBe(1);
       expect(
         debugElement.query(By.css('.ant-transfer-operation .ant-btn .anticon')).nativeElement.getAttribute('nztype')
@@ -215,7 +215,7 @@ describe('transfer', () => {
       pageObject.checkItem('right', 0);
       expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(1);
       window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Shift' }));
-      expect(instance.comp.isShiftPressed).toBeTrue();
+      expect(instance.comp.isShiftPressed).toBe(true);
       fixture.detectChanges();
       const multiSelectEndIndex = 9;
       pageObject.checkItem('right', multiSelectEndIndex);
@@ -223,7 +223,7 @@ describe('transfer', () => {
         COUNT - LEFT_COUNT - DISABLED - multiSelectEndIndex + 1
       );
       window.dispatchEvent(new KeyboardEvent('keyup', { key: 'Shift' }));
-      expect(instance.comp.isShiftPressed).toBeFalse();
+      expect(instance.comp.isShiftPressed).toBe(false);
     });
 
     describe('#notFoundContent', () => {
@@ -383,8 +383,8 @@ describe('transfer', () => {
       pageObject.rightBtn.click();
       fixture.detectChanges();
 
-      expect(selectAll).not.toHaveClass('ant-checkbox-checked');
-      expect(selectAll).not.toHaveClass('ant-checkbox-indeterminate');
+      expect(selectAll.classList.contains('ant-checkbox-checked')).toBe(false);
+      expect(selectAll.classList.contains('ant-checkbox-indeterminate')).toBe(false);
     });
   });
 

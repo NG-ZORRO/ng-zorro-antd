@@ -1271,7 +1271,7 @@ describe('select', () => {
       await flushChanges();
       expect(component.value().length).toBe(1);
       expect(component.value()[0]).toBe('test_01');
-      expect(listOfContainerItem[1]).toHaveClass('ant-select-item-option-disabled');
+      expect(listOfContainerItem[1].classList.contains('ant-select-item-option-disabled')).toBe(true);
     });
 
     it('should isMaxMultipleCountSet work correct', () => {
@@ -1319,12 +1319,12 @@ describe('select', () => {
       selectComponent.writeValue([options[0]]);
       await flushChanges();
       expect(selectComponent.isMaxMultipleCountReached).toBeTruthy();
-      expect(listOfContainerItem[1]).toHaveClass('ant-select-item-option-disabled');
+      expect(listOfContainerItem[1].classList.contains('ant-select-item-option-disabled')).toBe(true);
       selectComponent.writeValue([]);
       await flushChanges();
       expect(selectComponent.isMaxMultipleCountReached).toBeFalsy();
-      expect(listOfContainerItem[0]).not.toHaveClass('ant-select-item-option-disabled');
-      expect(listOfContainerItem[1]).not.toHaveClass('ant-select-item-option-disabled');
+      expect(listOfContainerItem[0].classList.contains('ant-select-item-option-disabled')).toBe(false);
+      expect(listOfContainerItem[1].classList.contains('ant-select-item-option-disabled')).toBe(false);
     });
 
     it('should show nzShowArrow component when nzMaxMultipleCount is not Infinity', () => {

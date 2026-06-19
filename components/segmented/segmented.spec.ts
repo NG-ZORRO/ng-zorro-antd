@@ -539,7 +539,7 @@ describe('segmented animation', () => {
     await fixture.whenStable();
     const segmentedComponentInstance = fixture.debugElement.query(By.directive(NzSegmentedComponent)).componentInstance;
 
-    expect(segmentedComponentInstance.showThumb()).toBeFalse();
+    expect(segmentedComponentInstance.showThumb()).toBe(false);
     expect(getThumbElement()).toBeFalsy();
   });
 
@@ -550,7 +550,7 @@ describe('segmented animation', () => {
 
     dispatchMouseEvent(theSecondElement, 'click');
     await fixture.whenStable();
-    expect(segmentedComponentInstance.showThumb()).toBeTrue();
+    expect(segmentedComponentInstance.showThumb()).toBe(true);
 
     const thumbElement = getThumbElement();
     expect(thumbElement.style.transform).toContain('translateX');
@@ -558,7 +558,7 @@ describe('segmented animation', () => {
 
     dispatchEvent(thumbElement, new TransitionEvent('transitionend', { propertyName: 'transform' }));
     await fixture.whenStable();
-    expect(segmentedComponentInstance.showThumb()).toBeFalse();
+    expect(segmentedComponentInstance.showThumb()).toBe(false);
     expect(theSecondElement.classList).toContain('ant-segmented-item-selected');
   });
 
@@ -571,7 +571,7 @@ describe('segmented animation', () => {
 
     dispatchMouseEvent(theSecondElement, 'click');
     await fixture.whenStable();
-    expect(segmentedComponentInstance.showThumb()).toBeTrue();
+    expect(segmentedComponentInstance.showThumb()).toBe(true);
 
     const thumbElement = getThumbElement();
     expect(thumbElement.style.transform).toContain('translateY');
@@ -579,7 +579,7 @@ describe('segmented animation', () => {
 
     dispatchEvent(thumbElement, new TransitionEvent('transitionend', { propertyName: 'transform' }));
     await fixture.whenStable();
-    expect(segmentedComponentInstance.showThumb()).toBeFalse();
+    expect(segmentedComponentInstance.showThumb()).toBe(false);
     expect(theSecondElement.classList).toContain('ant-segmented-item-selected');
   });
 });

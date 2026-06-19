@@ -466,7 +466,7 @@ describe('tree-select', () => {
       await fixture.whenStable();
       zone.simulateZoneExit();
       fixture.detectChanges();
-      expect(input.style.width === '').toBeTrue();
+      expect(input.style.width === '').toBe(true);
     });
 
     it('should set null value work', async () => {

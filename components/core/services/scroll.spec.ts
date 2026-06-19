@@ -139,7 +139,7 @@ describe('NzScrollService', () => {
 
       await nextAnimationFrame();
       expect(ngZone.run).toHaveBeenCalled();
-      expect(callbackCalled).toBeTrue();
+      expect(callbackCalled).toBe(true);
     });
   });
 });

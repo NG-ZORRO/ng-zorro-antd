@@ -137,7 +137,7 @@ describe('nz-splitter', () => {
     it('should correct render', () => {
       fixture.detectChanges();
       expect(container.query(By.css('.ant-splitter'))).toBeTruthy();
-      expect(container.queryAll(By.css('.ant-splitter-panel'))).toHaveSize(2);
+      expect(container.queryAll(By.css('.ant-splitter-panel'))).toHaveLength(2);
       expect(container.query(By.css('.ant-splitter-bar'))).toBeTruthy();
     });
 
@@ -163,13 +163,13 @@ describe('nz-splitter', () => {
     it('should resizable work', async () => {
       component.panels.set([{ size: 20 }, { resizable: false }, {}]);
       await fixture.whenStable();
-      expect(container.queryAll(By.css('.ant-splitter-bar-dragger'))).toHaveSize(2);
-      expect(container.queryAll(By.css('.ant-splitter-bar-dragger-disabled'))).toHaveSize(2);
+      expect(container.queryAll(By.css('.ant-splitter-bar-dragger'))).toHaveLength(2);
+      expect(container.queryAll(By.css('.ant-splitter-bar-dragger-disabled'))).toHaveLength(2);
 
       component.panels.set([{ size: 20 }, {}, { resizable: false }]);
       await fixture.whenStable();
-      expect(container.queryAll(By.css('.ant-splitter-bar-dragger'))).toHaveSize(2);
-      expect(container.queryAll(By.css('.ant-splitter-bar-dragger-disabled'))).toHaveSize(1);
+      expect(container.queryAll(By.css('.ant-splitter-bar-dragger'))).toHaveLength(2);
+      expect(container.queryAll(By.css('.ant-splitter-bar-dragger-disabled'))).toHaveLength(1);
     });
 
     describe('drag', () => {
@@ -314,7 +314,7 @@ describe('nz-splitter', () => {
         component.panels.set([{ size: 20, collapsible: true }, { collapsible: true }]);
         await fixture.whenStable();
 
-        expect(container.queryAll(By.css('.ant-splitter-bar-collapse-icon'))).toHaveSize(2);
+        expect(container.queryAll(By.css('.ant-splitter-bar-collapse-icon'))).toHaveLength(2);
         expect(container.query(By.css('.ant-splitter-bar-collapse-start'))).toBeTruthy();
         expect(container.query(By.css('.ant-splitter-bar-collapse-end'))).toBeTruthy();
 
@@ -329,8 +329,8 @@ describe('nz-splitter', () => {
           {}
         ]);
         await fixture.whenStable();
-        expect(container.queryAll(By.css('.ant-splitter-bar-collapse-start'))).toHaveSize(2);
-        expect(container.queryAll(By.css('.ant-splitter-bar-collapse-end'))).toHaveSize(1);
+        expect(container.queryAll(By.css('.ant-splitter-bar-collapse-start'))).toHaveLength(2);
+        expect(container.queryAll(By.css('.ant-splitter-bar-collapse-end'))).toHaveLength(1);
       });
 
       it('collapsible - true', async () => {

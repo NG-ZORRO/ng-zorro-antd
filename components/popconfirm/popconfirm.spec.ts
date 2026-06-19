@@ -105,7 +105,7 @@ describe('popconfirm', () => {
     dispatchMouseEvent(triggerElement, 'click');
     fixture.detectChanges();
 
-    expect(getTooltipTrigger(1).disabled).toBeTrue();
+    expect(getTooltipTrigger(1).disabled).toBe(true);
   });
 
   it('should support nzOkButtonProps', () => {
@@ -114,17 +114,17 @@ describe('popconfirm', () => {
     dispatchMouseEvent(triggerElement, 'click');
     component.nzOkButtonProps.update(props => ({ ...props, nzDisabled: true }));
     fixture.detectChanges();
-    expect(getTooltipTrigger(1).disabled).toBeTrue();
+    expect(getTooltipTrigger(1).disabled).toBe(true);
   });
 
   it('should support nzCancelButtonProps and disabled the cancel button', () => {
     fixture.detectChanges();
     const triggerElement = component.stringTemplate.nativeElement;
     dispatchMouseEvent(triggerElement, 'click');
-    expect(getTooltipTrigger(0).disabled).toBeFalse();
+    expect(getTooltipTrigger(0).disabled).toBe(false);
     component.nzCancelButtonProps.update(props => ({ ...props, nzDisabled: true }));
     fixture.detectChanges();
-    expect(getTooltipTrigger(0).disabled).toBeTrue();
+    expect(getTooltipTrigger(0).disabled).toBe(true);
   });
 
   it('should support nzCancelButtonProps and support danger on close button', () => {

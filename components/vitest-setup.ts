@@ -11,9 +11,7 @@ import 'zone.js/testing';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 
-import { expect, vi } from 'vitest';
-
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { vi } from 'vitest';
 
 const originalViewport = {
   innerHeight: window.innerHeight,
@@ -111,36 +109,6 @@ afterEach(() => {
   resetViewportSize();
   cleanupBody();
   console.warn = originalConsoleWarn;
-});
-
-expect.extend({
-  toBeFalse(received: NzSafeAny) {
-    return {
-      pass: received === false,
-      message: () => `expected ${String(received)} to be false`
-    };
-  },
-  toBeTrue(received: NzSafeAny) {
-    return {
-      pass: received === true,
-      message: () => `expected ${String(received)} to be true`
-    };
-  },
-  toHaveClass(received: Element, className: string) {
-    const pass = received.classList.contains(className);
-    return {
-      pass,
-      message: () => `expected element ${pass ? 'not ' : ''}to have class "${className}"`
-    };
-  },
-  toHaveSize(received: { length?: number; size?: number }, expected: number) {
-    const actual = typeof received.length === 'number' ? received.length : received.size;
-    const pass = actual === expected;
-    return {
-      pass,
-      message: () => `expected collection size ${actual} ${pass ? 'not ' : ''}to be ${expected}`
-    };
-  }
 });
 
 window.matchMedia = (query: string) => createMediaQueryList(query);

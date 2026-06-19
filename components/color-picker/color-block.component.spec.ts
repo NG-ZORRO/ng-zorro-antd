@@ -59,7 +59,7 @@ describe('color-block', () => {
   it('color-block click', () => {
     fixture.detectChanges();
     resultEl.nativeElement.querySelector('.ant-color-picker-color-block').click();
-    expect(component.isClick()).toBeTrue();
+    expect(component.isClick()).toBe(true);
   });
 });
 

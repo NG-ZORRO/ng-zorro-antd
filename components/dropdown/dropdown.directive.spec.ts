@@ -66,7 +66,7 @@ describe('dropdown', () => {
       // Change placement while open should update placement class
       fixture.componentInstance.placement.set('topRight');
       await stabilize(fixture);
-      expect(dropdown.classList.contains('ant-dropdown-placement-topRight')).toBeTrue();
+      expect(dropdown.classList.contains('ant-dropdown-placement-topRight')).toBe(true);
     });
 
     it('should map center placements to top/bottom classes', async () => {
@@ -77,12 +77,12 @@ describe('dropdown', () => {
       await stabilize(fixture, 1000);
       const dropdown = overlayContainerElement.querySelector('.ant-dropdown') as HTMLElement;
       expect(dropdown).not.toBeNull();
-      expect(dropdown.classList.contains('ant-dropdown-show-arrow')).toBeTrue();
+      expect(dropdown.classList.contains('ant-dropdown-show-arrow')).toBe(true);
       const isBottomFamily =
         dropdown.classList.contains('ant-dropdown-placement-bottom') ||
         dropdown.classList.contains('ant-dropdown-placement-bottomLeft') ||
         dropdown.classList.contains('ant-dropdown-placement-bottomRight');
-      expect(isBottomFamily).toBeTrue();
+      expect(isBottomFamily).toBe(true);
 
       // Switch to topCenter
       fixture.componentInstance.placement.set('topCenter');
@@ -91,7 +91,7 @@ describe('dropdown', () => {
         dropdown.classList.contains('ant-dropdown-placement-top') ||
         dropdown.classList.contains('ant-dropdown-placement-topLeft') ||
         dropdown.classList.contains('ant-dropdown-placement-topRight');
-      expect(isTopFamily).toBeTrue();
+      expect(isTopFamily).toBe(true);
     });
   });
 

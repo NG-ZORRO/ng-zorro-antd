@@ -49,7 +49,7 @@ describe('transition-patch', () => {
     expect(buttonElement.getAttribute('hidden')).toBeFalsy();
     component.hidden.set(undefined);
     fixture.detectChanges();
-    expect(buttonElement.hasAttribute('hidden')).toBeFalse();
+    expect(buttonElement.hasAttribute('hidden')).toBe(false);
   });
 });
 

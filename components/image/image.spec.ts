@@ -505,14 +505,14 @@ describe('image preview', () => {
       const right = previewElement!.querySelector('.ant-image-preview-switch-right')!;
       expect(left).toBeTruthy();
       expect(right).toBeTruthy();
-      expect(left.classList.contains('ant-image-preview-switch-left-disabled')).toBeTrue();
+      expect(left.classList.contains('ant-image-preview-switch-left-disabled')).toBe(true);
 
       dispatchFakeEvent(right, 'click');
       await fixture.whenStable();
 
       let previewImage = getPreviewImageElement();
       expect(previewImage.getAttribute('src')).toContain(QUICK_SRC);
-      expect(right.classList.contains('ant-image-preview-switch-right-disabled')).toBeTrue();
+      expect(right.classList.contains('ant-image-preview-switch-right-disabled')).toBe(true);
 
       dispatchFakeEvent(left, 'click');
       await fixture.whenStable();

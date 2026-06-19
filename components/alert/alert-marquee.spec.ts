@@ -59,7 +59,7 @@ describe('NzAlertMarqueeComponent', () => {
 
     it('should not set aria-hidden on the first track', () => {
       const tracks = marquee.nativeElement.querySelectorAll('.ant-alert-marquee-track');
-      expect(tracks[0].hasAttribute('aria-hidden')).toBeFalse();
+      expect(tracks[0].hasAttribute('aria-hidden')).toBe(false);
     });
   });
 

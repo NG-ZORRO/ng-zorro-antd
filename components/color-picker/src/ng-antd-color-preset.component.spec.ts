@@ -71,9 +71,9 @@ describe('ng-antd-color-preset', () => {
     const first = items[0] as HTMLElement;
     const second = items[1] as HTMLElement;
 
-    expect(first.classList.contains('ant-collapse-item-active')).toBeTrue();
+    expect(first.classList.contains('ant-collapse-item-active')).toBe(true);
 
-    expect(second.classList.contains('ant-collapse-item-active')).toBeFalse();
+    expect(second.classList.contains('ant-collapse-item-active')).toBe(false);
   });
 
   it('should toggle panel active state when header clicked', async () => {
@@ -99,7 +99,7 @@ describe('ng-antd-color-preset', () => {
     dispatchMouseEvent(header, 'click');
     fixture.detectChanges();
 
-    expect(second.classList.contains('ant-collapse-item-active')).toBeTrue();
+    expect(second.classList.contains('ant-collapse-item-active')).toBe(true);
   });
 
   it('should emit presetSelect with NzColor when a color is clicked', () => {
@@ -151,7 +151,7 @@ describe('ng-antd-color-preset', () => {
     const checked = host.querySelectorAll('.ant-color-picker-presets-color-checked');
     expect(checked.length).toBe(1);
     // The second block should be checked
-    expect(blocks[1].classList.contains('ant-color-picker-presets-color-checked')).toBeTrue();
+    expect(blocks[1].classList.contains('ant-color-picker-presets-color-checked')).toBe(true);
   });
 
   it('should add bright class for bright preset colors (e.g., white)', () => {
@@ -176,11 +176,11 @@ describe('ng-antd-color-preset', () => {
     expect(blocks.length).toBe(2);
 
     const first = blocks[0] as HTMLElement; // white
-    expect(first.classList.contains('ant-color-picker-presets-color-bright')).toBeTrue();
-    expect(first.classList.contains('ant-color-picker-presets-color-checked')).toBeTrue();
+    expect(first.classList.contains('ant-color-picker-presets-color-bright')).toBe(true);
+    expect(first.classList.contains('ant-color-picker-presets-color-checked')).toBe(true);
 
     const second = blocks[1] as HTMLElement; // black
-    expect(second.classList.contains('ant-color-picker-presets-color-bright')).toBeFalse();
+    expect(second.classList.contains('ant-color-picker-presets-color-bright')).toBe(false);
   });
 
   it('should render base presets color class on each color block', () => {
@@ -191,7 +191,7 @@ describe('ng-antd-color-preset', () => {
     const blocks = host.querySelectorAll('.ant-color-picker-color-block');
     expect(blocks.length).toBe(3);
     blocks.forEach(block => {
-      expect(block.classList.contains('ant-color-picker-presets-color')).toBeTrue();
+      expect(block.classList.contains('ant-color-picker-presets-color')).toBe(true);
     });
   });
 });

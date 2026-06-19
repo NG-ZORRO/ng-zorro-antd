@@ -1018,7 +1018,7 @@ describe('cascader', () => {
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       await updateNonSignalsInput(fixture);
       fixture.detectChanges();
-      expect(testComponent.cascader.menuOpen()).toBeFalse();
+      expect(testComponent.cascader.menuOpen()).toBe(false);
     });
 
     it('should navigate left when press BACKSPACE', async () => {
@@ -1051,7 +1051,7 @@ describe('cascader', () => {
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
-      expect(testComponent.cascader.menuOpen()).toBeFalse();
+      expect(testComponent.cascader.menuOpen()).toBe(false);
     });
 
     it('should select option when press ENTER', async () => {
