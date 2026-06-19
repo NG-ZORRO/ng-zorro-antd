@@ -358,11 +358,11 @@ describe('modal', () => {
     });
 
     describe('animation', () => {
-      xit('should emit when modal closing animation is complete', async () => {
+      it.skip('should emit when modal closing animation is complete', async () => {
         // todo: test with animation
       });
 
-      xit('should dispose the modal if view container is destroyed while animating', async () => {
+      it.skip('should dispose the modal if view container is destroyed while animating', async () => {
         // todo: test with animation
       });
     });
@@ -947,7 +947,9 @@ describe('modal', () => {
       await fixture.whenStable();
 
       const okPromise = modalRef.triggerOk().then(
-        () => fail('Expected triggerOk to reject.'),
+        () => {
+          throw new Error('Expected triggerOk to reject.');
+        },
         error => error
       );
       await fixture.whenStable();

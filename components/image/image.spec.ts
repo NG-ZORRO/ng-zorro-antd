@@ -124,7 +124,7 @@ describe('image placeholder', () => {
     debugElement = fixture.debugElement;
   });
 
-  xit('should placeholder src work', () => {
+  it.skip('should placeholder src work', () => {
     const image = debugElement.nativeElement.querySelector('img');
     const spy = vi.spyOn(image, 'src', 'set');
     context.src.set(SRC);

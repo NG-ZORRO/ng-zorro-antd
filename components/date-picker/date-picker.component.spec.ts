@@ -649,7 +649,7 @@ describe('NzDatePickerComponent', () => {
     });
 
     // TODO: why this works well locally but fails on CI?
-    xit('should support nzPlacement', () => {
+    it.skip('should support nzPlacement', () => {
       fixtureInstance.nzPlacement.set('bottomLeft');
       fixture.detectChanges();
       openPickerByClickTrigger();

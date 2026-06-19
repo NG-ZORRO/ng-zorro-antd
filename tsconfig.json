@@ -21,7 +21,7 @@
     "strict": true,
     "skipLibCheck": true,
     "types": [
-      "jasmine"
+      "vitest/globals"
     ]
   },
   "angularCompilerOptions": {

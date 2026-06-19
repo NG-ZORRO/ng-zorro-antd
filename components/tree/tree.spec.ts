@@ -461,7 +461,7 @@ describe('tree', () => {
         expect(shownNodes.length).toEqual(7);
       });
 
-      xit('should trigger drag over event', async () => {
+      it.skip('should trigger drag over event', async () => {
         //  ============ over with different position in next test ==============
         /**
          * nzTreeService#calcDropPosition

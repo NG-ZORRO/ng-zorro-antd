@@ -15,25 +15,6 @@ import { expect, vi } from 'vitest';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-type SpyFunction = ReturnType<typeof vi.fn> & {
-  and: {
-    callFake: (fn: (...args: NzSafeAny[]) => NzSafeAny) => SpyFunction;
-    callThrough: () => SpyFunction;
-    returnValue: (value: NzSafeAny) => SpyFunction;
-    returnValues: (...values: NzSafeAny[]) => SpyFunction;
-    throwError: (error: Error | string) => SpyFunction;
-    stub: () => SpyFunction;
-  };
-  calls: {
-    allArgs: () => NzSafeAny[][];
-    any: () => boolean;
-    argsFor: (index: number) => NzSafeAny[];
-    count: () => number;
-    mostRecent: () => { args: NzSafeAny[]; returnValue: NzSafeAny };
-    reset: () => void;
-  };
-};
-
 const originalViewport = {
   innerHeight: window.innerHeight,
   innerWidth: window.innerWidth,
@@ -111,66 +92,6 @@ function createMediaQueryList(query: string): MediaQueryList {
   };
 }
 
-function patchSpy<T extends ReturnType<typeof vi.fn>>(
-  spy: T,
-  originalFn?: (...args: NzSafeAny[]) => NzSafeAny
-): T & SpyFunction {
-  const patched = spy as T & SpyFunction;
-
-  patched.and = {
-    callFake: fn => {
-      patched.mockImplementation(fn);
-      return patched;
-    },
-    callThrough: () => {
-      if (originalFn) {
-        patched.mockImplementation(originalFn);
-      }
-      return patched;
-    },
-    returnValue: value => {
-      patched.mockImplementation(function jasmineReturnValueMock() {
-        return value;
-      });
-      return patched;
-    },
-    returnValues: (...values) => {
-      values.forEach(value =>
-        patched.mockImplementationOnce(function jasmineReturnValuesMock() {
-          return value;
-        })
-      );
-      return patched;
-    },
-    throwError: error => {
-      patched.mockImplementation(() => {
-        throw typeof error === 'string' ? new Error(error) : error;
-      });
-      return patched;
-    },
-    stub: () => {
-      patched.mockImplementation(() => undefined);
-      return patched;
-    }
-  };
-
-  patched.calls = {
-    allArgs: () => patched.mock.calls,
-    any: () => patched.mock.calls.length > 0,
-    argsFor: index => patched.mock.calls[index],
-    count: () => patched.mock.calls.length,
-    mostRecent: () => {
-      const calls = patched.mock.calls;
-      const results = patched.mock.results;
-      const index = calls.length - 1;
-      return { args: calls[index], returnValue: results[index]?.value };
-    },
-    reset: () => patched.mockClear()
-  };
-
-  return patched;
-}
-
 registerLocaleData(zh);
 
 const originalConsoleWarn = console.warn;
@@ -178,7 +99,7 @@ const originalConsoleWarn = console.warn;
 afterEach(() => {
   // Fake timers can keep destroyed components alive and fire in a later spec
   // file. Clear them before restoring mocks and browser globals.
-  if ((vi as NzSafeAny).isFakeTimers?.()) {
+  if (vi.isFakeTimers?.()) {
     vi.clearAllTimers();
     vi.useRealTimers();
   }
@@ -191,59 +112,6 @@ afterEach(() => {
   cleanupBody();
   console.warn = originalConsoleWarn;
 });
-
-function createSpy(name?: string, originalFn?: (...args: NzSafeAny[]) => NzSafeAny): SpyFunction {
-  return patchSpy(vi.fn(originalFn).mockName(name ?? 'unknown'));
-}
-
-function createSpyObj<T extends Record<string, NzSafeAny>>(
-  baseName: string,
-  methodNames: string[] | Record<string, NzSafeAny>,
-  propertyNames: string[] | Record<string, NzSafeAny> = []
-): T {
-  const spyObject: Record<string, NzSafeAny> = {};
-  const defineSpy = (name: string, value?: NzSafeAny, hasReturnValue = false): void => {
-    const spy = createSpy(`${baseName}.${name}`);
-    if (hasReturnValue) {
-      spy.and.returnValue(value);
-    }
-    spyObject[name] = spy;
-  };
-
-  if (Array.isArray(methodNames)) {
-    methodNames.forEach(name => defineSpy(name));
-  } else {
-    Object.entries(methodNames).forEach(([name, value]) => defineSpy(name, value, true));
-  }
-
-  if (Array.isArray(propertyNames)) {
-    propertyNames.forEach(name => Object.defineProperty(spyObject, name, { configurable: true, value: undefined }));
-  } else {
-    Object.entries(propertyNames).forEach(([name, value]) =>
-      Object.defineProperty(spyObject, name, { configurable: true, value })
-    );
-  }
-
-  return spyObject as T;
-}
-
-function spyOn<T extends object, K extends keyof T>(object: T, methodName: K): SpyFunction {
-  const originalFn = object[methodName] as NzSafeAny;
-  const patched = patchSpy(vi.spyOn(object, methodName as NzSafeAny), originalFn);
-  return patched.and.stub();
-}
-
-function spyOnProperty<T extends object, K extends keyof T>(
-  object: T,
-  propertyName: K,
-  accessType: 'get' | 'set' = 'get'
-): SpyFunction {
-  return patchSpy(
-    accessType === 'get'
-      ? vi.spyOn(object, propertyName as NzSafeAny, 'get')
-      : vi.spyOn(object, propertyName as NzSafeAny, 'set')
-  );
-}
 
 expect.extend({
   toBeFalse(received: NzSafeAny) {
@@ -278,28 +146,6 @@ expect.extend({
 window.matchMedia = (query: string) => createMediaQueryList(query);
 
 Object.assign(globalThis, {
-  xdescribe: (describe as NzSafeAny).skip,
-  xit: (it as NzSafeAny).skip,
-  jasmine: {
-    any: expect.any,
-    anything: expect.anything,
-    arrayContaining: expect.arrayContaining,
-    clock: () => ({
-      install: () => vi.useFakeTimers(),
-      mockDate: (date: Date) => vi.setSystemTime(date),
-      tick: (ms = 0) => vi.advanceTimersByTime(ms),
-      uninstall: () => {
-        vi.clearAllTimers();
-        vi.useRealTimers();
-      }
-    }),
-    createSpy,
-    createSpyObj,
-    objectContaining: expect.objectContaining,
-    stringMatching: expect.stringMatching
-  },
-  spyOn,
-  spyOnProperty,
   viewport: {
     reset: () => resetViewportSize(),
     set: (width: number, height?: number) => setViewportSize(width, height)

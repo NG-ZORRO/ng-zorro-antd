@@ -378,7 +378,7 @@ describe('slider', () => {
     });
 
     // TODO: Pass this testing by increase precision
-    xit('should round the value inside the label based on the provided step', () => {
+    it.skip('should round the value inside the label based on the provided step', () => {
       const testStep = (step: number, expected: string): void => {
         fixture.componentInstance.step.set(step);
         fixture.detectChanges();
@@ -690,7 +690,7 @@ describe('slider', () => {
 
       dispatchClickEventSequence(sliderNativeElement, 0.1);
 
-      // Potentially a bug of jasmine or karma. Event handler makes calling stack destroyed.
+      // Dispatching the second click in the same stack breaks the event handler state.
       // dispatchClickEventSequence(sliderNativeElement, 0.8);
       fixture.detectChanges();
 

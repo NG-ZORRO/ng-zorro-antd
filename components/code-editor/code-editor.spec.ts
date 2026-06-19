@@ -64,7 +64,7 @@ describe('code editor', () => {
     });
 
     // It seems that there is no way to waiting for monaco editor to load.
-    xit('should raise error when user try to set value in full control mode', waitForAsync(() => {
+    it.skip('should raise error when user try to set value in full control mode', waitForAsync(() => {
       const spy = vi.spyOn(console, 'warn');
       testComponent.code = '123';
       fixture.detectChanges();
