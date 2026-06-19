@@ -118,31 +118,33 @@
           "defaultConfiguration": "production"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "aot": true,
-            "inlineStyleLanguage": "less",
-            "fileReplacements": [
-              {
-                "replace": "components/core/environments/environment.ts",
-                "with": "components/core/environments/environment.test.ts"
-              }
+            "buildTarget": "ng-zorro-antd-doc:build:development",
+            "runner": "vitest",
+            "runnerConfig": "components/vitest.config.mjs",
+            "browsers": [
+              "ChromiumHeadless"
             ],
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "node_modules/monaco-editor/min/vs",
-                "output": "/assets/vs/"
-              }
+            "browserViewport": "1000x1000",
+            "coverage": true,
+            "coverageReporters": [
+              "html",
+              "text-summary",
+              "lcovonly",
+              "cobertura"
             ],
-            "main": "components/test.ts",
-            "karmaConfig": "components/karma.conf.js",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
+            "reporters": [
+              "default",
+              "components/vitest-angular-build-cleanup-reporter.mjs"
+            ],
+            "setupFiles": [
+              "components/vitest-setup.ts"
             ],
             "tsConfig": "components/tsconfig.spec.json",
-            "scripts": []
+            "include": [
+              "**/*.spec.ts"
+            ]
           }
         },
         "lint": {

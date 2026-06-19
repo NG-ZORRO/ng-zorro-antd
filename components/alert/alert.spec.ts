@@ -144,7 +144,7 @@ describe('alert', () => {
       const alert = fixture.debugElement.query(By.directive(NzAlertComponent));
       await fixture.whenStable();
       expect(alert.nativeElement.querySelector('.ant-alert-icon')).toBeDefined();
-      expect(alert.nativeElement.querySelector('.ant-alert-icon').firstElementChild).not.toContain('anticon');
+      expect(alert.nativeElement.querySelector('.ant-alert-icon').firstElementChild.classList).not.toContain('anticon');
     });
   });
 

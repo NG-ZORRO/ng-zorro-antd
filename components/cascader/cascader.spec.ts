@@ -1899,15 +1899,15 @@ describe('cascader', () => {
       expect(tags.length).toBe(3);
     });
 
-    it('should check state conduct up and down', () => {
+    it('should check state conduct up and down', async () => {
       cascader.componentInstance.setMenuOpen(true);
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
 
       // firstly, expand all columns (for convenience)
       getItemAtColumnAndRow(1, 2)!.click();
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
       getItemAtColumnAndRow(2, 1)!.click();
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
 
       const rootEl = getCheckboxAtColumnAndRow(1, 2)!;
       const parentEl = getCheckboxAtColumnAndRow(2, 1)!;
@@ -1915,7 +1915,7 @@ describe('cascader', () => {
 
       // check parent option
       parentEl.click();
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
       expect(parentEl.classList).toContain('ant-cascader-checkbox-checked');
       // Conduct Down: then all children should be checked
       expect(children.every(c => c.classList.contains('ant-cascader-checkbox-checked'))).toBe(true);
@@ -1924,7 +1924,7 @@ describe('cascader', () => {
 
       // uncheck a child option
       children[0]!.click();
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
       // Conduct Up: then parent should be half checked
       expect(parentEl.classList).toContain('ant-cascader-checkbox-indeterminate');
       // Conduct Up: and root should be half checked

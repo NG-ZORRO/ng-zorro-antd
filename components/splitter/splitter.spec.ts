@@ -52,8 +52,7 @@ interface PanelProps {
     </nz-splitter>
   `,
   styles: `
-    @import '../style/testing.less';
-    @import './style/entry.less';
+    @import './style/testing.less';
 
     :host nz-splitter {
       height: 100px;

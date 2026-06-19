@@ -70,7 +70,7 @@ describe('affix', () => {
       componentObject.emitScroll(window, edge - 1);
       await sleep(100);
 
-      expect(componentObject.wrap().offsetTop).not.toBe(defaultOffsetTop);
+      expect(componentObject.wrap().classList).not.toContain('ant-affix');
     });
 
     describe('when scrolled within top offset', () => {
@@ -78,7 +78,7 @@ describe('affix', () => {
         await setupInitialState();
         await emitScroll(window, defaultOffsetTop + startOffset - 1);
 
-        expect(componentObject.wrap().offsetTop !== defaultOffsetTop).toBe(true);
+        expect(componentObject.wrap().classList).not.toContain('ant-affix');
       });
     });
 
@@ -95,13 +95,13 @@ describe('affix', () => {
           componentObject.offsetTo(componentObject.elementRef(), { top: startOffset, left: 10, width, height });
           await emitScroll(window, defaultOffsetTop + startOffset + 1);
 
-          expect(componentObject.wrap().offsetLeft).toBe(10);
+          expect(toCssPixelNumber(componentObject.wrap().style.left)).toBe(10);
 
           await emitScroll(window, defaultOffsetTop + startOffset - 1);
           componentObject.offsetTo(componentObject.elementRef(), { top: startOffset, left: 100, width, height });
           await emitScroll(window, defaultOffsetTop + startOffset + 1);
 
-          expect(componentObject.wrap().offsetLeft).toBe(100);
+          expect(toCssPixelNumber(componentObject.wrap().style.left)).toBe(100);
         });
       });
 
@@ -171,7 +171,7 @@ describe('affix', () => {
         await setupInitialState({ offsetTop: offsetTop + 1 });
         await emitScroll(window, 2);
 
-        expect(componentObject.wrap().offsetTop).toBe(offsetTop);
+        expect(toCssPixelNumber(componentObject.wrap().style.top)).toBe(offsetTop);
       });
     });
 
@@ -180,7 +180,7 @@ describe('affix', () => {
       await setupInitialState({ offsetTop: offsetTop + 1 });
       await emitScroll(window, 2);
 
-      expect(componentObject.wrap().offsetTop).toBe(offsetTop);
+      expect(toCssPixelNumber(componentObject.wrap().style.top)).toBe(offsetTop);
     });
   });
 
@@ -231,26 +231,34 @@ describe('affix', () => {
   describe('[nzTarget]', () => {
     let target: HTMLElement;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       target = componentObject.target();
+      spyOnProperty(target, 'clientHeight', 'get').and.returnValue(1000);
       context.fakeTarget.set(target);
+      context.newOffset.set(defaultOffsetTop);
+      fixture.detectChanges();
+      await fixture.whenStable();
     });
 
     describe('when window is scrolled', () => {
       it('scrolls with the content', async () => {
         await setupInitialState();
-        await emitScroll(window, defaultOffsetTop + startOffset + 1);
+        componentObject.emitScroll(target, defaultOffsetTop - 1);
+        component.updatePosition(scrollEvent);
+        componentObject.emitScroll(window, defaultOffsetTop + startOffset + 1);
+        component.updatePosition(scrollEvent);
 
-        expect(componentObject.elementRef().offsetTop !== defaultOffsetTop).toBe(true);
+        expect(componentObject.wrap().classList).not.toContain('ant-affix');
       });
     });
 
     describe('when custom target is scrolled within top offset', () => {
       it('scrolls with the content', async () => {
         await setupInitialState();
-        await emitScroll(target, defaultOffsetTop + startOffset - 1);
+        componentObject.emitScroll(target, defaultOffsetTop - 1);
+        component.updatePosition(scrollEvent);
 
-        expect(componentObject.elementRef().offsetTop !== defaultOffsetTop).toBe(true);
+        expect(componentObject.wrap().classList).not.toContain('ant-affix');
       });
     });
 
@@ -259,7 +267,8 @@ describe('affix', () => {
         await setupInitialState();
         await emitScroll(target, defaultOffsetTop + startOffset + 1);
 
-        expect(componentObject.elementRef().offsetTop !== defaultOffsetTop).toBe(true);
+        expect(componentObject.wrap().classList).toContain('ant-affix');
+        expect(componentObject.wrap().style.position).toBe('fixed');
       });
     });
 
@@ -370,6 +379,7 @@ describe('affix', () => {
   }
 
   async function setupInitialState(options: { offsetTop?: number } = {}): Promise<void> {
+    fixture.detectChanges();
     componentObject.offsetYTo(componentObject.elementRef(), options.offsetTop || startOffset);
     await sleep(20);
     await fixture.whenStable();

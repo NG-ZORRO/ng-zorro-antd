@@ -35,7 +35,6 @@ import { NzMentionComponent } from './mention.component';
 import { NzMentionModule } from './mention.module';
 
 describe('mention', () => {
-  let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   const scrolledSubject = new Subject();
 
@@ -55,13 +54,11 @@ describe('mention', () => {
   });
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
-    overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
   }));
 
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
-    overlayContainer.ngOnDestroy();
   }));
 
   describe('toggling', () => {
@@ -427,12 +424,13 @@ describe('mention', () => {
         fixture.componentInstance.fetchSuggestions();
         fixture.detectChanges();
 
-        await stabilize(fixture);
+        await Promise.resolve();
         fixture.detectChanges();
         expect(overlayContainerElement.querySelector('.ant-mentions-dropdown .anticon-loading')).toBeTruthy();
         jasmine.clock().tick(500);
         fixture.detectChanges();
-        await stabilize(fixture);
+        await Promise.resolve();
+        fixture.detectChanges();
         expect(overlayContainerElement.querySelector('.ant-mentions-dropdown .anticon-loading')).toBeFalsy();
       });
     });

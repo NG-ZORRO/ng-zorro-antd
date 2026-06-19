@@ -10,7 +10,7 @@ import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
-import { testDirectionality } from 'ng-zorro-antd/core/testing';
+import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 import en_US from 'ng-zorro-antd/i18n/languages/en_US';
@@ -263,7 +263,7 @@ describe('transfer', () => {
         // All operation buttons muse be disabled
         expect(debugElement.queryAll(By.css('.ant-transfer-operation .ant-btn[disabled]')).length).toBe(2);
         // All search inputs must be disabled
-        expect(debugElement.queryAll(By.css('.ant-transfer-list-search.ant-input-disabled')).length).toBe(2);
+        expect(debugElement.queryAll(By.css('.ant-transfer-list-search input[disabled]')).length).toBe(2);
         // All items must be disabled
         expect(debugElement.queryAll(By.css('.ant-transfer-list-content-item-disabled')).length).toBe(COUNT);
         // All checkboxes (include 2 check-all) must be disabled
@@ -274,14 +274,14 @@ describe('transfer', () => {
         pageObject.expectLeft(LEFT_COUNT).search('left', '1');
         expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
         instance.nzDisabled.set(true);
-        fixture.detectChanges();
-        await fixture.whenStable();
+        // The search box clear icon visibility is debounced by the input-affix
+        // control, so wait for that small async update before clicking it.
+        await updateNonSignalsInput(fixture, 50);
         const clearBtn = pageObject.leftList.querySelector(
           '.ant-transfer-list-search .ant-input-clear-icon:not(.ant-input-clear-icon-hidden)'
         ) as HTMLElement | null;
         clearBtn?.click();
-        fixture.detectChanges();
-        await fixture.whenStable();
+        await updateNonSignalsInput(fixture, 50);
         expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
       });
 

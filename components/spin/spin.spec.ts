@@ -82,25 +82,28 @@ describe('spin', () => {
 
     it('should delay work', async () => {
       jasmine.clock().install();
-      testComponent.delay.set(500);
-      await stabilize(fixture);
+      try {
+        testComponent.delay.set(500);
+        await stabilizeWithFakeTimer(fixture);
 
-      // true -> false
-      // This should work immediately
-      testComponent.spinning.set(false);
-      await stabilize(fixture);
-      expect(spin.nativeElement.querySelector('.ant-spin')).toBeNull();
+        // true -> false
+        // This should work immediately
+        testComponent.spinning.set(false);
+        await stabilizeWithFakeTimer(fixture);
+        expect(spin.nativeElement.querySelector('.ant-spin')).toBeNull();
 
-      // false -> true
-      // This should be debounced
-      testComponent.spinning.set(true);
-      await stabilize(fixture);
-      expect(spin.nativeElement.querySelector('.ant-spin')).toBeNull();
+        // false -> true
+        // This should be debounced
+        testComponent.spinning.set(true);
+        await stabilizeWithFakeTimer(fixture);
+        expect(spin.nativeElement.querySelector('.ant-spin')).toBeNull();
 
-      jasmine.clock().tick(500);
-      await stabilize(fixture);
-      expect(spin.nativeElement.querySelector('.ant-spin')).toBeDefined();
-      jasmine.clock().uninstall();
+        jasmine.clock().tick(500);
+        await stabilizeWithFakeTimer(fixture);
+        expect(spin.nativeElement.querySelector('.ant-spin')).toBeDefined();
+      } finally {
+        jasmine.clock().uninstall();
+      }
     });
 
     it('should wrapper work', async () => {
@@ -127,6 +130,12 @@ describe('spin', () => {
 async function stabilize<T>(fixture: ComponentFixture<T>): Promise<void> {
   fixture.detectChanges();
   await updateNonSignalsInput(fixture);
+  fixture.detectChanges();
+}
+
+async function stabilizeWithFakeTimer<T>(fixture: ComponentFixture<T>): Promise<void> {
+  fixture.detectChanges();
+  await Promise.resolve();
   fixture.detectChanges();
 }
 

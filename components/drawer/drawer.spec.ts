@@ -822,10 +822,9 @@ async function stabilize<T>(fixture: ComponentFixture<T>, ms?: number): Promise<
 
 async function flushDrawerAnimation<T>(fixture: ComponentFixture<T>): Promise<void> {
   fixture.detectChanges();
-  await fixture.whenStable();
   jasmine.clock().tick(DRAWER_ANIMATE_DURATION);
   fixture.detectChanges();
-  await fixture.whenStable();
+  await Promise.resolve();
   fixture.detectChanges();
 }
 

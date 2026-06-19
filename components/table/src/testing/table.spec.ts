@@ -434,8 +434,7 @@ interface ScrollTestDataItem {
   `,
   encapsulation: ViewEncapsulation.None,
   styles: `
-    @import '../../../style/testing.less';
-    @import '../../../style/entry.less';
+    @import './testing.less';
   `
 })
 export class NzTestTableScrollComponent implements OnInit {

@@ -15,7 +15,7 @@ import { delay } from 'rxjs/operators';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
-import { dispatchKeyboardEvent, provideMockDirectionality } from 'ng-zorro-antd/core/testing';
+import { dispatchKeyboardEvent, provideMockDirectionality, sleep } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import en_US from 'ng-zorro-antd/i18n/languages/en_US';
@@ -651,16 +651,15 @@ describe('upload', () => {
           expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(count);
         });
 
-        it('should be return a Observable includes a delay operation', (done: () => void) => {
+        it('should be return a Observable includes a delay operation', async () => {
           const DELAY = 20;
           instance.onRemove.set(() => of(true).pipe(delay(DELAY)));
           fixture.detectChanges();
           expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(count);
           dl.query(By.css('.anticon-delete')).nativeElement.click();
-          setTimeout(() => {
-            expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(count - 1);
-            done();
-          }, DELAY + 1);
+          await sleep(DELAY + 1);
+          fixture.detectChanges();
+          expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(count - 1);
         });
 
         it('should be return a truth value', () => {
@@ -1199,10 +1198,10 @@ describe('upload', () => {
         });
 
         it('[onClick]', () => {
-          spyOn<NzSafeAny>(instance.comp, 'file');
-          expect(instance.comp.file).not.toHaveBeenCalled();
+          spyOn(instance.comp.file.nativeElement, 'click');
+          expect(instance.comp.file.nativeElement.click).not.toHaveBeenCalled();
           instance.comp.onClick();
-          expect(instance.comp.file).not.toHaveBeenCalled();
+          expect(instance.comp.file.nativeElement.click).not.toHaveBeenCalled();
         });
 
         it('[onKeyDown]', () => {
@@ -1393,14 +1392,14 @@ describe('upload', () => {
 
       it('should custom request', () => {
         comp.options.customRequest = () => of(true).subscribe(() => {});
-        spyOn<NzSafeAny>(comp.options, 'customRequest');
+        spyOn<NzSafeAny>(comp.options, 'customRequest').and.callThrough();
         comp.onChange(PNG_SMALL as NzSafeAny);
         expect(comp.options.customRequest).toHaveBeenCalled();
       });
 
       it('should be warn "Must return Subscription type in [nzCustomRequest] property"', () => {
         let warnMsg = '';
-        console.warn = jasmine.createSpy().and.callFake((...res: string[]) => (warnMsg = res.join(' ')));
+        spyOn(console, 'warn').and.callFake((...res: string[]) => (warnMsg = res.join(' ')));
         comp.options.customRequest = (() => {}) as NzSafeAny;
         comp.onChange(PNG_SMALL as NzSafeAny);
         expect(warnMsg).toContain(`Must return Subscription type in '[nzCustomRequest]' property`);

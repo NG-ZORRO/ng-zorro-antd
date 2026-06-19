@@ -282,8 +282,9 @@ describe('slider', () => {
       sliderNativeElement = sliderInstance.slider.nativeElement;
     });
 
-    it('should set the default value from the attribute', () => {
-      fixture.whenStable().then(() => expect(sliderInstance.value).toBe(26));
+    it('should set the default value from the attribute', async () => {
+      await fixture.whenStable();
+      expect(sliderInstance.value).toBe(26);
     });
 
     it('should set the correct value on click', () => {
@@ -490,19 +491,17 @@ describe('slider', () => {
       trackFillElement = sliderNativeElement.querySelector('.ant-slider-track') as HTMLElement;
     });
 
-    it('should set the value equal to the max value', () => {
-      fixture.whenStable().then(() => {
-        expect(sliderInstance.value).toBe(6);
-        expect(sliderInstance.nzMin).toBe(4);
-        expect(sliderInstance.nzMax).toBe(6);
-      });
+    it('should set the value equal to the max value', async () => {
+      await fixture.whenStable();
+      expect(sliderInstance.value).toBe(6);
+      expect(sliderInstance.nzMin).toBe(4);
+      expect(sliderInstance.nzMax).toBe(6);
     });
 
-    it('should set the fill to the max value', () => {
-      fixture.whenStable().then(() => {
-        fixture.detectChanges();
-        expect(trackFillElement.style.width).toBe('100%');
-      });
+    it('should set the fill to the max value', async () => {
+      await fixture.whenStable();
+      fixture.detectChanges();
+      expect(trackFillElement.style.width).toBe('100%');
     });
   });
 
@@ -518,19 +517,17 @@ describe('slider', () => {
       trackFillElement = sliderNativeElement.querySelector('.ant-slider-track') as HTMLElement;
     });
 
-    it('should set the value equal to the middle value', () => {
-      fixture.whenStable().then(() => {
-        expect(sliderInstance.value).toBe(0);
-        expect(sliderInstance.nzMin).toBe(-5);
-        expect(sliderInstance.nzMax).toBe(5);
-      });
+    it('should set the value equal to the middle value', async () => {
+      await fixture.whenStable();
+      expect(sliderInstance.value).toBe(0);
+      expect(sliderInstance.nzMin).toBe(-5);
+      expect(sliderInstance.nzMax).toBe(5);
     });
 
-    it('should set the fill to the middle value', () => {
-      fixture.whenStable().then(() => {
-        fixture.detectChanges();
-        expect(trackFillElement.style.width).toBe('50%');
-      });
+    it('should set the fill to the middle value', async () => {
+      await fixture.whenStable();
+      fixture.detectChanges();
+      expect(trackFillElement.style.width).toBe('50%');
     });
   });
 

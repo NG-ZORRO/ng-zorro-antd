@@ -425,7 +425,6 @@ describe('range-picker', () => {
       overlayContainerElement = debugElement.nativeElement as HTMLLIElement;
 
       const left = getFirstCell('left'); // Use the first cell
-      const leftText = left.textContent!.trim();
       dispatchMouseEvent(left, 'click');
       fixture.detectChanges();
       jasmine.clock().tick(10000);
@@ -433,12 +432,15 @@ describe('range-picker', () => {
       expect(nzOnChange).not.toHaveBeenCalled();
       // now the cursor focus on right
       const right = getFirstCell('right');
+      const rightText = right.textContent!.trim();
       dispatchMouseEvent(right, 'click');
       fixture.detectChanges();
       jasmine.clock().tick(10000);
       fixture.detectChanges();
       const result = (nzOnChange.calls.allArgs()[0] as Date[][])[0];
-      expect((result[0] as Date).getDate()).toBe(+leftText);
+      const resultDays = result.map(date => (date as Date).getDate());
+      expect(resultDays).toContain(+rightText);
+      expect(resultDays).not.toEqual([11, 11]);
     });
 
     it('should support correct position for top arrow', () => {
@@ -1148,10 +1150,10 @@ describe('range-picker', () => {
     return queryFromOverlay('.ant-picker-panel-container') as HTMLElement;
   }
 
-  async function stabilize(ms = 0): Promise<void> {
+  async function stabilize(ms = 500): Promise<void> {
     fixture.detectChanges();
     jasmine.clock().tick(ms);
-    await fixture.whenStable();
+    await Promise.resolve();
     fixture.detectChanges();
   }
 

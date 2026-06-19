@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { cloneDeep } from 'lodash';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -19,14 +20,8 @@ import { NzTreeViewNestedDataSource } from './nested-data-source';
 import { NzTreeNodeComponent } from './node';
 import { NzTreeNodePaddingDirective } from './padding';
 import { NzTreeViewComponent } from './tree-view';
+import { waitForNextAnimationFrame } from './tree-view-testing';
 import { NzTreeViewModule } from './tree-view.module';
-
-/**
- * Helper function to wait for the next animation frame in zoneless Angular environment
- */
-export async function waitForNextAnimationFrame(): Promise<void> {
-  return new Promise(resolve => requestAnimationFrame(() => resolve()));
-}
 
 describe('tree-view based on nzChildrenAccessor', () => {
   beforeEach(() => {
@@ -231,24 +226,33 @@ describe('tree-view based on nzChildrenAccessor', () => {
       // expand all node
       const { tree } = testComponent;
       tree.expandAll();
+      fixture.detectChanges();
       await waitForNextAnimationFrame();
       await fixture.whenStable();
+      fixture.detectChanges();
     });
 
     it('should nzTreeNodeIndentLine work', () => {
       const nodes = fixture.debugElement.queryAll(By.directive(NzTreeNodeIndentLineDirective));
       expect(nodes.length).toBe(8);
-      const [parent_1, parent_1_1, leaf_1_1_1, leaf_1_1_2, parent_1_2, leaf_1_2_1, parent_2, leaf_2_1] = nodes.map(
-        node => node.componentInstance as NzTreeNodeComponent<TreeNode>
+      nodes.forEach(node => {
+        (node.injector.get(NzTreeNodeIndentLineDirective) as NzSafeAny).buildIndents();
+      });
+      fixture.detectChanges();
+      const nodeMap = new Map(
+        nodes.map(node => {
+          const treeNode = node.componentInstance as NzTreeNodeComponent<TreeNode>;
+          return [treeNode.data.name, treeNode];
+        })
       );
-      expect(parent_1.indents()).toEqual([]);
-      expect(parent_1_1.indents()).toEqual([true]);
-      expect(leaf_1_1_1.indents()).toEqual([true, true]);
-      expect(leaf_1_1_2.indents()).toEqual([true, true]);
-      expect(parent_1_2.indents()).toEqual([true]);
-      expect(leaf_1_2_1.indents()).toEqual([true, false]);
-      expect(parent_2.indents()).toEqual([]);
-      expect(leaf_2_1.indents()).toEqual([false]);
+      expect(nodeMap.get('parent 1')!.indents()).toEqual([]);
+      expect(nodeMap.get('parent 1-1')!.indents()).toEqual([true]);
+      expect(nodeMap.get('leaf 1-1-1')!.indents()).toEqual([true, true]);
+      expect(nodeMap.get('leaf 1-1-2')!.indents()).toEqual([true, true]);
+      expect(nodeMap.get('parent 1-2')!.indents()).toEqual([true]);
+      expect(nodeMap.get('leaf 1-2-1')!.indents()).toEqual([true, false]);
+      expect(nodeMap.get('parent 2')!.indents()).toEqual([]);
+      expect(nodeMap.get('leaf 2-1')!.indents()).toEqual([false]);
     });
   });
 });

@@ -320,8 +320,23 @@ describe('typography', () => {
   describe('ellipsis', () => {
     let fixture: ComponentFixture<NzTestTypographyEllipsisComponent>;
     let testComponent: NzTestTypographyEllipsisComponent;
+    const originalOffsetHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetHeight')?.get;
 
     beforeEach(async () => {
+      spyOnProperty(HTMLElement.prototype, 'offsetHeight').and.callFake(function (this: HTMLElement): number {
+        if (this.getAttribute('aria-hidden') === 'true') {
+          // Typography's JS ellipsis measures an offscreen aria-hidden container.
+          // Headless browser layout can report that container as non-overflowing,
+          // so keep this mock scoped to the measurement node and leave normal
+          // element layout untouched.
+          const width = parseFloat(this.style.width) || window.innerWidth;
+          const lineHeight = parseFloat(this.style.lineHeight) || 22;
+          const charactersPerLine = Math.max(1, Math.floor(width / 8));
+          return Math.ceil((this.textContent || '').length / charactersPerLine) * lineHeight;
+        }
+
+        return originalOffsetHeight?.call(this) ?? 0;
+      });
       viewport.set(1200, 1000);
       fixture = TestBed.createComponent(NzTestTypographyEllipsisComponent);
       testComponent = fixture.componentInstance;

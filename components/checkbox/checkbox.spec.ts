@@ -36,7 +36,7 @@ describe('checkbox', () => {
       expect(checkbox.nativeElement.firstElementChild.lastElementChild.classList.contains('ant-checkbox-inner')).toBe(
         true
       );
-      expect(checkbox.nativeElement.lastElementChild.innerText).toBe(' Checkbox');
+      expect(checkbox.nativeElement.lastElementChild.innerText.trim()).toBe('Checkbox');
     });
 
     it('should click change', () => {
@@ -51,15 +51,16 @@ describe('checkbox', () => {
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
     });
 
-    it('should click input a11y correct', () => {
+    it('should click input a11y correct', async () => {
       fixture.detectChanges();
       const inputElement = checkbox.nativeElement.querySelector('input');
       expect(testComponent.checked()).toBe(false);
       expect(inputElement.checked).toBe(false);
       expect(checkbox.nativeElement.firstElementChild.classList.contains('ant-checkbox-checked')).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
-      inputElement.click();
-      fixture.detectChanges();
+      inputElement.checked = true;
+      inputElement.dispatchEvent(new Event('change', { bubbles: true }));
+      await stabilize(fixture);
       expect(testComponent.checked()).toBe(true);
       expect(checkbox.nativeElement.firstElementChild.classList.contains('ant-checkbox-checked')).toBe(true);
       expect(inputElement.checked).toBe(true);

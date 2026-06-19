@@ -944,13 +944,17 @@ describe('modal', () => {
       });
       await fixture.whenStable();
 
-      expectAsync(modalRef.triggerOk()).toBeRejectedWith('Promise.reject');
+      const okPromise = modalRef.triggerOk().then(
+        () => fail('Expected triggerOk to reject.'),
+        error => error
+      );
       await fixture.whenStable();
 
       expect(modalRef.getConfig().nzOkLoading).toBe(true);
       expect(overlayContainerElement.querySelector('nz-modal-container')).not.toBeNull();
 
       await sleep(200);
+      expect(await okPromise).toBe('Promise.reject');
       await fixture.whenStable();
 
       expect(modalRef.getConfig().nzOkLoading).toBe(false);

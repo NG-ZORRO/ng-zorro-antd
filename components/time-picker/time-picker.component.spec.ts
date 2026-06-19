@@ -49,10 +49,10 @@ describe('time-picker', () => {
   beforeEach(() => jasmine.clock().install());
   afterEach(() => jasmine.clock().uninstall());
 
-  async function stabilize<T>(fixture: ComponentFixture<T>, ms = 0): Promise<void> {
+  async function stabilize<T>(fixture: ComponentFixture<T>, ms = 500): Promise<void> {
     fixture.detectChanges();
     jasmine.clock().tick(ms);
-    await fixture.whenStable();
+    await Promise.resolve();
     fixture.detectChanges();
   }
 
@@ -263,41 +263,37 @@ describe('time-picker', () => {
       expect(getPickerContainer()).toBeNull();
     });
 
-    it('should set default opening time when clicking ok', () => {
+    it('should set default opening time when clicking ok', async () => {
       const onChange = spyOn(testComponent, 'onChange');
+      testComponent.date.set(null);
+      fixture.detectChanges();
       dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
-      fixture.detectChanges();
-      jasmine.clock().tick(500);
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(getPickerContainer()).not.toBeNull();
 
       const okButton = getPickerOkButton(fixture.debugElement);
       expect(okButton).not.toBeNull();
       dispatchFakeEvent(okButton, 'click');
-      fixture.detectChanges();
-      jasmine.clock().tick(500);
-      fixture.detectChanges();
+      await stabilize(fixture);
       const result = (onChange.calls.allArgs()[0] as Date[])[0];
       expect(result.getHours()).toEqual(0);
       expect(result.getMinutes()).toEqual(0);
       expect(result.getSeconds()).toEqual(0);
     });
 
-    it('should not set time when clicking ok without default opening time', () => {
+    it('should not set time when clicking ok without default opening time', async () => {
       const onChange = spyOn(testComponent, 'onChange');
+      testComponent.date.set(null);
       testComponent.defaultOpenValue.set(null!);
+      fixture.detectChanges();
       dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
-      fixture.detectChanges();
-      jasmine.clock().tick(500);
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(getPickerContainer()).not.toBeNull();
 
       const okButton = getPickerOkButton(fixture.debugElement);
       expect(okButton).not.toBeNull();
       dispatchFakeEvent(okButton, 'click');
-      fixture.detectChanges();
-      jasmine.clock().tick(500);
-      fixture.detectChanges();
+      await stabilize(fixture);
 
       const result = (onChange.calls.allArgs()[0] as Date[])[0];
       expect(result).toBeNull();

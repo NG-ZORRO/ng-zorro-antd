@@ -17,9 +17,9 @@ import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzTreeViewFlatDataSource } from './flat-data-source';
 import { NzTreeFlattener } from './flattener';
 import { NzTreeNodePaddingDirective } from './padding';
+import { finishInit, triggerScroll } from './tree-view-testing';
 import { NzTreeViewModule } from './tree-view.module';
 import { NzTreeVirtualScrollViewComponent } from './tree-virtual-scroll-view';
-import { finishInit, triggerScroll } from './tree-virtual-scroll-view-based-children-accessor.spec';
 
 describe('virtual scroll based nzLevelAccessor', () => {
   beforeEach(() => {

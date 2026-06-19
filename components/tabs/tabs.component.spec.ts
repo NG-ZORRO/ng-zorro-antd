@@ -58,7 +58,7 @@ describe('tabs', () => {
       expect(element.querySelectorAll('.ant-tabs-tabpane')[0]!.textContent).toContain(`Content of Tab Pane 1`);
     });
 
-    it('should change selected index on click', () => {
+    it('should change selected index on click', async () => {
       const component = fixture.debugElement.componentInstance;
       component.selectedIndex.set(0);
       checkSelectedIndex(0, fixture);
@@ -66,11 +66,13 @@ describe('tabs', () => {
       // select the second tab
       let tabLabel = fixture.debugElement.queryAll(By.css('.ant-tabs-tab'))[1];
       tabLabel.nativeElement.click();
+      await stabilize(fixture);
       checkSelectedIndex(1, fixture);
 
       // select the third tab
       tabLabel = fixture.debugElement.queryAll(By.css('.ant-tabs-tab'))[2];
       tabLabel.nativeElement.click();
+      await stabilize(fixture);
       checkSelectedIndex(2, fixture);
     });
 
@@ -755,6 +757,9 @@ describe('tabs', () => {
   }
 
   async function stabilize<T>(fixture: ComponentFixture<T>, ms = 0): Promise<void> {
+    // Tabs update selected state, ink bar, and overflow measurements through
+    // async tasks. Keep the local helper explicit so callers opt into any real
+    // wait that the specific assertion still needs.
     fixture.detectChanges();
     if (ms > 0) {
       await sleep(ms);
@@ -1135,9 +1140,7 @@ class DynamicTabsTestComponent {
   `,
   encapsulation: ViewEncapsulation.None,
   styles: `
-    @import '../style/testing.less';
-    @import '../style/entry.less';
-    @import './style/entry.less';
+    @import './style/testing.less';
   `
 })
 class ScrollableTabsTestComponent {

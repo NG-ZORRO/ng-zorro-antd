@@ -35,6 +35,7 @@ describe('anchor', () => {
     fixture.autoDetectChanges();
     page = new PageObject();
     srv = TestBed.inject(NzScrollService);
+    spyOn(srv, 'scrollTo');
     await fixture.whenStable();
     await sleep(100);
     spyOn(context, '_scroll');
@@ -45,7 +46,7 @@ describe('anchor', () => {
 
   describe('[default]', () => {
     it(`should scrolling to target via click a link`, () => {
-      spyOn(srv, 'scrollTo').and.callFake((_containerEl, _targetTopValue = 0, options = {}) => {
+      (srv.scrollTo as jasmine.Spy).and.callFake((_containerEl, _targetTopValue = 0, options = {}) => {
         if (options.callback) {
           options.callback();
         }
@@ -76,13 +77,13 @@ describe('anchor', () => {
     });
 
     it('should clean activated when leaving all anchor', async () => {
-      spyOn(context.comp, 'clearActive' as NzSafeAny);
       page.scrollTo();
       await sleep(throttleTime);
       fixture.detectChanges();
-      expect(context.comp['clearActive']).not.toHaveBeenCalled();
-      window.scrollTo(0, 0);
-      window.dispatchEvent(new Event('scroll'));
+      spyOn(context.comp, 'clearActive' as NzSafeAny);
+      context.nzOffsetTop.set(-100);
+      await updateNonSignalsInput(fixture);
+      context.comp.handleScroll();
       await sleep(throttleTime);
       fixture.detectChanges();
       expect(context.comp['clearActive']!).toHaveBeenCalled();
@@ -200,7 +201,7 @@ describe('anchor', () => {
 
     describe('(nzChange)', () => {
       it('should emit nzChange when click a link', async () => {
-        spyOn(srv, 'scrollTo').and.callFake((_containerEl, _targetTopValue = 0, options = {}) => {
+        (srv.scrollTo as jasmine.Spy).and.callFake((_containerEl, _targetTopValue = 0, options = {}) => {
           if (options.callback) {
             options.callback();
           }
@@ -211,9 +212,10 @@ describe('anchor', () => {
       });
 
       it('should emit nzChange when scrolling to the anchor', async () => {
-        spyOn(context, '_change');
         expect(context._change).not.toHaveBeenCalled();
+        (context.comp as NzSafeAny).activeLink = undefined;
         page.scrollTo();
+        context.comp.handleScroll();
         await sleep(throttleTime);
         const inkNode = page.getEl('.ant-anchor-ink-ball');
         expect(+inkNode.style.top!.replace('px', '')).toBeGreaterThan(0);
@@ -266,6 +268,7 @@ describe('anchor', () => {
       } as NzSafeAny);
       expect(context._scroll).not.toHaveBeenCalled();
       page.scrollTo();
+      context.comp.handleScroll();
       await sleep(throttleTime);
       expect(context._scroll).toHaveBeenCalled();
     });
@@ -352,8 +355,7 @@ describe('anchor', () => {
     </div>
   `,
   styles: `
-    @import '../style/testing.less';
-    @import './style/patch.less';
+    @import './style/testing.less';
   `
 })
 export class TestComponent {
@@ -429,7 +431,7 @@ describe('NzAnchor', () => {
       getLinkTitleElement: () => document.createElement('a')
     } as NzSafeAny;
 
-    const scrollToSpy = spyOn(scrollService, 'scrollTo').and.callThrough();
+    const scrollToSpy = spyOn(scrollService, 'scrollTo');
 
     component.handleScrollTo(mockLinkComponent);
 

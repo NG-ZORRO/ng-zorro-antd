@@ -10,7 +10,7 @@ import { By } from '@angular/platform-browser';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
+import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzDirectionVHType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -184,7 +184,7 @@ describe('list', () => {
 
       it('should display the asynchronous action', async () => {
         jasmine.clock().tick(500);
-        await updateNonSignalsInput(fixture);
+        await Promise.resolve();
         fixture.detectChanges();
         expect(dl.query(By.css('.ant-list-item-action'))).not.toBeNull();
       });

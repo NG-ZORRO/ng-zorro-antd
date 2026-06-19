@@ -187,7 +187,7 @@ describe('tooltip', () => {
 
       dispatchMouseEvent(triggerElement, 'mouseenter');
       waitingForTooltipToggling();
-      expect(getTitleTextContent()).not.toContain('title-string');
+      expect(getTitleTextContent()).toBeNull();
       expect(component.visibilityTogglingCount).toBe(0);
     });
 

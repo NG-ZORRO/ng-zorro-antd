@@ -8,6 +8,8 @@ import { Component, DebugElement, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { createKeyboardEvent, dispatchKeyboardEvent, testDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -378,24 +380,27 @@ describe('pagination', () => {
 
   it('should auto resize work', async () => {
     jasmine.clock().install();
-    const fixture = TestBed.createComponent(NzTestPaginationAutoResizeComponent);
-    const pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
+    try {
+      const fixture = TestBed.createComponent(NzTestPaginationAutoResizeComponent);
+      const pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
 
-    viewport.set(1200, 350);
-    fixture.detectChanges();
-    let paginationElement = pagination.nativeElement;
-    expect(paginationElement.classList).not.toContain('ant-pagination-mini');
+      viewport.set(1200, 350);
+      fixture.detectChanges();
+      let paginationElement = pagination.nativeElement;
+      expect(paginationElement.classList).not.toContain('ant-pagination-mini');
 
-    viewport.set(350, 350);
-    window.dispatchEvent(new Event('resize'));
-    fixture.detectChanges();
-    jasmine.clock().tick(1000);
-    await fixture.whenStable();
-    fixture.detectChanges();
-    paginationElement = pagination.nativeElement;
-    expect(paginationElement.classList).toContain('ant-pagination-mini');
-    viewport.reset();
-    jasmine.clock().uninstall();
+      viewport.set(350, 350);
+      window.dispatchEvent(new Event('resize'));
+      fixture.detectChanges();
+      await vi.advanceTimersByTimeAsync(1000);
+      await vi.runOnlyPendingTimersAsync();
+      fixture.detectChanges();
+      paginationElement = pagination.nativeElement;
+      expect(paginationElement.classList).toContain('ant-pagination-mini');
+    } finally {
+      viewport.reset();
+      jasmine.clock().uninstall();
+    }
   });
 
   it('#i18n', () => {

@@ -24,6 +24,7 @@ import { By } from '@angular/platform-browser';
 
 import isSameDay from 'date-fns/isSameDay';
 import { enUS } from 'date-fns/locale';
+import { vi } from 'vitest';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
@@ -1332,8 +1333,8 @@ describe('NzDatePickerComponent', () => {
 
   async function stabilize(ms = 0): Promise<void> {
     fixture.detectChanges();
-    jasmine.clock().tick(ms);
-    await fixture.whenStable();
+    await vi.advanceTimersByTimeAsync(ms);
+    await vi.runOnlyPendingTimersAsync();
     fixture.detectChanges();
   }
 
@@ -1503,8 +1504,8 @@ describe('signal forms (formField)', () => {
     fixture = TestBed.createComponent(NzTestDatePickerInSignalFormComponent);
     fixture.componentInstance.model.set({ date: new Date('2020-04-08') });
     fixture.detectChanges();
-    jasmine.clock().tick(10000);
-    await fixture.whenStable();
+    await vi.advanceTimersByTimeAsync(10000);
+    await vi.runOnlyPendingTimersAsync();
     fixture.detectChanges();
     expect(getPickerInput(fixture.debugElement).value!.trim()).toBe('2020-04-08');
   });
@@ -1512,12 +1513,12 @@ describe('signal forms (formField)', () => {
   it('should display a value assigned to the model after creation', async () => {
     fixture = TestBed.createComponent(NzTestDatePickerInSignalFormComponent);
     fixture.detectChanges();
-    jasmine.clock().tick(10000);
-    await fixture.whenStable();
+    await vi.advanceTimersByTimeAsync(10000);
+    await vi.runOnlyPendingTimersAsync();
     fixture.componentInstance.model.set({ date: new Date('2020-04-08') });
     fixture.detectChanges();
-    jasmine.clock().tick(10000);
-    await fixture.whenStable();
+    await vi.advanceTimersByTimeAsync(10000);
+    await vi.runOnlyPendingTimersAsync();
     fixture.detectChanges();
     expect(getPickerInput(fixture.debugElement).value!.trim()).toBe('2020-04-08');
   });

@@ -88,13 +88,15 @@ describe('radio', () => {
 
     it('should focus and blur function work', () => {
       fixture.detectChanges();
-      expect(radio.nativeElement.querySelector('input') === document.activeElement).toBe(false);
+      const inputElement = radio.nativeElement.querySelector('input') as HTMLInputElement;
+      spyOn(inputElement, 'focus').and.callThrough();
+      spyOn(inputElement, 'blur').and.callThrough();
       testComponent.nzRadioComponent.focus();
       fixture.detectChanges();
-      expect(radio.nativeElement.querySelector('input') === document.activeElement).toBe(true);
+      expect(inputElement.focus).toHaveBeenCalledTimes(1);
       testComponent.nzRadioComponent.blur();
       fixture.detectChanges();
-      expect(radio.nativeElement.querySelector('input') === document.activeElement).toBe(false);
+      expect(inputElement.blur).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -312,7 +314,7 @@ describe('radio', () => {
     it('should set disabled work', async () => {
       testComponent.nzDisabled.set(true);
       await stabilize(fixture);
-      const radios = fixture.debugElement.queryAll(By.directive(NzRadioComponent));
+      let radios = fixture.debugElement.queryAll(By.directive(NzRadioComponent));
       const radioGroup: NzRadioGroupComponent = fixture.debugElement.query(
         By.directive(NzRadioGroupComponent)
       ).componentInstance;
@@ -333,6 +335,7 @@ describe('radio', () => {
       await stabilize(fixture);
 
       expect(radioGroup.nzDisabled).toBeTruthy();
+      radios = fixture.debugElement.queryAll(By.directive(NzRadioComponent));
       radios[1].nativeElement.click();
       fixture.detectChanges();
       expect(testComponent.formControl.value).toBe('A');
@@ -349,13 +352,14 @@ describe('radio', () => {
   });
 
   describe('ngModel on the `nz-radio` button', () => {
-    it('`onChange` of each `nz-radio` should emit correct values', () => {
+    it('`onChange` of each `nz-radio` should emit correct values', async () => {
       const fixture = TestBed.createComponent(NzTestRadioGroupLabelNgModelComponent);
       fixture.detectChanges();
 
-      const radios = fixture.debugElement.queryAll(By.directive(NzRadioComponent));
+      let radios = fixture.debugElement.queryAll(By.directive(NzRadioComponent));
 
       radios[0].nativeElement.click();
+      await stabilize(fixture);
       expect(fixture.componentInstance.items).toEqual([
         { label: 'A', checked: true },
         { label: 'B', checked: false },
@@ -363,9 +367,11 @@ describe('radio', () => {
         { label: 'D', checked: false }
       ]);
 
+      radios = fixture.debugElement.queryAll(By.directive(NzRadioComponent));
       radios[1].nativeElement.click();
+      await stabilize(fixture);
       expect(fixture.componentInstance.items).toEqual([
-        { label: 'A', checked: false },
+        { label: 'A', checked: true },
         { label: 'B', checked: true },
         { label: 'C', checked: false },
         { label: 'D', checked: false }

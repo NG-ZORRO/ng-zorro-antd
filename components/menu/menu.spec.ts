@@ -422,18 +422,23 @@ describe('menu', () => {
         expect(nestedCallback).toHaveBeenCalledTimes(0);
       });
 
-      it('should width change correct', () => {
+      it('should width change correct', async () => {
         fixture.detectChanges();
+        const submenu = testComponent.subs.first;
+        spyOn(submenu.cdkOverlayOrigin!.nativeElement, 'getBoundingClientRect').and.callFake(
+          () => ({ width: testComponent.width() }) as DOMRect
+        );
         testComponent.open.set(true);
-        fixture.detectChanges();
-        const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
+        await stabilize(fixture);
+        let overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
         expect(overlayPane.style.width).toBe('200px');
         testComponent.open.set(false);
         fixture.detectChanges();
         testComponent.width.set(300);
         fixture.detectChanges();
         testComponent.open.set(true);
-        fixture.detectChanges();
+        await stabilize(fixture);
+        overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
         expect(overlayPane.style.width).toBe('300px');
       });
 

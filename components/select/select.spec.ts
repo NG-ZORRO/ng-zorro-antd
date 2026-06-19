@@ -12,7 +12,12 @@ import { By } from '@angular/platform-browser';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
-import { dispatchFakeEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import {
+  dispatchFakeEvent,
+  dispatchKeyboardEvent,
+  dispatchMouseEvent,
+  updateNonSignalsInput
+} from 'ng-zorro-antd/core/testing';
 import { NzSafeAny, NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -38,9 +43,6 @@ describe('select', () => {
   });
 
   describe('default template mode', () => {
-    beforeEach(() => jasmine.clock().install());
-    afterEach(() => jasmine.clock().uninstall());
-
     let component: TestSelectTemplateDefaultComponent;
     let fixture: ComponentFixture<TestSelectTemplateDefaultComponent>;
     let selectElement!: HTMLElement;
@@ -48,8 +50,7 @@ describe('select', () => {
 
     async function flushChanges(): Promise<void> {
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
-      await fixture.whenStable();
+      await updateNonSignalsInput(fixture, 16);
       fixture.detectChanges();
     }
 
@@ -591,9 +592,6 @@ describe('select', () => {
   });
 
   describe('multiple template mode', () => {
-    beforeEach(() => jasmine.clock().install());
-    afterEach(() => jasmine.clock().uninstall());
-
     let component: TestSelectTemplateMultipleComponent;
     let fixture: ComponentFixture<TestSelectTemplateMultipleComponent>;
     let selectElement!: HTMLElement;
@@ -601,9 +599,7 @@ describe('select', () => {
 
     async function flushChanges(): Promise<void> {
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
-      await Promise.resolve();
-      await fixture.whenStable();
+      await updateNonSignalsInput(fixture, 16);
       fixture.detectChanges();
     }
 
@@ -795,18 +791,13 @@ describe('select', () => {
   });
 
   describe('tags template mode', () => {
-    beforeEach(() => jasmine.clock().install());
-    afterEach(() => jasmine.clock().uninstall());
-
     let component: TestSelectTemplateTagsComponent;
     let fixture: ComponentFixture<TestSelectTemplateTagsComponent>;
     let selectElement!: HTMLElement;
 
     async function flushChanges(): Promise<void> {
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
-      await Promise.resolve();
-      await fixture.whenStable();
+      await updateNonSignalsInput(fixture, 16);
       fixture.detectChanges();
     }
 
@@ -858,18 +849,13 @@ describe('select', () => {
   });
 
   describe('default reactive mode', () => {
-    beforeEach(() => jasmine.clock().install());
-    afterEach(() => jasmine.clock().uninstall());
-
     let component: TestSelectReactiveDefaultComponent;
     let fixture: ComponentFixture<TestSelectReactiveDefaultComponent>;
     let selectElement!: HTMLElement;
 
     async function flushChanges(): Promise<void> {
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
-      await Promise.resolve();
-      await fixture.whenStable();
+      await updateNonSignalsInput(fixture, 16);
       fixture.detectChanges();
     }
 
@@ -1119,9 +1105,6 @@ describe('select', () => {
   });
 
   describe('multiple reactive mode', () => {
-    beforeEach(() => jasmine.clock().install());
-    afterEach(() => jasmine.clock().uninstall());
-
     let component: TestSelectReactiveMultipleComponent;
     let fixture: ComponentFixture<TestSelectReactiveMultipleComponent>;
     let selectComponent: NzSelectComponent;
@@ -1130,9 +1113,7 @@ describe('select', () => {
 
     async function flushChanges(): Promise<void> {
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
-      await Promise.resolve();
-      await fixture.whenStable();
+      await updateNonSignalsInput(fixture, 16);
       fixture.detectChanges();
     }
 
@@ -1400,18 +1381,13 @@ describe('select', () => {
   });
 
   describe('tags reactive mode', () => {
-    beforeEach(() => jasmine.clock().install());
-    afterEach(() => jasmine.clock().uninstall());
-
     let component: TestSelectReactiveTagsComponent;
     let fixture: ComponentFixture<TestSelectReactiveTagsComponent>;
     let selectElement!: HTMLElement;
 
     async function flushChanges(): Promise<void> {
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
-      await Promise.resolve();
-      await fixture.whenStable();
+      await updateNonSignalsInput(fixture, 16);
       fixture.detectChanges();
     }
 
@@ -1571,17 +1547,12 @@ describe('select', () => {
   });
 
   describe('in form', () => {
-    beforeEach(() => jasmine.clock().install());
-    afterEach(() => jasmine.clock().uninstall());
-
     let component: TestSelectInFormComponent;
     let fixture: ComponentFixture<TestSelectInFormComponent>;
 
     async function flushChanges(): Promise<void> {
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
-      await Promise.resolve();
-      await fixture.whenStable();
+      await updateNonSignalsInput(fixture, 16);
       fixture.detectChanges();
     }
 

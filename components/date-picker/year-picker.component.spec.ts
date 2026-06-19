@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
-import { dispatchFakeEvent, dispatchMouseEvent, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
+import { dispatchFakeEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { NzDatePickerSizeType } from 'ng-zorro-antd/date-picker/date-picker.component';
 import { getPickerAbstract, getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
@@ -107,7 +107,7 @@ describe('year-picker', () => {
       fixtureInstance.useSuite.set(2);
 
       fixture.detectChanges();
-      await fixture.whenRenderingDone();
+      await stabilize(500);
       expect(getPickerContainer()).toBeNull();
 
       fixtureInstance.nzOpen.set(true);
@@ -121,7 +121,6 @@ describe('year-picker', () => {
 
     it('should nz-year-picker work', async () => {
       fixtureInstance.useSuite.set(4);
-      await fixture.whenRenderingDone();
       await stabilize(500);
       expect(getPickerContainer()).not.toBeNull();
       const pickerInput = getPickerInput(fixture.debugElement);
@@ -308,12 +307,10 @@ describe('year-picker', () => {
     await stabilize(500);
   }
 
-  async function stabilize(ms?: number): Promise<void> {
+  async function stabilize(ms = 500): Promise<void> {
     fixture.detectChanges();
-    if (typeof ms === 'number') {
-      jasmine.clock().tick(ms);
-    }
-    await updateNonSignalsInput(fixture);
+    jasmine.clock().tick(ms);
+    await Promise.resolve();
     fixture.detectChanges();
   }
 });

@@ -39,7 +39,12 @@ describe('notification', () => {
   // mock animationend event
   async function animationEnd(): Promise<void> {
     dispatchEvent(getMessageElement(), new AnimationEvent('animationend', { animationName: 'antNotificationFadeOut' }));
-    await fixture.whenStable();
+    await stabilize();
+  }
+
+  async function stabilize(): Promise<void> {
+    await Promise.resolve();
+    fixture.detectChanges();
   }
 
   beforeEach(() => {
@@ -154,7 +159,7 @@ describe('notification', () => {
 
   it('should auto closed by 1s', async () => {
     notificationService.create('', '', 'EXISTS', { nzDuration: 1000 });
-    await fixture.whenStable();
+    await stabilize();
 
     overlayContainerElement = overlayContainer.getContainerElement();
     expect(overlayContainerElement.textContent).toContain('EXISTS');
@@ -166,13 +171,13 @@ describe('notification', () => {
 
   it('should not destroy when hovered', async () => {
     notificationService.create('', '', 'EXISTS', { nzDuration: 2500 });
-    await fixture.whenStable();
+    await stabilize();
 
     overlayContainerElement = overlayContainer.getContainerElement();
     const messageElement = getMessageElement();
     dispatchMouseEvent(messageElement, 'mouseenter');
     jasmine.clock().tick(2500);
-    await fixture.whenStable();
+    await stabilize();
     expect(overlayContainerElement.textContent).toContain('EXISTS');
 
     dispatchMouseEvent(messageElement, 'mouseleave');
@@ -186,12 +191,12 @@ describe('notification', () => {
     fixture.detectChanges();
 
     jasmine.clock().tick(5000);
-    await fixture.whenStable();
+    await stabilize();
     overlayContainerElement = overlayContainer.getContainerElement();
     expect(overlayContainerElement.textContent).toContain('SUCCESS');
 
     notificationService.remove(filledMessage.messageId);
-    await fixture.whenStable();
+    await stabilize();
     expect(overlayContainerElement.textContent).not.toContain('SUCCESS');
   });
 
@@ -199,7 +204,7 @@ describe('notification', () => {
     for (const id of [1, 2, 3]) {
       const content = `SUCCESS-${id}`;
       notificationService.success('', content);
-      await fixture.whenStable();
+      await stabilize();
 
       overlayContainerElement = overlayContainer.getContainerElement();
       expect(overlayContainerElement.textContent).toContain(content);
@@ -210,7 +215,7 @@ describe('notification', () => {
     }
 
     notificationService.remove();
-    await fixture.whenStable();
+    await stabilize();
     expect(overlayContainerElement.textContent).not.toContain('SUCCESS-3');
     expect((notificationService as any).container).toBeUndefined(); // eslint-disable-line @typescript-eslint/no-explicit-any
   });
@@ -218,7 +223,7 @@ describe('notification', () => {
   it('should destroy without animation', async () => {
     notificationService.error('', 'EXISTS', { nzDuration: 1000, nzAnimate: false });
     jasmine.clock().tick(1000);
-    await fixture.whenStable();
+    await stabilize();
     overlayContainerElement = overlayContainer.getContainerElement();
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
   });
@@ -262,7 +267,7 @@ describe('notification', () => {
     overlayContainerElement = overlayContainer.getContainerElement();
     expect(overlayContainerElement.textContent).toContain('oldData');
     notificationService.template(fixture.componentInstance.demoTemplateRef, { nzData: 'newData', nzKey: 'exists' });
-    await fixture.whenStable();
+    await stabilize();
     expect(overlayContainerElement.textContent).toContain('newData');
   });
 
@@ -274,7 +279,7 @@ describe('notification', () => {
     expect(messageId).toEqual('exists');
 
     messageId = notificationService.create('success', 'Title', 'SHOULD NOT CHANGE', { nzKey: 'exists' }).messageId;
-    await fixture.whenStable();
+    await stabilize();
     expect(messageId).toEqual('exists');
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
     expect(overlayContainerElement.textContent).toContain('Title');

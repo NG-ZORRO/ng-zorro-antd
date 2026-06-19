@@ -243,12 +243,12 @@ describe('input-number', () => {
     component.max.set(2);
     component.value = 3;
     fixture.detectChanges();
-    await fixture.whenStable();
+    await updateNonSignalsInput(fixture);
     expect(hostElement.classList).toContain('ant-input-number-out-of-range');
 
     component.value = 0;
     fixture.detectChanges();
-    await fixture.whenStable();
+    await updateNonSignalsInput(fixture);
     expect(hostElement.classList).toContain('ant-input-number-out-of-range');
   });
 
@@ -354,7 +354,7 @@ describe('input-number', () => {
   it('should be set disabled by ng control', async () => {
     component.controlDisabled.set(true);
     fixture.detectChanges();
-    await fixture.whenStable();
+    await updateNonSignalsInput(fixture);
     expect(hostElement.querySelector('input')!.disabled).toBeTruthy();
     expect(hostElement.classList).toContain('ant-input-number-disabled');
   });

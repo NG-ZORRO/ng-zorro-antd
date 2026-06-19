@@ -6,6 +6,8 @@ __ngcc_entry_points__.json
 dist/
 tmp/
 junit/
+.vitest-attachments/
+components/**/*/__screenshots__/
 out-tsc/
 /site
 publish/

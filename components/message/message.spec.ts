@@ -28,7 +28,12 @@ describe('message', () => {
   // mock animationend event
   async function animationEnd(): Promise<void> {
     dispatchEvent(getMessageElement(), new AnimationEvent('animationend', { animationName: 'MessageMoveOut' }));
-    await fixture.whenStable();
+    await stabilize();
+  }
+
+  async function stabilize(): Promise<void> {
+    await Promise.resolve();
+    fixture.detectChanges();
   }
 
   beforeEach(() => {
@@ -100,7 +105,7 @@ describe('message', () => {
 
   it('should support template', async () => {
     messageService.info(testComponent.template, { nzData: 'from template' });
-    await fixture.whenStable();
+    await stabilize();
     overlayContainerElement = overlayContainer.getContainerElement();
     expect(overlayContainerElement.textContent).toContain('Content in template from template');
   });
@@ -123,7 +128,7 @@ describe('message', () => {
     const messageElement = getMessageElement();
     dispatchMouseEvent(messageElement, 'mouseenter');
     jasmine.clock().tick(2250);
-    await fixture.whenStable();
+    await stabilize();
     expect(overlayContainerElement.textContent).toContain('EXISTS');
 
     dispatchMouseEvent(messageElement, 'mouseleave');
@@ -137,11 +142,11 @@ describe('message', () => {
     overlayContainerElement = overlayContainer.getContainerElement();
 
     jasmine.clock().tick(4500);
-    await fixture.whenStable();
+    await stabilize();
     expect(overlayContainerElement.textContent).toContain('SUCCESS');
 
     messageService.remove(filledMessage.messageId);
-    await fixture.whenStable();
+    await stabilize();
     expect(overlayContainerElement.textContent).not.toContain('SUCCESS');
   });
 
@@ -149,7 +154,7 @@ describe('message', () => {
     for (const id of [1, 2, 3]) {
       const content = `SUCCESS-${id}`;
       messageService.success(content);
-      await fixture.whenStable();
+      await stabilize();
 
       overlayContainerElement = overlayContainer.getContainerElement();
       expect(overlayContainerElement.textContent).toContain(content);
@@ -160,7 +165,7 @@ describe('message', () => {
     }
 
     messageService.remove();
-    await fixture.whenStable();
+    await stabilize();
     expect(overlayContainerElement.textContent).not.toContain('SUCCESS-3');
     expect(messageService['container']).toBeUndefined();
   });
@@ -168,7 +173,7 @@ describe('message', () => {
   it('should destroy without animation', async () => {
     messageService.error('EXISTS', { nzDuration: 1000, nzAnimate: false });
     jasmine.clock().tick(1000);
-    await fixture.whenStable();
+    await stabilize();
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
   });
 
@@ -179,13 +184,13 @@ describe('message', () => {
     msg.onClose.subscribe(closeSpy);
     messageService.remove(messageId);
 
-    await fixture.whenStable();
+    await stabilize();
     expect(closeSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should container top to configured', async () => {
     messageService.create('top', 'CHANGE');
-    await fixture.whenStable();
+    await stabilize();
 
     overlayContainerElement = overlayContainer.getContainerElement();
     const messageContainerElement = overlayContainerElement.querySelector('.ant-message') as HTMLElement;

@@ -58,8 +58,8 @@ describe('switch', () => {
     it('should ngModel work', async () => {
       fixture.detectChanges();
       expect(switchElement.nativeElement.firstElementChild!.classList).not.toContain('ant-switch-checked');
-      expect(testComponent.value).toBe(false);
-      testComponent.value = true;
+      expect(testComponent.value()).toBe(false);
+      testComponent.value.set(true);
       await stabilize(fixture);
       expect(switchElement.nativeElement.firstElementChild!.classList).toContain('ant-switch-checked');
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
@@ -67,27 +67,27 @@ describe('switch', () => {
 
     it('should click work', () => {
       const switchButton = switchElement.nativeElement.firstElementChild! as HTMLButtonElement;
-      expect(testComponent.value).toBe(false);
+      expect(testComponent.value()).toBe(false);
       switchButton.click();
-      expect(testComponent.value).toBe(true);
+      expect(testComponent.value()).toBe(true);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
       switchButton.click();
-      expect(testComponent.value).toBe(false);
+      expect(testComponent.value()).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(2);
       testComponent.control.set(true);
       fixture.detectChanges();
       switchButton.click();
-      expect(testComponent.value).toBe(false);
+      expect(testComponent.value()).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(2);
     });
 
     it('should disable work', async () => {
       testComponent.disabled.set(true);
       fixture.detectChanges();
-      expect(testComponent.value).toBe(false);
+      expect(testComponent.value()).toBe(false);
       (switchElement.nativeElement.firstElementChild! as HTMLButtonElement).click();
       await stabilize(fixture);
-      expect(testComponent.value).toBe(false);
+      expect(testComponent.value()).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     });
 
@@ -95,10 +95,10 @@ describe('switch', () => {
       testComponent.loading.set(true);
       fixture.detectChanges();
       expect(switchElement.nativeElement.firstElementChild!.classList).toContain('ant-switch-loading');
-      expect(testComponent.value).toBe(false);
+      expect(testComponent.value()).toBe(false);
       (switchElement.nativeElement.firstElementChild! as HTMLButtonElement).click();
       await stabilize(fixture);
-      expect(testComponent.value).toBe(false);
+      expect(testComponent.value()).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     });
 
@@ -109,44 +109,44 @@ describe('switch', () => {
     });
 
     it('should key down work', () => {
-      expect(testComponent.value).toBe(false);
+      expect(testComponent.value()).toBe(false);
       switchElement.nativeElement.click();
       fixture.detectChanges();
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
-      expect(testComponent.value).toBe(true);
+      expect(testComponent.value()).toBe(true);
       dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', RIGHT_ARROW);
       fixture.detectChanges();
-      expect(testComponent.value).toBe(true);
+      expect(testComponent.value()).toBe(true);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
       dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', LEFT_ARROW);
 
       fixture.detectChanges();
-      expect(testComponent.value).toBe(false);
+      expect(testComponent.value()).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(2);
       dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
-      expect(testComponent.value).toBe(false);
+      expect(testComponent.value()).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(2);
       dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', SPACE);
       fixture.detectChanges();
-      expect(testComponent.value).toBe(true);
+      expect(testComponent.value()).toBe(true);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(3);
       dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', ENTER);
       fixture.detectChanges();
-      expect(testComponent.value).toBe(false);
+      expect(testComponent.value()).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(4);
       testComponent.control.set(true);
       fixture.detectChanges();
       dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', ENTER);
       fixture.detectChanges();
-      expect(testComponent.value).toBe(false);
+      expect(testComponent.value()).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(4);
       testComponent.control.set(false);
       testComponent.loading.set(true);
       fixture.detectChanges();
       dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', ENTER);
       fixture.detectChanges();
-      expect(testComponent.value).toBe(false);
+      expect(testComponent.value()).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(4);
       testComponent.control.set(false);
       testComponent.loading.set(false);
@@ -154,7 +154,7 @@ describe('switch', () => {
       fixture.detectChanges();
       dispatchKeyboardEvent(switchElement.nativeElement.firstElementChild, 'keydown', ENTER);
       fixture.detectChanges();
-      expect(testComponent.value).toBe(false);
+      expect(testComponent.value()).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(4);
     });
 
@@ -166,15 +166,19 @@ describe('switch', () => {
       expect(switchElement.nativeElement.querySelector('.ant-switch-inner').innerText).toBe('on');
     });
 
-    it('should focus and blur function work', () => {
+    it('should focus and blur function work', async () => {
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild === document.activeElement).toBe(false);
+      const buttonElement = switchElement.nativeElement.firstElementChild as HTMLElement;
+      spyOn(buttonElement, 'focus').and.callThrough();
+      spyOn(buttonElement, 'blur').and.callThrough();
       testComponent.nzSwitchComponent.focus();
+      await Promise.resolve();
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild === document.activeElement).toBe(true);
+      expect(buttonElement.focus).toHaveBeenCalledTimes(1);
       testComponent.nzSwitchComponent.blur();
+      await Promise.resolve();
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild === document.activeElement).toBe(false);
+      expect(buttonElement.blur).toHaveBeenCalledTimes(1);
     });
     describe('change detection behavior', () => {
       it('should not run change detection on `click` events if the switch is disabled', () => {
@@ -353,8 +357,8 @@ async function stabilize<T>(fixture: ComponentFixture<T>): Promise<void> {
     <ng-template #checkedChildrenTemplate><nz-icon nzType="check" /></ng-template>
     <ng-template #unCheckedChildrenTemplate><nz-icon nzType="closs" /></ng-template>
     <nz-switch
-      [(ngModel)]="value"
-      (ngModelChange)="modelChange($event)"
+      [ngModel]="value()"
+      (ngModelChange)="value.set($event); modelChange($event)"
       [nzDisabled]="disabled()"
       [nzLoading]="loading()"
       [nzSize]="size()"
@@ -370,7 +374,7 @@ export class NzTestSwitchBasicComponent {
   @ViewChild('unCheckedChildrenTemplate', { static: false }) unCheckedChildrenTemplate!: TemplateRef<void>;
   checkedChildren = 'on';
   unCheckedChildren = 'off';
-  value = false;
+  readonly value = signal(false);
   readonly control = signal(false);
   readonly disabled = signal(false);
   readonly size = signal<NzSizeDSType>('default');

@@ -354,8 +354,7 @@ function getScaleFromCSSTransform(transform: string): number {
     />
   `,
   styles: `
-    @import '../style/testing.less';
-    @import './style/index.less';
+    @import './style/testing.less';
   `
 })
 class TestAvatarComponent {

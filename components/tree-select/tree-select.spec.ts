@@ -19,7 +19,6 @@ import {
   dispatchFakeEvent,
   dispatchMouseEvent,
   MockNgZone,
-  sleep,
   typeInElement,
   updateNonSignalsInput
 } from 'ng-zorro-antd/core/testing';
@@ -207,7 +206,7 @@ describe('tree-select', () => {
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
       const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
-      await sleep(0);
+      await updateNonSignalsInput(fixture, 16);
       fixture.detectChanges();
       expect(overlayPane.style.width).toBe('250px');
 
@@ -218,7 +217,7 @@ describe('tree-select', () => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
-      await sleep(0);
+      await updateNonSignalsInput(fixture, 16);
       fixture.detectChanges();
       expect(overlayPane.style.minWidth).toBe('250px');
     });
@@ -331,8 +330,8 @@ describe('tree-select', () => {
       expect(overlayContainerElement.querySelector('nz-tree')!.getAttribute('hidden')).toBeNull();
       expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeFalsy();
       fixture.detectChanges();
-      treeSelectComponent.inputValue = 'invalid_value';
-      await updateNonSignalsInput(fixture);
+      treeSelectComponent.setInputValue('invalid_value');
+      await updateNonSignalsInput(fixture, 16);
       expect(overlayContainerElement.querySelector('nz-tree')!.getAttribute('hidden')).toBe('');
       expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeTruthy();
     });
@@ -342,8 +341,8 @@ describe('tree-select', () => {
       fixture.detectChanges();
       treeSelect.nativeElement.click();
       fixture.detectChanges();
-      treeSelectComponent.inputValue = 'invalid_value';
-      await updateNonSignalsInput(fixture);
+      treeSelectComponent.setInputValue('invalid_value');
+      await updateNonSignalsInput(fixture, 16);
       expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeTruthy();
 
       treeSelect.nativeElement.click();
@@ -547,8 +546,8 @@ describe('tree-select', () => {
       expect(overlayContainerElement.querySelector('nz-tree')!.getAttribute('hidden')).toBeNull();
       expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeFalsy();
 
-      treeSelectComponent.inputValue = 'invalid_value';
-      await fixture.whenStable();
+      treeSelectComponent.setInputValue('invalid_value');
+      await updateNonSignalsInput(fixture, 16);
       expect(overlayContainerElement.querySelector('nz-tree')!.getAttribute('hidden')).toBe('');
       expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeTruthy();
     });

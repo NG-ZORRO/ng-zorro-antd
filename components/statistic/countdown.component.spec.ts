@@ -58,7 +58,8 @@ describe('nz-countdown', () => {
       fixture.detectChanges();
 
       const value = Number(countdownEl.nativeElement.querySelector('.ant-statistic-content-value').innerText);
-      expect(value).toBeCloseTo(172829900, 0);
+      expect(value).toBeGreaterThanOrEqual(172829900);
+      expect(value).toBeLessThanOrEqual(172829901);
       testComponent.countdown.stopTimer();
     });
 
