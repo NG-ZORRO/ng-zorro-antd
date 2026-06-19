@@ -9,6 +9,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import {
   dispatchFakeEvent,
   dispatchKeyboardEvent,
@@ -130,8 +132,8 @@ describe('rate', () => {
     it('should focus and blur function work', async () => {
       fixture.detectChanges();
       const rateElement = rate.nativeElement.querySelector('ul') as HTMLElement;
-      spyOn(rateElement, 'focus').and.callThrough();
-      spyOn(rateElement, 'blur').and.callThrough();
+      vi.spyOn(rateElement, 'focus');
+      vi.spyOn(rateElement, 'blur');
       testComponent.nzRateComponent.focus();
       await Promise.resolve();
       fixture.detectChanges();
@@ -317,11 +319,11 @@ export class NzTestRateBasicComponent {
   readonly allowClear = signal(false);
   readonly disabled = signal(false);
   readonly value = signal(0);
-  modelChange = jasmine.createSpy('model change callback');
-  onBlur = jasmine.createSpy('blur callback');
-  onFocus = jasmine.createSpy('focus callback');
-  onHoverChange = jasmine.createSpy('hover change callback');
-  onKeyDown = jasmine.createSpy('keydown callback');
+  modelChange = vi.fn();
+  onBlur = vi.fn();
+  onFocus = vi.fn();
+  onHoverChange = vi.fn();
+  onKeyDown = vi.fn();
 }
 
 @Component({

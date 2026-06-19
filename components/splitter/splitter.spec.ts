@@ -8,6 +8,8 @@ import { Component, DebugElement, DOCUMENT, NgZone, signal } from '@angular/core
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import {
   dispatchMouseEvent,
   dispatchTouchEvent,
@@ -172,9 +174,9 @@ describe('nz-splitter', () => {
 
     describe('drag', () => {
       beforeEach(() => {
-        spyOn(component, 'onResizeStart');
-        spyOn(component, 'onResize');
-        spyOn(component, 'onResizeEnd');
+        vi.spyOn(component, 'onResizeStart');
+        vi.spyOn(component, 'onResize');
+        vi.spyOn(component, 'onResizeEnd');
       });
 
       it('should mouse move work', async () => {
@@ -304,8 +306,8 @@ describe('nz-splitter', () => {
       }
 
       beforeEach(() => {
-        spyOn(component, 'onResize');
-        spyOn(component, 'onResizeEnd');
+        vi.spyOn(component, 'onResize');
+        vi.spyOn(component, 'onResizeEnd');
       });
 
       it('basic', async () => {
@@ -490,9 +492,9 @@ describe('nz-splitter', () => {
           }
         ]);
 
-        spyOn(component, 'onResizeStart');
-        spyOn(component, 'onResize');
-        spyOn(component, 'onResizeEnd');
+        vi.spyOn(component, 'onResizeStart');
+        vi.spyOn(component, 'onResize');
+        vi.spyOn(component, 'onResizeEnd');
       });
 
       it('should only update after mouse up', async () => {
@@ -607,8 +609,8 @@ describe('nz-splitter', () => {
       container = fixture.debugElement;
       component = fixture.componentInstance;
 
-      spyOn(component, 'onResize');
-      spyOn(component, 'onResizeEnd');
+      vi.spyOn(component, 'onResize');
+      vi.spyOn(component, 'onResizeEnd');
     });
 
     it('rtl', async () => {

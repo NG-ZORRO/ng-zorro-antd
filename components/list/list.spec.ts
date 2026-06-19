@@ -10,6 +10,8 @@ import { By } from '@angular/platform-browser';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { vi } from 'vitest';
+
 import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzDirectionVHType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -179,11 +181,11 @@ describe('list', () => {
     });
 
     describe('asynchronous action', () => {
-      beforeEach(() => jasmine.clock().install());
-      afterEach(() => jasmine.clock().uninstall());
+      beforeEach(() => vi.useFakeTimers());
+      afterEach(() => vi.useRealTimers());
 
       it('should display the asynchronous action', async () => {
-        jasmine.clock().tick(500);
+        vi.advanceTimersByTime(500);
         await Promise.resolve();
         fixture.detectChanges();
         expect(dl.query(By.css('.ant-list-item-action'))).not.toBeNull();

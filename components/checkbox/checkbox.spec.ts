@@ -8,6 +8,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 
 import { NzCheckboxComponent } from './checkbox.component';
@@ -125,8 +127,8 @@ describe('checkbox', () => {
         const appRef = TestBed.inject(ApplicationRef);
         const event = new MouseEvent('click');
 
-        spyOn(appRef, 'tick');
-        spyOn(event, 'stopPropagation').and.callThrough();
+        vi.spyOn(appRef, 'tick');
+        vi.spyOn(event, 'stopPropagation');
 
         const nzCheckbox = fixture.debugElement.query(By.directive(NzCheckboxComponent));
         nzCheckbox.nativeElement.querySelector('.ant-checkbox-input').dispatchEvent(event);
@@ -142,8 +144,8 @@ describe('checkbox', () => {
         const appRef = TestBed.inject(ApplicationRef);
         const event = new MouseEvent('click');
 
-        spyOn(appRef, 'tick');
-        spyOn(event, 'preventDefault').and.callThrough();
+        vi.spyOn(appRef, 'tick');
+        vi.spyOn(event, 'preventDefault');
 
         const nzCheckbox = fixture.debugElement.query(By.directive(NzCheckboxComponent));
         nzCheckbox.nativeElement.dispatchEvent(event);
@@ -244,7 +246,7 @@ export class NzTestCheckboxSingleComponent {
   readonly autoFocus = signal(false);
   readonly checked = signal(false);
   readonly indeterminate = signal(false);
-  modelChange = jasmine.createSpy('change callback');
+  modelChange = vi.fn();
 }
 
 @Component({
@@ -278,12 +280,12 @@ describe('checkbox component', () => {
   });
 
   it('focus should be called in afterViewInit if nzAutoFocus is set', () => {
-    spyOn(component, 'focus');
+    const focusSpy = vi.spyOn(component, 'focus');
     component.nzAutoFocus = false;
     component.ngAfterViewInit();
     expect(component.focus).not.toHaveBeenCalled();
 
-    spyOn(component, 'focus');
+    focusSpy.mockClear();
     component.nzAutoFocus = true;
     component.ngAfterViewInit();
     expect(component.focus).toHaveBeenCalled();

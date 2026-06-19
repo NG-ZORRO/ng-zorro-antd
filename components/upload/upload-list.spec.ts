@@ -8,6 +8,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -195,6 +197,8 @@ describe('upload-list', () => {
     });
 
     describe('[genThumb]', () => {
+      afterEach(() => vi.unstubAllGlobals());
+
       class MockImage {
         width = 1;
         height = 2;
@@ -208,7 +212,7 @@ describe('upload-list', () => {
       }
 
       it('should be generate thumb when is valid image data', async () => {
-        spyOn(window as NzSafeAny, 'Image').and.returnValue(new MockImage());
+        vi.stubGlobal('Image', class extends MockImage {});
 
         instance.listType.set('picture');
         instance.items.set([{ originFileObj: new File([''], '1.png', { type: 'image/' }), thumbUrl: undefined }]);
@@ -220,7 +224,14 @@ describe('upload-list', () => {
         const img = new MockImage();
         img.width = 2;
         img.height = 1;
-        spyOn(window as NzSafeAny, 'Image').and.returnValue(img);
+        vi.stubGlobal(
+          'Image',
+          class {
+            constructor() {
+              return img;
+            }
+          }
+        );
 
         instance.listType.set('picture');
         instance.items.set([{ originFileObj: new File([''], '1.png', { type: 'image/' }), thumbUrl: undefined }]);

@@ -9,6 +9,8 @@ import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzColorPickerComponent, NzColorPickerModule } from 'ng-zorro-antd/color-picker';
 import {
@@ -32,7 +34,7 @@ describe('color-picker', () => {
 
   function waitingForTooltipToggling(): void {
     fixture.detectChanges();
-    jasmine.clock().tick(500);
+    vi.advanceTimersByTime(500);
     fixture.detectChanges();
   }
 
@@ -65,9 +67,9 @@ describe('color-picker', () => {
     overlayContainer.ngOnDestroy();
   });
 
-  beforeEach(() => jasmine.clock().install());
+  beforeEach(() => vi.useFakeTimers());
 
-  afterEach(() => jasmine.clock().uninstall());
+  afterEach(() => vi.useRealTimers());
 
   it('color-picker basic', () => {
     fixture.detectChanges();
@@ -342,8 +344,8 @@ describe('nz-color-picker form', () => {
   let component: NzTestColorPickerFormComponent;
   let resultEl: DebugElement;
 
-  beforeEach(() => jasmine.clock().install());
-  afterEach(() => jasmine.clock().uninstall());
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -381,12 +383,12 @@ describe('nz-color-picker with presets', () => {
 
   function waitingForTooltipToggling(): void {
     fixture.detectChanges();
-    jasmine.clock().tick(500);
+    vi.advanceTimersByTime(500);
     fixture.detectChanges();
   }
 
-  beforeEach(() => jasmine.clock().install());
-  afterEach(() => jasmine.clock().uninstall());
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -432,7 +434,7 @@ describe('nz-color-picker with presets', () => {
   });
 
   it('should handle preset color selection', async () => {
-    spyOn(testComponent, 'onColorChange');
+    vi.spyOn(testComponent, 'onColorChange');
 
     const trigger = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
     dispatchMouseEvent(trigger, 'click');
@@ -467,7 +469,7 @@ describe('nz-color-picker with presets', () => {
     if (collapseHeader) {
       dispatchMouseEvent(collapseHeader, 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(300); // Wait for collapse animation
+      vi.advanceTimersByTime(300); // Wait for collapse animation
       fixture.detectChanges();
     }
   });

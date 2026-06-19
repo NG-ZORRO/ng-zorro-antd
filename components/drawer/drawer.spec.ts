@@ -9,6 +9,8 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, Input, signal, TemplateRef, ViewChild, inject } from '@angular/core';
 import { ComponentFixture, TestBed, inject as testingInject } from '@angular/core/testing';
 
+import { vi } from 'vitest';
+
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchKeyboardEvent, provideMockDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
@@ -703,7 +705,7 @@ describe('NzDrawerService', () => {
     fixture.detectChanges();
   });
 
-  beforeEach(() => jasmine.clock().install());
+  beforeEach(() => vi.useFakeTimers());
 
   beforeEach(
     testingInject([OverlayContainer, NzDrawerService], (oc: OverlayContainer, ds: NzDrawerService) => {
@@ -717,7 +719,7 @@ describe('NzDrawerService', () => {
     overlayContainer.ngOnDestroy();
   });
 
-  afterEach(() => jasmine.clock().uninstall());
+  afterEach(() => vi.useRealTimers());
 
   it('should create template content drawer', async () => {
     component.openTemplate();
@@ -734,8 +736,8 @@ describe('NzDrawerService', () => {
   });
 
   it('should create component content drawer', async () => {
-    const openSpy = jasmine.createSpy('afterOpen spy');
-    const closeSpy = jasmine.createSpy('afterClose spy').and.returnValue(1);
+    const openSpy = vi.fn();
+    const closeSpy = vi.fn().mockReturnValue(1);
     const drawerRef = drawerService.create({
       nzTitle: 'Service',
       nzFooter: 'Footer',
@@ -760,8 +762,8 @@ describe('NzDrawerService', () => {
   });
 
   it('should create a component drawer and use nzData instead of nzContentParams', async () => {
-    const openSpy = jasmine.createSpy('afterOpen spy');
-    const closeSpy = jasmine.createSpy('afterClose spy').and.returnValue(2);
+    const openSpy = vi.fn();
+    const closeSpy = vi.fn().mockReturnValue(2);
     const drawerRef = drawerService.create({
       nzTitle: 'Service',
       nzFooter: 'Footer',
@@ -788,8 +790,8 @@ describe('NzDrawerService', () => {
 
   it('should `nzOnCancel` work', async () => {
     let canClose = false;
-    const openSpy = jasmine.createSpy('afterOpen spy');
-    const closeSpy = jasmine.createSpy('afterClose spy').and.returnValue(1);
+    const openSpy = vi.fn();
+    const closeSpy = vi.fn().mockReturnValue(1);
     const drawerRef = drawerService.create({
       nzTitle: 'Service nzOnCancel',
       nzContent: NzDrawerCustomComponent,
@@ -822,7 +824,7 @@ async function stabilize<T>(fixture: ComponentFixture<T>, ms?: number): Promise<
 
 async function flushDrawerAnimation<T>(fixture: ComponentFixture<T>): Promise<void> {
   fixture.detectChanges();
-  jasmine.clock().tick(DRAWER_ANIMATE_DURATION);
+  vi.advanceTimersByTime(DRAWER_ANIMATE_DURATION);
   fixture.detectChanges();
   await Promise.resolve();
   fixture.detectChanges();
@@ -891,7 +893,7 @@ class NzTestDrawerComponent {
   readonly closeIcon = signal<TemplateRef<void> | string>('close');
   readonly offsetX = signal(0);
   readonly offsetY = signal(0);
-  triggerVisible = jasmine.createSpy('visibleChange');
+  triggerVisible = vi.fn();
 
   @ViewChild('titleTemplate', { static: false }) titleTemplateRef!: TemplateRef<{}>;
   @ViewChild('closeIconTemplate', { static: false }) closeIconTemplateRef!: TemplateRef<void>;
@@ -921,8 +923,8 @@ class NzTestDrawerWithServiceComponent {
     $implicit: number;
     drawerRef: NzDrawerRef;
   }>;
-  templateOpenSpy = jasmine.createSpy('template afterOpen spy');
-  templateCloseSpy = jasmine.createSpy('template afterClose spy');
+  templateOpenSpy = vi.fn();
+  templateCloseSpy = vi.fn();
   templateDrawerRef?: NzDrawerRef;
   openTemplate(): void {
     this.templateDrawerRef = this.drawerService.create({

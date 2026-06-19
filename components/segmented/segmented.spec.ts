@@ -9,6 +9,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import {
   dispatchEvent,
@@ -42,7 +44,7 @@ describe('segmented', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(NzSegmentedTestComponent);
       component = fixture.componentInstance;
-      spyOn(component, 'handleValueChange');
+      vi.spyOn(component, 'handleValueChange');
       segmentedComponent = fixture.debugElement.query(By.directive(NzSegmentedComponent));
       fixture.detectChanges();
     });
@@ -217,7 +219,7 @@ describe('segmented', () => {
         component.disabled.set(true);
         fixture.detectChanges();
 
-        const offsetSpy = spyOn(segmentedComponent.componentInstance, 'onOffset');
+        const offsetSpy = vi.spyOn(segmentedComponent.componentInstance, 'onOffset');
 
         dispatchKeyboardEvent(theFirstElement, 'keydown', LEFT_ARROW);
         await stabilize(fixture, 100);
@@ -242,7 +244,7 @@ describe('segmented', () => {
         ]);
         fixture.detectChanges();
 
-        const offsetSpy = spyOn(segmentedComponent.componentInstance, 'onOffset');
+        const offsetSpy = vi.spyOn(segmentedComponent.componentInstance, 'onOffset');
 
         dispatchKeyboardEvent(theFirstElement, 'keydown', LEFT_ARROW);
         await stabilize(fixture, 100);
@@ -323,7 +325,7 @@ describe('segmented', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(NzSegmentedNgModelTestComponent);
       component = fixture.componentInstance;
-      spyOn(component, 'handleValueChange');
+      vi.spyOn(component, 'handleValueChange');
       segmentedComponent = fixture.debugElement.query(By.directive(NzSegmentedComponent));
       fixture.detectChanges();
     });
@@ -401,7 +403,7 @@ describe('segmented', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(NzSegmentedVerticalTestComponent);
       component = fixture.componentInstance;
-      spyOn(component, 'handleValueChange');
+      vi.spyOn(component, 'handleValueChange');
       segmentedComponent = fixture.debugElement.query(By.directive(NzSegmentedComponent));
       fixture.detectChanges();
     });
@@ -529,7 +531,7 @@ describe('segmented animation', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NzSegmentedTestComponent);
     component = fixture.componentInstance;
-    spyOn(component, 'handleValueChange');
+    vi.spyOn(component, 'handleValueChange');
     segmentedComponent = fixture.debugElement.query(By.directive(NzSegmentedComponent));
   });
 

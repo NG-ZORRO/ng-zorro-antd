@@ -7,6 +7,8 @@ import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { vi } from 'vitest';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NZ_I18N, provideNzI18n } from 'ng-zorro-antd/i18n/nz-i18n.token';
 
@@ -42,21 +44,21 @@ describe('i18n service', () => {
     });
 
     it('should trigger changed when set different lang', () => {
-      const spy = spyOn(testComponent, 'updateLocale');
+      const spy = vi.spyOn(testComponent, 'updateLocale');
       expect(spy).not.toHaveBeenCalled();
       srv.setLocale(en_US);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('should not trigger change when set same lang', () => {
-      const spy = spyOn(testComponent, 'updateLocale');
+      const spy = vi.spyOn(testComponent, 'updateLocale');
       expect(spy).not.toHaveBeenCalled();
       srv.setLocale(zh_CN);
       expect(spy).not.toHaveBeenCalled();
     });
 
     it('should warn when locale for a component is not provided', () => {
-      const spy = spyOn(console, 'warn');
+      const spy = vi.spyOn(console, 'warn');
       srv.setLocale({ locale: 'not_existing_language' } as NzSafeAny);
       expect(srv.getLocaleData('global.placeholder')).toBeTruthy();
       expect(spy).toHaveBeenCalledWith(

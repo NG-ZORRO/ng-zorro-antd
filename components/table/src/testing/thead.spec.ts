@@ -7,6 +7,8 @@ import { Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { NzTableComponent, NzTableModule } from 'ng-zorro-antd/table';
 
 describe('nz-thead', () => {
@@ -72,7 +74,7 @@ describe('nz-thead', () => {
   `
 })
 export class NzTheadTestNzTableComponent {
-  sortChange = jasmine.createSpy('sort change');
+  sortChange = vi.fn();
   readonly columns = signal(['third', 'fourth']);
   filterFn = (): number => -1;
 }

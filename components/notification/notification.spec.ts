@@ -7,6 +7,8 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 
+import { vi } from 'vitest';
+
 import { NzConfigService, provideNzConfig } from 'ng-zorro-antd/core/config';
 import { dispatchEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -55,7 +57,7 @@ describe('notification', () => {
     fixture = TestBed.createComponent(NzTestNotificationComponent);
   });
 
-  beforeEach(() => jasmine.clock().install());
+  beforeEach(() => vi.useFakeTimers());
 
   beforeEach(inject(
     [NzNotificationService, OverlayContainer, NzConfigService],
@@ -70,7 +72,7 @@ describe('notification', () => {
     notificationService.remove();
   });
 
-  afterEach(() => jasmine.clock().uninstall());
+  afterEach(() => vi.useRealTimers());
 
   it('should open a message box with success', () => {
     notificationService.success('test-title', 'SUCCESS');
@@ -164,7 +166,7 @@ describe('notification', () => {
     overlayContainerElement = overlayContainer.getContainerElement();
     expect(overlayContainerElement.textContent).toContain('EXISTS');
 
-    jasmine.clock().tick(1000);
+    vi.advanceTimersByTime(1000);
     await animationEnd();
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
   });
@@ -176,12 +178,12 @@ describe('notification', () => {
     overlayContainerElement = overlayContainer.getContainerElement();
     const messageElement = getMessageElement();
     dispatchMouseEvent(messageElement, 'mouseenter');
-    jasmine.clock().tick(2500);
+    vi.advanceTimersByTime(2500);
     await stabilize();
     expect(overlayContainerElement.textContent).toContain('EXISTS');
 
     dispatchMouseEvent(messageElement, 'mouseleave');
-    jasmine.clock().tick(2500);
+    vi.advanceTimersByTime(2500);
     await animationEnd();
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
   });
@@ -190,7 +192,7 @@ describe('notification', () => {
     const filledMessage = notificationService.success('title', 'SUCCESS', { nzDuration: 0 });
     fixture.detectChanges();
 
-    jasmine.clock().tick(5000);
+    vi.advanceTimersByTime(5000);
     await stabilize();
     overlayContainerElement = overlayContainer.getContainerElement();
     expect(overlayContainerElement.textContent).toContain('SUCCESS');
@@ -222,7 +224,7 @@ describe('notification', () => {
 
   it('should destroy without animation', async () => {
     notificationService.error('', 'EXISTS', { nzDuration: 1000, nzAnimate: false });
-    jasmine.clock().tick(1000);
+    vi.advanceTimersByTime(1000);
     await stabilize();
     overlayContainerElement = overlayContainer.getContainerElement();
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');

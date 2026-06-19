@@ -7,6 +7,8 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 
+import { vi } from 'vitest';
+
 import { NzConfigService, provideNzConfig } from 'ng-zorro-antd/core/config';
 import { dispatchEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 
@@ -45,7 +47,7 @@ describe('message', () => {
     testComponent = fixture.componentInstance;
   });
 
-  beforeEach(() => jasmine.clock().install());
+  beforeEach(() => vi.useFakeTimers());
 
   beforeEach(inject(
     [NzMessageService, OverlayContainer, NzConfigService],
@@ -60,7 +62,7 @@ describe('message', () => {
     messageService.remove();
   });
 
-  afterEach(() => jasmine.clock().uninstall());
+  afterEach(() => vi.useRealTimers());
 
   it('should open a message box with success', () => {
     messageService.success('SUCCESS');
@@ -116,7 +118,7 @@ describe('message', () => {
 
     expect(overlayContainerElement.textContent).toContain('EXISTS');
 
-    jasmine.clock().tick(1000);
+    vi.advanceTimersByTime(1000);
     await animationEnd();
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
   });
@@ -127,12 +129,12 @@ describe('message', () => {
 
     const messageElement = getMessageElement();
     dispatchMouseEvent(messageElement, 'mouseenter');
-    jasmine.clock().tick(2250);
+    vi.advanceTimersByTime(2250);
     await stabilize();
     expect(overlayContainerElement.textContent).toContain('EXISTS');
 
     dispatchMouseEvent(messageElement, 'mouseleave');
-    jasmine.clock().tick(2250);
+    vi.advanceTimersByTime(2250);
     await animationEnd();
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
   });
@@ -141,7 +143,7 @@ describe('message', () => {
     const filledMessage = messageService.success('SUCCESS', { nzDuration: 0 });
     overlayContainerElement = overlayContainer.getContainerElement();
 
-    jasmine.clock().tick(4500);
+    vi.advanceTimersByTime(4500);
     await stabilize();
     expect(overlayContainerElement.textContent).toContain('SUCCESS');
 
@@ -172,13 +174,13 @@ describe('message', () => {
 
   it('should destroy without animation', async () => {
     messageService.error('EXISTS', { nzDuration: 1000, nzAnimate: false });
-    jasmine.clock().tick(1000);
+    vi.advanceTimersByTime(1000);
     await stabilize();
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
   });
 
   it('should emit event when message close', async () => {
-    const closeSpy = jasmine.createSpy('message closed');
+    const closeSpy = vi.fn();
     const msg = messageService.create('loading', 'CLOSE');
     const messageId = msg.messageId;
     msg.onClose.subscribe(closeSpy);

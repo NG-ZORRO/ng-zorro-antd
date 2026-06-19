@@ -9,6 +9,8 @@ import { ApplicationRef, Component, NgZone, signal, ViewChild } from '@angular/c
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import {
   createKeyboardEvent,
@@ -62,7 +64,7 @@ describe('typography', () => {
 
     dispatchMouseEvent(copyButton, 'mouseenter');
     fixture.detectChanges();
-    jasmine.clock().tick(1000);
+    vi.advanceTimersByTime(1000);
     fixture.detectChanges();
 
     onHover();
@@ -74,7 +76,7 @@ describe('typography', () => {
 
     dispatchMouseEvent(copyButton, 'mouseleave');
     fixture.detectChanges();
-    jasmine.clock().tick(3000);
+    vi.advanceTimersByTime(3000);
     fixture.detectChanges();
   }
 
@@ -125,7 +127,7 @@ describe('typography', () => {
     });
 
     it('should copyable', () => {
-      spyOn(testComponent, 'onCopy');
+      vi.spyOn(testComponent, 'onCopy');
       const copyButtons = componentElement.querySelectorAll<HTMLButtonElement>('.ant-typography-copy');
       expect(copyButtons.length).toBe(5);
       copyButtons.forEach((btn, i) => {
@@ -135,9 +137,9 @@ describe('typography', () => {
       });
     });
 
-    beforeEach(() => jasmine.clock().install());
+    beforeEach(() => vi.useFakeTimers());
 
-    afterEach(() => jasmine.clock().uninstall());
+    afterEach(() => vi.useRealTimers());
 
     it('should be set tooltips', () => {
       const copyButton = componentElement.querySelector<HTMLButtonElement>('.custom-tooltips .ant-typography-copy')!;
@@ -195,7 +197,7 @@ describe('typography', () => {
     });
 
     it('should only trigger once within 3000ms', () => {
-      spyOn(testComponent, 'onCopy');
+      vi.spyOn(testComponent, 'onCopy');
       const copyButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-copy');
       expect(testComponent.onCopy).toHaveBeenCalledTimes(0);
       copyButton!.click();
@@ -203,7 +205,7 @@ describe('typography', () => {
       copyButton!.click();
       fixture.detectChanges();
       expect(testComponent.onCopy).toHaveBeenCalledTimes(1);
-      jasmine.clock().tick(3000);
+      vi.advanceTimersByTime(3000);
       fixture.detectChanges();
       copyButton!.click();
       fixture.detectChanges();
@@ -247,7 +249,7 @@ describe('typography', () => {
     });
 
     it('should be set tooltip', () => {
-      jasmine.clock().install();
+      vi.useFakeTimers();
       testComponent.tooltip.set('click to copy.');
       const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit')!;
 
@@ -255,16 +257,16 @@ describe('typography', () => {
 
       dispatchMouseEvent(editButton, 'mouseenter');
       fixture.detectChanges();
-      jasmine.clock().tick(1000);
+      vi.advanceTimersByTime(1000);
       fixture.detectChanges();
 
       expect(overlayContainerElement.textContent).toContain(testComponent.tooltip());
 
       dispatchMouseEvent(editButton, 'mouseleave');
       fixture.detectChanges();
-      jasmine.clock().tick(3000);
+      vi.advanceTimersByTime(3000);
       fixture.detectChanges();
-      jasmine.clock().uninstall();
+      vi.useRealTimers();
     });
 
     it('should edit work', async () => {
@@ -323,7 +325,7 @@ describe('typography', () => {
     const originalOffsetHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetHeight')?.get;
 
     beforeEach(async () => {
-      spyOnProperty(HTMLElement.prototype, 'offsetHeight').and.callFake(function (this: HTMLElement): number {
+      vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockImplementation(function (this: HTMLElement): number {
         if (this.getAttribute('aria-hidden') === 'true') {
           // Typography's JS ellipsis measures an offscreen aria-hidden container.
           // Headless browser layout can report that container as non-overflowing,
@@ -506,7 +508,7 @@ describe('change detection behavior', () => {
     fixture.detectChanges();
 
     const appRef = TestBed.inject(ApplicationRef);
-    spyOn(appRef, 'tick');
+    vi.spyOn(appRef, 'tick');
 
     const nzTextEdit = fixture.debugElement.query(By.directive(NzTextEditComponent));
     const textarea: HTMLTextAreaElement = nzTextEdit.nativeElement.querySelector('textarea');
@@ -523,8 +525,8 @@ describe('change detection behavior', () => {
     fixture.detectChanges();
     const nzTextEdit = fixture.debugElement.query(By.directive(NzTextEditComponent));
     const textarea: HTMLTextAreaElement = nzTextEdit.nativeElement.querySelector('textarea');
-    const spyCancel = spyOn(nzTextEdit.componentInstance, 'onCancel');
-    const spyEnter = spyOn(nzTextEdit.componentInstance, 'onEnter');
+    const spyCancel = vi.spyOn(nzTextEdit.componentInstance, 'onCancel');
+    const spyEnter = vi.spyOn(nzTextEdit.componentInstance, 'onEnter');
 
     dispatchKeyboardEvent(textarea, 'keydown', TAB);
     dispatchKeyboardEvent(textarea, 'keydown', CAPS_LOCK);
@@ -536,7 +538,7 @@ describe('change detection behavior', () => {
     expect(spyCancel).toHaveBeenCalled();
     expect(spyEnter).not.toHaveBeenCalled();
 
-    spyCancel.calls.reset();
+    spyCancel.mockClear();
 
     dispatchKeyboardEvent(textarea, 'keydown', ENTER);
     expect(spyCancel).not.toHaveBeenCalled();
@@ -657,8 +659,8 @@ export class NzTestTypographyEditComponent {
 export class NzTestTypographyEllipsisComponent {
   readonly expandable = signal(false);
   readonly suffix = signal<string | undefined>(undefined);
-  onExpand = jasmine.createSpy('expand callback');
-  onEllipsis = jasmine.createSpy('ellipsis callback');
+  onExpand = vi.fn();
+  onEllipsis = vi.fn();
   @ViewChild(NzTypographyComponent, { static: false }) nzTypographyComponent!: NzTypographyComponent;
   readonly str = signal(
     new Array(5).fill('Ant Design, a design language for background applications, is refined by Ant UED Team.').join('')

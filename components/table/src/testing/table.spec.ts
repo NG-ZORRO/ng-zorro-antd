@@ -7,6 +7,8 @@ import { Component, DebugElement, OnInit, signal, ViewChild, ViewEncapsulation }
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import en_US from 'ng-zorro-antd/i18n/languages/en_US';
@@ -348,9 +350,9 @@ type NzPageSizeChangeFn = (pageSize: number) => void;
 export class NzTestTableBasicComponent implements OnInit {
   @ViewChild(NzTableComponent, { static: false }) nzTableComponent!: NzTableComponent<BasicTestDataItem>;
   readonly pageIndex = signal(1);
-  pageIndexChange = jasmine.createSpy<NzPageSizeChangeFn>('pageIndex callback');
+  pageIndexChange = vi.fn<NzPageSizeChangeFn>();
   readonly pageSize = signal(10);
-  pageSizeChange = jasmine.createSpy<NzPageSizeChangeFn>('pageSize callback');
+  pageSizeChange = vi.fn<NzPageSizeChangeFn>();
   readonly dataSet = signal<BasicTestDataItem[]>([]);
   readonly noResult = signal('');
   readonly showSizeChanger = signal(false);
@@ -487,7 +489,7 @@ export class NzTableSpecCrashComponent {
   readonly data = signal<Array<{ id: number; name: string }>>([]);
   readonly pageIndex = signal(1);
   readonly pageSize = signal(10);
-  pageIndexChange = jasmine.createSpy<NzPageSizeChangeFn>('pageSize callback');
+  pageIndexChange = vi.fn<NzPageSizeChangeFn>();
 
   constructor() {
     setTimeout(() => {

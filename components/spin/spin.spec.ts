@@ -7,6 +7,8 @@ import { Component, DebugElement, inject, signal, TemplateRef, ViewChild } from 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
@@ -81,7 +83,7 @@ describe('spin', () => {
     });
 
     it('should delay work', async () => {
-      jasmine.clock().install();
+      vi.useFakeTimers();
       try {
         testComponent.delay.set(500);
         await stabilizeWithFakeTimer(fixture);
@@ -98,11 +100,11 @@ describe('spin', () => {
         await stabilizeWithFakeTimer(fixture);
         expect(spin.nativeElement.querySelector('.ant-spin')).toBeNull();
 
-        jasmine.clock().tick(500);
+        vi.advanceTimersByTime(500);
         await stabilizeWithFakeTimer(fixture);
         expect(spin.nativeElement.querySelector('.ant-spin')).toBeDefined();
       } finally {
-        jasmine.clock().uninstall();
+        vi.useRealTimers();
       }
     });
 

@@ -13,6 +13,8 @@ import { By } from '@angular/platform-browser';
 import { Observable, Observer, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
+import { vi } from 'vitest';
+
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchKeyboardEvent, provideMockDirectionality, sleep } from 'ng-zorro-antd/core/testing';
@@ -381,7 +383,7 @@ describe('upload', () => {
 
         describe('using observable', () => {
           it('can return true', () => {
-            spyOn(instance, 'nzChange');
+            vi.spyOn(instance, 'nzChange').mockImplementation(() => {});
             instance.beforeUpload.set((): Observable<NzSafeAny> => of(true));
             fixture.detectChanges();
             pageObject.postSmall();
@@ -431,7 +433,7 @@ describe('upload', () => {
 
           it('should be console.warn error', () => {
             let warnMsg = '';
-            console.warn = jasmine.createSpy().and.callFake((...res: string[]) => (warnMsg = res.join(' ')));
+            console.warn = vi.fn().mockImplementation((...res: string[]) => (warnMsg = res.join(' ')));
             expect(instance._nzChange).toBeUndefined();
             instance.beforeUpload.set((): Observable<NzSafeAny> => throwError(() => ''));
             fixture.detectChanges();
@@ -441,8 +443,8 @@ describe('upload', () => {
         });
 
         describe('using promise', () => {
-          beforeEach(() => jasmine.clock().install());
-          afterEach(() => jasmine.clock().uninstall());
+          beforeEach(() => vi.useFakeTimers());
+          afterEach(() => vi.useRealTimers());
 
           it('should upload when promise resolves to true', () => {
             let hookExecuted = false;
@@ -452,7 +454,7 @@ describe('upload', () => {
             });
             fixture.detectChanges();
             pageObject.postSmall();
-            jasmine.clock().tick(0);
+            vi.advanceTimersByTime(0);
             expect(hookExecuted).toBe(true);
           });
 
@@ -464,7 +466,7 @@ describe('upload', () => {
             });
             fixture.detectChanges();
             pageObject.postSmall();
-            jasmine.clock().tick(0);
+            vi.advanceTimersByTime(0);
             expect(hookExecuted).toBe(true);
           });
 
@@ -477,7 +479,7 @@ describe('upload', () => {
             });
             fixture.detectChanges();
             pageObject.postSmall();
-            jasmine.clock().tick(0);
+            vi.advanceTimersByTime(0);
             expect(hookExecuted).toBe(true);
           });
 
@@ -486,7 +488,7 @@ describe('upload', () => {
             instance.beforeUpload.set((): Promise<boolean> => Promise.resolve(false));
             fixture.detectChanges();
             pageObject.postSmall();
-            jasmine.clock().tick(0);
+            vi.advanceTimersByTime(0);
             expect(instance._nzChange).toBeUndefined();
           });
 
@@ -498,7 +500,7 @@ describe('upload', () => {
             });
             fixture.detectChanges();
             pageObject.postSmall();
-            jasmine.clock().tick(0);
+            vi.advanceTimersByTime(0);
             expect(hookCalled).toBe(true);
           });
 
@@ -507,7 +509,7 @@ describe('upload', () => {
             instance.beforeUpload.set((): Promise<boolean> => Promise.reject(false));
             fixture.detectChanges();
             pageObject.postSmall();
-            jasmine.clock().tick(0);
+            vi.advanceTimersByTime(0);
             expect(instance._nzChange).toBeUndefined();
           });
         });
@@ -585,7 +587,7 @@ describe('upload', () => {
 
           it('should be console.warn error', () => {
             let warnMsg = '';
-            console.warn = jasmine.createSpy().and.callFake((...res: string[]) => (warnMsg = res.join(' ')));
+            console.warn = vi.fn().mockImplementation((...res: string[]) => (warnMsg = res.join(' ')));
             instance.nzFilter.set([
               {
                 name: 'f1',
@@ -921,7 +923,7 @@ describe('upload', () => {
       private files: NzSafeAny;
 
       constructor() {
-        spyOn(this.btnComp, 'onClick').and.callFake(() =>
+        vi.spyOn(this.btnComp, 'onClick').mockImplementation(() =>
           this.btnComp.onChange({ target: { files: this.files } } as NzSafeAny)
         );
       }
@@ -991,8 +993,8 @@ describe('upload', () => {
         describe('change detection', () => {
           it('should not run change detection when the <input type=file> is being clicked', () => {
             const appRef = TestBed.inject(ApplicationRef);
-            spyOn(appRef, 'tick');
-            spyOn(instance.comp.file.nativeElement, 'click');
+            vi.spyOn(appRef, 'tick').mockImplementation(() => {});
+            vi.spyOn(instance.comp.file.nativeElement, 'click').mockImplementation(() => {});
             expect(instance.comp.file.nativeElement.click).not.toHaveBeenCalled();
             fixture.debugElement.query(By.css('div')).nativeElement.click();
             // Caretaker note: previously click events on the `nz-upload-btn` elements did trigger
@@ -1004,7 +1006,7 @@ describe('upload', () => {
 
         describe('via onClick', () => {
           it('', () => {
-            spyOn(instance.comp.file.nativeElement, 'click');
+            vi.spyOn(instance.comp.file.nativeElement, 'click').mockImplementation(() => {});
             expect(instance.comp.file.nativeElement.click).not.toHaveBeenCalled();
             instance.comp.onClick();
             expect(instance.comp.file.nativeElement.click).toHaveBeenCalled();
@@ -1012,7 +1014,7 @@ describe('upload', () => {
 
           it(', when nzOpenFileDialogOnClick is false', () => {
             instance.options.openFileDialogOnClick = false;
-            spyOn(instance.comp.file.nativeElement, 'click');
+            vi.spyOn(instance.comp.file.nativeElement, 'click').mockImplementation(() => {});
             expect(instance.comp.file.nativeElement.click).not.toHaveBeenCalled();
             instance.comp.onClick();
             expect(instance.comp.file.nativeElement.click).not.toHaveBeenCalled();
@@ -1022,8 +1024,8 @@ describe('upload', () => {
         describe('via onKeyDown', () => {
           it('normal', () => {
             const appRef = TestBed.inject(ApplicationRef);
-            spyOn(appRef, 'tick');
-            spyOn(instance.comp, 'onClick');
+            vi.spyOn(appRef, 'tick').mockImplementation(() => {});
+            vi.spyOn(instance.comp, 'onClick').mockImplementation(() => {});
             expect(instance.comp.onClick).not.toHaveBeenCalled();
             const uploadBtn = fixture.debugElement.query(By.css('div')).nativeElement;
             dispatchKeyboardEvent(uploadBtn, 'keydown', ENTER);
@@ -1033,8 +1035,8 @@ describe('upload', () => {
 
           it('when expect Enter', () => {
             const appRef = TestBed.inject(ApplicationRef);
-            spyOn(appRef, 'tick');
-            spyOn(instance.comp, 'onClick');
+            vi.spyOn(appRef, 'tick').mockImplementation(() => {});
+            vi.spyOn(instance.comp, 'onClick').mockImplementation(() => {});
             expect(instance.comp.onClick).not.toHaveBeenCalled();
             const uploadBtn = fixture.debugElement.query(By.css('div')).nativeElement;
             dispatchKeyboardEvent(uploadBtn, 'keydown', TAB);
@@ -1045,7 +1047,7 @@ describe('upload', () => {
 
         describe('via Drop', () => {
           it('normal', () => {
-            spyOn(instance.comp, 'uploadFiles');
+            vi.spyOn(instance.comp, 'uploadFiles').mockImplementation(() => {});
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
             instance.comp.onFileDrop({
               type: 'dragend',
@@ -1056,7 +1058,7 @@ describe('upload', () => {
           });
 
           it('when dragover event', () => {
-            spyOn(instance.comp, 'uploadFiles');
+            vi.spyOn(instance.comp, 'uploadFiles').mockImplementation(() => {});
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
             instance.comp.onFileDrop({ type: 'dragover', preventDefault: () => {} } as NzSafeAny);
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
@@ -1065,7 +1067,7 @@ describe('upload', () => {
           it('limit gif using resource type', () => {
             instance.options.accept = 'image/gif';
             fixture.detectChanges();
-            spyOn(instance.comp, 'uploadFiles');
+            vi.spyOn(instance.comp, 'uploadFiles').mockImplementation(() => {});
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
             instance.comp.onFileDrop({
               type: 'dragend',
@@ -1078,7 +1080,7 @@ describe('upload', () => {
           it('limit gif using file name', () => {
             instance.options.accept = '.gif';
             fixture.detectChanges();
-            spyOn(instance.comp, 'uploadFiles');
+            vi.spyOn(instance.comp, 'uploadFiles').mockImplementation(() => {});
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
             instance.comp.onFileDrop({
               type: 'dragend',
@@ -1091,7 +1093,7 @@ describe('upload', () => {
           it('allow type image/*', () => {
             instance.options.accept = 'image/*';
             fixture.detectChanges();
-            spyOn(instance.comp, 'uploadFiles');
+            vi.spyOn(instance.comp, 'uploadFiles').mockImplementation(() => {});
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
             instance.comp.onFileDrop({
               type: 'dragend',
@@ -1104,7 +1106,7 @@ describe('upload', () => {
           it(`allow type [ 'image/png', 'image/jpg' ]`, () => {
             instance.options.accept = ['image/png', 'image/jpg'];
             fixture.detectChanges();
-            spyOn(instance.comp, 'uploadFiles');
+            vi.spyOn(instance.comp, 'uploadFiles').mockImplementation(() => {});
             expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
             instance.comp.onFileDrop({
               type: 'dragend',
@@ -1116,7 +1118,7 @@ describe('upload', () => {
         });
 
         it('via onChange', () => {
-          spyOn(instance.comp, 'uploadFiles');
+          vi.spyOn(instance.comp, 'uploadFiles').mockImplementation(() => {});
           expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
           instance.comp.onChange(PNG_SMALL as NzSafeAny);
           expect(instance.comp.uploadFiles).toHaveBeenCalled();
@@ -1144,7 +1146,7 @@ describe('upload', () => {
           beforeEach(() => (instance.options.directory = true));
 
           it('should working', () => {
-            spyOn(instance.comp, 'uploadFiles');
+            vi.spyOn(instance.comp, 'uploadFiles').mockImplementation(() => {});
             const files = {
               name: 'foo',
               children: [
@@ -1170,7 +1172,7 @@ describe('upload', () => {
 
           it('should be ignore invalid extension', () => {
             instance.options.accept = ['.webp'];
-            spyOn(instance.comp, 'uploadFiles');
+            vi.spyOn(instance.comp, 'uploadFiles').mockImplementation(() => {});
             const files = {
               name: 'foo',
               children: [
@@ -1198,28 +1200,28 @@ describe('upload', () => {
         });
 
         it('[onClick]', () => {
-          spyOn(instance.comp.file.nativeElement, 'click');
+          vi.spyOn(instance.comp.file.nativeElement, 'click').mockImplementation(() => {});
           expect(instance.comp.file.nativeElement.click).not.toHaveBeenCalled();
           instance.comp.onClick();
           expect(instance.comp.file.nativeElement.click).not.toHaveBeenCalled();
         });
 
         it('[onKeyDown]', () => {
-          spyOn(instance.comp, 'onClick');
+          vi.spyOn(instance.comp, 'onClick').mockImplementation(() => {});
           expect(instance.comp.onClick).not.toHaveBeenCalled();
           // instance.comp.onKeyDown(null);
           // expect(instance.comp.onClick).not.toHaveBeenCalled();
         });
 
         it('[onFileDrop]', () => {
-          spyOn(instance.comp, 'uploadFiles');
+          vi.spyOn(instance.comp, 'uploadFiles').mockImplementation(() => {});
           expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
           instance.comp.onFileDrop({ type: 'dragover', preventDefault: () => {} } as NzSafeAny);
           expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
         });
 
         it('[onChange]', () => {
-          spyOn(instance.comp, 'uploadFiles');
+          vi.spyOn(instance.comp, 'uploadFiles').mockImplementation(() => {});
           expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
           // instance.comp.onChange(null);
           // expect(instance.comp.uploadFiles).not.toHaveBeenCalled();
@@ -1277,15 +1279,15 @@ describe('upload', () => {
         http = TestBed.inject(HttpTestingController);
       });
 
-      beforeEach(() => jasmine.clock().install());
-      afterEach(() => jasmine.clock().uninstall());
+      beforeEach(() => vi.useFakeTimers());
+      afterEach(() => vi.useRealTimers());
 
       it('should uploading a png file', () => {
-        spyOn<NzSafeAny>(comp.options, 'onStart');
-        spyOn<NzSafeAny>(comp.options, 'onProgress');
-        spyOn<NzSafeAny>(comp.options, 'onSuccess');
+        vi.spyOn(comp.options as NzSafeAny, 'onStart').mockImplementation(() => {});
+        vi.spyOn(comp.options as NzSafeAny, 'onProgress').mockImplementation(() => {});
+        vi.spyOn(comp.options as NzSafeAny, 'onSuccess').mockImplementation(() => {});
         comp.onChange(PNG_SMALL as NzSafeAny);
-        jasmine.clock().tick(1);
+        vi.advanceTimersByTime(1);
         const req = http.expectOne('/test');
         req.event({ type: 1, loaded: 10, total: 100 });
         req.flush('ok');
@@ -1296,7 +1298,7 @@ describe('upload', () => {
 
       it('should contain the parameters of http request', () => {
         comp.onChange(PNG_SMALL as NzSafeAny);
-        jasmine.clock().tick(1);
+        vi.advanceTimersByTime(1);
         const req = http.expectOne('/test');
         expect(req.request.withCredentials).toBe(true);
         expect(req.request.headers.get('token')).toBe('asdf');
@@ -1307,7 +1309,7 @@ describe('upload', () => {
       });
 
       it('should filter size', () => {
-        spyOn<NzSafeAny>(comp.options, 'onStart');
+        vi.spyOn(comp.options as NzSafeAny, 'onStart').mockImplementation(() => {});
         comp.options.filters = [
           {
             name: '',
@@ -1319,15 +1321,15 @@ describe('upload', () => {
       });
 
       it('should be no request when beforeUpload is false', () => {
-        spyOn<NzSafeAny>(comp.options, 'beforeUpload').and.returnValue(false);
-        spyOn<NzSafeAny>(comp.options, 'onStart');
+        vi.spyOn(comp.options as NzSafeAny, 'beforeUpload').mockReturnValue(false);
+        vi.spyOn(comp.options as NzSafeAny, 'onStart').mockImplementation(() => {});
         comp.onChange(PNG_SMALL as NzSafeAny);
         expect(comp.options.beforeUpload).toHaveBeenCalled();
         expect(comp.options.onStart).not.toHaveBeenCalled();
       });
 
       it('should handle promise-based beforeUpload that resolves to true', async () => {
-        spyOn<NzSafeAny>(comp.options, 'onStart');
+        vi.spyOn(comp.options as NzSafeAny, 'onStart').mockImplementation(() => {});
         comp.options.beforeUpload = (): Promise<boolean> => Promise.resolve(true);
         comp.onChange(PNG_SMALL as NzSafeAny);
         await Promise.resolve();
@@ -1337,7 +1339,7 @@ describe('upload', () => {
       });
 
       it('should not start upload when promise-based beforeUpload resolves to false', async () => {
-        spyOn<NzSafeAny>(comp.options, 'onStart');
+        vi.spyOn(comp.options as NzSafeAny, 'onStart').mockImplementation(() => {});
         comp.options.beforeUpload = (): Promise<boolean> => Promise.resolve(false);
         comp.onChange(PNG_SMALL as NzSafeAny);
         await Promise.resolve();
@@ -1346,7 +1348,7 @@ describe('upload', () => {
       });
 
       it('should handle promise-based beforeUpload with file transformation', async () => {
-        spyOn<NzSafeAny>(comp.options, 'onStart');
+        vi.spyOn(comp.options as NzSafeAny, 'onStart').mockImplementation(() => {});
         const baseFile = new File(['modified'], 'modified.txt', { type: 'text/plain' });
         const transformedFile: NzUploadFile = {
           ...baseFile,
@@ -1367,8 +1369,8 @@ describe('upload', () => {
 
       it('should handle promise rejection in beforeUpload', async () => {
         let warnMsg = '';
-        console.warn = jasmine.createSpy().and.callFake((...res: string[]) => (warnMsg = res.join(' ')));
-        spyOn<NzSafeAny>(comp.options, 'onStart');
+        console.warn = vi.fn().mockImplementation((...res: string[]) => (warnMsg = res.join(' ')));
+        vi.spyOn(comp.options as NzSafeAny, 'onStart').mockImplementation(() => {});
         comp.options.beforeUpload = (): Promise<boolean> => Promise.reject(new Error('Validation failed'));
         comp.onChange(PNG_SMALL as NzSafeAny);
         await Promise.resolve();
@@ -1379,11 +1381,11 @@ describe('upload', () => {
       });
 
       it('should error when request error', () => {
-        spyOn<NzSafeAny>(comp.options, 'onStart');
-        spyOn<NzSafeAny>(comp.options, 'onSuccess');
-        spyOn<NzSafeAny>(comp.options, 'onError');
+        vi.spyOn(comp.options as NzSafeAny, 'onStart').mockImplementation(() => {});
+        vi.spyOn(comp.options as NzSafeAny, 'onSuccess').mockImplementation(() => {});
+        vi.spyOn(comp.options as NzSafeAny, 'onError').mockImplementation(() => {});
         comp.onChange(PNG_SMALL as NzSafeAny);
-        jasmine.clock().tick(1);
+        vi.advanceTimersByTime(1);
         http.expectOne('/test').error({ status: 403 } as unknown as ProgressEvent);
         expect(comp.options.onStart).toHaveBeenCalled();
         expect(comp.options.onError).toHaveBeenCalled();
@@ -1392,14 +1394,14 @@ describe('upload', () => {
 
       it('should custom request', () => {
         comp.options.customRequest = () => of(true).subscribe(() => {});
-        spyOn<NzSafeAny>(comp.options, 'customRequest').and.callThrough();
+        vi.spyOn(comp.options as NzSafeAny, 'customRequest');
         comp.onChange(PNG_SMALL as NzSafeAny);
         expect(comp.options.customRequest).toHaveBeenCalled();
       });
 
       it('should be warn "Must return Subscription type in [nzCustomRequest] property"', () => {
         let warnMsg = '';
-        spyOn(console, 'warn').and.callFake((...res: string[]) => (warnMsg = res.join(' ')));
+        vi.spyOn(console, 'warn').mockImplementation((...res: string[]) => (warnMsg = res.join(' ')));
         comp.options.customRequest = (() => {}) as NzSafeAny;
         comp.onChange(PNG_SMALL as NzSafeAny);
         expect(warnMsg).toContain(`Must return Subscription type in '[nzCustomRequest]' property`);

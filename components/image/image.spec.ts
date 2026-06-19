@@ -8,6 +8,8 @@ import { Overlay, OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, NgZone, ViewChild, inject, signal } from '@angular/core';
 import { ComponentFixture, inject as testingInject, TestBed } from '@angular/core/testing';
 
+import { vi } from 'vitest';
+
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import {
   dispatchEvent,
@@ -124,7 +126,7 @@ describe('image placeholder', () => {
 
   xit('should placeholder src work', () => {
     const image = debugElement.nativeElement.querySelector('img');
-    const spy = spyOnProperty(image, 'src', 'set').and.callThrough();
+    const spy = vi.spyOn(image, 'src', 'set');
     context.src.set(SRC);
     context.placeholder.set(PLACEHOLDER);
     fixture.detectChanges();
@@ -230,7 +232,7 @@ describe('image preview', () => {
 
   function tickChanges(time: number = 300): void {
     fixture.detectChanges();
-    jasmine.clock().tick(time);
+    vi.advanceTimersByTime(time);
     fixture.detectChanges();
   }
 
@@ -416,8 +418,8 @@ describe('image preview', () => {
     });
 
     describe('fake clock', () => {
-      beforeEach(() => jasmine.clock().install());
-      afterEach(() => jasmine.clock().uninstall());
+      beforeEach(() => vi.useFakeTimers());
+      afterEach(() => vi.useRealTimers());
 
       it('should detect mouse zoom direction correctly', () => {
         context.images = [{ src: QUICK_SRC }];
@@ -441,33 +443,33 @@ describe('image preview', () => {
       dispatchMouseEvent(previewInstance.imagePreviewWrapper.nativeElement, 'mousedown');
       await fixture.whenStable();
       previewInstance['zoom'] = 5;
-      spyOn(previewInstance, 'onZoomOut');
-      spyOn<NzSafeAny>(previewInstance, 'reCenterImage');
+      vi.spyOn(previewInstance, 'onZoomOut');
+      vi.spyOn(previewInstance as NzSafeAny, 'reCenterImage');
       previewInstance['handleImageScaleWhileZoomingWithMouse'](10);
       expect(previewInstance.onZoomOut).toHaveBeenCalled();
       expect(previewInstance['reCenterImage']).not.toHaveBeenCalled();
 
       previewInstance['zoom'] = 0.5;
-      spyOn(previewInstance, 'onZoomIn');
-      spyOn<NzSafeAny>(previewInstance, 'reCenterImage');
+      vi.spyOn(previewInstance, 'onZoomIn');
+      vi.spyOn(previewInstance as NzSafeAny, 'reCenterImage');
       previewInstance['handleImageScaleWhileZoomingWithMouse'](-10);
       expect(previewInstance.onZoomOut).toHaveBeenCalled();
       expect(previewInstance['reCenterImage']).toHaveBeenCalled();
     });
 
     describe('fake clock', () => {
-      beforeEach(() => jasmine.clock().install());
-      afterEach(() => jasmine.clock().uninstall());
+      beforeEach(() => vi.useFakeTimers());
+      afterEach(() => vi.useRealTimers());
 
       it('should close image preview when escape is pressed', () => {
         context.images = [{ src: QUICK_SRC }];
         context.createByService();
         const previewInstance = context.previewRef!.previewInstance;
         tickChanges();
-        spyOn(previewInstance, 'onClose');
+        vi.spyOn(previewInstance, 'onClose');
 
         dispatchKeyboardEvent(document, 'keydown', ESCAPE);
-        jasmine.clock().tick(0);
+        vi.advanceTimersByTime(0);
 
         expect(previewInstance.onClose).toHaveBeenCalled();
       });
@@ -578,8 +580,8 @@ describe('image preview', () => {
 
   describe('Drag', () => {
     describe('fake clock', () => {
-      beforeEach(() => jasmine.clock().install());
-      afterEach(() => jasmine.clock().uninstall());
+      beforeEach(() => vi.useFakeTimers());
+      afterEach(() => vi.useRealTimers());
 
       it('should drag released work', () => {
         context.images = [{ src: QUICK_SRC }];
@@ -588,7 +590,7 @@ describe('image preview', () => {
         tickChanges();
         previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
         expect(previewInstance.isDragging()).toEqual(true);
-        spyOn(previewInstance, 'onDragEnd').and.callFake(function () {
+        vi.spyOn(previewInstance, 'onDragEnd').mockImplementation(function () {
           return true;
         });
         expect(previewInstance.position).toEqual({ x: 0, y: 0 });
@@ -601,7 +603,7 @@ describe('image preview', () => {
       const previewInstance = context.previewRef!.previewInstance;
       previewInstance.imagePreviewWrapper.nativeElement.dispatchEvent(new MouseEvent('mousedown'));
       await fixture.whenStable();
-      spyOn(previewInstance, 'onDragEnd').and.callFake(function () {
+      vi.spyOn(previewInstance, 'onDragEnd').mockImplementation(function () {
         return true;
       });
       const e: NzSafeAny = {};
@@ -613,7 +615,7 @@ describe('image preview', () => {
       context.images = [{ src: QUICK_SRC }];
       context.createByService();
       const previewInstance = context.previewRef!.previewInstance;
-      spyOn<NzSafeAny>(previewInstance, 'reCenterImage');
+      vi.spyOn(previewInstance as NzSafeAny, 'reCenterImage').mockImplementation(() => {});
       await fixture.whenStable();
 
       context.zoomStep.set(0.25);
@@ -721,12 +723,12 @@ describe('image preview', () => {
       const previewInstance = context.previewRef!.previewInstance;
       await fixture.whenStable();
 
-      const e = jasmine.createSpyObj('e', ['preventDefault', 'stopPropagation']);
-      spyOn<NzSafeAny>(previewInstance, 'handlerImageTransformationWhileZoomingWithMouse');
-      spyOn<NzSafeAny>(previewInstance, 'handleImageScaleWhileZoomingWithMouse');
-      spyOn<NzSafeAny>(previewInstance, 'updatePreviewImageWrapperTransform');
-      spyOn<NzSafeAny>(previewInstance, 'updatePreviewImageTransform');
-      spyOn<NzSafeAny>(previewInstance, 'markForCheck');
+      const e = { preventDefault: vi.fn(), stopPropagation: vi.fn() } as NzSafeAny;
+      vi.spyOn(previewInstance as NzSafeAny, 'handlerImageTransformationWhileZoomingWithMouse');
+      vi.spyOn(previewInstance as NzSafeAny, 'handleImageScaleWhileZoomingWithMouse');
+      vi.spyOn(previewInstance as NzSafeAny, 'updatePreviewImageWrapperTransform');
+      vi.spyOn(previewInstance as NzSafeAny, 'updatePreviewImageTransform');
+      vi.spyOn(previewInstance as NzSafeAny, 'markForCheck');
       previewInstance.wheelZoomEventHandler(e);
       expect(e.preventDefault).toHaveBeenCalled();
       expect(e.stopPropagation).toHaveBeenCalled();

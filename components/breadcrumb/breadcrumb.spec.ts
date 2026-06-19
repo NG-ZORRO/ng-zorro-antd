@@ -8,6 +8,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { PRIMARY_OUTLET, provideRouter, Router, RouterOutlet, Routes } from '@angular/router';
 
+import { vi } from 'vitest';
+
 import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -397,7 +399,7 @@ describe('breadcrumb', () => {
   });
 
   it('should have correct value for nextUrl', () => {
-    spyOn(component, 'nzRouteFn');
+    vi.spyOn(component, 'nzRouteFn');
     const mockRoute = {
       children: [
         {

@@ -17,6 +17,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
 import {
   createKeyboardEvent,
@@ -169,8 +171,8 @@ describe('switch', () => {
     it('should focus and blur function work', async () => {
       fixture.detectChanges();
       const buttonElement = switchElement.nativeElement.firstElementChild as HTMLElement;
-      spyOn(buttonElement, 'focus').and.callThrough();
-      spyOn(buttonElement, 'blur').and.callThrough();
+      vi.spyOn(buttonElement, 'focus');
+      vi.spyOn(buttonElement, 'blur');
       testComponent.nzSwitchComponent.focus();
       await Promise.resolve();
       fixture.detectChanges();
@@ -188,8 +190,8 @@ describe('switch', () => {
         const appRef = TestBed.inject(ApplicationRef);
         const event = new MouseEvent('click');
 
-        spyOn(appRef, 'tick');
-        spyOn(event, 'preventDefault').and.callThrough();
+        vi.spyOn(appRef, 'tick');
+        vi.spyOn(event, 'preventDefault');
 
         switchElement.nativeElement.dispatchEvent(event);
 
@@ -206,8 +208,8 @@ describe('switch', () => {
           keyCode: SPACE
         });
 
-        spyOn(appRef, 'tick');
-        spyOn(event, 'preventDefault').and.callThrough();
+        vi.spyOn(appRef, 'tick');
+        vi.spyOn(event, 'preventDefault');
 
         switchButton.dispatchEvent(event);
 
@@ -218,7 +220,7 @@ describe('switch', () => {
         await stabilize(fixture);
 
         const enabledEvent = createKeyboardEvent('keydown', SPACE);
-        spyOn(enabledEvent, 'preventDefault').and.callThrough();
+        vi.spyOn(enabledEvent, 'preventDefault');
         switchButton.dispatchEvent(enabledEvent);
 
         expect(enabledEvent.preventDefault).toHaveBeenCalled();
@@ -379,7 +381,7 @@ export class NzTestSwitchBasicComponent {
   readonly disabled = signal(false);
   readonly size = signal<NzSizeDSType>('default');
   readonly loading = signal(false);
-  modelChange = jasmine.createSpy('model change callback');
+  modelChange = vi.fn();
 }
 
 @Component({

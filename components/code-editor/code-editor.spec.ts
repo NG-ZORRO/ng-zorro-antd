@@ -7,6 +7,8 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
+import { vi } from 'vitest';
+
 import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
@@ -63,7 +65,7 @@ describe('code editor', () => {
 
     // It seems that there is no way to waiting for monaco editor to load.
     xit('should raise error when user try to set value in full control mode', waitForAsync(() => {
-      const spy = spyOn(console, 'warn');
+      const spy = vi.spyOn(console, 'warn');
       testComponent.code = '123';
       fixture.detectChanges();
       expect(spy).toHaveBeenCalledWith(

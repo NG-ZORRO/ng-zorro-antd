@@ -9,6 +9,8 @@ import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { delay, of, Observable } from 'rxjs';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -37,8 +39,8 @@ describe('popconfirm', () => {
     overlayContainerElement = oc.getContainerElement();
   }));
 
-  beforeEach(() => jasmine.clock().install());
-  afterEach(() => jasmine.clock().uninstall());
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
@@ -54,7 +56,7 @@ describe('popconfirm', () => {
 
   function waitingForTooltipToggling(): void {
     fixture.detectChanges();
-    jasmine.clock().tick(500);
+    vi.advanceTimersByTime(500);
     fixture.detectChanges();
   }
 
@@ -229,7 +231,7 @@ describe('popconfirm', () => {
     component.beforeConfirm.set(() => of(true).pipe(delay(200)));
 
     dispatchMouseEvent(getTooltipTrigger(1), 'click');
-    jasmine.clock().tick(200 + 10);
+    vi.advanceTimersByTime(200 + 10);
     waitingForTooltipToggling();
     expect(getTitleText()).toBeNull();
     expect(component.confirm).toHaveBeenCalledTimes(1);
@@ -255,7 +257,7 @@ describe('popconfirm', () => {
     );
 
     dispatchMouseEvent(getTooltipTrigger(1), 'click');
-    jasmine.clock().tick(200 + 10);
+    vi.advanceTimersByTime(200 + 10);
     await fixture.whenStable();
     waitingForTooltipToggling();
     expect(getTitleText()).toBeNull();
@@ -351,8 +353,8 @@ describe('popconfirm', () => {
   `
 })
 export class NzPopconfirmTestNewComponent {
-  confirm = jasmine.createSpy('confirm');
-  cancel = jasmine.createSpy('cancel');
+  confirm = vi.fn();
+  cancel = vi.fn();
   readonly condition = signal(false);
   readonly nzOkType = signal<string>('default');
   readonly nzOkDisabled = signal<boolean>(false);

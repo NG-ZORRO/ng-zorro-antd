@@ -7,6 +7,8 @@ import { PlatformLocation } from '@angular/common';
 import { ApplicationRef, DOCUMENT, NgZone } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
+import { vi } from 'vitest';
+
 import { MockNgZone, nextAnimationFrame } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -24,11 +26,11 @@ describe('NzScrollService', () => {
   }
 
   class MockDocumentElement {
-    scrollTop = jasmine.createSpy('scrollTop');
+    scrollTop = vi.fn();
   }
 
   class MockElement {
-    scrollTop = jasmine.createSpy('scrollTop');
+    scrollTop = vi.fn();
   }
 
   class MockPlatformLocation {
@@ -36,7 +38,7 @@ describe('NzScrollService', () => {
   }
 
   beforeEach(() => {
-    spyOn(window, 'scrollBy');
+    vi.spyOn(window, 'scrollBy');
   });
 
   beforeEach(() => {
@@ -117,7 +119,7 @@ describe('NzScrollService', () => {
   describe('change detection behavior', () => {
     it('should not trigger change detection when calling `scrollTo`', async () => {
       const appRef = TestBed.inject(ApplicationRef);
-      spyOn(appRef, 'tick');
+      vi.spyOn(appRef, 'tick');
 
       scrollService.scrollTo();
       await nextAnimationFrame();
@@ -126,7 +128,7 @@ describe('NzScrollService', () => {
 
     it('should call the custom callback within the Angular zone', async () => {
       let callbackCalled = false;
-      spyOn(ngZone, 'run').and.callThrough();
+      vi.spyOn(ngZone, 'run');
 
       scrollService.scrollTo(undefined, undefined, {
         duration: 0,

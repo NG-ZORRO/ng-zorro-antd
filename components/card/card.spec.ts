@@ -8,6 +8,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { testDirectionality } from 'ng-zorro-antd/core/testing';
@@ -154,10 +156,10 @@ describe('card component', () => {
 
   beforeEach(() => {
     configChangeEvent$ = new Subject<void>();
-    const nzConfigServiceSpy = jasmine.createSpyObj('NzConfigService', {
-      getConfigChangeEventForComponent: configChangeEvent$.asObservable(),
-      getConfigForComponent: {}
-    });
+    const nzConfigServiceSpy = {
+      getConfigChangeEventForComponent: vi.fn().mockReturnValue(configChangeEvent$.asObservable()),
+      getConfigForComponent: vi.fn().mockReturnValue({})
+    };
 
     TestBed.configureTestingModule({
       imports: [NzCardModule, NzCardModule],
@@ -169,7 +171,7 @@ describe('card component', () => {
   });
 
   it('should call markForCheck when changing nzConfig', () => {
-    spyOn(component['cdr'], 'markForCheck');
+    vi.spyOn(component['cdr'], 'markForCheck');
     fixture.detectChanges();
     configChangeEvent$.next();
     expect(component['cdr'].markForCheck).toHaveBeenCalled();

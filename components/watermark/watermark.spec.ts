@@ -8,6 +8,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { bootstrapApplication, By } from '@angular/platform-browser';
 import { renderApplication } from '@angular/platform-server';
 
+import { vi } from 'vitest';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { FontType } from './typings';
@@ -18,22 +20,22 @@ describe('watermark', () => {
   let fixture: ComponentFixture<NzTestWatermarkBasicComponent>;
   let testComponent: NzTestWatermarkBasicComponent;
   let resultEl: DebugElement;
-  let mockSrcSpy: jasmine.Spy;
+  let mockSrcSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
     // Keep the Image.prototype.src spy per spec. A beforeAll spy leaks into
     // later browser specs and can call a destroyed watermark instance.
-    mockSrcSpy = spyOnProperty(Image.prototype, 'src', 'set');
+    mockSrcSpy = vi.spyOn(Image.prototype, 'src', 'set');
     fixture = TestBed.createComponent(NzTestWatermarkBasicComponent);
     testComponent = fixture.debugElement.componentInstance;
     resultEl = fixture.debugElement.query(By.directive(NzWatermarkComponent));
-    mockSrcSpy.and.callFake(() => {
+    mockSrcSpy.mockImplementation(() => {
       resultEl.componentInstance['onImageLoad']?.();
     });
   });
 
   afterEach(() => {
-    (mockSrcSpy as NzSafeAny).mockRestore();
+    mockSrcSpy.mockRestore();
   });
 
   it('basic', async () => {
@@ -57,7 +59,7 @@ describe('watermark', () => {
   });
 
   it('invalid image', async () => {
-    mockSrcSpy.and.callFake(() => {
+    mockSrcSpy.mockImplementation(() => {
       resultEl.componentInstance['onImageError']?.();
     });
     testComponent.nzImage.set('https://img.alicdn.com/test.svg');

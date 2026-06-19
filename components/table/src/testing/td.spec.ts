@@ -7,6 +7,8 @@ import { Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzTdAddOnComponent, NzTableModule } from 'ng-zorro-antd/table';
 
@@ -173,11 +175,11 @@ describe('nz-td', () => {
 })
 export class NzTestTdComponent {
   readonly checked = signal(false);
-  checkedChange = jasmine.createSpy('show change');
+  checkedChange = vi.fn();
   readonly indeterminate = signal(false);
   readonly disabled = signal(false);
   readonly expand = signal(false);
-  expandChange = jasmine.createSpy('expand change');
+  expandChange = vi.fn();
   readonly indentSize = signal(0);
   readonly left = signal<string | boolean>(false);
   readonly right = signal<string | boolean>(false);

@@ -83,9 +83,9 @@ describe('NzDatePickerComponent', () => {
     })
   );
 
-  beforeEach(() => jasmine.clock().install());
+  beforeEach(() => vi.useFakeTimers());
 
-  afterEach(() => jasmine.clock().uninstall());
+  afterEach(() => vi.useRealTimers());
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
@@ -101,7 +101,7 @@ describe('NzDatePickerComponent', () => {
 
       triggerInputBlur();
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
     });
@@ -110,13 +110,13 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       fixtureInstance.datePicker.open();
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
 
       fixtureInstance.datePicker.close();
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
     });
@@ -127,7 +127,7 @@ describe('NzDatePickerComponent', () => {
 
       triggerInputBlur();
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(document.activeElement).toEqual(getPickerInput(fixture.debugElement));
     });
@@ -136,14 +136,14 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       getPickerInput(fixture.debugElement).dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
 
       getPickerInput(fixture.debugElement).focus();
       getPickerInput(fixture.debugElement).dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
     });
@@ -172,7 +172,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       input.dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
     });
@@ -184,7 +184,7 @@ describe('NzDatePickerComponent', () => {
     });
 
     it('should open by click and close by tab', () => {
-      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      const nzOnChange = vi.spyOn(fixtureInstance, 'nzOnChange').mockImplementation(() => {});
       fixtureInstance.useSuite.set(5);
 
       fixture.detectChanges();
@@ -196,10 +196,10 @@ describe('NzDatePickerComponent', () => {
 
       triggerInputBlur();
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
 
-      const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
+      const result = (nzOnChange.mock.calls[0] as Date[])[0];
       expect(isSameDay(new Date('2021-04-12'), result)).toBeTruthy();
       expect(getPickerContainer()).toBeNull();
     });
@@ -208,7 +208,7 @@ describe('NzDatePickerComponent', () => {
       fixtureInstance.useSuite.set(5);
       fixtureInstance.firstValue.set(new Date('2021-04-12'));
       await stabilize();
-      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      const nzOnChange = vi.spyOn(fixtureInstance, 'nzOnChange').mockImplementation(() => {});
 
       openPickerByClickTrigger();
       expect(getPickerContainer()).not.toBeNull();
@@ -217,7 +217,7 @@ describe('NzDatePickerComponent', () => {
 
       triggerInputBlur();
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
 
       expect(nzOnChange).not.toHaveBeenCalled();
@@ -243,7 +243,7 @@ describe('NzDatePickerComponent', () => {
 
       dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
 
@@ -256,7 +256,7 @@ describe('NzDatePickerComponent', () => {
       openPickerByClickTrigger();
 
       const event = new MouseEvent('mousedown');
-      spyOn(event, 'preventDefault').and.callThrough();
+      vi.spyOn(event, 'preventDefault');
       fixture.nativeElement.querySelector(`.${PREFIX_CLASS}`).dispatchEvent(event);
 
       expect(event.preventDefault).toHaveBeenCalled();
@@ -267,7 +267,7 @@ describe('NzDatePickerComponent', () => {
       openPickerByClickTrigger();
 
       const event = new MouseEvent('mousedown');
-      spyOn(event, 'preventDefault').and.callThrough();
+      vi.spyOn(event, 'preventDefault');
       fixture.nativeElement.querySelector(`.${PREFIX_CLASS} input`).dispatchEvent(event);
 
       expect(event.preventDefault).not.toHaveBeenCalled();
@@ -286,7 +286,7 @@ describe('NzDatePickerComponent', () => {
       expect(fixtureInstance.nzValue()).toBe(initial);
       expect(debugElement.query(clearBtnSelector)).toBeDefined();
 
-      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      const nzOnChange = vi.spyOn(fixtureInstance, 'nzOnChange').mockImplementation(() => {});
       debugElement.query(clearBtnSelector).nativeElement.click();
       fixture.detectChanges();
       expect(fixtureInstance.nzValue()).toBe(initial);
@@ -325,7 +325,7 @@ describe('NzDatePickerComponent', () => {
 
       dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       fixtureInstance.control()!.disable();
       await stabilize(10000);
@@ -339,13 +339,13 @@ describe('NzDatePickerComponent', () => {
       fixtureInstance.useSuite.set(4);
       fixtureInstance.control.set(new FormControl<Date | null>(null));
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       const datePickerElement = fixture.debugElement.query(By.directive(NzDatePickerComponent)).nativeElement;
       openPickerByClickTrigger();
       expect(datePickerElement.classList).toContain('ng-untouched');
       triggerInputBlur();
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       expect(datePickerElement.classList).toContain('ng-touched');
       expect(fixtureInstance.control()!.touched).toBeTruthy();
     });
@@ -364,18 +364,18 @@ describe('NzDatePickerComponent', () => {
       fixtureInstance.useSuite.set(2);
 
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
       fixtureInstance.nzOpen.set(true);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
 
       fixtureInstance.nzOpen.set(false);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
     });
@@ -398,7 +398,7 @@ describe('NzDatePickerComponent', () => {
       await stabilize(10000);
       const input = getPickerInput(fixture.debugElement);
       expect(input.value).toBe('23.05.2025');
-      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      const nzOnChange = vi.spyOn(fixtureInstance, 'nzOnChange').mockImplementation(() => {});
       fixtureInstance.nzFormat.set('dd/MM/yyyy');
       await stabilize(10000);
       expect(input.value).toBe('23/05/2025');
@@ -420,7 +420,7 @@ describe('NzDatePickerComponent', () => {
         fixture.detectChanges();
         input.dispatchEvent(ENTER_EVENT);
         fixture.detectChanges();
-        jasmine.clock().tick(500);
+        vi.advanceTimersByTime(500);
         fixture.detectChanges();
       };
       // Should fail to submit a disabled date
@@ -439,7 +439,7 @@ describe('NzDatePickerComponent', () => {
         (date: Date): boolean => date >= new Date(2019, 0, 1) && date < new Date(2019, 0, 2)
       );
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       fixture.detectChanges();
       openPickerByClickTrigger();
       dispatchMouseEvent(queryFromOverlay('.ant-picker-header-year-btn'), 'click');
@@ -499,20 +499,20 @@ describe('NzDatePickerComponent', () => {
     });
 
     it('should support nzOnOpenChange', () => {
-      const nzOnOpenChange = spyOn(fixtureInstance, 'nzOnOpenChange');
+      const nzOnOpenChange = vi.spyOn(fixtureInstance, 'nzOnOpenChange').mockImplementation(() => {});
       fixture.detectChanges();
       openPickerByClickTrigger();
       expect(nzOnOpenChange).toHaveBeenCalledWith(true);
 
       triggerInputBlur();
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       expect(nzOnOpenChange).toHaveBeenCalledWith(false);
       expect(nzOnOpenChange).toHaveBeenCalledTimes(2);
     });
 
     it('should not emit nzOnOpenChange second time when input clicked twice', () => {
-      const nzOnOpenChange = spyOn(fixtureInstance, 'nzOnOpenChange');
+      const nzOnOpenChange = vi.spyOn(fixtureInstance, 'nzOnOpenChange').mockImplementation(() => {});
 
       fixture.detectChanges();
       openPickerByClickTrigger();
@@ -522,7 +522,7 @@ describe('NzDatePickerComponent', () => {
     });
 
     it('should not emit nzOnOpenChange when nzOpen is false and input is clicked', () => {
-      const nzOnOpenChange = spyOn(fixtureInstance, 'nzOnOpenChange');
+      const nzOnOpenChange = vi.spyOn(fixtureInstance, 'nzOnOpenChange').mockImplementation(() => {});
       fixtureInstance.useSuite.set(2);
       fixtureInstance.nzOpen.set(false);
 
@@ -542,8 +542,8 @@ describe('NzDatePickerComponent', () => {
 
     it('should support nzOnChange', () => {
       fixtureInstance.nzValue.set(new Date('2018-11-11'));
-      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
-      const nzOnCalendarChange = spyOn(fixtureInstance, 'nzOnCalendarChange');
+      const nzOnChange = vi.spyOn(fixtureInstance, 'nzOnChange').mockImplementation(() => {});
+      const nzOnCalendarChange = vi.spyOn(fixtureInstance, 'nzOnCalendarChange').mockImplementation(() => {});
       fixture.detectChanges();
       openPickerByClickTrigger();
 
@@ -551,11 +551,11 @@ describe('NzDatePickerComponent', () => {
       const cellText = cell.textContent!.trim();
       dispatchMouseEvent(cell, 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(nzOnChange).toHaveBeenCalled();
       expect(nzOnCalendarChange).not.toHaveBeenCalled();
-      const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
+      const result = (nzOnChange.mock.calls[0] as Date[])[0];
       expect(result.getDate()).toBe(+cellText);
     });
 
@@ -563,7 +563,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       fixtureInstance.nzDefaultPickerValue.set(new Date('2015-09-17'));
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       fixture.detectChanges();
       openPickerByClickTrigger();
       expect(queryFromOverlay('.ant-picker-header-year-btn').textContent!.indexOf('2015') > -1).toBeTruthy();
@@ -609,7 +609,7 @@ describe('NzDatePickerComponent', () => {
     });
 
     it('should support nzInline', () => {
-      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      const nzOnChange = vi.spyOn(fixtureInstance, 'nzOnChange').mockImplementation(() => {});
       fixtureInstance.nzInline.set(true);
       fixture.detectChanges();
       overlayContainerElement = debugElement.nativeElement as HTMLLIElement;
@@ -617,10 +617,10 @@ describe('NzDatePickerComponent', () => {
       const cellText = cell.textContent!.trim();
       dispatchMouseEvent(cell, 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(nzOnChange).toHaveBeenCalled();
-      const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
+      const result = (nzOnChange.mock.calls[0] as Date[])[0];
       expect(result.getDate()).toBe(+cellText);
     });
 
@@ -631,8 +631,8 @@ describe('NzDatePickerComponent', () => {
       const appRef = TestBed.inject(ApplicationRef);
       const event = new MouseEvent('mousedown');
 
-      spyOn(appRef, 'tick');
-      spyOn(event, 'preventDefault').and.callThrough();
+      vi.spyOn(appRef, 'tick').mockImplementation(() => {});
+      vi.spyOn(event, 'preventDefault');
 
       debugElement.nativeElement.querySelector('date-range-popup').dispatchEvent(event);
 
@@ -660,7 +660,7 @@ describe('NzDatePickerComponent', () => {
       expect(element.classList.contains('ant-picker-dropdown-placement-topRight')).toBe(false);
       triggerInputBlur();
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
 
       fixtureInstance.nzPlacement.set('bottomRight');
       fixture.detectChanges();
@@ -691,7 +691,7 @@ describe('NzDatePickerComponent', () => {
 
       triggerInputBlur();
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
     });
 
@@ -702,7 +702,7 @@ describe('NzDatePickerComponent', () => {
       expect(queryFromOverlay('.ant-picker-week-panel-row .ant-picker-cell-week')).toBeDefined();
       fixtureInstance.nzShowWeekNumber.set(false);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       openPickerByClickTrigger();
       expect(queryFromOverlay('.ant-picker-week-panel-row .ant-picker-cell-week')).toBeNull();
     });
@@ -718,7 +718,7 @@ describe('NzDatePickerComponent', () => {
       // Click month
       dispatchMouseEvent(queryFromOverlay('.ant-picker-header-month-btn'), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       dispatchMouseEvent(getFirstCell(), 'click');
       await stabilize(500);
@@ -735,33 +735,33 @@ describe('NzDatePickerComponent', () => {
       // Click previous year button
       dispatchMouseEvent(getSuperPreBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-header-year-btn').textContent!.indexOf('2017') > -1).toBeTruthy();
       // Click next year button * 2
       dispatchMouseEvent(getSuperNextBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       dispatchMouseEvent(getSuperNextBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-header-year-btn').textContent!.indexOf('2019') > -1).toBeTruthy();
       // Click previous month button
       dispatchMouseEvent(getPreBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('10') > -1).toBeTruthy();
       // Click next month button * 2
       dispatchMouseEvent(getNextBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       dispatchMouseEvent(getNextBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('12') > -1).toBeTruthy();
     });
@@ -773,30 +773,30 @@ describe('NzDatePickerComponent', () => {
       // Click month select to show month panel
       dispatchMouseEvent(queryFromOverlay('.ant-picker-header-month-btn'), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-month-panel')).toBeDefined();
       expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('2018') > -1).toBeTruthy();
       // Goto previous year
       dispatchMouseEvent(getSuperPreBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('2017') > -1).toBeTruthy();
       // Goto next year * 2
       dispatchMouseEvent(getSuperNextBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       dispatchMouseEvent(getSuperNextBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('2019') > -1).toBeTruthy();
       // Click to choose a year to change panel
       dispatchMouseEvent(queryFromOverlay('td.ant-picker-cell'), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-date-panel')).toBeTruthy();
     });
@@ -808,7 +808,7 @@ describe('NzDatePickerComponent', () => {
       // Click year select to show year panel
       dispatchMouseEvent(queryFromOverlay('.ant-picker-header-year-btn'), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-year-panel')).toBeDefined();
       expect(queryFromOverlay('.ant-picker-header-year-btn').textContent!.indexOf('2010') > -1).toBeTruthy();
@@ -816,34 +816,34 @@ describe('NzDatePickerComponent', () => {
       // Coverage for last/next cell
       dispatchMouseEvent(getSuperPreBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       dispatchMouseEvent(getSuperNextBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       // Goto previous decade
       dispatchMouseEvent(getSuperPreBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-header-year-btn').textContent!.indexOf('2000') > -1).toBeTruthy();
       expect(queryFromOverlay('.ant-picker-header-year-btn').textContent!.indexOf('2009') > -1).toBeTruthy();
       // Goto next decade * 2
       dispatchMouseEvent(getSuperNextBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       dispatchMouseEvent(getSuperNextBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-header-year-btn').textContent!.indexOf('2020') > -1).toBeTruthy();
       expect(queryFromOverlay('.ant-picker-header-year-btn').textContent!.indexOf('2029') > -1).toBeTruthy();
       // Click to choose a year to change panel
       dispatchMouseEvent(queryFromOverlay('td.ant-picker-cell'), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-header .ant-picker-year-panel')).toBeFalsy();
     });
@@ -851,50 +851,50 @@ describe('NzDatePickerComponent', () => {
     it('should support decade panel changes', () => {
       fixtureInstance.nzValue.set(new Date('2018-11-11'));
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       openPickerByClickTrigger();
       // Click to show decade panel
       dispatchMouseEvent(queryFromOverlay('.ant-picker-header-year-btn'), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       dispatchMouseEvent(queryFromOverlay('.ant-picker-header-year-btn'), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-decade-panel')).toBeDefined();
       // Coverage for last/next cell
       dispatchMouseEvent(getSuperNextBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       dispatchMouseEvent(getSuperPreBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       // Goto previous century
       dispatchMouseEvent(getSuperPreBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-header-decade-btn').textContent!.indexOf('1900') > -1).toBeTruthy();
       expect(queryFromOverlay('.ant-picker-header-decade-btn').textContent!.indexOf('1999') > -1).toBeTruthy();
       // Goto next century * 2
       dispatchMouseEvent(getSuperNextBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       dispatchMouseEvent(getSuperNextBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-header-decade-btn').textContent!.indexOf('2100') > -1).toBeTruthy();
       expect(queryFromOverlay('.ant-picker-header-decade-btn').textContent!.indexOf('2199') > -1).toBeTruthy();
       // Click to choose a decade to change panel
       dispatchMouseEvent(queryFromOverlay('td.ant-picker-cell'), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-year-panel')).toBeDefined();
     });
@@ -1096,12 +1096,12 @@ describe('NzDatePickerComponent', () => {
       expect(overlayContainerElement.querySelector('.ant-picker-today-btn')).toBeDefined();
 
       // Click today button
-      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      const nzOnChange = vi.spyOn(fixtureInstance, 'nzOnChange').mockImplementation(() => {});
       dispatchMouseEvent(queryFromOverlay('.ant-picker-today-btn'), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
-      const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
+      const result = (nzOnChange.mock.calls[0] as Date[])[0];
       expect(isSameDay(new Date(), result)).toBeTruthy();
       expect(queryFromOverlay('.ant-picker-container')).toBeFalsy(); // Should be closed
     });
@@ -1122,14 +1122,14 @@ describe('NzDatePickerComponent', () => {
       expect(overlayContainerElement.querySelector('.ant-picker-now-btn')).toBeDefined();
 
       // Click now button
-      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      const nzOnChange = vi.spyOn(fixtureInstance, 'nzOnChange').mockImplementation(() => {});
       dispatchMouseEvent(queryFromOverlay('.ant-picker-now-btn'), 'click');
       await stabilize();
 
       // Click ok button
       dispatchMouseEvent(overlayContainerElement.querySelector('.ant-picker-ok > button')!, 'click');
       await stabilize();
-      const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
+      const result = (nzOnChange.mock.calls[0] as Date[])[0];
       expect(Math.abs(new Date().getTime() - result.getTime())).toBeLessThan(1000);
       await stabilize(500);
       expect(queryFromOverlay('.ant-picker-container')).toBeFalsy(); // Should be closed
@@ -1151,50 +1151,50 @@ describe('NzDatePickerComponent', () => {
 
     it('should support nzOnPanelChange', async () => {
       fixtureInstance.nzValue.set(new Date('2020-12-01'));
-      spyOn(fixtureInstance, 'nzOnPanelChange');
+      vi.spyOn(fixtureInstance, 'nzOnPanelChange').mockImplementation(() => {});
       await stabilize();
       openPickerByClickTrigger();
 
       // Click header to month panel
       dispatchMouseEvent(overlayContainerElement.querySelector('.ant-picker-header-month-btn')!, 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith({ mode: 'month', date: new Date('2020-12-01') });
     });
 
     it('should support nzOnPanelChange when next button is clicked', async () => {
       fixtureInstance.nzValue.set(new Date('2020-11-01'));
-      spyOn(fixtureInstance, 'nzOnPanelChange');
+      vi.spyOn(fixtureInstance, 'nzOnPanelChange').mockImplementation(() => {});
       await stabilize();
       openPickerByClickTrigger();
       dispatchMouseEvent(getNextBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith({ mode: 'date', date: new Date('2020-12-01') });
     });
 
     it('should support nzOnPanelChange when super next button is clicked', async () => {
       fixtureInstance.nzValue.set(new Date('2020-11-01'));
-      spyOn(fixtureInstance, 'nzOnPanelChange');
+      vi.spyOn(fixtureInstance, 'nzOnPanelChange').mockImplementation(() => {});
       await stabilize();
       openPickerByClickTrigger();
       dispatchMouseEvent(getSuperNextBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith({ mode: 'date', date: new Date('2021-11-01') });
     });
 
     it('should support nzOnPanelChange when previous button is clicked', async () => {
       fixtureInstance.nzValue.set(new Date('2020-11-01 11:22:33'));
-      spyOn(fixtureInstance, 'nzOnPanelChange');
+      vi.spyOn(fixtureInstance, 'nzOnPanelChange').mockImplementation(() => {});
       await stabilize();
       openPickerByClickTrigger();
       dispatchMouseEvent(getPreBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith({
         mode: 'date',
@@ -1204,12 +1204,12 @@ describe('NzDatePickerComponent', () => {
 
     it('should support nzOnPanelChange when super previous button is clicked', async () => {
       fixtureInstance.nzValue.set(new Date('2020-11-01 11:22:33'));
-      spyOn(fixtureInstance, 'nzOnPanelChange');
+      vi.spyOn(fixtureInstance, 'nzOnPanelChange').mockImplementation(() => {});
       await stabilize();
       openPickerByClickTrigger();
       dispatchMouseEvent(getSuperPreBtn(), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(fixtureInstance.nzOnPanelChange).toHaveBeenCalledWith({
         mode: 'date',
@@ -1218,7 +1218,7 @@ describe('NzDatePickerComponent', () => {
     });
 
     it('should support nzOnOk', async () => {
-      spyOn(fixtureInstance, 'nzOnOk');
+      vi.spyOn(fixtureInstance, 'nzOnOk').mockImplementation(() => {});
       fixtureInstance.nzValue.set(new Date('2018-11-11 11:22:33'));
       fixtureInstance.nzShowTime.set(true);
       await stabilize(10000);
@@ -1227,13 +1227,13 @@ describe('NzDatePickerComponent', () => {
       // Click ok button
       dispatchMouseEvent(overlayContainerElement.querySelector('.ant-picker-ok > button')!, 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(fixtureInstance.nzOnOk).toHaveBeenCalledWith(fixtureInstance.nzValue());
     });
 
     it('should custom input date', () => {
-      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      const nzOnChange = vi.spyOn(fixtureInstance, 'nzOnChange').mockImplementation(() => {});
       fixture.detectChanges();
       openPickerByClickTrigger();
       const input = getPickerInput(fixture.debugElement);
@@ -1241,7 +1241,7 @@ describe('NzDatePickerComponent', () => {
       // Wrong input support
       typeInElement('wrong', input);
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       fixture.detectChanges();
       // expect(input.classList.contains('ant-calendar-input-invalid')).toBeTruthy();
 
@@ -1250,10 +1250,10 @@ describe('NzDatePickerComponent', () => {
       input.dispatchEvent(ENTER_EVENT);
       // dispatchKeyboardEvent(input, 'keyup', ENTER); // Not working?
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       fixture.detectChanges();
       expect(nzOnChange).toHaveBeenCalled();
-      const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
+      const result = (nzOnChange.mock.calls[0] as Date[])[0];
       expect(result.getDate()).toBe(22);
     });
 
@@ -1353,14 +1353,14 @@ describe('NzDatePickerComponent', () => {
   function openPickerByClickTrigger(): void {
     dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
     fixture.detectChanges();
-    jasmine.clock().tick(500);
+    vi.advanceTimersByTime(500);
     fixture.detectChanges();
   }
 
   function openPickerByCode(): void {
     fixtureInstance.datePicker.open();
     fixture.detectChanges();
-    jasmine.clock().tick(500);
+    vi.advanceTimersByTime(500);
     fixture.detectChanges();
   }
 
@@ -1386,13 +1386,13 @@ describe('date-fns testing', () => {
   });
 
   it('should parse input value with nzFormat', () => {
-    jasmine.clock().install();
-    const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+    vi.useFakeTimers();
+    const nzOnChange = vi.spyOn(fixtureInstance, 'nzOnChange').mockImplementation(() => {});
     fixtureInstance.nzFormat.set('dd.MM.yyyy');
     fixture.detectChanges();
     dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
     fixture.detectChanges();
-    jasmine.clock().tick(500);
+    vi.advanceTimersByTime(500);
     fixture.detectChanges();
     const input = getPickerInput(fixture.debugElement);
     expect(input).not.toBeNull();
@@ -1400,13 +1400,13 @@ describe('date-fns testing', () => {
     fixture.detectChanges();
     input.dispatchEvent(ENTER_EVENT);
     fixture.detectChanges();
-    jasmine.clock().tick(10000);
+    vi.advanceTimersByTime(10000);
     expect(nzOnChange).toHaveBeenCalled();
-    const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
+    const result = (nzOnChange.mock.calls[0] as Date[])[0];
     expect(result.getFullYear()).toBe(2019);
     expect(result.getMonth() + 1).toBe(10);
     expect(result.getDate()).toBe(25);
-    jasmine.clock().uninstall();
+    vi.useRealTimers();
   });
 });
 
@@ -1497,8 +1497,8 @@ describe('signal forms (formField)', () => {
     });
   });
 
-  beforeEach(() => jasmine.clock().install());
-  afterEach(() => jasmine.clock().uninstall());
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
 
   it('should display the initial value provided via [formField]', async () => {
     fixture = TestBed.createComponent(NzTestDatePickerInSignalFormComponent);

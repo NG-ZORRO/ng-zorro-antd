@@ -8,6 +8,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
@@ -181,7 +183,7 @@ export class NzDemoTestBasicComponent {
   readonly showIcon = signal(false);
   readonly iconType = signal<string | null>(null);
   readonly type = signal<NzAlertType>('info');
-  onClose = jasmine.createSpy('close callback');
+  onClose = vi.fn();
 }
 
 @Component({
@@ -216,10 +218,10 @@ describe('NzAlertComponent', () => {
 
   beforeEach(() => {
     configChangeEvent$ = new Subject<string>();
-    const nzConfigServiceSpy = jasmine.createSpyObj('NzConfigService', {
-      getConfigChangeEventForComponent: configChangeEvent$.asObservable(),
-      getConfigForComponent: {}
-    });
+    const nzConfigServiceSpy = {
+      getConfigChangeEventForComponent: vi.fn().mockReturnValue(configChangeEvent$.asObservable()),
+      getConfigForComponent: vi.fn().mockReturnValue({})
+    };
 
     TestBed.configureTestingModule({
       providers: [
@@ -227,7 +229,10 @@ describe('NzAlertComponent', () => {
         { provide: NzConfigService, useValue: nzConfigServiceSpy },
         {
           provide: ChangeDetectorRef,
-          useValue: jasmine.createSpyObj('ChangeDetectorRef', ['markForCheck', 'detectChanges'])
+          useValue: {
+            markForCheck: vi.fn(),
+            detectChanges: vi.fn()
+          }
         }
       ]
     });
@@ -268,7 +273,7 @@ describe('NzAlertComponent', () => {
 
   it('should call cdr.markForCheck on config change event', async () => {
     fixture.detectChanges();
-    spyOn(cdr, 'markForCheck');
+    vi.spyOn(cdr, 'markForCheck');
 
     configChangeEvent$.next('alert');
     await fixture.whenStable();
@@ -292,11 +297,11 @@ describe('NzAlertComponent Animation', () => {
   });
 
   it('should add animation classes and emit onClose when animation ends', () => {
-    spyOn(component.nzOnClose, 'emit');
+    vi.spyOn(component.nzOnClose, 'emit');
     const element = fixture.nativeElement.querySelector('.ant-alert');
     const mockEvent = {
       target: element,
-      animationComplete: jasmine.createSpy('animationComplete')
+      animationComplete: vi.fn()
     } as NzSafeAny;
 
     component.onLeaveAnimationDone(mockEvent);
@@ -315,11 +320,11 @@ describe('NzAlertComponent Animation', () => {
 
   it('should handle no animation', () => {
     component.nzNoAnimation = true;
-    spyOn(component.nzOnClose, 'emit');
+    vi.spyOn(component.nzOnClose, 'emit');
     const element = fixture.nativeElement.querySelector('.ant-alert');
     const mockEvent = {
       target: element,
-      animationComplete: jasmine.createSpy('animationComplete')
+      animationComplete: vi.fn()
     } as NzSafeAny;
 
     component.onLeaveAnimationDone(mockEvent);

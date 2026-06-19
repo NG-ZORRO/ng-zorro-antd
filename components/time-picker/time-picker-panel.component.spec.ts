@@ -8,6 +8,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { dispatchFakeEvent, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 
 import { NzTimePickerPanelComponent } from './time-picker-panel.component';
@@ -122,8 +124,8 @@ describe('time-picker-panel', () => {
         const appRef = TestBed.inject(ApplicationRef);
         const event = new MouseEvent('mousedown');
 
-        spyOn(appRef, 'tick');
-        spyOn(event, 'preventDefault').and.callThrough();
+        vi.spyOn(appRef, 'tick');
+        vi.spyOn(event, 'preventDefault');
 
         fixture.nativeElement.querySelector('nz-time-picker-panel').dispatchEvent(event);
 

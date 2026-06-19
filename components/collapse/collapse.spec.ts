@@ -8,6 +8,8 @@ import { Component, DebugElement, signal, TemplateRef, ViewChild } from '@angula
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { provideMockDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -336,8 +338,8 @@ export class NzTestCollapseBasicComponent {
   readonly showArrow = signal(true);
   readonly showExtra = signal('');
   header = 'string';
-  active01Change = jasmine.createSpy<NzSafeAny>('active01 callback');
-  active02Change = jasmine.createSpy<NzSafeAny>('active02 callback');
+  active01Change = vi.fn<(value: NzSafeAny) => void>();
+  active02Change = vi.fn<(value: NzSafeAny) => void>();
 }
 
 @Component({

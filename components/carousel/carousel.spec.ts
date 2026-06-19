@@ -9,6 +9,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 
+import { vi } from 'vitest';
+
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import {
   dispatchKeyboardEvent,
@@ -77,7 +79,7 @@ describe('carousel', () => {
 
     it('should call layout on component resize', async () => {
       testComponent.nzCarouselComponent.ngOnInit();
-      const spy = spyOn(testComponent.nzCarouselComponent, 'layout');
+      const spy = vi.spyOn(testComponent.nzCarouselComponent, 'layout');
       window.dispatchEvent(new Event('resize'));
       await stabilize(fixture, 500);
 
@@ -89,7 +91,7 @@ describe('carousel', () => {
     });
 
     it('should call layout on component resize', async () => {
-      const spyOnResize = spyOn(testComponent.nzCarouselComponent, 'layout');
+      const spyOnResize = vi.spyOn(testComponent.nzCarouselComponent, 'layout');
       window.dispatchEvent(new Event('resize'));
       await stabilize(fixture, 500);
 
@@ -157,8 +159,8 @@ describe('carousel', () => {
     });
 
     describe('autoplay', () => {
-      beforeEach(() => jasmine.clock().install());
-      afterEach(() => jasmine.clock().uninstall());
+      beforeEach(() => vi.useFakeTimers());
+      afterEach(() => vi.useRealTimers());
 
       beforeEach(() => {
         testComponent.autoPlay.set(true);
@@ -177,15 +179,15 @@ describe('carousel', () => {
         fixture.detectChanges();
         expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
 
-        jasmine.clock().tick(20);
+        vi.advanceTimersByTime(20);
         fixture.detectChanges();
         expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
 
-        jasmine.clock().tick(testComponent.nzCarouselComponent.nzTransitionSpeed);
+        vi.advanceTimersByTime(testComponent.nzCarouselComponent.nzTransitionSpeed);
         carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
         fixture.detectChanges();
 
-        jasmine.clock().tick(testComponent.nzCarouselComponent.nzTransitionSpeed + testComponent.autoPlaySpeed());
+        vi.advanceTimersByTime(testComponent.nzCarouselComponent.nzTransitionSpeed + testComponent.autoPlaySpeed());
         fixture.detectChanges();
         testComponent.autoPlay.set(false);
         fixture.detectChanges();
@@ -198,13 +200,13 @@ describe('carousel', () => {
         fixture.detectChanges();
         expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
 
-        jasmine.clock().tick(20);
+        vi.advanceTimersByTime(20);
         fixture.detectChanges();
         expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
 
         testComponent.autoPlaySpeed.set(0);
         fixture.detectChanges();
-        jasmine.clock().tick(60);
+        vi.advanceTimersByTime(60);
         fixture.detectChanges();
         expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
       });
@@ -225,7 +227,7 @@ describe('carousel', () => {
     });
 
     it('should resize content after window resized', async () => {
-      const resizeSpy = spyOn(testComponent.nzCarouselComponent.strategy!, 'withCarouselContents');
+      const resizeSpy = vi.spyOn(testComponent.nzCarouselComponent.strategy!, 'withCarouselContents');
       window.dispatchEvent(new Event('resize'));
       await stabilize(fixture, 16);
       expect(resizeSpy).toHaveBeenCalled();
@@ -290,7 +292,7 @@ describe('carousel', () => {
     });
 
     it('should call goTo function on slick dot click', () => {
-      spyOn(testComponent.nzCarouselComponent, 'goTo');
+      vi.spyOn(testComponent.nzCarouselComponent, 'goTo');
       carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
       expect(testComponent.nzCarouselComponent.goTo).toHaveBeenCalledWith(3);
     });
@@ -575,8 +577,8 @@ export class NzTestCarouselBasicComponent {
   readonly autoPlaySpeed = signal(3000);
   readonly transitionSpeed = signal(10);
   readonly loop = signal(true);
-  afterChange = jasmine.createSpy('afterChange callback');
-  beforeChange = jasmine.createSpy('beforeChange callback');
+  afterChange = vi.fn();
+  beforeChange = vi.fn();
 }
 
 @Component({
@@ -645,9 +647,9 @@ describe('carousel', () => {
 
   beforeEach(() => {
     mockObserve$ = new Subject();
-    const nzResizeObserverSpy = jasmine.createSpyObj('NzResizeObserver', {
-      observe: mockObserve$.asObservable()
-    });
+    const nzResizeObserverSpy = {
+      observe: vi.fn().mockReturnValue(mockObserve$.asObservable())
+    };
 
     TestBed.configureTestingModule({
       providers: [
@@ -667,24 +669,24 @@ describe('carousel', () => {
     let event: KeyboardEvent;
 
     event = new KeyboardEvent('keydown', { keyCode: LEFT_ARROW });
-    spyOn(event, 'preventDefault');
+    vi.spyOn(event, 'preventDefault');
     component.slickListEl.dispatchEvent(event);
     expect(event.preventDefault).toHaveBeenCalled();
 
     event = new KeyboardEvent('keydown', { keyCode: RIGHT_ARROW });
-    spyOn(event, 'preventDefault');
+    vi.spyOn(event, 'preventDefault');
     component.slickListEl.dispatchEvent(event);
     expect(event.preventDefault).toHaveBeenCalled();
 
     event = new KeyboardEvent('keydown', { keyCode: ENTER });
-    spyOn(event, 'preventDefault');
+    vi.spyOn(event, 'preventDefault');
     component.slickListEl.dispatchEvent(event);
     expect(event.preventDefault).not.toHaveBeenCalled();
   });
 
   it('should call layout method when resizing', async () => {
     await stabilize(fixture, 20);
-    spyOn(component, 'layout');
+    vi.spyOn(component, 'layout');
     mockObserve$.next();
     await stabilize(fixture, 101);
     expect(component.layout).toHaveBeenCalled();

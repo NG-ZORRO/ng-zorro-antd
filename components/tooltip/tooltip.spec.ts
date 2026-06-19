@@ -7,6 +7,8 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild, signal } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzElementPatchDirective } from 'ng-zorro-antd/core/element-patch';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
@@ -35,13 +37,13 @@ describe('tooltip', () => {
     overlayContainerElement = oc.getContainerElement();
   }));
 
-  beforeEach(() => jasmine.clock().install());
+  beforeEach(() => vi.useFakeTimers());
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
   });
 
-  afterEach(() => jasmine.clock().uninstall());
+  afterEach(() => vi.useRealTimers());
 
   function getTextContentOf(selector: string): string | null {
     const el = overlayContainerElement.querySelector(selector);
@@ -54,7 +56,7 @@ describe('tooltip', () => {
 
   function waitingForTooltipToggling(): void {
     fixture.detectChanges();
-    jasmine.clock().tick(1000);
+    vi.advanceTimersByTime(1000);
     fixture.detectChanges();
   }
 
@@ -97,26 +99,26 @@ describe('tooltip', () => {
       component.mouseEnterDelay.set(0.2);
       fixture.detectChanges();
       dispatchMouseEvent(triggerElement, 'mouseenter');
-      jasmine.clock().tick(150);
+      vi.advanceTimersByTime(150);
       expect(overlayContainerElement.textContent).not.toContain(title);
-      jasmine.clock().tick(50);
+      vi.advanceTimersByTime(50);
       expect(overlayContainerElement.textContent).toContain(title);
 
       dispatchMouseEvent(triggerElement, 'mouseleave');
-      jasmine.clock().tick(150);
+      vi.advanceTimersByTime(150);
       expect(overlayContainerElement.textContent).not.toContain(title);
 
       component.mouseEnterDelay.set(0.15);
       component.mouseLeaveDelay.set(0.2);
       fixture.detectChanges();
       dispatchMouseEvent(triggerElement, 'mouseenter');
-      jasmine.clock().tick(150);
+      vi.advanceTimersByTime(150);
       expect(overlayContainerElement.textContent).toContain(title);
 
       dispatchMouseEvent(triggerElement, 'mouseleave');
-      jasmine.clock().tick(150);
+      vi.advanceTimersByTime(150);
       expect(overlayContainerElement.textContent).toContain(title);
-      jasmine.clock().tick(50);
+      vi.advanceTimersByTime(50);
       expect(overlayContainerElement.textContent).not.toContain(title);
     });
 

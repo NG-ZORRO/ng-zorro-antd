@@ -9,6 +9,8 @@ import { Component, signal } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
@@ -37,8 +39,8 @@ describe('dropdown', () => {
     overlayContainer.ngOnDestroy();
   }));
 
-  beforeEach(() => jasmine.clock().install());
-  afterEach(() => jasmine.clock().uninstall());
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
 
   // TODO: why this works well with ChromeHeadless but fails with ChromeHeadlessCI?
   xdescribe('placement and arrow', () => {
@@ -210,7 +212,7 @@ describe('dropdown', () => {
 
 async function stabilize<T>(fixture: ComponentFixture<T>, ms?: number): Promise<void> {
   fixture.detectChanges();
-  jasmine.clock().tick(ms ?? 0);
+  vi.advanceTimersByTime(ms ?? 0);
   await fixture.whenStable();
   fixture.detectChanges();
 }
@@ -271,7 +273,7 @@ export class NzTestDropdownComponent {
 })
 export class NzTestDropdownVisibleComponent {
   readonly visible = signal(false);
-  triggerVisible = jasmine.createSpy('visibleChange');
+  triggerVisible = vi.fn();
 }
 
 @Component({

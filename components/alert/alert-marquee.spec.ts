@@ -7,6 +7,8 @@ import { Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -66,7 +68,7 @@ describe('NzAlertMarqueeComponent', () => {
     let marquee: DebugElement;
 
     beforeEach(async () => {
-      spyOnProperty(HTMLElement.prototype, 'offsetWidth', 'get').and.returnValue(500);
+      vi.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockReturnValue(500);
       fixture = TestBed.createComponent(NzTestMarqueeBasicComponent);
       marquee = fixture.debugElement.query(By.directive(NzAlertMarqueeComponent));
       fixture.autoDetectChanges();

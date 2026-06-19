@@ -8,6 +8,8 @@ import { Component, DebugElement, DOCUMENT, ElementRef, signal, ViewChild } from
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { expect, vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { sleep, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
@@ -35,18 +37,18 @@ describe('anchor', () => {
     fixture.autoDetectChanges();
     page = new PageObject();
     srv = TestBed.inject(NzScrollService);
-    spyOn(srv, 'scrollTo');
+    vi.spyOn(srv, 'scrollTo').mockImplementation(() => {});
     await fixture.whenStable();
     await sleep(100);
-    spyOn(context, '_scroll');
-    spyOn(context, '_change');
+    vi.spyOn(context, '_scroll').mockImplementation(() => {});
+    vi.spyOn(context, '_change').mockImplementation(() => {});
   });
 
   afterEach(() => fixture.destroy());
 
   describe('[default]', () => {
     it(`should scrolling to target via click a link`, () => {
-      (srv.scrollTo as jasmine.Spy).and.callFake((_containerEl, _targetTopValue = 0, options = {}) => {
+      vi.mocked(srv.scrollTo).mockImplementation((_containerEl, _targetTopValue = 0, options = {}) => {
         if (options.callback) {
           options.callback();
         }
@@ -80,7 +82,7 @@ describe('anchor', () => {
       page.scrollTo();
       await sleep(throttleTime);
       fixture.detectChanges();
-      spyOn(context.comp, 'clearActive' as NzSafeAny);
+      vi.spyOn(context.comp, 'clearActive' as NzSafeAny).mockImplementation(() => {});
       context.nzOffsetTop.set(-100);
       await updateNonSignalsInput(fixture);
       context.comp.handleScroll();
@@ -90,7 +92,7 @@ describe('anchor', () => {
     });
 
     it(`won't scrolling when is not exists link`, () => {
-      spyOn(srv, 'getScroll');
+      vi.spyOn(srv, 'getScroll').mockReturnValue(undefined as NzSafeAny);
       expect(context._scroll).not.toHaveBeenCalled();
       expect(srv.getScroll).not.toHaveBeenCalled();
       page!.to('#invalid');
@@ -98,7 +100,7 @@ describe('anchor', () => {
     });
 
     it(`won't scrolling when is invalid link`, () => {
-      spyOn(srv, 'getScroll');
+      vi.spyOn(srv, 'getScroll').mockReturnValue(undefined as NzSafeAny);
       expect(context._scroll).not.toHaveBeenCalled();
       expect(srv.getScroll).not.toHaveBeenCalled();
       page.to('invalidLink');
@@ -106,7 +108,7 @@ describe('anchor', () => {
     });
 
     it(`supports complete href link (e.g. http://www.example.com/#id)`, () => {
-      spyOn(srv, 'getScroll');
+      vi.spyOn(srv, 'getScroll').mockReturnValue(undefined as NzSafeAny);
       expect(context._scroll).not.toHaveBeenCalled();
       expect(srv.getScroll).not.toHaveBeenCalled();
       page.getEl('.mock-complete').click();
@@ -181,16 +183,16 @@ describe('anchor', () => {
 
     describe('[nzContainer]', () => {
       it('with window', async () => {
-        spyOn(window, 'addEventListener');
+        vi.spyOn(window, 'addEventListener').mockImplementation(() => {});
         context.nzContainer.set(window);
         await updateNonSignalsInput(fixture);
         expect(window.addEventListener).toHaveBeenCalled();
       });
 
       it('with string', async () => {
-        spyOn(context, '_click');
+        vi.spyOn(context, '_click').mockImplementation(() => {});
         const el = document.querySelector('#target')!;
-        spyOn(el, 'addEventListener');
+        vi.spyOn(el, 'addEventListener').mockImplementation(() => {});
         context.nzContainer.set('#target');
         await updateNonSignalsInput(fixture);
         expect(el.addEventListener).toHaveBeenCalled();
@@ -201,7 +203,7 @@ describe('anchor', () => {
 
     describe('(nzChange)', () => {
       it('should emit nzChange when click a link', async () => {
-        (srv.scrollTo as jasmine.Spy).and.callFake((_containerEl, _targetTopValue = 0, options = {}) => {
+        vi.mocked(srv.scrollTo).mockImplementation((_containerEl, _targetTopValue = 0, options = {}) => {
           if (options.callback) {
             options.callback();
           }
@@ -224,7 +226,7 @@ describe('anchor', () => {
     });
 
     it('(nzClick)', () => {
-      spyOn(context, '_click');
+      vi.spyOn(context, '_click').mockImplementation(() => {});
       expect(context._click).not.toHaveBeenCalled();
       const linkList = dl.queryAll(By.css('.ant-anchor-link-title'));
       expect(linkList.length).toBeGreaterThan(0);
@@ -261,9 +263,9 @@ describe('anchor', () => {
   describe('**boundary**', () => {
     it('#getOffsetTop', async () => {
       const el1 = document.getElementById('何时使用')!;
-      spyOn(el1, 'getClientRects').and.returnValue([] as NzSafeAny);
+      vi.spyOn(el1, 'getClientRects').mockReturnValue([] as NzSafeAny);
       const el2 = document.getElementById('parallel1')!;
-      spyOn(el2, 'getBoundingClientRect').and.returnValue({
+      vi.spyOn(el2, 'getBoundingClientRect').mockReturnValue({
         top: 0
       } as NzSafeAny);
       expect(context._scroll).not.toHaveBeenCalled();
@@ -417,24 +419,24 @@ describe('NzAnchor', () => {
 
   it('should calculate target scroll top correctly and call scrollTo', () => {
     const mockElement = document.createElement('div');
-    spyOn(mockDocument, 'getElementById').and.returnValue(mockElement);
-    spyOn(mockDocument, 'querySelector').and.returnValue(mockElement);
-    spyOn(scrollService, 'getScroll').and.returnValue(100);
-    spyOn<NzSafeAny>(component, 'getContainer').and.returnValue(window);
+    vi.spyOn(mockDocument, 'getElementById').mockReturnValue(mockElement);
+    vi.spyOn(mockDocument, 'querySelector').mockReturnValue(mockElement);
+    vi.spyOn(scrollService, 'getScroll').mockReturnValue(100);
+    vi.spyOn(component as NzSafeAny, 'getContainer').mockReturnValue(window);
 
     component.nzTargetOffset = undefined;
     component.nzOffsetTop = undefined;
 
     const mockLinkComponent = {
       nzHref: '#test',
-      setActive: jasmine.createSpy('setActive'),
+      setActive: vi.fn(),
       getLinkTitleElement: () => document.createElement('a')
     } as NzSafeAny;
 
-    const scrollToSpy = spyOn(scrollService, 'scrollTo');
+    const scrollToSpy = vi.spyOn(scrollService, 'scrollTo').mockImplementation(() => {});
 
     component.handleScrollTo(mockLinkComponent);
 
-    expect(scrollToSpy).toHaveBeenCalledWith(component['getContainer'](), 100, jasmine.any(Object));
+    expect(scrollToSpy).toHaveBeenCalledWith(component['getContainer'](), 100, expect.any(Object));
   });
 });

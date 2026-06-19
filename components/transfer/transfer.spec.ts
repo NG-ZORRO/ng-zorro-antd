@@ -9,6 +9,8 @@ import { By } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
@@ -356,8 +358,8 @@ describe('transfer', () => {
         const appRef = TestBed.inject(ApplicationRef);
         const event = new MouseEvent('click');
 
-        spyOn(appRef, 'tick');
-        spyOn(event, 'stopPropagation').and.callThrough();
+        vi.spyOn(appRef, 'tick');
+        vi.spyOn(event, 'stopPropagation');
 
         const [label] = fixture.nativeElement.querySelectorAll('.ant-transfer-list-content-item label');
 

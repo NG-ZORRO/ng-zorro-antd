@@ -10,6 +10,8 @@ import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import {
   dispatchFakeEvent,
@@ -111,7 +113,7 @@ describe('slider', () => {
     });
 
     it('should not change value without emitting a change event', () => {
-      const onChangeSpy = jasmine.createSpy('slider onChange');
+      const onChangeSpy = vi.fn();
 
       sliderInstance.nzOnAfterChange.subscribe(onChangeSpy);
       sliderInstance.value = 50;
@@ -158,7 +160,7 @@ describe('slider', () => {
     });
 
     it('should not emit change when disabled', () => {
-      const onChangeSpy = jasmine.createSpy('slider onChange');
+      const onChangeSpy = vi.fn();
       sliderInstance.nzOnAfterChange.subscribe(onChangeSpy);
 
       dispatchSlideEventSequence(sliderNativeElement, 0, 0.5);
@@ -189,13 +191,13 @@ describe('slider', () => {
       overlayContainerElement = oc.getContainerElement();
     }));
 
-    beforeEach(() => jasmine.clock().install());
-    afterEach(() => jasmine.clock().uninstall());
+    beforeEach(() => vi.useFakeTimers());
+    afterEach(() => vi.useRealTimers());
 
     it('should always display tooltips if set to `always`', async () => {
       testComponent.show.set('always');
       fixture.detectChanges();
-      jasmine.clock().tick(400);
+      vi.advanceTimersByTime(400);
       await fixture.whenStable();
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toContain('0');
@@ -215,7 +217,7 @@ describe('slider', () => {
       const handlerHost = sliderNativeElement.querySelector('nz-slider-handle')!;
 
       testComponent.show.set('never');
-      jasmine.clock().tick(400);
+      vi.advanceTimersByTime(400);
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).not.toContain('0');
 
@@ -247,13 +249,13 @@ describe('slider', () => {
       overlayContainerElement = oc.getContainerElement();
     }));
 
-    beforeEach(() => jasmine.clock().install());
-    afterEach(() => jasmine.clock().uninstall());
+    beforeEach(() => vi.useFakeTimers());
+    afterEach(() => vi.useRealTimers());
 
     it('should preview template tooltip', async () => {
       testComponent.show.set('always');
       fixture.detectChanges();
-      jasmine.clock().tick(400);
+      vi.advanceTimersByTime(400);
       await fixture.whenStable();
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toContain('Slider value: 0');
@@ -736,7 +738,7 @@ describe('slider', () => {
     });
 
     it('should show/hide tooltip when enter/leave a handler', () => {
-      jasmine.clock().install();
+      vi.useFakeTimers();
       const handlerHost = sliderNativeElement.querySelector('nz-slider-handle')!;
 
       dispatchClickEventSequence(sliderNativeElement, 0.13);
@@ -747,9 +749,9 @@ describe('slider', () => {
       expect(overlayContainerElement.textContent).toContain('VALUE-13');
 
       dispatchMouseEvent(handlerHost, 'mouseleave');
-      jasmine.clock().tick(400);
+      vi.advanceTimersByTime(400);
       expect(overlayContainerElement.textContent).not.toContain('VALUE-13');
-      jasmine.clock().uninstall();
+      vi.useRealTimers();
     });
 
     // fix #5699, Slider should work with decimals as well
@@ -924,7 +926,7 @@ describe('slider', () => {
     });
 
     it('should trigger nzOnAfterChange', () => {
-      const onChangeSpy = jasmine.createSpy('slider onChange');
+      const onChangeSpy = vi.fn();
 
       sliderInstance.nzOnAfterChange.subscribe(onChangeSpy);
       dispatchKeyboardEvent(sliderNativeElement, 'keydown', RIGHT_ARROW);

@@ -9,6 +9,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
 import { dispatchEvent, dispatchKeyboardEvent, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
@@ -457,7 +459,7 @@ describe('input-number', () => {
   });
 
   it('should be work onStep', () => {
-    const onStep = spyOn(component, 'onStep');
+    const onStep = vi.spyOn(component, 'onStep');
     const input = hostElement.querySelector('input')!;
 
     upStepByKeyboard();

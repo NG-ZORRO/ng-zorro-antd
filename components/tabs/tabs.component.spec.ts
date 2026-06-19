@@ -21,6 +21,8 @@ import { By } from '@angular/platform-browser';
 import { provideRouter, Router, RouterLink, RouterOutlet, Routes } from '@angular/router';
 import { Observable } from 'rxjs';
 
+import { expect, vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchFakeEvent, dispatchKeyboardEvent, sleep } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
@@ -140,7 +142,7 @@ describe('tabs', () => {
     it('should emit nzSelectedIndexChange event on click', async () => {
       const component = fixture.componentInstance;
       component.selectedIndex.set(0);
-      spyOn(component, 'handleSelection');
+      vi.spyOn(component, 'handleSelection');
 
       fixture.detectChanges();
 
@@ -158,7 +160,7 @@ describe('tabs', () => {
     it('should emit nzSelectedIndexChange on arrow key navigation', async () => {
       const component = fixture.componentInstance;
       component.selectedIndex.set(0);
-      spyOn(component, 'handleSelection');
+      vi.spyOn(component, 'handleSelection');
       fixture.detectChanges();
 
       const tab = fixture.debugElement.queryAll(By.css('.ant-tabs-tab'))[1]!;
@@ -192,7 +194,7 @@ describe('tabs', () => {
     it('should not emit nzSelectedIndexChange when key-event on navigation list outside', async () => {
       const component = fixture.componentInstance;
       component.selectedIndex.set(0);
-      spyOn(component, 'handleSelection');
+      vi.spyOn(component, 'handleSelection');
       await stabilize(fixture);
 
       const tabsContainer = fixture.debugElement.query(By.css('.ant-tabs-nav-wrap'))!.nativeElement as HTMLElement;
@@ -211,7 +213,7 @@ describe('tabs', () => {
 
     it('should clean up the tabs QueryList on destroy', () => {
       const component: NzTabsComponent = fixture.debugElement.query(By.css('nz-tabs'))!.componentInstance;
-      const spy = jasmine.createSpy('complete spy');
+      const spy = vi.fn();
       const subscription = component.tabs.changes.subscribe({ complete: spy });
 
       fixture.destroy();
@@ -328,7 +330,7 @@ describe('tabs', () => {
     it('should emit add event', () => {
       const component = fixture.debugElement.componentInstance;
       component.type.set('editable-card');
-      spyOn(fixture.componentInstance, 'handleAdd');
+      vi.spyOn(fixture.componentInstance, 'handleAdd');
       fixture.detectChanges();
 
       const addButton = fixture.debugElement.query(By.css('.ant-tabs-nav-add'))!.nativeElement;
@@ -342,7 +344,7 @@ describe('tabs', () => {
       const component = fixture.debugElement.componentInstance;
       component.type.set('editable-card');
       component.closable = true;
-      spyOn(fixture.componentInstance, 'handleClose');
+      vi.spyOn(fixture.componentInstance, 'handleClose');
       fixture.detectChanges();
 
       const addButton = fixture.debugElement.queryAll(By.css('.ant-tabs-tab-remove'))[1]!.nativeElement;
@@ -350,7 +352,7 @@ describe('tabs', () => {
       fixture.detectChanges();
 
       expect(fixture.componentInstance.handleClose).toHaveBeenCalledTimes(1);
-      expect(fixture.componentInstance.handleClose).toHaveBeenCalledWith(jasmine.objectContaining({ index: 1 }));
+      expect(fixture.componentInstance.handleClose).toHaveBeenCalledWith(expect.objectContaining({ index: 1 }));
     });
   });
 
@@ -559,7 +561,7 @@ describe('tabs', () => {
       fixture.detectChanges();
 
       // Add a new tab at the beginning.
-      spyOn(fixture.componentInstance, 'handleSelection');
+      vi.spyOn(fixture.componentInstance, 'handleSelection');
       fixture.componentInstance.tabs.update(tabs => [{ title: 'New tab', content: 'at the start' }, ...tabs]);
       await stabilize(fixture);
 
@@ -673,7 +675,7 @@ describe('tabs', () => {
     });
 
     it('should set transform to visible and select when selected on nav-operation', async () => {
-      spyOn(fixture.componentInstance, 'handleSelection');
+      vi.spyOn(fixture.componentInstance, 'handleSelection');
       fixture.detectChanges();
       expect(fixture.componentInstance.handleSelection).toHaveBeenCalledTimes(0);
 
@@ -753,7 +755,7 @@ describe('tabs', () => {
     const tabpaneElement: HTMLDivElement = fixture.debugElement.query(
       By.css(`.ant-tabs-tabpane-active`)
     )!.nativeElement;
-    expect(tabpaneElement.id.endsWith(`tab-${expectedIndex}`)).toBeTrue();
+    expect(tabpaneElement.id.endsWith(`tab-${expectedIndex}`)).toBe(true);
   }
 
   async function stabilize<T>(fixture: ComponentFixture<T>, ms = 0): Promise<void> {
@@ -791,7 +793,7 @@ describe('tabs', () => {
         await stabilize(fixture);
 
         expect((tabs.componentInstance as NzTabsComponent).nzSelectedIndex).toBe(0);
-        spyOn(component, 'handleSelection');
+        vi.spyOn(component, 'handleSelection');
         expect(component.handleSelection).toHaveBeenCalledTimes(0);
 
         // select the second tab

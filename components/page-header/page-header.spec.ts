@@ -7,6 +7,8 @@ import { Location } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -26,7 +28,7 @@ describe('page-header', () => {
       providers: [provideNzNoAnimation(), provideNzIconsTesting()]
     });
     location = TestBed.inject(Location);
-    spyOn(location, 'getState').and.returnValue({ navigationId: 2 });
+    vi.spyOn(location, 'getState').mockReturnValue({ navigationId: 2 });
   });
 
   it('should basic work', () => {
@@ -66,7 +68,7 @@ describe('page-header', () => {
   it('should default call location back when nzBack not has observers', () => {
     const fixture = TestBed.createComponent(NzDemoPageHeaderResponsiveComponent);
     const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
-    spyOn(location, 'back');
+    vi.spyOn(location, 'back');
     fixture.detectChanges();
     expect(location.back).not.toHaveBeenCalled();
     const back = pageHeader.nativeElement.querySelector('.ant-page-header-back');
@@ -78,7 +80,7 @@ describe('page-header', () => {
   it('should not show the back button if there is no history of navigation', async () => {
     const fixture = TestBed.createComponent(NzDemoPageHeaderResponsiveComponent);
     const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
-    spyOn(location, 'getState').and.returnValue({ navigationId: 1 });
+    vi.spyOn(location, 'getState').mockReturnValue({ navigationId: 1 });
     fixture.autoDetectChanges();
     pageHeader.componentInstance.ngAfterViewInit();
     await fixture.whenStable();
@@ -146,7 +148,7 @@ describe('page-header', () => {
     const fixture = TestBed.createComponent(NzDemoPageHeaderBasicComponent);
     const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
     const context = fixture.componentInstance;
-    spyOn(context, 'onBack');
+    vi.spyOn(context, 'onBack');
     fixture.detectChanges();
     expect(context.onBack).not.toHaveBeenCalled();
     const back = pageHeader.nativeElement.querySelector('.ant-page-header-back');

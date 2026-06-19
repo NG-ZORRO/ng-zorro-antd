@@ -379,7 +379,7 @@ describe('pagination', () => {
   });
 
   it('should auto resize work', async () => {
-    jasmine.clock().install();
+    vi.useFakeTimers();
     try {
       const fixture = TestBed.createComponent(NzTestPaginationAutoResizeComponent);
       const pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
@@ -399,7 +399,7 @@ describe('pagination', () => {
       expect(paginationElement.classList).toContain('ant-pagination-mini');
     } finally {
       viewport.reset();
-      jasmine.clock().uninstall();
+      vi.useRealTimers();
     }
   });
 
@@ -443,8 +443,8 @@ export class NzTestPaginationComponent {
   readonly pageSize = signal(10);
   readonly total = signal(50);
   readonly disabled = signal(false);
-  pageIndexChange = jasmine.createSpy<NzSafeAny>('pageIndexChange callback');
-  pageSizeChange = jasmine.createSpy<NzSafeAny>('pageSizeChange callback');
+  pageIndexChange = vi.fn<(value: NzSafeAny) => void>();
+  pageSizeChange = vi.fn<(value: NzSafeAny) => void>();
   readonly showQuickJumper = signal(false);
   readonly showSizeChanger = signal(false);
   readonly hideOnSinglePage = signal(false);

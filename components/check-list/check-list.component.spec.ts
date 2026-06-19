@@ -8,6 +8,8 @@ import { Component, DebugElement, TemplateRef, signal } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -25,7 +27,7 @@ describe('check-list', () => {
 
   function waitingForTooltipToggling(): void {
     fixture.detectChanges();
-    jasmine.clock().tick(500);
+    vi.advanceTimersByTime(500);
     fixture.detectChanges();
   }
 
@@ -47,13 +49,13 @@ describe('check-list', () => {
     overlayContainerElement = oc.getContainerElement();
   }));
 
-  beforeEach(() => jasmine.clock().install());
+  beforeEach(() => vi.useFakeTimers());
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
   });
 
-  afterEach(() => jasmine.clock().uninstall());
+  afterEach(() => vi.useRealTimers());
 
   it('basic', () => {
     expect(resultEl.nativeElement.classList).toContain('ant-check-list');

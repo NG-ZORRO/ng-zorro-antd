@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import isBefore from 'date-fns/isBefore';
+import { vi } from 'vitest';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchFakeEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
@@ -38,8 +39,8 @@ describe('month-picker', () => {
     });
   });
 
-  beforeEach(() => jasmine.clock().install());
-  afterEach(() => jasmine.clock().uninstall());
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NzTestMonthPickerComponent);
@@ -77,7 +78,7 @@ describe('month-picker', () => {
       expect(fixtureInstance.nzValue()).toBe(initial);
       expect(debugElement.query(clearBtnSelector)).toBeDefined();
 
-      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      const nzOnChange = vi.spyOn(fixtureInstance, 'nzOnChange');
       debugElement.query(clearBtnSelector).nativeElement.click();
       await stabilize(500);
       expect(fixtureInstance.nzValue()).toBe(initial);
@@ -189,7 +190,7 @@ describe('month-picker', () => {
     });
 
     it('should support nzOnOpenChange', async () => {
-      const nzOnOpenChange = spyOn(fixtureInstance, 'nzOnOpenChange');
+      const nzOnOpenChange = vi.spyOn(fixtureInstance, 'nzOnOpenChange');
       fixture.detectChanges();
       await openPickerByClickTrigger();
       expect(nzOnOpenChange).toHaveBeenCalledWith(true);
@@ -209,7 +210,7 @@ describe('month-picker', () => {
 
     it('should support nzOnChange', async () => {
       fixtureInstance.nzValue.set(new Date('2018-11'));
-      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      const nzOnChange = vi.spyOn(fixtureInstance, 'nzOnChange');
       fixture.detectChanges();
       await openPickerByClickTrigger();
 
@@ -218,7 +219,7 @@ describe('month-picker', () => {
       dispatchMouseEvent(cell, 'click');
       await stabilize(500);
       expect(nzOnChange).toHaveBeenCalled();
-      const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
+      const result = (nzOnChange.mock.calls[0] as Date[])[0];
       expect(result.getMonth() + 1).toBe(parseInt(cellText, 10));
     });
   }); // /general api testing
@@ -356,7 +357,7 @@ describe('month-picker', () => {
 
   async function stabilize(ms = 500): Promise<void> {
     fixture.detectChanges();
-    jasmine.clock().tick(ms);
+    vi.advanceTimersByTime(ms);
     await Promise.resolve();
     fixture.detectChanges();
   }

@@ -11,6 +11,8 @@ import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
 import { dispatchFakeEvent, dispatchMouseEvent, testDirectionality, typeInElement } from 'ng-zorro-antd/core/testing';
@@ -46,12 +48,12 @@ describe('time-picker', () => {
     overlayContainer.ngOnDestroy();
   }));
 
-  beforeEach(() => jasmine.clock().install());
-  afterEach(() => jasmine.clock().uninstall());
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
 
   async function stabilize<T>(fixture: ComponentFixture<T>, ms = 500): Promise<void> {
     fixture.detectChanges();
-    jasmine.clock().tick(ms);
+    vi.advanceTimersByTime(ms);
     await Promise.resolve();
     fixture.detectChanges();
   }
@@ -172,7 +174,7 @@ describe('time-picker', () => {
     it('should support ngModelChange', async () => {
       testComponent.date.set(new Date('2020-03-26 11:33:00'));
       await stabilize(fixture);
-      const nzOnChange = spyOn(testComponent, 'onChange');
+      const nzOnChange = vi.spyOn(testComponent, 'onChange');
       testComponent.open.set(true);
       await stabilize(fixture);
       expect(overlayContainerElement.querySelector('.ant-picker-time-panel-cell-selected > div')!.textContent).toBe(
@@ -184,7 +186,7 @@ describe('time-picker', () => {
       getPickerInput(fixture.debugElement).dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
       await stabilize(fixture);
       expect(nzOnChange).toHaveBeenCalled();
-      const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
+      const result = (nzOnChange.mock.calls[0] as Date[])[0];
       expect(result.getHours()).toBe(0);
       expect(testComponent.nzTimePickerComponent.inputRef.nativeElement.value).toBe('00:33:00');
     });
@@ -242,7 +244,7 @@ describe('time-picker', () => {
       testComponent.nzBackdrop.set(true);
       testComponent.open.set(true);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       const boundingBox = overlayContainerElement.children[0];
       expect(boundingBox.children[0].classList).toContain('cdk-overlay-backdrop');
@@ -251,20 +253,20 @@ describe('time-picker', () => {
     it('should open with click and close with tab', () => {
       dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
 
       triggerInputBlur(fixture.debugElement);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
 
       expect(getPickerContainer()).toBeNull();
     });
 
     it('should set default opening time when clicking ok', async () => {
-      const onChange = spyOn(testComponent, 'onChange');
+      const onChange = vi.spyOn(testComponent, 'onChange');
       testComponent.date.set(null);
       fixture.detectChanges();
       dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
@@ -275,14 +277,14 @@ describe('time-picker', () => {
       expect(okButton).not.toBeNull();
       dispatchFakeEvent(okButton, 'click');
       await stabilize(fixture);
-      const result = (onChange.calls.allArgs()[0] as Date[])[0];
+      const result = (onChange.mock.calls[0] as Date[])[0];
       expect(result.getHours()).toEqual(0);
       expect(result.getMinutes()).toEqual(0);
       expect(result.getSeconds()).toEqual(0);
     });
 
     it('should not set time when clicking ok without default opening time', async () => {
-      const onChange = spyOn(testComponent, 'onChange');
+      const onChange = vi.spyOn(testComponent, 'onChange');
       testComponent.date.set(null);
       testComponent.defaultOpenValue.set(null!);
       fixture.detectChanges();
@@ -295,7 +297,7 @@ describe('time-picker', () => {
       dispatchFakeEvent(okButton, 'click');
       await stabilize(fixture);
 
-      const result = (onChange.calls.allArgs()[0] as Date[])[0];
+      const result = (onChange.mock.calls[0] as Date[])[0];
       expect(result).toBeNull();
     });
 
@@ -317,13 +319,13 @@ describe('time-picker', () => {
     });
 
     it('should set new value when tabbing out with valid input', () => {
-      const onChange = spyOn(testComponent, 'onChange');
+      const onChange = vi.spyOn(testComponent, 'onChange');
       testComponent.date.set(new Date('2020-03-27T13:49:54.917'));
 
       fixture.detectChanges();
       dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       const input = getPickerInput(fixture.debugElement);
       typeInElement('20:10:30', input);
@@ -331,10 +333,10 @@ describe('time-picker', () => {
 
       triggerInputBlur(fixture.debugElement);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
 
-      const result = (onChange.calls.allArgs()[0] as Date[])[0];
+      const result = (onChange.mock.calls[0] as Date[])[0];
       expect(result.getHours()).toEqual(20);
       expect(result.getMinutes()).toEqual(10);
       expect(result.getSeconds()).toEqual(30);
@@ -361,7 +363,7 @@ describe('time-picker', () => {
     it('should not trigger blur after close panel', () => {
       dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
 
@@ -369,7 +371,7 @@ describe('time-picker', () => {
       expect(okButton).not.toBeNull();
       dispatchFakeEvent(okButton, 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
 
       expect(timeElement.nativeElement.querySelector('input') === document.activeElement).toBe(false);
@@ -389,7 +391,7 @@ describe('time-picker', () => {
         expect(placeHolderValue).toBe('请选择时间');
 
         srv.setLocale(en_GB);
-        jasmine.clock().tick(400);
+        vi.advanceTimersByTime(400);
         fixture.detectChanges();
 
         placeHolderValue = timeElement.nativeElement.querySelector('input').placeholder;
@@ -411,14 +413,14 @@ describe('time-picker', () => {
     function openTimePicker(): void {
       dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
     }
 
     function closeTimePicker(): void {
       triggerInputBlur(fixture.debugElement);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
     }
 
@@ -675,16 +677,16 @@ describe('time-picker', () => {
     });
 
     it('should emit value when OK button is clicked with nzNeedConfirm enabled', () => {
-      const onChange = spyOn(testComponent, 'onChange');
+      const onChange = vi.spyOn(testComponent, 'onChange');
       testComponent.needConfirm.set(true);
       testComponent.date.set(new Date('2020-03-27T10:30:00'));
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
 
       dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
 
       expect(getPickerContainer()).not.toBeNull();
@@ -699,7 +701,7 @@ describe('time-picker', () => {
       expect(okButton).not.toBeNull();
       dispatchFakeEvent(okButton, 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
 
       expect(onChange).toHaveBeenCalled();
@@ -707,7 +709,7 @@ describe('time-picker', () => {
     });
 
     it('should revert to previous value when tabbing out without OK click with nzNeedConfirm enabled', async () => {
-      const onChange = spyOn(testComponent, 'onChange');
+      const onChange = vi.spyOn(testComponent, 'onChange');
       testComponent.needConfirm.set(true);
       testComponent.date.set(new Date('2020-03-27T10:30:00'));
       await stabilize(fixture);
@@ -735,7 +737,7 @@ describe('time-picker', () => {
     });
 
     it('should revert to previous value when pressing Enter without OK click with nzNeedConfirm enabled', async () => {
-      const onChange = spyOn(testComponent, 'onChange');
+      const onChange = vi.spyOn(testComponent, 'onChange');
       testComponent.needConfirm.set(true);
       testComponent.date.set(new Date('2020-03-27T10:30:00'));
       await stabilize(fixture);
@@ -763,16 +765,16 @@ describe('time-picker', () => {
     });
 
     it('should emit value when tabbing out without nzNeedConfirm (default behavior)', () => {
-      const onChange = spyOn(testComponent, 'onChange');
+      const onChange = vi.spyOn(testComponent, 'onChange');
       testComponent.needConfirm.set(false);
       testComponent.date.set(new Date('2020-03-27T10:30:00'));
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
 
       dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
 
       expect(getPickerContainer()).not.toBeNull();
@@ -785,7 +787,7 @@ describe('time-picker', () => {
       // Tab out
       triggerInputBlur(fixture.debugElement);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
 
       expect(onChange).toHaveBeenCalled();
@@ -793,13 +795,13 @@ describe('time-picker', () => {
     });
 
     it('should emit value when OK button is clicked without nzNeedConfirm', () => {
-      const onChange = spyOn(testComponent, 'onChange');
+      const onChange = vi.spyOn(testComponent, 'onChange');
       testComponent.needConfirm.set(false);
       fixture.detectChanges();
 
       dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
 
       expect(getPickerContainer()).not.toBeNull();
@@ -808,7 +810,7 @@ describe('time-picker', () => {
       expect(okButton).not.toBeNull();
       dispatchFakeEvent(okButton, 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
 
       expect(onChange).toHaveBeenCalled();
@@ -816,17 +818,17 @@ describe('time-picker', () => {
     });
 
     it('should handle multiple open/close cycles correctly with nzNeedConfirm', () => {
-      const onChange = spyOn(testComponent, 'onChange');
+      const onChange = vi.spyOn(testComponent, 'onChange');
       testComponent.needConfirm.set(true);
       testComponent.date.set(new Date('2020-03-27T10:30:00'));
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
 
       // First cycle: select and confirm
       dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
 
       const timeCell1 = overlayContainerElement.querySelector('.ant-picker-time-panel-cell:nth-child(5)');
@@ -836,16 +838,16 @@ describe('time-picker', () => {
       const okButton1 = getPickerOkButton(fixture.debugElement);
       dispatchFakeEvent(okButton1, 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
 
       expect(onChange).toHaveBeenCalledTimes(1);
-      onChange.calls.reset();
+      onChange.mockClear();
 
       // Second cycle: select but don't confirm
       dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
 
       const timeCell2 = overlayContainerElement.querySelector('.ant-picker-time-panel-cell:nth-child(10)');
@@ -854,7 +856,7 @@ describe('time-picker', () => {
 
       triggerInputBlur(fixture.debugElement);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
 
       expect(onChange).not.toHaveBeenCalled();
@@ -1010,7 +1012,7 @@ describe('finalVariant', () => {
 })
 export class NzTestTimePickerComponent {
   readonly open = signal(false);
-  openChange = jasmine.createSpy('open change');
+  openChange = vi.fn();
   readonly autoFocus = signal(false);
   readonly date = signal<Date | string | null>(new Date());
   readonly disabled = signal(false);

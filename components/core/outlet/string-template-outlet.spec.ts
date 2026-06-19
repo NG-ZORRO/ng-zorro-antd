@@ -6,6 +6,8 @@
 import { Component, signal, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { vi } from 'vitest';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzOutletModule } from './outlet.module';
@@ -80,14 +82,8 @@ describe('string template outlet', () => {
   describe('context shape change', () => {
     it('should work when context shape change', () => {
       component.stringTemplateOutlet.set(component.dataTimeTpl);
-      const spyOnUpdateContext = spyOn(
-        component.nzStringTemplateOutletDirective as NzSafeAny,
-        'updateContext'
-      ).and.callThrough();
-      const spyOnRecreateView = spyOn(
-        component.nzStringTemplateOutletDirective as NzSafeAny,
-        'recreateView'
-      ).and.callThrough();
+      const spyOnUpdateContext = vi.spyOn(component.nzStringTemplateOutletDirective as NzSafeAny, 'updateContext');
+      const spyOnRecreateView = vi.spyOn(component.nzStringTemplateOutletDirective as NzSafeAny, 'recreateView');
       fixture.detectChanges();
       expect(fixture.nativeElement.innerText).toBe('TargetText The data is , The time is');
       component.context.set({ $implicit: 'data', time: 'time' });
@@ -101,14 +97,8 @@ describe('string template outlet', () => {
   describe('context data change', () => {
     it('should work when context implicit change', () => {
       component.stringTemplateOutlet.set(component.stringTpl);
-      const spyOnUpdateContext = spyOn(
-        component.nzStringTemplateOutletDirective as NzSafeAny,
-        'updateContext'
-      ).and.callThrough();
-      const spyOnRecreateView = spyOn(
-        component.nzStringTemplateOutletDirective as NzSafeAny,
-        'recreateView'
-      ).and.callThrough();
+      const spyOnUpdateContext = vi.spyOn(component.nzStringTemplateOutletDirective as NzSafeAny, 'updateContext');
+      const spyOnRecreateView = vi.spyOn(component.nzStringTemplateOutletDirective as NzSafeAny, 'recreateView');
       fixture.detectChanges();
       expect(fixture.nativeElement.innerText).toBe('TargetText The data is');
       component.context.set({ $implicit: 'data' });

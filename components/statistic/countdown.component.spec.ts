@@ -7,6 +7,8 @@ import { Component, DebugElement, signal, TemplateRef, ViewChild } from '@angula
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { NzStatisticValueType } from 'ng-zorro-antd/statistic/typings';
 
 import { NzCountdownComponent } from './countdown.component';
@@ -19,21 +21,21 @@ describe('nz-countdown', () => {
   const now = new Date('2026-01-01T00:00:00.000Z');
 
   describe('basic', () => {
-    beforeEach(() => jasmine.clock().install());
+    beforeEach(() => vi.useFakeTimers());
 
     beforeEach(() => {
-      jasmine.clock().mockDate(now);
+      vi.setSystemTime(now);
       fixture = TestBed.createComponent(NzTestCountdownComponent);
       testComponent = fixture.componentInstance;
       countdownEl = fixture.debugElement.query(By.directive(NzCountdownComponent));
     });
 
-    afterEach(() => jasmine.clock().uninstall());
+    afterEach(() => vi.useRealTimers());
 
     it('should render time', () => {
       testComponent.resetTimerWithFormat('HH:mm:ss');
       fixture.detectChanges();
-      jasmine.clock().tick(100);
+      vi.advanceTimersByTime(100);
       fixture.detectChanges();
       expect(countdownEl.nativeElement.querySelector('.ant-statistic-content-value').innerText).toBe('48:00:29');
       testComponent.countdown.stopTimer();
@@ -41,11 +43,11 @@ describe('nz-countdown', () => {
 
     it('should stop timer when nzValue is earlier than current', () => {
       const beforeTime = now.getTime() - 1000 * 1000;
-      const spyOnStop = spyOn(testComponent.countdown, 'stopTimer');
+      const spyOnStop = vi.spyOn(testComponent.countdown, 'stopTimer');
       testComponent.value.set(beforeTime);
 
       fixture.detectChanges();
-      jasmine.clock().tick(100);
+      vi.advanceTimersByTime(100);
       fixture.detectChanges();
       expect(countdownEl.nativeElement.querySelector('.ant-statistic-content-value').innerText).toBe('00:00:00');
       expect(spyOnStop).toHaveBeenCalledTimes(1);
@@ -54,7 +56,7 @@ describe('nz-countdown', () => {
     it('should support template', () => {
       testComponent.resetWithTemplate();
       fixture.detectChanges();
-      jasmine.clock().tick(100);
+      vi.advanceTimersByTime(100);
       fixture.detectChanges();
 
       const value = Number(countdownEl.nativeElement.querySelector('.ant-statistic-content-value').innerText);
@@ -66,7 +68,7 @@ describe('nz-countdown', () => {
     it('should stop timer and emit event', () => {
       testComponent.value.set(now.getTime() + 1000 * 2);
       fixture.detectChanges();
-      jasmine.clock().tick(3000);
+      vi.advanceTimersByTime(3000);
       fixture.detectChanges();
       expect(testComponent.finished).toBe(1);
     });

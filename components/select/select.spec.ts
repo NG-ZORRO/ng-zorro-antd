@@ -10,6 +10,8 @@ import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
 import {
@@ -1452,8 +1454,8 @@ describe('select', () => {
   });
 
   describe('change detection', () => {
-    beforeEach(() => jasmine.clock().install());
-    afterEach(() => jasmine.clock().uninstall());
+    beforeEach(() => vi.useFakeTimers());
+    afterEach(() => vi.useRealTimers());
 
     let component: TestSelectTemplateDefaultComponent;
     let fixture: ComponentFixture<TestSelectTemplateDefaultComponent>;
@@ -1472,35 +1474,35 @@ describe('select', () => {
     }));
 
     it('should not run change detection if the `triggerWidth` has not been changed', () => {
-      const detectChangesSpy = spyOn(selectComponent['cdr'], 'detectChanges').and.callThrough();
-      // const requestAnimationFrameSpy = spyOn(window, 'requestAnimationFrame').and.callThrough(); this test is totally unstable, depends upon the order of execution
+      const detectChangesSpy = vi.spyOn(selectComponent['cdr'], 'detectChanges');
+      // const requestAnimationFrameSpy = vi.spyOn(window, 'requestAnimationFrame'); this test is totally unstable, depends upon the order of execution
 
       component.nzOpen.set(true);
       fixture.detectChanges();
       // The `requestAnimationFrame` is simulated as `setTimeout(..., 16)` in the test clock.
-      jasmine.clock().tick(16);
+      vi.advanceTimersByTime(16);
 
       dispatchKeyboardEvent(overlayContainerElement, 'keydown', ESCAPE, overlayContainerElement);
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
 
       expect(component.nzOpen()).toEqual(false);
 
       component.nzOpen.set(true);
       fixture.detectChanges();
-      jasmine.clock().tick(16);
+      vi.advanceTimersByTime(16);
 
       // Ensure that the `detectChanges()` have been called only once since the `triggerWidth` hasn't been changed.
-      expect(detectChangesSpy.calls.count()).toBeLessThanOrEqual(1);
+      expect(detectChangesSpy.mock.calls.length).toBeLessThanOrEqual(1);
       // expect(requestAnimationFrameSpy).toHaveBeenCalledTimes(2);
     });
 
     it('should not run change detection when `nz-select-top-control` is clicked and should focus the `nz-select-search`', () => {
       const appRef = TestBed.inject(ApplicationRef);
-      spyOn(appRef, 'tick');
+      vi.spyOn(appRef, 'tick').mockImplementation(() => {});
 
       const nzSelectSearch = fixture.debugElement.query(By.directive(NzSelectSearchComponent));
-      spyOn(nzSelectSearch.componentInstance, 'focus');
+      vi.spyOn(nzSelectSearch.componentInstance, 'focus').mockImplementation(() => {});
 
       const nzSelectTopControl = fixture.debugElement.query(By.directive(NzSelectTopControlComponent));
       dispatchMouseEvent(nzSelectTopControl.nativeElement, 'click');
@@ -1511,7 +1513,7 @@ describe('select', () => {
 
     it('should not run change detection when non-backspace button is pressed on the `nz-select-top-control`', () => {
       const appRef = TestBed.inject(ApplicationRef);
-      spyOn(appRef, 'tick');
+      vi.spyOn(appRef, 'tick').mockImplementation(() => {});
 
       const nzSelectTopControl = fixture.debugElement.query(By.directive(NzSelectTopControlComponent));
       dispatchKeyboardEvent(nzSelectTopControl.nativeElement, 'keydown', TAB, nzSelectTopControl.nativeElement);
@@ -1605,8 +1607,8 @@ describe('select', () => {
   });
 
   describe('placement', () => {
-    beforeEach(() => jasmine.clock().install());
-    afterEach(() => jasmine.clock().uninstall());
+    beforeEach(() => vi.useFakeTimers());
+    afterEach(() => vi.useRealTimers());
 
     let component: TestSelectTemplateDefaultComponent;
     let fixture: ComponentFixture<TestSelectTemplateDefaultComponent>;
@@ -1634,7 +1636,7 @@ describe('select', () => {
       component.nzPlacement.set('bottomRight');
       fixture.detectChanges();
       component.nzOpen.set(true);
-      jasmine.clock().tick(0);
+      vi.advanceTimersByTime(0);
       fixture.detectChanges();
       element = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
       expect(element.classList.contains('ant-select-dropdown-placement-bottomLeft')).toBe(false);
@@ -1645,7 +1647,7 @@ describe('select', () => {
       component.nzPlacement.set('topLeft');
       fixture.detectChanges();
       component.nzOpen.set(true);
-      jasmine.clock().tick(0);
+      vi.advanceTimersByTime(0);
       fixture.detectChanges();
       element = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
       expect(element.classList.contains('ant-select-dropdown-placement-bottomLeft')).toBe(false);
@@ -1656,7 +1658,7 @@ describe('select', () => {
       component.nzPlacement.set('topRight');
       fixture.detectChanges();
       component.nzOpen.set(true);
-      jasmine.clock().tick(0);
+      vi.advanceTimersByTime(0);
       fixture.detectChanges();
       element = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
       expect(element.classList.contains('ant-select-dropdown-placement-bottomLeft')).toBe(false);
@@ -1665,7 +1667,7 @@ describe('select', () => {
       expect(element.classList.contains('ant-select-dropdown-placement-topRight')).toBe(true);
       component.nzOpen.set(false);
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
     });
   });
 });
@@ -1853,9 +1855,9 @@ export class TestSelectTemplateDefaultComponent {
   @ViewChild('affixTemplate') affixTemplate!: TemplateRef<NzSafeAny>;
   readonly value = signal<NzSafeAny | null>(null);
   readonly nzOpen = signal(false);
-  valueChange = jasmine.createSpy<NzSafeAny>('valueChange');
-  openChange = jasmine.createSpy<NzSafeAny>('openChange');
-  searchValueChange = jasmine.createSpy<NzSafeAny>('searchValueChange');
+  valueChange = vi.fn<(value: NzSafeAny) => void>();
+  openChange = vi.fn<(open: NzSafeAny) => void>();
+  searchValueChange = vi.fn<(value: NzSafeAny) => void>();
   readonly listOfGroup = signal<
     Array<{ nzLabel: string | TemplateRef<NzSafeAny> | null; children: NzSelectItemInterface[] }>
   >([]);
@@ -1918,8 +1920,8 @@ export class TestSelectTemplateMultipleComponent {
   readonly listOfOption = signal<NzSelectItemInterface[]>([]);
   readonly value = signal<NzSafeAny>([]);
   readonly nzOpen = signal(false);
-  valueChange = jasmine.createSpy<NzSafeAny>('valueChange');
-  openChange = jasmine.createSpy<NzSafeAny>('openChange');
+  valueChange = vi.fn<(value: NzSafeAny) => void>();
+  openChange = vi.fn<(open: NzSafeAny) => void>();
   readonly nzMenuItemSelectedIcon = signal<TemplateRef<NzSafeAny> | null>(null);
   readonly nzRemoveIcon = signal<TemplateRef<NzSafeAny> | null>(null);
   readonly nzTokenSeparators = signal<string[]>([]);
@@ -1953,7 +1955,7 @@ export class TestSelectTemplateTagsComponent {
   readonly nzMaxTagCount = signal(Infinity);
   readonly value = signal<NzSafeAny[]>([]);
   readonly listOfOption = signal<NzSelectItemInterface[]>([]);
-  valueChange = jasmine.createSpy('valueChange');
+  valueChange = vi.fn();
   readonly nzTokenSeparators = signal<string[]>([]);
   readonly nzMaxTagPlaceholder = signal<TemplateRef<{ $implicit: NzSafeAny[] }> | undefined>(undefined);
 }
@@ -1999,12 +2001,12 @@ export class TestSelectReactiveDefaultComponent {
   @ViewChild('suffixIconTemplate') suffixIconTemplate!: TemplateRef<NzSafeAny>;
   readonly value = signal<NzSafeAny | null>(null);
   readonly nzOpen = signal(false);
-  valueChange = jasmine.createSpy<NzSafeAny>('valueChange');
-  openChange = jasmine.createSpy<NzSafeAny>('openChange');
+  valueChange = vi.fn<(value: NzSafeAny) => void>();
+  openChange = vi.fn<(open: NzSafeAny) => void>();
   readonly nzAutoClearSearchValue = signal(true);
 
-  onClear = jasmine.createSpy<NzSafeAny>('onClear');
-  searchValueChange = jasmine.createSpy<NzSafeAny>('searchValueChange');
+  onClear = vi.fn<() => void>();
+  searchValueChange = vi.fn<(value: NzSafeAny) => void>();
   readonly listOfOption = signal<NzSelectOptionInterface[]>([]);
   readonly nzSize = signal<NzSelectSizeType>('default');
   nzDropdownMatchSelectWidth = true;
@@ -2055,8 +2057,8 @@ export class TestSelectReactiveMultipleComponent {
   readonly listOfOption = signal<NzSelectOptionInterface[]>([]);
   readonly value = signal<NzSafeAny[]>([]);
   readonly nzOpen = signal(false);
-  valueChange = jasmine.createSpy('valueChange');
-  openChange = jasmine.createSpy('openChange');
+  valueChange = vi.fn();
+  openChange = vi.fn();
   readonly nzMenuItemSelectedIcon = signal<TemplateRef<NzSafeAny> | null>(null);
   readonly nzRemoveIcon = signal<TemplateRef<NzSafeAny> | null>(null);
   readonly nzTokenSeparators = signal<string[]>([]);
@@ -2089,7 +2091,7 @@ export class TestSelectReactiveTagsComponent {
   readonly nzMaxTagCount = signal(Infinity);
   readonly value = signal<NzSafeAny[]>([]);
   readonly listOfOption = signal<NzSelectOptionInterface[]>([]);
-  valueChange = jasmine.createSpy('valueChange');
+  valueChange = vi.fn();
   readonly nzTokenSeparators = signal<string[]>([]);
   readonly nzMaxTagPlaceholder = signal<TemplateRef<NzSafeAny> | undefined>(undefined);
   readonly nzMaxMultipleCount = signal<number | undefined>(undefined);

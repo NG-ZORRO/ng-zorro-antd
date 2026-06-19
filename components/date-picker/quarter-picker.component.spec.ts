@@ -11,6 +11,7 @@ import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
 import isBefore from 'date-fns/isBefore';
+import { vi } from 'vitest';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
@@ -34,7 +35,7 @@ describe('quater-picker', () => {
     });
   });
 
-  beforeEach(() => jasmine.clock().install());
+  beforeEach(() => vi.useFakeTimers());
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainer = oc;
@@ -53,7 +54,7 @@ describe('quater-picker', () => {
     overlayContainer.ngOnDestroy();
   });
 
-  afterEach(() => jasmine.clock().uninstall());
+  afterEach(() => vi.useRealTimers());
 
   it('should show quarter panel', async () => {
     fixtureInstance.nzFormat.set(undefined); // cover branch
@@ -197,7 +198,7 @@ describe('quater-picker', () => {
 
   async function stabilize(ms = 500): Promise<void> {
     fixture.detectChanges();
-    jasmine.clock().tick(ms);
+    vi.advanceTimersByTime(ms);
     await Promise.resolve();
     fixture.detectChanges();
   }

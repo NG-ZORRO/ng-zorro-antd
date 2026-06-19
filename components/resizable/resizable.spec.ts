@@ -7,6 +7,8 @@ import { ApplicationRef, Component, ElementRef, NgZone, signal, ViewChild } from
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { dispatchMouseEvent, dispatchTouchEvent, MockNgZone, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzResizableModule } from 'ng-zorro-antd/resizable/resizable.module';
@@ -59,7 +61,7 @@ describe('resizable', () => {
 
     it('should toggle the `nz-resizable-handle-box-hover` class when `mouseenter` and `mouseleave` events are fired and should not run change detection', () => {
       const appRef = TestBed.inject(ApplicationRef);
-      spyOn(appRef, 'tick');
+      vi.spyOn(appRef, 'tick');
       dispatchMouseEvent(resizableEle, 'mouseenter');
       const handles = resizableEle.querySelectorAll('.nz-resizable-handle');
       expect(handles.length).toBe(8);
@@ -75,7 +77,7 @@ describe('resizable', () => {
 
     it('should not run change detection on `mousedown` event on the `nz-resize-handle`', () => {
       const appRef = TestBed.inject(ApplicationRef);
-      spyOn(appRef, 'tick');
+      vi.spyOn(appRef, 'tick');
       const nzResizeHandle = resizableEle.querySelector('nz-resize-handle')!;
       dispatchMouseEvent(nzResizeHandle, 'mousedown');
       expect(appRef.tick).toHaveBeenCalledTimes(0);

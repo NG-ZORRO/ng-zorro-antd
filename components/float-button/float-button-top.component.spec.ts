@@ -7,6 +7,8 @@ import { Component, DebugElement, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { provideNzConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
@@ -244,7 +246,7 @@ class TestFloatButtonTopComponent {
   readonly target = signal<HTMLElement | string | null>(null);
   readonly customVisibilityHeight = signal<number | undefined>(defaultVisibilityHeight);
   readonly useCustomIconTemplate = signal(false);
-  handleClick = jasmine.createSpy('click');
+  handleClick = vi.fn();
 
   setTarget(target: HTMLElement | string): void {
     this.target.set(target);

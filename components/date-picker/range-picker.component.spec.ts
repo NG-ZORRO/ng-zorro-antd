@@ -14,6 +14,7 @@ import { By } from '@angular/platform-browser';
 
 import differenceInDays from 'date-fns/differenceInDays';
 import isSameDay from 'date-fns/isSameDay';
+import { vi } from 'vitest';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import {
@@ -67,9 +68,9 @@ describe('range-picker', () => {
     overlayContainer.ngOnDestroy();
   });
 
-  beforeEach(() => jasmine.clock().install());
+  beforeEach(() => vi.useFakeTimers());
 
-  afterEach(() => jasmine.clock().uninstall());
+  afterEach(() => vi.useRealTimers());
 
   describe('general api testing', () => {
     beforeEach(() => fixtureInstance.useSuite.set(1));
@@ -81,7 +82,7 @@ describe('range-picker', () => {
 
       triggerInputBlur();
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
     });
@@ -89,7 +90,7 @@ describe('range-picker', () => {
     it('should nz-range-picker work', () => {
       fixtureInstance.useSuite.set(5);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
       const pickerInput = getPickerInput(fixture.debugElement);
@@ -106,14 +107,14 @@ describe('range-picker', () => {
 
       getRangePickerRightInput(fixture.debugElement).focus();
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
 
       triggerInputBlur();
       getRegularPickerInput(fixture.debugElement).focus();
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
     });
@@ -124,7 +125,7 @@ describe('range-picker', () => {
 
       triggerInputBlur();
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerInput(fixture.debugElement).matches(':focus-within')).toBeTruthy();
     });
@@ -133,14 +134,14 @@ describe('range-picker', () => {
       fixture.detectChanges();
       getPickerInput(fixture.debugElement).dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
 
       getPickerInput(fixture.debugElement).focus();
       getPickerInput(fixture.debugElement).dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
     });
@@ -150,7 +151,7 @@ describe('range-picker', () => {
       openPickerByClickTrigger();
 
       const event = new MouseEvent('mousedown');
-      spyOn(event, 'preventDefault').and.callThrough();
+      vi.spyOn(event, 'preventDefault');
       fixture.nativeElement.querySelector(`.${PREFIX_CLASS}-separator`).dispatchEvent(event);
 
       expect(event.preventDefault).not.toHaveBeenCalled();
@@ -169,7 +170,7 @@ describe('range-picker', () => {
       expect(fixtureInstance.modelValue()).toBe(initial);
       expect(debugElement.query(clearBtnSelector)).toBeDefined();
 
-      const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
+      const nzOnChange = vi.spyOn(fixtureInstance, 'modelValueChange').mockImplementation(() => {});
       debugElement.query(clearBtnSelector).nativeElement.click();
       fixture.detectChanges();
       expect((fixtureInstance.modelValue() as Date[]).length).toBe(0);
@@ -184,7 +185,7 @@ describe('range-picker', () => {
       await stabilize();
 
       const leftInput = getPickerInput(fixture.debugElement);
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       debugElement.query(clearBtnSelector).nativeElement.click();
       expect(leftInput.attributes.getNamedItem('ng-reflect-model')?.value).toBeUndefined();
     });
@@ -215,19 +216,19 @@ describe('range-picker', () => {
       fixtureInstance.useSuite.set(2);
 
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
 
       fixtureInstance.nzOpen.set(true);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
 
       fixtureInstance.nzOpen.set(false);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
     });
@@ -283,14 +284,14 @@ describe('range-picker', () => {
     });
 
     it('should support nzOnOpenChange', () => {
-      const nzOnOpenChange = spyOn(fixtureInstance, 'nzOnOpenChange');
+      const nzOnOpenChange = vi.spyOn(fixtureInstance, 'nzOnOpenChange').mockImplementation(() => {});
       fixture.detectChanges();
       openPickerByClickTrigger();
       expect(nzOnOpenChange).toHaveBeenCalledWith(true);
 
       triggerInputBlur();
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(nzOnOpenChange).toHaveBeenCalledWith(false);
       expect(nzOnOpenChange).toHaveBeenCalledTimes(2);
@@ -327,32 +328,32 @@ describe('range-picker', () => {
     });
 
     it('should support nzOnCalendarChange', () => {
-      const nzOnCalendarChange = spyOn(fixtureInstance, 'nzOnCalendarChange');
+      const nzOnCalendarChange = vi.spyOn(fixtureInstance, 'nzOnCalendarChange').mockImplementation(() => {});
       fixture.detectChanges();
       openPickerByClickTrigger();
       const left = getFirstCell('left');
       const leftText = left.textContent!.trim();
       dispatchMouseEvent(left, 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(nzOnCalendarChange).toHaveBeenCalled();
-      let result = (nzOnCalendarChange.calls.allArgs()[0] as Date[][])[0];
+      let result = (nzOnCalendarChange.mock.calls[0] as Date[][])[0];
       expect(result[0].getDate()).toBe(+leftText);
       const right = getFirstCell('right');
       const rightText = right.textContent!.trim();
       dispatchMouseEvent(right, 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(nzOnCalendarChange).toHaveBeenCalled();
-      result = (nzOnCalendarChange.calls.allArgs()[1] as Date[][])[0];
+      result = (nzOnCalendarChange.mock.calls[1] as Date[][])[0];
       expect(result[0].getDate()).toBe(+leftText);
       expect(result[1].getDate()).toBe(+rightText);
     });
 
     it('should support nzOnCalendarChange when nzShowTime is true', () => {
-      const nzOnCalendarChange = spyOn(fixtureInstance, 'nzOnCalendarChange');
+      const nzOnCalendarChange = vi.spyOn(fixtureInstance, 'nzOnCalendarChange').mockImplementation(() => {});
       fixtureInstance.nzShowTime.set(true);
       fixture.detectChanges();
       openPickerByClickTrigger();
@@ -361,16 +362,16 @@ describe('range-picker', () => {
       fixture.detectChanges();
       dispatchMouseEvent(queryFromOverlay('.ant-picker-ok > button'), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(nzOnCalendarChange).toHaveBeenCalled();
     });
 
     it('should support nzOnChange', () => {
       fixtureInstance.modelValue.set([new Date('2018-11-11'), new Date('2018-11-11')]);
-      const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
+      const nzOnChange = vi.spyOn(fixtureInstance, 'modelValueChange').mockImplementation(() => {});
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       fixture.detectChanges();
       openPickerByClickTrigger();
 
@@ -378,56 +379,56 @@ describe('range-picker', () => {
       const leftText = left.textContent!.trim();
       dispatchMouseEvent(left, 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       fixture.detectChanges();
       expect(nzOnChange).not.toHaveBeenCalled();
       // now the cursor focus on right
       const right = getFirstCell('right');
       dispatchMouseEvent(right, 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       fixture.detectChanges();
-      const result = (nzOnChange.calls.allArgs()[0] as Date[][])[0];
+      const result = (nzOnChange.mock.calls[0] as Date[][])[0];
       expect((result[0] as Date).getDate()).toBe(+leftText);
     });
 
     it('should not call nzOnChange if values do not change', () => {
       fixtureInstance.modelValue.set([new Date('2018-11-11'), new Date('2018-11-11')]);
-      const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
+      const nzOnChange = vi.spyOn(fixtureInstance, 'modelValueChange').mockImplementation(() => {});
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       fixture.detectChanges();
       openPickerByClickTrigger();
       const leftInput = getPickerInput(fixture.debugElement);
       const rightInput = getRangePickerRightInput(fixture.debugElement);
       typeInElement('2018-11-11 00:00:00', leftInput);
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       fixture.detectChanges();
       typeInElement('2018-11-11 00:00:00', rightInput);
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       fixture.detectChanges();
       triggerInputBlur();
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       fixture.detectChanges();
       expect(nzOnChange).not.toHaveBeenCalled();
     });
 
     it('should support nzInline', () => {
-      const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
+      const nzOnChange = vi.spyOn(fixtureInstance, 'modelValueChange').mockImplementation(() => {});
       fixtureInstance.modelValue.set([new Date('2018-11-11'), new Date('2018-11-11')]);
       fixtureInstance.nzInline.set(true);
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       fixture.detectChanges();
       overlayContainerElement = debugElement.nativeElement as HTMLLIElement;
 
       const left = getFirstCell('left'); // Use the first cell
       dispatchMouseEvent(left, 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       fixture.detectChanges();
       expect(nzOnChange).not.toHaveBeenCalled();
       // now the cursor focus on right
@@ -435,9 +436,9 @@ describe('range-picker', () => {
       const rightText = right.textContent!.trim();
       dispatchMouseEvent(right, 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       fixture.detectChanges();
-      const result = (nzOnChange.calls.allArgs()[0] as Date[][])[0];
+      const result = (nzOnChange.mock.calls[0] as Date[][])[0];
       const resultDays = result.map(date => (date as Date).getDate());
       expect(resultDays).toContain(+rightText);
       expect(resultDays).not.toEqual([11, 11]);
@@ -447,7 +448,7 @@ describe('range-picker', () => {
       fixture.detectChanges();
       openPickerByClickTrigger();
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       fixture.detectChanges();
       const arrow = queryFromOverlay(`.${PREFIX_CLASS}-range-arrow`) as HTMLElement;
       expect(arrow.style.left).not.toBe('');
@@ -458,7 +459,7 @@ describe('range-picker', () => {
       fixture.detectChanges();
       openPickerByClickTrigger();
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       fixture.detectChanges();
       const arrow = queryFromOverlay(`.${PREFIX_CLASS}-range-arrow`) as HTMLElement;
 
@@ -508,7 +509,7 @@ describe('range-picker', () => {
 
       triggerInputBlur();
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
 
       openPickerByClickTrigger();
@@ -575,27 +576,27 @@ describe('range-picker', () => {
     it('should support active part change when select one', () => {
       fixture.detectChanges();
       openPickerByClickTrigger();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       fixture.detectChanges();
       // Choose left part first
       dispatchMouseEvent(getFirstCell('left'), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getRangePickerRightInput(fixture.debugElement) === document.activeElement).toBeTruthy();
 
       triggerInputBlur();
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
 
       // Choose right part first
       openRightPickerByClickTrigger();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       fixture.detectChanges();
       dispatchMouseEvent(getFirstCell('right'), 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerInput(fixture.debugElement) === document.activeElement).toBeTruthy();
     });
@@ -604,7 +605,7 @@ describe('range-picker', () => {
       fixtureInstance.nzShowTime.set(true);
       fixture.detectChanges();
       openRightPickerByClickTrigger();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       fixture.detectChanges();
       const okButton = queryFromOverlay('.ant-picker-ok > button');
       expect(okButton.getAttribute('disabled')).not.toBeNull();
@@ -615,13 +616,13 @@ describe('range-picker', () => {
         'click'
       );
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       fixture.detectChanges();
       expect(okButton.getAttribute('disabled')).toBeNull();
 
       dispatchMouseEvent(okButton, 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerInput(fixture.debugElement) === document.activeElement).toBeTruthy();
     });
@@ -674,7 +675,7 @@ describe('range-picker', () => {
       // Close left panel
       triggerInputBlur();
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
 
       // Right time picker
@@ -702,7 +703,7 @@ describe('range-picker', () => {
       // Close left panel
       triggerInputBlur('right');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       openPickerByClickTrigger();
       // Left time picker
@@ -719,7 +720,7 @@ describe('range-picker', () => {
       // Close left panel
       triggerInputBlur();
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       openRightPickerByClickTrigger();
       // Right time picker
@@ -749,7 +750,7 @@ describe('range-picker', () => {
 
     it('should support nzOnPanelChange', async () => {
       fixtureInstance.modelValue.set([new Date('2018-10-11 11:22:34'), new Date('2018-11-12 11:22:33')]);
-      const spy = spyOn(fixtureInstance, 'nzOnPanelChange');
+      const spy = vi.spyOn(fixtureInstance, 'nzOnPanelChange').mockImplementation(() => {});
       await stabilize();
       openPickerByClickTrigger();
 
@@ -766,7 +767,7 @@ describe('range-picker', () => {
         date: [new Date('2018-10-11 11:22:34'), new Date('2018-11-11 11:22:34')]
       });
 
-      spy.calls.reset();
+      spy.mockClear();
 
       // Right
       dispatchMouseEvent(
@@ -782,7 +783,7 @@ describe('range-picker', () => {
 
     it('should support nzOnPanelChange when click on prev button', async () => {
       fixtureInstance.modelValue.set([new Date('2018-10-11 11:22:34'), new Date('2018-11-12 11:22:33')]);
-      spyOn(fixtureInstance, 'nzOnPanelChange');
+      vi.spyOn(fixtureInstance, 'nzOnPanelChange').mockImplementation(() => {});
       await stabilize();
       openPickerByClickTrigger();
       dispatchMouseEvent(getPreBtn('left'), 'click');
@@ -795,7 +796,7 @@ describe('range-picker', () => {
 
     it('should support nzOnPanelChange when click on next button', async () => {
       fixtureInstance.modelValue.set([new Date('2018-10-11 11:22:34'), new Date('2018-11-12 11:22:33')]);
-      spyOn(fixtureInstance, 'nzOnPanelChange');
+      vi.spyOn(fixtureInstance, 'nzOnPanelChange').mockImplementation(() => {});
       await stabilize();
       openPickerByClickTrigger();
       dispatchMouseEvent(getNextBtn('right'), 'click');
@@ -808,7 +809,7 @@ describe('range-picker', () => {
 
     it('should support nzOnPanelChange when click on super prev button', async () => {
       fixtureInstance.modelValue.set([new Date('2018-10-11 11:22:34'), new Date('2018-11-12 11:22:33')]);
-      spyOn(fixtureInstance, 'nzOnPanelChange');
+      vi.spyOn(fixtureInstance, 'nzOnPanelChange').mockImplementation(() => {});
       await stabilize();
       openPickerByClickTrigger();
       dispatchMouseEvent(getSuperPreBtn('left'), 'click');
@@ -821,7 +822,7 @@ describe('range-picker', () => {
 
     it('should support nzOnPanelChange when click on super next button', async () => {
       fixtureInstance.modelValue.set([new Date('2018-10-11 11:22:34'), new Date('2018-11-12 11:22:33')]);
-      spyOn(fixtureInstance, 'nzOnPanelChange');
+      vi.spyOn(fixtureInstance, 'nzOnPanelChange').mockImplementation(() => {});
       await stabilize();
       openPickerByClickTrigger();
       dispatchMouseEvent(getSuperNextBtn('left'), 'click');
@@ -833,7 +834,7 @@ describe('range-picker', () => {
     });
 
     it('should support nzOnOk', async () => {
-      spyOn(fixtureInstance, 'nzOnOk');
+      vi.spyOn(fixtureInstance, 'nzOnOk').mockImplementation(() => {});
       fixtureInstance.modelValue.set([new Date('2018-11-11 11:22:33'), new Date('2018-12-12 11:22:33')]);
       fixtureInstance.nzShowTime.set(true);
       await stabilize();
@@ -842,7 +843,7 @@ describe('range-picker', () => {
       // Click ok button
       dispatchMouseEvent(overlayContainerElement.querySelector('.ant-picker-ok > button')!, 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       expect(fixtureInstance.nzOnOk).toHaveBeenCalledWith(fixtureInstance.modelValue());
     });
 
@@ -872,7 +873,7 @@ describe('range-picker', () => {
 
     it('should support nzRanges', () => {
       const today = new Date();
-      const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
+      const nzOnChange = vi.spyOn(fixtureInstance, 'modelValueChange').mockImplementation(() => {});
       fixtureInstance.nzRanges.set({ Today: [today, today] });
       fixture.detectChanges();
       openPickerByClickTrigger();
@@ -887,21 +888,21 @@ describe('range-picker', () => {
 
       // selector = queryFromOverlay('.ant-picker-ranges li.ant-picker-preset:first-child');
       dispatchMouseEvent(selector, 'mouseleave');
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-panel td.ant-picker-cell-selected')).toBeFalsy();
 
       // selector = queryFromOverlay('.ant-picker-range-quick-selector > a');
       dispatchMouseEvent(selector, 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(nzOnChange).toHaveBeenCalled();
       expect(getPickerContainer()).toBeFalsy();
     });
 
     it('should custom input date range', () => {
-      const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
+      const nzOnChange = vi.spyOn(fixtureInstance, 'modelValueChange').mockImplementation(() => {});
       fixture.detectChanges();
       openPickerByClickTrigger();
       const leftInput = getPickerInput(fixture.debugElement);
@@ -918,16 +919,16 @@ describe('range-picker', () => {
       typeInElement('2018-12-12', rightInput);
       rightInput.dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(nzOnChange).toHaveBeenCalled();
-      const result = (nzOnChange.calls.allArgs()[0] as Date[][])[0];
+      const result = (nzOnChange.mock.calls[0] as Date[][])[0];
       expect(result[0].getDate()).toBe(11);
       expect(result[1].getDate()).toBe(12);
     });
 
     it('should custom input time range', () => {
-      const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
+      const nzOnChange = vi.spyOn(fixtureInstance, 'modelValueChange').mockImplementation(() => {});
       fixtureInstance.modelValue.set([new Date('2019-11-11 11:22:33'), new Date('2019-12-12 11:22:33')]);
       fixtureInstance.nzShowTime.set(true);
       fixture.detectChanges();
@@ -945,12 +946,12 @@ describe('range-picker', () => {
       fixture.detectChanges();
       rightInput.dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       expect(nzOnChange).toHaveBeenCalledWith([new Date(newDateString[0]), new Date(newDateString[1])]);
     });
 
     it('if sort order is wrong, output in reverse order', () => {
-      const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
+      const nzOnChange = vi.spyOn(fixtureInstance, 'modelValueChange').mockImplementation(() => {});
       fixtureInstance.modelValue.set([]);
       fixture.detectChanges();
       openPickerByClickTrigger();
@@ -968,14 +969,14 @@ describe('range-picker', () => {
       fixture.detectChanges();
       rightInput.dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       expect(nzOnChange).toHaveBeenCalledWith([new Date(newDateString[0]), new Date(newDateString[1])]);
     });
 
     it('should not change value when click ESC', () => {
       fixtureInstance.modelValue.set([new Date('2018-09-11'), new Date('2020-09-12')]);
       fixture.detectChanges();
-      jasmine.clock().tick(0); // Wait writeValue() tobe done
+      vi.advanceTimersByTime(0); // Wait writeValue() tobe done
       fixture.detectChanges();
       openPickerByClickTrigger();
       const leftInput = getPickerInput(fixture.debugElement);
@@ -990,7 +991,7 @@ describe('range-picker', () => {
       // expect(getSecondSelectedDayCell().textContent!.trim()).toBe('8');
       dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
       fixture.detectChanges();
-      jasmine.clock().tick(10000);
+      vi.advanceTimersByTime(10000);
       fixture.detectChanges();
       // TODO: input value should not be change
       // expect(leftInput.value).toBe('2018-09-11');
@@ -1024,7 +1025,7 @@ describe('range-picker', () => {
       fixture.detectChanges();
       leftInput.dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getHeaderYearBtn('left').textContent).toContain('2027');
       // panel month will increase 1
@@ -1070,7 +1071,7 @@ describe('range-picker', () => {
       const rightThirdRowCell = queryFromRightPanel('table tr:nth-child(3) td.ant-picker-cell');
       dispatchMouseEvent(rightThirdRowCell, 'click');
       fixture.detectChanges();
-      jasmine.clock().tick(500);
+      vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
     });
@@ -1152,7 +1153,7 @@ describe('range-picker', () => {
 
   async function stabilize(ms = 500): Promise<void> {
     fixture.detectChanges();
-    jasmine.clock().tick(ms);
+    vi.advanceTimersByTime(ms);
     await Promise.resolve();
     fixture.detectChanges();
   }
@@ -1209,22 +1210,22 @@ describe('range-picker', () => {
   function openPickerByClickTrigger(): void {
     dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
     fixture.detectChanges();
-    jasmine.clock().tick(500);
+    vi.advanceTimersByTime(500);
     fixture.detectChanges();
     dispatchFakeEvent(getPickerInput(fixture.debugElement), 'focus');
     fixture.detectChanges();
-    jasmine.clock().tick(500);
+    vi.advanceTimersByTime(500);
     fixture.detectChanges();
   }
 
   function openRightPickerByClickTrigger(): void {
     dispatchMouseEvent(getRangePickerRightInput(fixture.debugElement), 'click');
     fixture.detectChanges();
-    jasmine.clock().tick(500);
+    vi.advanceTimersByTime(500);
     fixture.detectChanges();
     dispatchFakeEvent(getRangePickerRightInput(fixture.debugElement), 'focus');
     fixture.detectChanges();
-    jasmine.clock().tick(500);
+    vi.advanceTimersByTime(500);
     fixture.detectChanges();
   }
 

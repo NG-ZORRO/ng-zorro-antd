@@ -10,6 +10,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { CandyDate } from 'ng-zorro-antd/core/time';
@@ -502,6 +504,6 @@ class NzTestCalendarMonthFullCellComponent {}
 class NzTestCalendarChangesComponent {
   mode: 'month' | 'year' = 'month';
   date0 = new Date(2014, 3, 14);
-  panelChange = jasmine.createSpy('panelChange callback');
-  selectChange = jasmine.createSpy('selectChange callback');
+  panelChange = vi.fn();
+  selectChange = vi.fn();
 }
