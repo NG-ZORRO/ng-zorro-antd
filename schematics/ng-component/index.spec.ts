@@ -58,7 +58,7 @@ describe('[schematic] ng-component', () => {
     const files = tree.files;
 
     expect(files).toEqual(
-      jasmine.arrayContaining([
+      expect.arrayContaining([
         '/projects/ng-zorro/src/app/test/test.component.less',
         '/projects/ng-zorro/src/app/test/test.component.html',
         '/projects/ng-zorro/src/app/test/test.component.spec.ts',
@@ -73,7 +73,7 @@ describe('[schematic] ng-component', () => {
     const files = tree.files;
 
     expect(files).toEqual(
-      jasmine.arrayContaining([
+      expect.arrayContaining([
         '/projects/ng-zorro/src/app/test/test.container.less',
         '/projects/ng-zorro/src/app/test/test.container.html',
         '/projects/ng-zorro/src/app/test/test.container.spec.ts',
@@ -88,7 +88,7 @@ describe('[schematic] ng-component', () => {
     const files = tree.files;
 
     expect(files).toEqual(
-      jasmine.arrayContaining([
+      expect.arrayContaining([
         '/projects/ng-zorro/src/app/test/test.less',
         '/projects/ng-zorro/src/app/test/test.html',
         '/projects/ng-zorro/src/app/test/test.spec.ts',
@@ -126,7 +126,7 @@ describe('[schematic] ng-component', () => {
       const files = tree.files;
 
       expect(files).toEqual(
-        jasmine.arrayContaining([
+        expect.arrayContaining([
           '/projects/ng-zorro/src/app/test/test.component.sass',
           '/projects/ng-zorro/src/app/test/test.component.html',
           '/projects/ng-zorro/src/app/test/test.component.spec.ts',
@@ -141,7 +141,7 @@ describe('[schematic] ng-component', () => {
       const files = tree.files;
 
       expect(files).toEqual(
-        jasmine.arrayContaining([
+        expect.arrayContaining([
           '/projects/ng-zorro/src/app/test/test.component.html',
           '/projects/ng-zorro/src/app/test/test.component.spec.ts',
           '/projects/ng-zorro/src/app/test/test.component.ts'
@@ -156,7 +156,7 @@ describe('[schematic] ng-component', () => {
       const files = tree.files;
 
       expect(files).toEqual(
-        jasmine.arrayContaining([
+        expect.arrayContaining([
           '/projects/ng-zorro/src/app/test/test.component.html',
           '/projects/ng-zorro/src/app/test/test.component.spec.ts',
           '/projects/ng-zorro/src/app/test/test.component.ts'
@@ -191,7 +191,7 @@ describe('[schematic] ng-component', () => {
       const files = tree.files;
 
       expect(files).toEqual(
-        jasmine.arrayContaining([
+        expect.arrayContaining([
           '/projects/ng-zorro/src/app/test.component.less',
           '/projects/ng-zorro/src/app/test.component.html',
           '/projects/ng-zorro/src/app/test.component.spec.ts',

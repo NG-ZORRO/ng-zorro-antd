@@ -43,7 +43,4 @@ task(
 );
 
 /** Test the schematics */
-task('test:schematics', execTask('jasmine', ['publish/schematics/**/*.spec.js']));
-
-/** Test the ng-update schematics */
-task('test:schematics-update', execTask('jasmine', ['publish/schematics/ng-update/**/*.spec.js']));
+task('test:schematics', execTask('vitest', ['run', '--globals', '--dir', 'publish/schematics']));

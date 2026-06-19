@@ -30,7 +30,7 @@ describe('[schematic][standalone] top-nav', () => {
     const tree = await runner.runSchematic('topnav', options, appTree);
     const files = tree.files;
     expect(files).toEqual(
-      jasmine.arrayContaining([
+      expect.arrayContaining([
         '/projects/ng-zorro/src/app/app.html',
         '/projects/ng-zorro/src/app/app.css',
         '/projects/ng-zorro/src/app/app.ts',
@@ -67,7 +67,7 @@ describe('[schematic][standalone] top-nav', () => {
     expect(welcomeContent).toContain('welcome.component.less');
 
     expect(files).toEqual(
-      jasmine.arrayContaining([
+      expect.arrayContaining([
         '/projects/ng-zorro/src/app/app.less',
         '/projects/ng-zorro/src/app/pages/welcome/welcome.component.less'
       ])
