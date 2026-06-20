@@ -14,19 +14,19 @@ stages:
   jobs:
     - job: Nodes
       steps:
-      - task: NodeTool@0
+      - task: UseNode@1
         inputs:
-          versionSpec: '22.22.3'
+          version: '22.22.3'
         displayName: 'Install Node.js'
 
 - stage: build
   jobs:
     - job: build_site
       steps:
-        - task: NodeTool@0
+        - task: UseNode@1
           displayName: 'Install Node.js'
           inputs:
-            versionSpec: '22.22.3'
+            version: '22.22.3'
         - task: Npm@1
           inputs:
             command: 'ci'
@@ -63,13 +63,12 @@ stages:
           displayName: 'Upload coverage to Codecov'
           condition: succeededOrFailed()
 
-        - task: PublishCodeCoverageResults@1
+        - task: PublishCodeCoverageResults@2
           displayName: 'Publish code coverage results'
           condition: succeededOrFailed()
           inputs:
-            codeCoverageTool: Cobertura
             summaryFileLocation: $(System.DefaultWorkingDirectory)/coverage-report/cobertura-coverage.xml
-            reportDirectory: $(System.DefaultWorkingDirectory)/coverage-report
+            pathToSources: $(System.DefaultWorkingDirectory)
             failIfCoverageEmpty: true
 
         - task: PublishTestResults@2
