@@ -120,7 +120,7 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "buildTarget": "ng-zorro-antd-doc:build:development",
+            "buildTarget": "ng-zorro-antd-lib:build:development",
             "runner": "vitest",
             "runnerConfig": "components/vitest.config.mjs",
             "browsers": [

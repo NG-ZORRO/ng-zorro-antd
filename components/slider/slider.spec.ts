@@ -1132,7 +1132,8 @@ class SliderWithFormControlComponent {
 
 @Component({
   imports: [FormsModule, NzSliderModule],
-  template: `<nz-slider [nzTooltipVisible]="show()" [ngModel]="value" />`
+  template: `<nz-slider [nzTooltipVisible]="show()" [ngModel]="value" />`,
+  styles: [styles]
 })
 class SliderShowTooltipComponent {
   readonly show = signal<NzSliderShowTooltip>('default');
@@ -1156,7 +1157,8 @@ class NzTestSliderKeyboardComponent {
     <ng-template #titleTemplate let-value>
       <span>Slider value: {{ value }}</span>
     </ng-template>
-  `
+  `,
+  styles: [styles]
 })
 class SliderShowTemplateTooltipComponent {
   readonly show = signal<NzSliderShowTooltip>('default');
