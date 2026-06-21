@@ -6,6 +6,10 @@ export default defineConfig({
     // viewport mocks, timers, and prototype spies. Keep files serial and
     // isolated until those specs no longer depend on global browser state.
     fileParallelism: false,
-    isolate: true
+    isolate: true,
+    coverage: {
+      reportsDirectory: 'coverage-report',
+      reporter: ['html', 'text-summary', 'lcovonly', 'cobertura']
+    }
   }
 });
