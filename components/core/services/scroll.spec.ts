@@ -128,16 +128,21 @@ describe('NzScrollService', () => {
 
     it('should call the custom callback within the Angular zone', async () => {
       let callbackCalled = false;
+      let resolveCallback!: () => void;
+      const callbackDone = new Promise<void>(resolve => {
+        resolveCallback = resolve;
+      });
       vi.spyOn(ngZone, 'run');
 
       scrollService.scrollTo(undefined, undefined, {
         duration: 0,
         callback: () => {
           callbackCalled = true;
+          resolveCallback();
         }
       });
 
-      await nextAnimationFrame();
+      await callbackDone;
       expect(ngZone.run).toHaveBeenCalled();
       expect(callbackCalled).toBe(true);
     });
