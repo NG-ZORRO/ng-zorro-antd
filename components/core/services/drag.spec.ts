@@ -3,17 +3,22 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Component, inject } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Subject, Subscription } from 'rxjs';
 
-import { createMouseEvent, createTouchEvent, dispatchMouseEvent, dispatchTouchEvent } from 'ng-zorro-antd/core/testing';
+import {
+  createMouseEvent,
+  createTouchEvent,
+  dispatchMouseEvent,
+  dispatchTouchEvent,
+  updateNonSignalsInput
+} from 'ng-zorro-antd/core/testing';
 
 import { NzDragService } from './drag';
 
 @Component({
-  template: '',
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: ''
 })
 export class NzTestDragServiceComponent {
   public nzDragService = inject(NzDragService);
@@ -52,36 +57,31 @@ describe('drag service', () => {
     });
 
     afterEach(() => {
-      if (drag_) {
-        drag_.unsubscribe();
-      }
-
-      if (complete_) {
-        complete_.unsubscribe();
-      }
+      drag_?.unsubscribe();
+      complete_?.unsubscribe();
     });
 
-    it('should mousedown work', fakeAsync(() => {
+    it('should mousedown work', async () => {
       component.drag(createMouseEvent('mousedown', 0, 0));
       dispatchMouseEvent(document, 'mousemove', 100, 0);
 
-      tickMilliseconds(fixture, 20);
+      await stabilize(fixture, 20);
       expect(dragged).toBeTruthy();
 
       dispatchMouseEvent(document, 'mouseup');
       expect(completed).toBeTruthy();
-    }));
+    });
 
-    it('should touchdown work', fakeAsync(() => {
+    it('should touchdown work', async () => {
       component.drag(createTouchEvent('touchdown') as TouchEvent);
       dispatchTouchEvent(document, 'touchmove', 100, 0);
 
-      tickMilliseconds(fixture, 20);
+      await stabilize(fixture, 20);
       expect(dragged).toBeTruthy();
 
       dispatchTouchEvent(document, 'touchend');
       expect(completed).toBeTruthy();
-    }));
+    });
 
     it('should close previous drag sequence', () => {
       component.drag(createMouseEvent('mousedown', 0, 0));
@@ -91,21 +91,21 @@ describe('drag service', () => {
       expect(dragged).toBeFalsy();
     });
 
-    it('should threshold work', fakeAsync(() => {
+    it('should threshold work', async () => {
       component.drag(createMouseEvent('mousedown', 0, 0));
       dispatchMouseEvent(document, 'mousemove', 4, 0);
 
-      tickMilliseconds(fixture, 20);
+      await stabilize(fixture, 20);
       expect(dragged).toBeFalsy();
 
       dispatchMouseEvent(document, 'mouseup');
       expect(completed).toBeTruthy();
-    }));
+    });
   });
 });
 
-function tickMilliseconds<T>(fixture: ComponentFixture<T>, seconds: number = 1): void {
+async function stabilize<T>(fixture: ComponentFixture<T>, ms: number = 1): Promise<void> {
   fixture.detectChanges();
-  tick(seconds);
+  await updateNonSignalsInput(fixture, ms);
   fixture.detectChanges();
 }

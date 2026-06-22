@@ -5,11 +5,11 @@
 
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { Component, signal } from '@angular/core';
+import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 
@@ -23,7 +23,7 @@ describe('dropdown', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
   });
 
@@ -37,22 +37,24 @@ describe('dropdown', () => {
     overlayContainer.ngOnDestroy();
   }));
 
+  beforeEach(() => jasmine.clock().install());
+  afterEach(() => jasmine.clock().uninstall());
+
   // TODO: why this works well with ChromeHeadless but fails with ChromeHeadlessCI?
   xdescribe('placement and arrow', () => {
     let fixture: ComponentFixture<NzTestDropdownArrowComponent>;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestDropdownArrowComponent);
-      fixture.componentInstance.arrow = true;
+      fixture.componentInstance.arrow.set(true);
     });
 
-    it('should render arrow when nzArrow is true and apply placement classes', fakeAsync(() => {
-      fixture.componentInstance.placement = 'bottomLeft';
+    it('should render arrow when nzArrow is true and apply placement classes', async () => {
+      fixture.componentInstance.placement.set('bottomLeft');
       fixture.detectChanges();
       const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
       dispatchFakeEvent(dropdownElement, 'mouseenter');
-      tick(1000);
-      fixture.detectChanges();
+      await stabilize(fixture, 1000);
       const dropdown = overlayContainerElement.querySelector('.ant-dropdown') as HTMLElement;
       expect(dropdown).not.toBeNull();
       expect(dropdown.classList).toContain('ant-dropdown-show-arrow');
@@ -60,20 +62,17 @@ describe('dropdown', () => {
       expect(dropdown.querySelector('.ant-dropdown-arrow')).not.toBeNull();
 
       // Change placement while open should update placement class
-      fixture.componentInstance.placement = 'topRight';
-      fixture.detectChanges();
-      tick(0);
-      fixture.detectChanges();
+      fixture.componentInstance.placement.set('topRight');
+      await stabilize(fixture);
       expect(dropdown.classList.contains('ant-dropdown-placement-topRight')).toBeTrue();
-    }));
+    });
 
-    it('should map center placements to top/bottom classes', fakeAsync(() => {
-      fixture.componentInstance.placement = 'bottomCenter';
+    it('should map center placements to top/bottom classes', async () => {
+      fixture.componentInstance.placement.set('bottomCenter');
       fixture.detectChanges();
       const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
       dispatchFakeEvent(dropdownElement, 'mouseenter');
-      tick(1000);
-      fixture.detectChanges();
+      await stabilize(fixture, 1000);
       const dropdown = overlayContainerElement.querySelector('.ant-dropdown') as HTMLElement;
       expect(dropdown).not.toBeNull();
       expect(dropdown.classList.contains('ant-dropdown-show-arrow')).toBeTrue();
@@ -84,165 +83,137 @@ describe('dropdown', () => {
       expect(isBottomFamily).toBeTrue();
 
       // Switch to topCenter
-      fixture.componentInstance.placement = 'topCenter';
-      fixture.detectChanges();
-      tick(0);
-      fixture.detectChanges();
+      fixture.componentInstance.placement.set('topCenter');
+      await stabilize(fixture);
       const isTopFamily =
         dropdown.classList.contains('ant-dropdown-placement-top') ||
         dropdown.classList.contains('ant-dropdown-placement-topLeft') ||
         dropdown.classList.contains('ant-dropdown-placement-topRight');
       expect(isTopFamily).toBeTrue();
-    }));
+    });
   });
 
-  it('should hover correct', fakeAsync(() => {
+  it('should hover correct', async () => {
     const fixture = TestBed.createComponent(NzTestDropdownComponent);
-    fixture.componentInstance.trigger = 'hover';
+    fixture.componentInstance.trigger.set('hover');
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
-    expect(() => {
-      const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
-      dispatchFakeEvent(dropdownElement, 'mouseenter');
-      fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(overlayContainerElement.textContent).toContain('1st menu item');
-    }).not.toThrowError();
-  }));
+    const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
+    dispatchFakeEvent(dropdownElement, 'mouseenter');
+    await stabilize(fixture, 1000);
+    expect(overlayContainerElement.textContent).toContain('1st menu item');
+  });
 
-  it('should click correct', fakeAsync(() => {
+  it('should click correct', async () => {
     const fixture = TestBed.createComponent(NzTestDropdownComponent);
-    fixture.componentInstance.trigger = 'click';
+    fixture.componentInstance.trigger.set('click');
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
-    expect(() => {
-      const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
-      dispatchFakeEvent(dropdownElement, 'click');
-      fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(overlayContainerElement.textContent).toContain('1st menu item');
-    }).not.toThrowError();
-  }));
+    const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
+    dispatchFakeEvent(dropdownElement, 'click');
+    await stabilize(fixture, 1000);
+    expect(overlayContainerElement.textContent).toContain('1st menu item');
+  });
 
-  it('should disabled work', fakeAsync(() => {
+  it('should disabled work', async () => {
     const fixture = TestBed.createComponent(NzTestDropdownComponent);
-    fixture.componentInstance.disabled = true;
+    fixture.componentInstance.disabled.set(true);
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toBe('');
-    expect(() => {
-      const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
-      dispatchFakeEvent(dropdownElement, 'mouseenter');
-      fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(overlayContainerElement.textContent).toBe('');
-    }).not.toThrowError();
-  }));
+    const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
+    dispatchFakeEvent(dropdownElement, 'mouseenter');
+    await stabilize(fixture, 1000);
+    expect(overlayContainerElement.textContent).toBe('');
+  });
 
   describe('when nzBackdrop=true', () => {
     let fixture: ComponentFixture<NzTestDropdownComponent>;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestDropdownComponent);
-      fixture.componentInstance.backdrop = true;
+      fixture.componentInstance.backdrop.set(true);
     });
 
-    it('should disappear if invisible backdrop clicked if nzTrigger=click', fakeAsync(() => {
-      fixture.componentInstance.trigger = 'click';
+    it('should disappear if invisible backdrop clicked if nzTrigger=click', async () => {
+      fixture.componentInstance.trigger.set('click');
       fixture.detectChanges();
 
-      expect(() => {
-        const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
-        dispatchFakeEvent(dropdownElement, 'click');
-
-        tick(1000);
-        fixture.detectChanges();
-
-        const backdrop = overlayContainerElement.querySelector('.cdk-overlay-backdrop');
-        expect(backdrop).not.toBeNull();
-
-        dispatchFakeEvent(backdrop as Element, 'click');
-        tick(1000);
-        fixture.detectChanges();
-
-        expect(overlayContainerElement.querySelector('.cdk-overlay-backdrop')).toBeNull();
-      }).not.toThrowError();
-    }));
-  });
-
-  it('should disappear if Escape pressed', fakeAsync(() => {
-    const fixture = TestBed.createComponent(NzTestDropdownComponent);
-    fixture.componentInstance.trigger = 'click';
-    fixture.componentInstance.backdrop = true;
-    fixture.detectChanges();
-
-    expect(() => {
       const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
-
       dispatchFakeEvent(dropdownElement, 'click');
-      tick(1000);
-      fixture.detectChanges();
+      await stabilize(fixture, 1000);
 
       const backdrop = overlayContainerElement.querySelector('.cdk-overlay-backdrop');
       expect(backdrop).not.toBeNull();
 
-      dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
-      tick(1000);
-      fixture.detectChanges();
+      dispatchFakeEvent(backdrop as Element, 'click');
+      await stabilize(fixture, 1000);
 
-      const nullBackdrop = overlayContainerElement.querySelector('.cdk-overlay-backdrop');
-      expect(nullBackdrop).toBeNull();
-    }).not.toThrowError();
-  }));
+      expect(overlayContainerElement.querySelector('.cdk-overlay-backdrop')).toBeNull();
+    });
+  });
 
-  it('should nzOverlayClassName and nzOverlayStyle work', fakeAsync(() => {
+  it('should disappear if Escape pressed', async () => {
+    const fixture = TestBed.createComponent(NzTestDropdownComponent);
+    fixture.componentInstance.trigger.set('click');
+    fixture.componentInstance.backdrop.set(true);
+    fixture.detectChanges();
+
+    const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
+
+    dispatchFakeEvent(dropdownElement, 'click');
+    await stabilize(fixture, 1000);
+
+    const backdrop = overlayContainerElement.querySelector('.cdk-overlay-backdrop');
+    expect(backdrop).not.toBeNull();
+
+    dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
+    await stabilize(fixture, 1000);
+
+    const nullBackdrop = overlayContainerElement.querySelector('.cdk-overlay-backdrop');
+    expect(nullBackdrop).toBeNull();
+  });
+
+  it('should nzOverlayClassName and nzOverlayStyle work', async () => {
     const fixture = TestBed.createComponent(NzTestDropdownComponent);
     fixture.detectChanges();
-    expect(() => {
-      const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
-      dispatchFakeEvent(dropdownElement, 'mouseenter');
-      fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-dropdown')!.classList).toContain('custom-class');
-      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-dropdown')!.style.color).toBe('rgb(0, 0, 0)');
-    }).not.toThrowError();
-  }));
+    const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
+    dispatchFakeEvent(dropdownElement, 'mouseenter');
+    await stabilize(fixture, 1000);
+    expect(overlayContainerElement.querySelector('.ant-dropdown')!.classList).toContain('custom-class');
+    expect(overlayContainerElement.querySelector<HTMLElement>('.ant-dropdown')!.style.color).toBe('rgb(0, 0, 0)');
+  });
 
-  it('should nzVisible & nzClickHide work', fakeAsync(() => {
+  it('should nzVisible & nzClickHide work', async () => {
     const fixture = TestBed.createComponent(NzTestDropdownVisibleComponent);
     fixture.detectChanges();
     expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledTimes(0);
     const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
     dispatchFakeEvent(dropdownElement, 'mouseenter');
-    fixture.detectChanges();
-    tick(1000);
-    fixture.detectChanges();
+    await stabilize(fixture, 300);
     expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledTimes(1);
     expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledWith(true);
     expect(overlayContainerElement.textContent).toContain('Clicking me will not close the menu.');
     dispatchFakeEvent(overlayContainerElement.querySelector('.first-menu')!, 'click');
-    fixture.detectChanges();
-    tick(1000);
-    fixture.detectChanges();
+    await stabilize(fixture, 300);
     expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledTimes(1);
     expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledWith(true);
     expect(overlayContainerElement.textContent).toContain('Clicking me will not close the menu.');
     dispatchFakeEvent(overlayContainerElement.querySelector('.second-menu')!, 'click');
-    fixture.detectChanges();
-    tick(1000);
-    fixture.detectChanges();
+    await stabilize(fixture, 300);
     expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledTimes(1);
     expect(overlayContainerElement.textContent).toContain('Clicking me will not close the menu.');
     dispatchFakeEvent(overlayContainerElement.querySelector('.close-menu')!, 'click');
-    fixture.detectChanges();
-    tick(2000);
-    fixture.detectChanges();
+    await stabilize(fixture, 500);
     expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledTimes(1);
-  }));
+  });
 });
+
+async function stabilize<T>(fixture: ComponentFixture<T>, ms?: number): Promise<void> {
+  fixture.detectChanges();
+  jasmine.clock().tick(ms ?? 0);
+  await fixture.whenStable();
+  fixture.detectChanges();
+}
 
 @Component({
   imports: [NzDropdownModule, NzMenuModule],
@@ -250,12 +221,12 @@ describe('dropdown', () => {
     <a
       nz-dropdown
       [nzDropdownMenu]="menu"
-      [nzTrigger]="trigger"
-      [nzDisabled]="disabled"
-      [nzPlacement]="placement"
-      [nzBackdrop]="backdrop"
-      [nzOverlayClassName]="className"
-      [nzOverlayStyle]="overlayStyle"
+      [nzTrigger]="trigger()"
+      [nzDisabled]="disabled()"
+      [nzPlacement]="placement()"
+      [nzBackdrop]="backdrop()"
+      [nzOverlayClassName]="className()"
+      [nzOverlayStyle]="overlayStyle()"
     >
       Trigger
     </a>
@@ -266,16 +237,15 @@ describe('dropdown', () => {
         <li nz-menu-item>3rd menu item</li>
       </ul>
     </nz-dropdown-menu>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestDropdownComponent {
-  backdrop = false;
-  trigger: 'click' | 'hover' = 'hover';
-  placement: NzPlacementType = 'bottomLeft';
-  disabled = false;
-  className = 'custom-class';
-  overlayStyle = { color: '#000' };
+  readonly backdrop = signal(false);
+  readonly trigger = signal<'click' | 'hover'>('hover');
+  readonly placement = signal<NzPlacementType>('bottomLeft');
+  readonly disabled = signal(false);
+  readonly className = signal('custom-class');
+  readonly overlayStyle = signal({ color: '#000' });
 }
 
 @Component({
@@ -294,30 +264,30 @@ export class NzTestDropdownComponent {
       <ul nz-menu>
         <li nz-menu-item class="first-menu">Clicking me will not close the menu.</li>
         <li nz-menu-item class="second-menu">Clicking me will not close the menu also.</li>
-        <li nz-menu-item (click)="visible = false" class="close-menu">Clicking me will close the menu</li>
+        <li nz-menu-item (click)="visible.set(false)" class="close-menu">Clicking me will close the menu</li>
       </ul>
     </nz-dropdown-menu>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestDropdownVisibleComponent {
-  visible = false;
+  readonly visible = signal(false);
   triggerVisible = jasmine.createSpy('visibleChange');
 }
 
 @Component({
   imports: [NzDropdownModule, NzMenuModule],
   template: `
-    <a nz-dropdown [nzDropdownMenu]="menu" [nzArrow]="arrow" [nzPlacement]="placement" nzTrigger="hover"> Trigger </a>
+    <a nz-dropdown [nzDropdownMenu]="menu" [nzArrow]="arrow()" [nzPlacement]="placement()" nzTrigger="hover">
+      Trigger
+    </a>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>
         <li nz-menu-item>1st menu item</li>
       </ul>
     </nz-dropdown-menu>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestDropdownArrowComponent {
-  arrow = false;
-  placement: NzPlacementType = 'bottomLeft';
+  readonly arrow = signal(false);
+  readonly placement = signal<NzPlacementType>('bottomLeft');
 }

@@ -9,6 +9,10 @@ export function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+export function nextAnimationFrame(): Promise<void> {
+  return sleep(16);
+}
+
 export async function updateNonSignalsInput<T>(fixture: ComponentFixture<T>, ms?: number): Promise<void> {
   fixture.changeDetectorRef.markForCheck();
   if (typeof ms === 'number') {

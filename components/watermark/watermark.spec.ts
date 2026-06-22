@@ -128,8 +128,7 @@ describe('watermark (SSR)', () => {
       // Enter server mode for the duration of this function.
       globalThis['ngServerMode'] = true;
 
-      const bootstrap = (): Promise<ApplicationRef> =>
-        bootstrapApplication(NzTestWatermarkBasicComponent, { providers: [] });
+      const bootstrap = (): Promise<ApplicationRef> => bootstrapApplication(NzTestWatermarkBasicComponent);
       const html = await renderApplication(bootstrap, {
         document: '<html><head></head><body><nz-test-watermark-basic></nz-test-watermark-basic></body></html>'
       });

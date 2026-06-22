@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
@@ -21,8 +21,7 @@ declare const monaco: any;
       [nzFullControl]="true"
       (nzEditorInitialized)="onEditorInit($event)"
     />
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestCodeEditorFullControlComponent {
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any

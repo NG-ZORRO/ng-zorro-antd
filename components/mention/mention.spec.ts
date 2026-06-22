@@ -6,23 +6,13 @@
 import { DOWN_ARROW, ENTER, ESCAPE, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
-import {
-  ApplicationRef,
-  ChangeDetectionStrategy,
-  Component,
-  DebugElement,
-  NgZone,
-  provideZoneChangeDetection,
-  signal,
-  ViewChild,
-  type WritableSignal
-} from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { ApplicationRef, Component, DebugElement, NgZone, signal, ViewChild, type WritableSignal } from '@angular/core';
+import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
 import {
   createKeyboardEvent,
@@ -32,7 +22,8 @@ import {
   MockNgZone,
   provideMockDirectionality,
   testDirectionality,
-  typeInElement
+  typeInElement,
+  updateNonSignalsInput
 } from 'ng-zorro-antd/core/testing';
 import { NzStatus, type NzVariant } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -51,9 +42,7 @@ describe('mention', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        // todo: use zoneless
-        provideZoneChangeDetection(),
-        provideNoopAnimations(),
+        provideNzNoAnimation(),
         provideNzIconsTesting(),
         provideMockDirectionality(),
         { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
@@ -79,13 +68,13 @@ describe('mention', () => {
     let fixture: ComponentFixture<NzTestSimpleMentionComponent>;
     let textarea: HTMLTextAreaElement;
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(async () => {
       fixture = TestBed.createComponent(NzTestSimpleMentionComponent);
       fixture.detectChanges();
       textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
       textarea.value = '@angular';
-      tick();
-    }));
+      await stabilize(fixture);
+    });
 
     it('should open the dropdown when the input is click', () => {
       dispatchFakeEvent(textarea, 'click');
@@ -101,75 +90,73 @@ describe('mention', () => {
       expect(fixture.componentInstance.mention.isOpen).toBe(false);
     });
 
-    it('should not open the dropdown on click if the input is readonly', fakeAsync(() => {
+    it('should not open the dropdown on click if the input is readonly', async () => {
       const mention = fixture.componentInstance.mention;
       textarea.readOnly = true;
       fixture.detectChanges();
 
       expect(mention.isOpen).toBe(false);
       dispatchFakeEvent(textarea, 'click');
-      flush();
+      await stabilize(fixture);
 
       fixture.detectChanges();
       expect(mention.isOpen).toBe(false);
-    }));
+    });
 
-    it('should not open the dropdown on click if the input is disabled', fakeAsync(() => {
+    it('should not open the dropdown on click if the input is disabled', async () => {
       const mention = fixture.componentInstance.mention;
       textarea.disabled = true;
       fixture.detectChanges();
 
       expect(mention.isOpen).toBe(false);
       dispatchFakeEvent(textarea, 'click');
-      flush();
+      await stabilize(fixture);
 
       fixture.detectChanges();
       expect(mention.isOpen).toBe(false);
-    }));
+    });
 
-    it('should close the dropdown when the user clicks away', fakeAsync(() => {
+    it('should close the dropdown when the user clicks away', async () => {
       const mention = fixture.componentInstance.mention;
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
-      flush();
+      await stabilize(fixture);
       expect(mention.isOpen).toBe(true);
       dispatchFakeEvent(document.body, 'click');
       expect(mention.isOpen).toBe(false);
-    }));
+    });
 
-    it('should close the dropdown when the user taps away on a touch device', fakeAsync(() => {
+    it('should close the dropdown when the user taps away on a touch device', async () => {
       const mention = fixture.componentInstance.mention;
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
-      flush();
+      await stabilize(fixture);
       dispatchFakeEvent(document, 'touchend');
       expect(mention.isOpen).toBe(false);
-    }));
+    });
 
-    it('should close the dropdown when an option is clicked', fakeAsync(() => {
+    it('should close the dropdown when an option is clicked', async () => {
       const mention = fixture.componentInstance.mention;
       textarea.value = '@a';
       fixture.detectChanges();
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
-      flush();
+      await stabilize(fixture);
 
       const option = overlayContainerElement.querySelector('.ant-mentions-dropdown-menu-item') as HTMLElement;
       option.click();
-      fixture.detectChanges();
-
-      tick(500);
+      await stabilize(fixture);
       expect(mention.isOpen).toBe(false);
       expect(overlayContainerElement.textContent).toEqual('');
       expect(textarea.value).toEqual('@angular ');
-    }));
+    });
 
-    it('should prevent default on the mousedown event when an option is clicked and should not run change detection', fakeAsync(() => {
+    it('should prevent default on the mousedown event when an option is clicked and should not run change detection', async () => {
       textarea.value = '@a';
       fixture.detectChanges();
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
-      flush();
+      await stabilize(fixture);
 
       const appRef = TestBed.inject(ApplicationRef);
       const option = overlayContainerElement.querySelector('.ant-mentions-dropdown-menu-item') as HTMLElement;
@@ -182,12 +169,12 @@ describe('mention', () => {
 
       expect(event.preventDefault).toHaveBeenCalled();
       expect(appRef.tick).not.toHaveBeenCalled();
-    }));
+    });
 
-    it('should support switch trigger', fakeAsync(() => {
-      fixture.componentInstance.inputTrigger = true;
+    it('should support switch trigger', async () => {
+      fixture.componentInstance.inputTrigger.set(true);
       fixture.detectChanges();
-      tick(); // Wait for afterNextRender
+      await stabilize(fixture);
       const textareaWithSingleLine = fixture.debugElement.query(By.css('textarea')).nativeElement;
       const mention = fixture.componentInstance.mention;
       expect(textareaWithSingleLine).toBeTruthy();
@@ -196,19 +183,17 @@ describe('mention', () => {
       fixture.detectChanges();
       dispatchFakeEvent(textareaWithSingleLine, 'click');
       fixture.detectChanges();
-      flush();
+      await stabilize(fixture);
 
       expect(mention.isOpen).toBe(true);
 
       const option = overlayContainerElement.querySelector('.ant-mentions-dropdown-menu-item') as HTMLElement;
-      expect(option).toBeTruthy(); // Ensure option exists before clicking
+      expect(option).toBeTruthy();
       option.click();
-      fixture.detectChanges();
-
-      tick(500);
+      await stabilize(fixture);
       expect(mention.isOpen).toBe(false);
       expect(overlayContainerElement.textContent).toEqual('');
-    }));
+    });
   });
 
   describe('keyboard events', () => {
@@ -220,7 +205,7 @@ describe('mention', () => {
     // let LEFT_EVENT: KeyboardEvent;
     let RIGHT_EVENT: KeyboardEvent;
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(async () => {
       fixture = TestBed.createComponent(NzTestSimpleMentionComponent);
       fixture.detectChanges();
       textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
@@ -232,8 +217,8 @@ describe('mention', () => {
       RIGHT_EVENT = createKeyboardEvent('keydown', RIGHT_ARROW);
 
       fixture.detectChanges();
-      flush();
-    }));
+      await stabilize(fixture);
+    });
 
     it('should set the active item to the second option when DOWN key is pressed', () => {
       textarea.value = '@a';
@@ -349,13 +334,13 @@ describe('mention', () => {
       expect(optionEls[1].innerText).toEqual('mention');
     });
 
-    it('should fill the text field when an option is selected with ENTER', fakeAsync(() => {
+    it('should fill the text field when an option is selected with ENTER', async () => {
       textarea.value = '@';
       fixture.detectChanges();
       dispatchFakeEvent(textarea, 'click');
       const componentInstance = fixture.componentInstance;
       componentInstance.trigger.onKeydown.emit(DOWN_ARROW_EVENT);
-      flush();
+      await stabilize(fixture);
       fixture.detectChanges();
 
       componentInstance.trigger.onKeydown.emit(ENTER_EVENT);
@@ -364,20 +349,20 @@ describe('mention', () => {
       expect(componentInstance.inputValue).toContain('@ant-design ');
 
       expect(textarea.value).toContain('@ant-design ');
-    }));
+    });
 
-    it('should prevent the default enter key action', fakeAsync(() => {
+    it('should prevent the default enter key action', async () => {
       textarea.value = '@';
       fixture.detectChanges();
       dispatchFakeEvent(textarea, 'click');
       fixture.componentInstance.trigger.onKeydown.emit(DOWN_ARROW_EVENT);
-      flush();
+      await stabilize(fixture);
 
       fixture.componentInstance.trigger.onKeydown.emit(ENTER_EVENT);
       // TODO: ivy fix
       expect(ENTER_EVENT.defaultPrevented).toBe(true);
       // expect(false).toBe(true);
-    }));
+    });
 
     it('should not prevent the default enter action for a closed dropdown', () => {
       textarea.value = 'ABC';
@@ -390,18 +375,17 @@ describe('mention', () => {
       // expect(true).toBe(false);
     });
 
-    it('should close the dropdown when tabbing', fakeAsync(() => {
+    it('should close the dropdown when tabbing', async () => {
       textarea.value = '@';
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
       expect(overlayContainerElement.querySelector('.ant-mentions-dropdown')).toBeTruthy();
       dispatchKeyboardEvent(textarea, 'keydown', TAB);
-      fixture.detectChanges();
-      tick(500);
+      await stabilize(fixture);
       expect(overlayContainerElement.querySelector('.ant-mentions-dropdown')).toBeFalsy();
-    }));
+    });
 
-    it('should close the dropdown when pressing escape', fakeAsync(() => {
+    it('should close the dropdown when pressing escape', async () => {
       textarea.value = '@';
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
@@ -409,11 +393,9 @@ describe('mention', () => {
       expect(overlayContainerElement.querySelector('.ant-mentions-dropdown')).toBeTruthy();
 
       dispatchKeyboardEvent(textarea, 'keydown', ESCAPE);
-      fixture.detectChanges();
-
-      tick(500);
+      await stabilize(fixture);
       expect(overlayContainerElement.querySelector('.ant-mentions-dropdown')).toBeFalsy();
-    }));
+    });
   });
 
   describe('property', () => {
@@ -421,34 +403,39 @@ describe('mention', () => {
     let textarea: HTMLTextAreaElement;
     let spyNzOnSearch: jasmine.Spy;
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(async () => {
       fixture = TestBed.createComponent(NzTestPropertyMentionComponent);
       fixture.detectChanges();
-      tick();
+      await stabilize(fixture);
       textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
       spyNzOnSearch = spyOn(fixture.componentInstance, 'onSearchChange');
-    }));
-
-    afterEach(() => {
-      spyNzOnSearch.calls.reset();
     });
 
-    it('should open the dropdown when the async load suggestions', fakeAsync(() => {
-      fixture.detectChanges();
-      dispatchFakeEvent(textarea, 'click');
-      typeInElement('@', textarea);
-      fixture.detectChanges();
-      fixture.componentInstance.fetchSuggestions();
-      fixture.detectChanges();
+    afterEach(() => {
+      spyNzOnSearch?.calls.reset();
+    });
 
-      tick();
-      fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-mentions-dropdown .anticon-loading')).toBeTruthy();
-      fixture.detectChanges();
-      flush(500);
-      fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-mentions-dropdown .anticon-loading')).toBeFalsy();
-    }));
+    describe('async suggestions', () => {
+      beforeEach(() => jasmine.clock().install());
+      afterEach(() => jasmine.clock().uninstall());
+
+      it('should open the dropdown when the async load suggestions', async () => {
+        fixture.detectChanges();
+        dispatchFakeEvent(textarea, 'click');
+        typeInElement('@', textarea);
+        fixture.detectChanges();
+        fixture.componentInstance.fetchSuggestions();
+        fixture.detectChanges();
+
+        await stabilize(fixture);
+        fixture.detectChanges();
+        expect(overlayContainerElement.querySelector('.ant-mentions-dropdown .anticon-loading')).toBeTruthy();
+        jasmine.clock().tick(500);
+        fixture.detectChanges();
+        await stabilize(fixture);
+        expect(overlayContainerElement.querySelector('.ant-mentions-dropdown .anticon-loading')).toBeFalsy();
+      });
+    });
 
     it('should open the dropdown when the type in @ prefix', () => {
       fixture.componentInstance.setArrayPrefix();
@@ -516,22 +503,22 @@ describe('mention', () => {
     let fixture: ComponentFixture<NzTestStatusMentionComponent>;
     let mention: DebugElement;
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(async () => {
       fixture = TestBed.createComponent(NzTestStatusMentionComponent);
       mention = fixture.debugElement.query(By.directive(NzMentionComponent));
       fixture.detectChanges();
-      tick();
-    }));
+      await stabilize(fixture);
+    });
 
     it('should className with status correct', () => {
       fixture.detectChanges();
       expect(mention.nativeElement.classList).toContain('ant-mentions-status-error');
 
-      fixture.componentInstance.status = 'warning';
+      fixture.componentInstance.status.set('warning');
       fixture.detectChanges();
       expect(mention.nativeElement.classList).toContain('ant-mentions-status-warning');
 
-      fixture.componentInstance.status = '';
+      fixture.componentInstance.status.set('');
       fixture.detectChanges();
       expect(mention.nativeElement.classList).not.toContain('ant-mentions-status-warning');
     });
@@ -541,27 +528,27 @@ describe('mention', () => {
     let fixture: ComponentFixture<NzTestMentionInFormComponent>;
     let mention: DebugElement;
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(async () => {
       fixture = TestBed.createComponent(NzTestMentionInFormComponent);
       mention = fixture.debugElement.query(By.directive(NzMentionComponent));
       fixture.detectChanges();
-      tick();
-    }));
+      await stabilize(fixture);
+    });
 
     it('should className correct', () => {
       fixture.detectChanges();
       expect(mention.nativeElement.classList).toContain('ant-mentions-status-error');
       expect(mention.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeTruthy();
 
-      fixture.componentInstance.status = 'warning';
+      fixture.componentInstance.status.set('warning');
       fixture.detectChanges();
       expect(mention.nativeElement.classList).toContain('ant-mentions-status-warning');
 
-      fixture.componentInstance.status = 'success';
+      fixture.componentInstance.status.set('success');
       fixture.detectChanges();
       expect(mention.nativeElement.classList).toContain('ant-mentions-status-success');
 
-      fixture.componentInstance.feedback = false;
+      fixture.componentInstance.feedback.set(false);
       fixture.detectChanges();
       expect(mention.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeNull();
     });
@@ -581,16 +568,16 @@ describe('mention', () => {
     let fixture: ComponentFixture<NzTestVariantMentionComponent>;
     let mention: DebugElement;
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(async () => {
       fixture = TestBed.createComponent(NzTestVariantMentionComponent);
       mention = fixture.debugElement.query(By.directive(NzMentionComponent));
       fixture.detectChanges();
-      tick();
-    }));
+      await stabilize(fixture);
+    });
 
     describe('should variant work', () => {
       it('outlined', () => {
-        fixture.componentInstance.variant = 'outlined';
+        fixture.componentInstance.variant.set('outlined');
         fixture.detectChanges();
         expect(mention.nativeElement.classList).toContain('ant-mentions-outlined');
       });
@@ -598,7 +585,7 @@ describe('mention', () => {
       it('filled', () => {
         fixture.detectChanges();
         expect(mention.nativeElement.classList).not.toContain('ant-mentions-filled');
-        fixture.componentInstance.variant = 'filled';
+        fixture.componentInstance.variant.set('filled');
         fixture.detectChanges();
         expect(mention.nativeElement.classList).toContain('ant-mentions-filled');
       });
@@ -606,7 +593,7 @@ describe('mention', () => {
       it('borderless', () => {
         fixture.detectChanges();
         expect(mention.nativeElement.classList).not.toContain('ant-mentions-borderless');
-        fixture.componentInstance.variant = 'borderless';
+        fixture.componentInstance.variant.set('borderless');
         fixture.detectChanges();
         expect(mention.nativeElement.classList).toContain('ant-mentions-borderless');
       });
@@ -614,30 +601,30 @@ describe('mention', () => {
       it('underlined', () => {
         fixture.detectChanges();
         expect(mention.nativeElement.classList).not.toContain('ant-mentions-underlined');
-        fixture.componentInstance.variant = 'underlined';
+        fixture.componentInstance.variant.set('underlined');
         fixture.detectChanges();
         expect(mention.nativeElement.classList).toContain('ant-mentions-underlined');
       });
     });
 
     it('should switch between variants correctly', () => {
-      fixture.componentInstance.variant = 'filled';
+      fixture.componentInstance.variant.set('filled');
       fixture.detectChanges();
       expect(mention.nativeElement.classList).toContain('ant-mentions-filled');
 
-      fixture.componentInstance.variant = 'borderless';
+      fixture.componentInstance.variant.set('borderless');
       fixture.detectChanges();
       expect(mention.nativeElement.classList).toContain('ant-mentions-borderless');
       expect(mention.nativeElement.classList).not.toContain('ant-mentions-filled');
 
-      fixture.componentInstance.variant = 'outlined';
+      fixture.componentInstance.variant.set('outlined');
       fixture.detectChanges();
       expect(mention.nativeElement.classList).not.toContain('ant-mentions-borderless');
       expect(mention.nativeElement.classList).not.toContain('ant-mentions-filled');
       expect(mention.nativeElement.classList).not.toContain('ant-mentions-underlined');
     });
 
-    it('should maintain functionality across different variants', fakeAsync(() => {
+    it('should maintain functionality across different variants', async () => {
       const variants: Array<'outlined' | 'filled' | 'borderless' | 'underlined'> = [
         'outlined',
         'filled',
@@ -645,8 +632,8 @@ describe('mention', () => {
         'underlined'
       ];
 
-      variants.forEach(variant => {
-        fixture.componentInstance.variant = variant;
+      for (const variant of variants) {
+        fixture.componentInstance.variant.set(variant);
         fixture.detectChanges();
 
         const textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
@@ -655,108 +642,113 @@ describe('mention', () => {
 
         dispatchFakeEvent(textarea, 'click');
         fixture.detectChanges();
-        flush();
+        await stabilize(fixture);
 
         expect(fixture.componentInstance.mention.isOpen).toBe(true);
 
         const option = overlayContainerElement.querySelector('.ant-mentions-dropdown-menu-item') as HTMLElement;
         if (option) {
           option.click();
-          fixture.detectChanges();
-          tick(500);
+          await stabilize(fixture);
 
           expect(fixture.componentInstance.mention.isOpen).toBe(false);
         }
-      });
-    }));
+      }
+    });
   });
 
   describe('clear button', () => {
     let fixture: ComponentFixture<NzTestClearMentionComponent>;
     let textarea: HTMLTextAreaElement;
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(async () => {
       fixture = TestBed.createComponent(NzTestClearMentionComponent);
       fixture.detectChanges();
       textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
-      tick();
-    }));
+      await stabilize(fixture);
+    });
 
-    it('should not show clear button when nzAllowClear is false', fakeAsync(() => {
-      fixture.componentInstance.allowClear = false;
+    it('should not show clear button when nzAllowClear is false', async () => {
+      fixture.componentInstance.allowClear.set(false);
       fixture.detectChanges();
       typeInElement('test value', textarea);
       fixture.detectChanges();
-      tick();
+      await stabilize(fixture);
       expect(fixture.debugElement.query(By.css('.ant-mentions-clear-icon'))).toBeNull();
-    }));
+    });
 
-    it('should show clear button when nzAllowClear is true and has value', fakeAsync(() => {
-      fixture.componentInstance.allowClear = true;
+    it('should show clear button when nzAllowClear is true and has value', async () => {
+      fixture.componentInstance.allowClear.set(true);
       fixture.detectChanges();
       typeInElement('test value', textarea);
       fixture.detectChanges();
-      tick();
+      await stabilize(fixture);
       expect(fixture.debugElement.query(By.css('.ant-mentions-clear-icon'))).toBeTruthy();
-    }));
+    });
 
-    it('should not show clear button when nzAllowClear is true but has no value', fakeAsync(() => {
-      fixture.componentInstance.allowClear = true;
+    it('should not show clear button when nzAllowClear is true but has no value', async () => {
+      fixture.componentInstance.allowClear.set(true);
       fixture.detectChanges();
       typeInElement('', textarea);
       fixture.detectChanges();
-      tick();
+      await stabilize(fixture);
       expect(fixture.debugElement.query(By.css('.ant-mentions-clear-icon'))).toBeNull();
-    }));
+    });
 
-    it('should clear input value when clear button is clicked', fakeAsync(() => {
-      fixture.componentInstance.allowClear = true;
+    it('should clear input value when clear button is clicked', async () => {
+      fixture.componentInstance.allowClear.set(true);
       fixture.detectChanges();
       typeInElement('test value', textarea);
       fixture.detectChanges();
-      tick();
+      await stabilize(fixture);
 
       const clearButton = fixture.debugElement.query(By.css('.ant-mentions-clear-icon')).nativeElement;
       clearButton.click();
       fixture.detectChanges();
-      tick();
+      await stabilize(fixture);
 
       expect(textarea.value).toBe('');
       expect(fixture.componentInstance.inputValue).toBe('');
-    }));
+    });
 
-    it('should emit nzOnClear when clear button is clicked', fakeAsync(() => {
+    it('should emit nzOnClear when clear button is clicked', async () => {
       const spy = spyOn(fixture.componentInstance, 'onClear');
-      fixture.componentInstance.allowClear = true;
+      fixture.componentInstance.allowClear.set(true);
       fixture.detectChanges();
       typeInElement('test value', textarea);
       fixture.detectChanges();
-      tick();
+      await stabilize(fixture);
 
       const clearButton = fixture.debugElement.query(By.css('.ant-mentions-clear-icon')).nativeElement;
       clearButton.click();
       fixture.detectChanges();
 
       expect(spy).toHaveBeenCalled();
-    }));
+    });
 
-    it('should use custom clear icon when provided', fakeAsync(() => {
-      fixture.componentInstance.allowClear = true;
-      fixture.componentInstance.useCustomClearIcon = true;
+    it('should use custom clear icon when provided', async () => {
+      fixture.componentInstance.allowClear.set(true);
+      fixture.componentInstance.useCustomClearIcon.set(true);
       fixture.detectChanges();
       typeInElement('test value', textarea);
       fixture.detectChanges();
-      tick();
+      await stabilize(fixture);
 
       const clearIcon = fixture.debugElement.query(By.css('.custom-clear-icon'));
       expect(clearIcon).toBeTruthy();
-    }));
+    });
   });
 });
 
 testDirectionality(() => NzTestSimpleMentionComponent, By.directive(NzMentionComponent), 'ant-mentions', {
-  providers: [provideZoneChangeDetection(), provideNoopAnimations(), provideNzIconsTesting()]
+  providers: [provideNzNoAnimation(), provideNzIconsTesting()]
 });
+
+async function stabilize<T>(fixture: ComponentFixture<T>, ms?: number): Promise<void> {
+  fixture.detectChanges();
+  await updateNonSignalsInput(fixture, ms);
+  fixture.detectChanges();
+}
 
 describe('finalVariant', () => {
   let fixture: ComponentFixture<NzTestFinalVariantMentionComponent>;
@@ -766,9 +758,11 @@ describe('finalVariant', () => {
   beforeEach(() => {
     formVariantSignal = signal<NzVariant>('outlined');
   });
+
   afterEach(() => {
     TestBed.resetTestingModule();
   });
+
   it('should use formVariant when nzVariant is not set (undefined by default)', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: NZ_FORM_VARIANT, useValue: formVariantSignal }]
@@ -829,20 +823,19 @@ describe('finalVariant', () => {
 @Component({
   imports: [FormsModule, NzInputModule, NzMentionModule],
   template: `
-    <nz-mention [nzSuggestions]="suggestions">
-      @if (!inputTrigger) {
+    <nz-mention [nzSuggestions]="suggestions()">
+      @if (!inputTrigger()) {
         <textarea nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
       } @else {
         <textarea rows="1" nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
       }
     </nz-mention>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class NzTestSimpleMentionComponent {
   inputValue: string = '@angular';
-  inputTrigger = false;
-  suggestions = ['angular', 'ant-design', 'mention', '中文', 'にほんご'];
+  readonly inputTrigger = signal(false);
+  readonly suggestions = signal(['angular', 'ant-design', 'mention', '中文', 'にほんご']);
   @ViewChild(NzMentionComponent, { static: false }) mention!: NzMentionComponent;
   @ViewChild(NzMentionTriggerDirective, { static: false }) trigger!: NzMentionTriggerDirective;
 }
@@ -851,11 +844,11 @@ class NzTestSimpleMentionComponent {
   imports: [FormsModule, NzInputModule, NzMentionModule],
   template: `
     <nz-mention
-      [nzSuggestions]="webFrameworks"
+      [nzSuggestions]="webFrameworks()"
       [nzValueWith]="valueWith"
-      [nzPrefix]="prefix"
+      [nzPrefix]="prefix()"
       nzPlacement="top"
-      [nzLoading]="loading"
+      [nzLoading]="loading()"
       (nzOnSearchChange)="onSearchChange()"
     >
       <textarea nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
@@ -863,42 +856,41 @@ class NzTestSimpleMentionComponent {
         <span class="custom">{{ framework.name }} - {{ framework.type }}</span>
       </ng-container>
     </nz-mention>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class NzTestPropertyMentionComponent {
   inputValue: string = '@angular';
-  webFrameworks = [
+  readonly webFrameworks = signal([
     { name: 'React', type: 'JavaScript' },
     { name: 'Angular', type: 'JavaScript' },
     { name: 'Laravel', type: 'PHP' },
     { name: 'Flask', type: 'Python' },
     { name: 'Django', type: 'Python' }
-  ];
-  loading = false;
-  prefix: string | string[] = '@';
+  ]);
+  readonly loading = signal(false);
+  readonly prefix = signal<string | string[]>('@');
   valueWith = (data: { name: string; type: string }): string => data.name;
   @ViewChild(NzMentionComponent, { static: false }) mention!: NzMentionComponent;
   @ViewChild(NzMentionTriggerDirective, { static: false }) trigger!: NzMentionTriggerDirective;
 
   setArrayPrefix(): void {
-    this.prefix = ['@', '#'];
+    this.prefix.set(['@', '#']);
   }
 
   onSearchChange(): void {}
 
   fetchSuggestions(): void {
-    this.webFrameworks = [];
-    this.loading = true;
+    this.webFrameworks.set([]);
+    this.loading.set(true);
     setTimeout(() => {
-      this.loading = false;
-      this.webFrameworks = [
+      this.loading.set(false);
+      this.webFrameworks.set([
         { name: 'React', type: 'JavaScript' },
         { name: 'Angular', type: 'JavaScript' },
         { name: 'Laravel', type: 'PHP' },
         { name: 'Flask', type: 'Python' },
         { name: 'Django', type: 'Python' }
-      ];
+      ]);
     }, 500);
   }
 }
@@ -906,14 +898,13 @@ class NzTestPropertyMentionComponent {
 @Component({
   imports: [NzInputModule, NzMentionModule],
   template: `
-    <nz-mention [nzSuggestions]="[]" [nzStatus]="status">
+    <nz-mention [nzSuggestions]="[]" [nzStatus]="status()">
       <textarea rows="1" nz-input nzMentionTrigger></textarea>
     </nz-mention>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class NzTestStatusMentionComponent {
-  status: NzStatus = 'error';
+  readonly status = signal<NzStatus>('error');
 }
 
 @Component({
@@ -921,19 +912,18 @@ class NzTestStatusMentionComponent {
   template: `
     <form nz-form>
       <nz-form-item>
-        <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
+        <nz-form-control [nzHasFeedback]="feedback()" [nzValidateStatus]="status()">
           <nz-mention [nzSuggestions]="[]">
             <textarea rows="1" nzMentionTrigger [formControl]="mention"></textarea>
           </nz-mention>
         </nz-form-control>
       </nz-form-item>
     </form>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class NzTestMentionInFormComponent {
-  status: NzFormControlStatusType = 'error';
-  feedback = true;
+  readonly status = signal<NzFormControlStatusType>('error');
+  readonly feedback = signal(true);
 
   mention = new FormControl('Hello @iaosee', { updateOn: 'blur' });
 }
@@ -941,16 +931,15 @@ class NzTestMentionInFormComponent {
 @Component({
   imports: [FormsModule, NzInputModule, NzMentionModule],
   template: `
-    <nz-mention [nzSuggestions]="suggestions" [nzVariant]="variant">
+    <nz-mention [nzSuggestions]="suggestions()" [nzVariant]="variant()">
       <textarea nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
     </nz-mention>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class NzTestVariantMentionComponent {
   inputValue: string = '@angular';
-  variant: 'outlined' | 'filled' | 'borderless' | 'underlined' = 'outlined';
-  suggestions = ['angular', 'ant-design', 'mention'];
+  readonly variant = signal<'outlined' | 'filled' | 'borderless' | 'underlined'>('outlined');
+  readonly suggestions = signal(['angular', 'ant-design', 'mention']);
   @ViewChild(NzMentionComponent, { static: false }) mention!: NzMentionComponent;
 }
 
@@ -958,9 +947,9 @@ class NzTestVariantMentionComponent {
   imports: [FormsModule, NzInputModule, NzMentionModule],
   template: `
     <nz-mention
-      [nzSuggestions]="suggestions"
-      [nzAllowClear]="allowClear"
-      [nzClearIcon]="useCustomClearIcon ? clearIconTemplate : null"
+      [nzSuggestions]="suggestions()"
+      [nzAllowClear]="allowClear()"
+      [nzClearIcon]="useCustomClearIcon() ? clearIconTemplate : null"
       (nzOnClear)="onClear()"
     >
       <textarea nz-input [(ngModel)]="inputValue" nzMentionTrigger></textarea>
@@ -968,14 +957,13 @@ class NzTestVariantMentionComponent {
         <span class="custom-clear-icon">×</span>
       </ng-template>
     </nz-mention>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class NzTestClearMentionComponent {
   inputValue = '';
-  suggestions = ['angular', 'ant-design', 'mention'];
-  allowClear = false;
-  useCustomClearIcon = false;
+  readonly suggestions = signal(['angular', 'ant-design', 'mention']);
+  readonly allowClear = signal(false);
+  readonly useCustomClearIcon = signal(false);
 
   @ViewChild(NzMentionComponent, { static: false }) mention!: NzMentionComponent;
 
@@ -985,13 +973,12 @@ class NzTestClearMentionComponent {
 @Component({
   imports: [NzMentionModule],
   template: `
-    <nz-mention [nzSuggestions]="suggestions" [nzVariant]="variant()">
+    <nz-mention [nzSuggestions]="suggestions()" [nzVariant]="variant()">
       <textarea nz-input nzMentionTrigger></textarea>
     </nz-mention>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class NzTestFinalVariantMentionComponent {
   readonly variant = signal<NzVariant | undefined>(undefined);
-  suggestions = ['angular', 'ant-design', 'mention'];
+  readonly suggestions = signal(['angular', 'ant-design', 'mention']);
 }

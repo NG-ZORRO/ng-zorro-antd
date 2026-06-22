@@ -3,16 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DebugElement,
-  provideZoneChangeDetection,
-  signal,
-  viewChild,
-  type WritableSignal
-} from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
+import { Component, DebugElement, signal, viewChild, WritableSignal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -28,9 +20,8 @@ import { NzInputModule } from './input.module';
 
 describe('input', () => {
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
+      providers: [provideNzIconsTesting()]
     });
   });
 
@@ -55,17 +46,17 @@ describe('input', () => {
       it('should disabled work', () => {
         fixture.detectChanges();
         expect(inputElement.nativeElement.classList).not.toContain('ant-input-disabled');
-        testComponent.disabled = true;
+        testComponent.disabled.set(true);
         fixture.detectChanges();
         expect(inputElement.nativeElement.classList).toContain('ant-input-disabled');
       });
 
       it('should nzSize work', () => {
-        testComponent.size = 'small';
+        testComponent.size.set('small');
         fixture.detectChanges();
         expect(inputElement.nativeElement.classList).toContain('ant-input');
         expect(inputElement.nativeElement.classList).toContain('ant-input-sm');
-        testComponent.size = 'large';
+        testComponent.size.set('large');
         fixture.detectChanges();
         expect(inputElement.nativeElement.classList).toContain('ant-input');
         expect(inputElement.nativeElement.classList).toContain('ant-input-lg');
@@ -78,7 +69,7 @@ describe('input', () => {
         testComponent.inputDirective().blur();
         expect(document.activeElement).not.toBe(input);
 
-        testComponent.value = 'NG-ZORRO';
+        testComponent.value.set('NG-ZORRO');
         fixture.detectChanges();
         await fixture.whenStable();
 
@@ -86,16 +77,16 @@ describe('input', () => {
         expect(input.selectionStart).toBe(0);
         expect(input.selectionEnd).toBe(0);
         testComponent.inputDirective().focus({ cursor: 'end' });
-        expect(input.selectionStart).toBe(testComponent.value.length);
-        expect(input.selectionEnd).toBe(testComponent.value.length);
+        expect(input.selectionStart).toBe(testComponent.value().length);
+        expect(input.selectionEnd).toBe(testComponent.value().length);
         testComponent.inputDirective().focus({ cursor: 'all' });
         expect(input.selectionStart).toBe(0);
-        expect(input.selectionEnd).toBe(testComponent.value.length);
+        expect(input.selectionEnd).toBe(testComponent.value().length);
       });
 
       describe('should variant work', () => {
         it('outlined', () => {
-          testComponent.variant = 'outlined';
+          testComponent.variant.set('outlined');
           fixture.detectChanges();
           expect(inputElement.nativeElement.classList).toContain('ant-input-outlined');
         });
@@ -103,7 +94,7 @@ describe('input', () => {
         it('filled', () => {
           fixture.detectChanges();
           expect(inputElement.nativeElement.classList).not.toContain('ant-input-filled');
-          testComponent.variant = 'filled';
+          testComponent.variant.set('filled');
           fixture.detectChanges();
           expect(inputElement.nativeElement.classList).toContain('ant-input-filled');
         });
@@ -111,7 +102,7 @@ describe('input', () => {
         it('borderless', () => {
           fixture.detectChanges();
           expect(inputElement.nativeElement.classList).not.toContain('ant-input-borderless');
-          testComponent.variant = 'borderless';
+          testComponent.variant.set('borderless');
           fixture.detectChanges();
           expect(inputElement.nativeElement.classList).toContain('ant-input-borderless');
         });
@@ -119,7 +110,7 @@ describe('input', () => {
         it('underlined', () => {
           fixture.detectChanges();
           expect(inputElement.nativeElement.classList).not.toContain('ant-input-borderless');
-          testComponent.variant = 'underlined';
+          testComponent.variant.set('underlined');
           fixture.detectChanges();
           expect(inputElement.nativeElement.classList).toContain('ant-input-underlined');
         });
@@ -156,16 +147,14 @@ describe('input', () => {
         inputElement = fixture.debugElement.query(By.directive(NzInputDirective));
       });
 
-      it('should set disabled work', fakeAsync(() => {
-        flush();
+      it('should set disabled work', () => {
         expect(inputElement.nativeElement.classList).not.toContain('ant-input-disabled');
         expect(inputElement.nativeElement.getAttribute('disabled')).toBeNull();
         testComponent.disable();
-        flush();
         fixture.detectChanges();
         expect(inputElement.nativeElement.classList).toContain('ant-input-disabled');
         expect(inputElement.nativeElement.getAttribute('disabled')).toBe('true');
-      }));
+      });
     });
   });
 
@@ -185,11 +174,11 @@ describe('input', () => {
       fixture.detectChanges();
       expect(inputElement.nativeElement.classList).toContain('ant-input-status-error');
 
-      fixture.componentInstance.status = 'warning';
+      fixture.componentInstance.status.set('warning');
       fixture.detectChanges();
       expect(inputElement.nativeElement.className).toContain('ant-input-status-warning');
 
-      fixture.componentInstance.status = '';
+      fixture.componentInstance.status.set('');
       fixture.detectChanges();
       expect(inputElement.nativeElement.className).not.toContain('ant-input-status-warning');
     });
@@ -210,22 +199,22 @@ describe('input', () => {
       expect(inputElement.nativeElement.classList).toContain('ant-input-status-error');
       expect(inputElement.nativeElement.nextSibling.classList).toContain('ant-form-item-feedback-icon-error');
 
-      fixture.componentInstance.status = 'success';
+      fixture.componentInstance.status.set('success');
       fixture.detectChanges();
       expect(inputElement.nativeElement.classList).toContain('ant-input-status-success');
       expect(inputElement.nativeElement.nextSibling.classList).toContain('ant-form-item-feedback-icon-success');
 
-      fixture.componentInstance.status = 'warning';
+      fixture.componentInstance.status.set('warning');
       fixture.detectChanges();
       expect(inputElement.nativeElement.classList).toContain('ant-input-status-warning');
       expect(inputElement.nativeElement.nextSibling.classList).toContain('ant-form-item-feedback-icon-warning');
 
-      fixture.componentInstance.status = 'validating';
+      fixture.componentInstance.status.set('validating');
       fixture.detectChanges();
       expect(inputElement.nativeElement.classList).toContain('ant-input-status-validating');
       expect(inputElement.nativeElement.nextSibling.classList).toContain('ant-form-item-feedback-icon-validating');
 
-      fixture.componentInstance.feedback = false;
+      fixture.componentInstance.feedback.set(false);
       fixture.detectChanges();
       expect(inputElement.nativeElement.classList).toContain('ant-input-status-validating');
       expect(inputElement.nativeElement.nextSibling?.classList).not.toContain('ant-form-item-feedback-icon');
@@ -248,15 +237,15 @@ describe('input', () => {
     it('should type correct', () => {
       expect(inputElement.nativeElement.type).toEqual('text');
 
-      component.type = 'password';
+      component.type.set('password');
       fixture.detectChanges();
       expect(inputElement.nativeElement.type).toEqual('password');
 
-      component.type = 'number';
+      component.type.set('number');
       fixture.detectChanges();
       expect(inputElement.nativeElement.type).toEqual('number');
 
-      component.type = '';
+      component.type.set('');
       fixture.detectChanges();
       expect(inputElement.nativeElement.type).toEqual('text');
     });
@@ -308,12 +297,11 @@ describe('input', () => {
     });
 
     it('should set correctly the size from the nzSize input', () => {
-      TestBed.configureTestingModule({});
       fixture = TestBed.createComponent(TestInputFinalSizeComponent);
       component = fixture.componentInstance;
       inputElement = fixture.debugElement.query(By.directive(NzInputDirective)).nativeElement;
       fixture.detectChanges();
-      component.size = 'large';
+      component.size.set('large');
       fixture.detectChanges();
       expect(inputElement.classList).toContain('ant-input-lg');
     });
@@ -378,7 +366,6 @@ describe('input', () => {
     });
 
     it('should use nzVariant when no formVariant is provided', () => {
-      TestBed.configureTestingModule({});
       fixture = TestBed.createComponent(TestInputFinalVariantComponent);
       component = fixture.componentInstance;
       inputElement = fixture.debugElement.query(By.directive(NzInputDirective)).nativeElement;
@@ -389,7 +376,6 @@ describe('input', () => {
     });
 
     it('should fallback to outlined when neither nzVariant nor formVariant is set', () => {
-      TestBed.configureTestingModule({});
       fixture = TestBed.createComponent(TestInputFinalVariantComponent);
       component = fixture.componentInstance;
       inputElement = fixture.debugElement.query(By.directive(NzInputDirective)).nativeElement;
@@ -403,21 +389,19 @@ describe('input', () => {
 
 @Component({
   imports: [NzInputModule],
-  template: `<input nz-input [nzSize]="size" [disabled]="disabled" [nzVariant]="variant" [value]="value" />`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<input nz-input [nzSize]="size()" [disabled]="disabled()" [nzVariant]="variant()" [value]="value()" />`
 })
 export class NzTestInputWithInputComponent {
-  size: NzSizeLDSType = 'default';
-  disabled = false;
-  variant: NzVariant = 'outlined';
-  value = 'NzTestInput';
+  readonly size = signal<NzSizeLDSType>('default');
+  readonly disabled = signal(false);
+  readonly variant = signal<NzVariant>('outlined');
+  readonly value = signal('NzTestInput');
   inputDirective = viewChild.required(NzInputDirective);
 }
 
 @Component({
   imports: [NzInputModule],
-  template: `<textarea nz-input></textarea>`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<textarea nz-input></textarea>`
 })
 export class NzTestInputWithTextAreaComponent {}
 
@@ -427,8 +411,7 @@ export class NzTestInputWithTextAreaComponent {}
     <form>
       <input nz-input [formControl]="formControl" />
     </form>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestInputFormComponent {
   formControl = new FormControl('abc');
@@ -441,11 +424,10 @@ export class NzTestInputFormComponent {
 // status
 @Component({
   imports: [NzInputModule],
-  template: `<input nz-input [nzStatus]="status" />`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<input nz-input [nzStatus]="status()" />`
 })
 export class NzTestInputWithStatusComponent {
-  status: NzStatus = 'error';
+  readonly status = signal<NzStatus>('error');
 }
 
 @Component({
@@ -453,41 +435,37 @@ export class NzTestInputWithStatusComponent {
   template: `
     <form nz-form>
       <nz-form-item>
-        <nz-form-control [nzHasFeedback]="feedback" [nzValidateStatus]="status">
+        <nz-form-control [nzHasFeedback]="feedback()" [nzValidateStatus]="status()">
           <input nz-input />
         </nz-form-control>
       </nz-form-item>
     </form>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestInputInFormComponent {
-  status: NzFormControlStatusType = 'error';
-  feedback = true;
+  readonly status = signal<NzFormControlStatusType>('error');
+  readonly feedback = signal(true);
 }
 
 @Component({
   imports: [NzInputModule],
-  template: `<input nz-input [type]="type" />`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<input nz-input [type]="type()" />`
 })
 export class NzTestInputWithTypeComponent {
-  type: string | null = null;
+  readonly type = signal<string | null>(null);
 }
 
 @Component({
   imports: [NzInputModule],
-  template: `<input nz-input [nzSize]="size" />`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<input nz-input [nzSize]="size()" />`
 })
 export class TestInputFinalSizeComponent {
-  size: NzSizeLDSType = 'default';
+  readonly size = signal<NzSizeLDSType>('default');
 }
 
 @Component({
   imports: [NzInputModule],
-  template: `<input nz-input [nzVariant]="variant()" />`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<input nz-input [nzVariant]="variant()" />`
 })
 export class TestInputFinalVariantComponent {
   readonly variant = signal<NzVariant | undefined>(undefined);

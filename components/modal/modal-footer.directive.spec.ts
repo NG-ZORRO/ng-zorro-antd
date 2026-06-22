@@ -4,19 +4,11 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  provideZoneChangeDetection,
-  TemplateRef,
-  ViewChild,
-  inject
-} from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, inject as testingInject, TestBed } from '@angular/core/testing';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { Component, TemplateRef, ViewChild, inject, signal } from '@angular/core';
+import { ComponentFixture, inject as testingInject, TestBed } from '@angular/core/testing';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 
 import { NzModalFooterDirective } from './modal-footer.directive';
 import { NzModalRef } from './modal-ref';
@@ -31,9 +23,8 @@ describe('modal footer directive', () => {
   let modalService: NzModalService;
 
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [NzModalService, provideNoopAnimations(), provideZoneChangeDetection()]
+      providers: [NzModalService, provideNzNoAnimation()]
     });
   });
 
@@ -57,7 +48,7 @@ describe('modal footer directive', () => {
   it('should work with template', () => {
     testComponent.showModal();
     fixture.detectChanges();
-    expect(testComponent.isVisible).toBe(true);
+    expect(testComponent.isVisible()).toBe(true);
     const modalRef = testComponent.nzModalComponent.getModalRef();
     expect(modalRef!.getConfig().nzFooter).toEqual(testComponent.nzModalFooterDirective);
 
@@ -65,19 +56,19 @@ describe('modal footer directive', () => {
     fixture.detectChanges();
   });
 
-  it('should work with template when init opened', fakeAsync(() => {
+  it('should work with template when init opened', async () => {
     const initOpenedComponentFixture = TestBed.createComponent(TestDirectiveFooterWithInitOpenedComponent);
     const initOpenedComponent = initOpenedComponentFixture.componentInstance;
     initOpenedComponentFixture.detectChanges();
-    expect(initOpenedComponent.isVisible).toBe(true);
-    flush();
+    expect(initOpenedComponent.isVisible()).toBe(true);
+    await initOpenedComponentFixture.whenStable();
     initOpenedComponentFixture.detectChanges();
     const modalRef = initOpenedComponent.nzModalComponent.getModalRef();
 
     expect(modalRef!.getConfig().nzFooter).toEqual(initOpenedComponent.nzModalFooterDirective);
 
     initOpenedComponentFixture.detectChanges();
-  }));
+  });
 
   it('should work with service', () => {
     const modalRef = modalService.create({ nzContent: TestDirectiveFooterInServiceComponent, nzFooter: null });
@@ -101,21 +92,20 @@ describe('modal footer directive', () => {
         <button id="btn-template" nz-button nzType="default" (click)="handleCancel()">Custom Callback</button>
       </div>
     </nz-modal>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class TestDirectiveFooterComponent {
-  isVisible = false;
+  readonly isVisible = signal(false);
   @ViewChild(NzModalComponent) nzModalComponent!: NzModalComponent;
   @ViewChild(NzModalFooterDirective, { static: true, read: TemplateRef })
-  nzModalFooterDirective!: TemplateRef<NzSafeAny>;
+  nzModalFooterDirective!: TemplateRef<void>;
 
   handleCancel(): void {
-    this.isVisible = false;
+    this.isVisible.set(false);
   }
 
   showModal(): void {
-    this.isVisible = true;
+    this.isVisible.set(true);
   }
 }
 
@@ -130,14 +120,13 @@ class TestDirectiveFooterComponent {
         <button id="btn-template" nz-button nzType="default">Custom Callback</button>
       </div>
     </nz-modal>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class TestDirectiveFooterWithInitOpenedComponent {
-  isVisible = true;
+  readonly isVisible = signal(true);
   @ViewChild(NzModalComponent) nzModalComponent!: NzModalComponent;
   @ViewChild(NzModalFooterDirective, { static: true, read: TemplateRef })
-  nzModalFooterDirective!: TemplateRef<NzSafeAny>;
+  nzModalFooterDirective!: TemplateRef<void>;
 }
 
 @Component({
@@ -146,14 +135,13 @@ class TestDirectiveFooterWithInitOpenedComponent {
     <div *nzModalFooter>
       <button id="btn-template" nz-button nzType="default" (click)="handleCancel()">Custom Callback</button>
     </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class TestDirectiveFooterInServiceComponent {
   public readonly nzModalRef = inject(NzModalRef);
 
   @ViewChild(NzModalFooterDirective, { static: true, read: TemplateRef })
-  nzModalFooterDirective!: TemplateRef<NzSafeAny>;
+  nzModalFooterDirective!: TemplateRef<void>;
 
   handleCancel(): void {
     this.nzModalRef.close();

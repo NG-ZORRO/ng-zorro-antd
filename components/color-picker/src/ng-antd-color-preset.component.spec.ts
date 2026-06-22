@@ -3,9 +3,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -15,11 +15,10 @@ describe('ng-antd-color-preset', () => {
   let fixture: ComponentFixture<NgAntdColorPresetComponent>;
   let component: NgAntdColorPresetComponent;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()],
-      imports: [NgAntdColorPresetComponent]
-    }).compileComponents();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideNzNoAnimation()]
+    });
 
     fixture = TestBed.createComponent(NgAntdColorPresetComponent);
     component = fixture.componentInstance;
@@ -77,7 +76,7 @@ describe('ng-antd-color-preset', () => {
     expect(second.classList.contains('ant-collapse-item-active')).toBeFalse();
   });
 
-  it('should toggle panel active state when header clicked', fakeAsync(() => {
+  it('should toggle panel active state when header clicked', async () => {
     component.presets = [
       {
         label: 'Recent',
@@ -99,11 +98,9 @@ describe('ng-antd-color-preset', () => {
     const header = second.querySelector('.ant-collapse-header') as HTMLElement;
     dispatchMouseEvent(header, 'click');
     fixture.detectChanges();
-    tick(0);
-    fixture.detectChanges();
 
     expect(second.classList.contains('ant-collapse-item-active')).toBeTrue();
-  }));
+  });
 
   it('should emit presetSelect with NzColor when a color is clicked', () => {
     component.presets = [

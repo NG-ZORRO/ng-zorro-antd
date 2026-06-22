@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, signal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -14,13 +14,6 @@ import { NzCronExpressionModule } from 'ng-zorro-antd/cron-expression/cron-expre
 import { NzCronExpressionSize } from 'ng-zorro-antd/cron-expression/typings';
 
 describe('cron-expression', () => {
-  beforeEach(() => {
-    // todo: use zoneless
-    TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection()]
-    });
-  });
-
   describe('basic', () => {
     let fixture: ComponentFixture<NzTestCronExpressionComponent>;
     let testComponent: NzTestCronExpressionComponent;
@@ -28,82 +21,76 @@ describe('cron-expression', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCronExpressionComponent);
-      fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       resultEl = fixture.debugElement.query(By.directive(NzCronExpressionComponent));
     });
 
-    it('cron-expression basic', () => {
+    it('should render basic cron-expression', () => {
       fixture.detectChanges();
       expect(resultEl.nativeElement.querySelector('.ant-cron-expression-input-group').classList).toContain('ant-input');
     });
 
-    it('cron-expression nzSize', () => {
-      testComponent.nzSize = 'small';
+    it('should nzSize work', () => {
+      testComponent.nzSize.set('small');
       fixture.detectChanges();
       expect(resultEl.nativeElement.querySelector('.ant-cron-expression-input-group').classList).toContain(
         'ant-input-sm'
       );
-      testComponent.nzSize = 'large';
+      testComponent.nzSize.set('large');
       fixture.detectChanges();
       expect(resultEl.nativeElement.querySelector('.ant-cron-expression-input-group').classList).toContain(
         'ant-input-lg'
       );
     });
 
-    it('cron-expression nzDisabled', () => {
-      testComponent.nzDisabled = true;
+    it('should nzDisabled work', () => {
+      testComponent.nzDisabled.set(true);
       fixture.detectChanges();
       expect(resultEl.nativeElement.querySelector('.ant-cron-expression-input-group').classList).toContain(
         'ant-input-disabled'
       );
     });
 
-    it('cron-expression nzBorderless', () => {
-      testComponent.nzBorderless = true;
+    it('should nzBorderless work', () => {
+      testComponent.nzBorderless.set(true);
       fixture.detectChanges();
       expect(resultEl.nativeElement.querySelector('.ant-cron-expression-input-group').classList).toContain(
         'ant-input-borderless'
       );
     });
 
-    it('cron-expression nzCollapseDisable', () => {
-      expect(resultEl.nativeElement.querySelector('nz-cron-expression-preview')).not.toBe(null);
-      testComponent.nzCollapseDisable = true;
+    it('should nzCollapseDisable work', () => {
       fixture.detectChanges();
-      expect(resultEl.nativeElement.querySelector('nz-cron-expression-preview')).toBe(null);
+      expect(resultEl.nativeElement.querySelector('nz-cron-expression-preview')).not.toBeNull();
+      testComponent.nzCollapseDisable.set(true);
+      fixture.detectChanges();
+      expect(resultEl.nativeElement.querySelector('nz-cron-expression-preview')).toBeNull();
     });
 
-    it('cron-expression nzExtra', () => {
+    it('should nzExtra work', () => {
       fixture.detectChanges();
-      expect(resultEl.nativeElement.querySelector('.ant-cron-expression-map')).not.toBe(null);
+      expect(resultEl.nativeElement.querySelector('.ant-cron-expression-map')).not.toBeNull();
     });
 
-    it('cron-expression nzSemantic', () => {
+    it('should nzSemantic work', () => {
       fixture.detectChanges();
       expect(resultEl.nativeElement.querySelector('.ant-cron-expression-preview-dateTime').innerText).toBe('Test');
     });
   });
 
   describe('type', () => {
-    let fixture: ComponentFixture<NzTestCronExpressionTypeComponent>;
-    let resultEl: DebugElement;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestCronExpressionTypeComponent);
+    it('should nzType work', () => {
+      const fixture = TestBed.createComponent(NzCronExpressionComponent);
+      const element = fixture.debugElement.nativeElement;
+      fixture.componentRef.setInput('nzType', 'spring');
       fixture.detectChanges();
-      resultEl = fixture.debugElement.query(By.directive(NzCronExpressionComponent));
-    });
+      expect(element.querySelectorAll('nz-cron-expression-input').length).toBe(6);
+      expect(element.querySelectorAll('nz-cron-expression-label').length).toBe(6);
 
-    it('cron-expression type', () => {
+      fixture.componentRef.setInput('nzType', 'linux');
       fixture.detectChanges();
-      expect(resultEl.nativeElement.querySelectorAll('nz-cron-expression-input').length).toBe(6);
-      expect(resultEl.nativeElement.querySelectorAll('nz-cron-expression-label').length).toBe(6);
-
-      fixture.componentRef.instance.nzType = 'linux';
-      fixture.detectChanges();
-      expect(resultEl.nativeElement.querySelectorAll('nz-cron-expression-input').length).toBe(5);
-      expect(resultEl.nativeElement.querySelectorAll('nz-cron-expression-label').length).toBe(5);
+      expect(element.querySelectorAll('nz-cron-expression-input').length).toBe(5);
+      expect(element.querySelectorAll('nz-cron-expression-label').length).toBe(5);
     });
   });
 
@@ -114,23 +101,21 @@ describe('cron-expression', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCronExpressionFormComponent);
-      fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       resultEl = fixture.debugElement.query(By.directive(NzCronExpressionComponent));
     });
 
-    it('cron-expression form', fakeAsync(() => {
-      flush();
+    it('should work with form', async () => {
+      fixture.detectChanges();
       expect(resultEl.nativeElement.querySelector('.ant-cron-expression-input-group').classList).not.toContain(
         'ant-input-disabled'
       );
       testComponent.disable();
-      fixture.detectChanges();
-      flush();
+      await fixture.whenStable();
       expect(resultEl.nativeElement.querySelector('.ant-cron-expression-input-group').classList).toContain(
         'ant-input-disabled'
       );
-    }));
+    });
   });
 });
 
@@ -138,10 +123,10 @@ describe('cron-expression', () => {
   imports: [NzButtonModule, NzCronExpressionModule],
   template: `
     <nz-cron-expression
-      [nzSize]="nzSize"
-      [nzCollapseDisable]="nzCollapseDisable"
-      [nzDisabled]="nzDisabled"
-      [nzBorderless]="nzBorderless"
+      [nzSize]="nzSize()"
+      [nzCollapseDisable]="nzCollapseDisable()"
+      [nzDisabled]="nzDisabled()"
+      [nzBorderless]="nzBorderless()"
       [nzExtra]="shortcuts"
       [nzSemantic]="semanticTemplate"
     />
@@ -149,29 +134,18 @@ describe('cron-expression', () => {
       <button nz-button nzType="primary">Test</button>
     </ng-template>
     <ng-template #semanticTemplate>Test</ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestCronExpressionComponent {
-  nzSize: NzCronExpressionSize = 'default';
-  nzDisabled = false;
-  nzBorderless = false;
-  nzCollapseDisable = false;
-}
-
-@Component({
-  imports: [NzCronExpressionModule],
-  template: `<nz-cron-expression [nzType]="nzType" />`,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestCronExpressionTypeComponent {
-  nzType: 'linux' | 'spring' = 'spring';
+  readonly nzSize = signal<NzCronExpressionSize>('default');
+  readonly nzDisabled = signal(false);
+  readonly nzBorderless = signal(false);
+  readonly nzCollapseDisable = signal(false);
 }
 
 @Component({
   imports: [ReactiveFormsModule, NzCronExpressionModule],
-  template: `<nz-cron-expression [formControl]="formControl" />`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<nz-cron-expression [formControl]="formControl" />`
 })
 export class NzTestCronExpressionFormComponent {
   formControl = new FormControl('1 1 1 * *');

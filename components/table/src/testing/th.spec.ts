@@ -3,27 +3,19 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ApplicationRef,
-  ChangeDetectionStrategy,
-  Component,
-  DebugElement,
-  provideZoneChangeDetection,
-  ViewChild
-} from '@angular/core';
+import { ApplicationRef, Component, DebugElement, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzThAddOnComponent, NzTableModule } from 'ng-zorro-antd/table';
 
 describe('nz-th', () => {
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations(), provideZoneChangeDetection()]
+      providers: [provideNzIconsTesting(), provideNzNoAnimation()]
     });
   });
 
@@ -50,17 +42,17 @@ describe('nz-th', () => {
       expect(th.nativeElement.querySelector('.ant-table-column-sorter-up').classList).not.toContain('active');
       expect(th.nativeElement.querySelector('.ant-table-column-sorter-down').classList).not.toContain('active');
       expect(th.nativeElement.classList).not.toContain('ant-table-column-sort');
-      testComponent.sort = 'ascend';
+      testComponent.sort.set('ascend');
       fixture.detectChanges();
       expect(th.nativeElement.querySelector('.ant-table-column-sorter-up').classList).toContain('active');
       expect(th.nativeElement.querySelector('.ant-table-column-sorter-down').classList).not.toContain('active');
       expect(th.nativeElement.classList).toContain('ant-table-column-sort');
-      testComponent.sort = 'descend';
+      testComponent.sort.set('descend');
       fixture.detectChanges();
       expect(th.nativeElement.querySelector('.ant-table-column-sorter-up').classList).not.toContain('active');
       expect(th.nativeElement.querySelector('.ant-table-column-sorter-down').classList).toContain('active');
       expect(th.nativeElement.classList).toContain('ant-table-column-sort');
-      testComponent.sort = null;
+      testComponent.sort.set(null);
       fixture.detectChanges();
       expect(th.nativeElement.querySelector('.ant-table-column-sorter-up').classList).not.toContain('active');
       expect(th.nativeElement.querySelector('.ant-table-column-sorter-down').classList).not.toContain('active');
@@ -74,31 +66,31 @@ describe('nz-th', () => {
       expect(th.nativeElement.querySelector('.ant-table-column-sorter-down').classList).not.toContain('active');
       th.nativeElement.querySelector('.ant-table-column-sorters').firstElementChild.click();
       fixture.detectChanges();
-      expect(testComponent.sort).toBe('ascend');
+      expect(testComponent.sort()).toBe('ascend');
       expect(testComponent.sortChange).toHaveBeenCalledTimes(1);
       expect(th.nativeElement.querySelector('.ant-table-column-sorter-up').classList).toContain('active');
       expect(th.nativeElement.querySelector('.ant-table-column-sorter-down').classList).not.toContain('active');
       th.nativeElement.querySelector('.ant-table-column-sorters').firstElementChild.click();
       fixture.detectChanges();
       expect(testComponent.sortChange).toHaveBeenCalledTimes(2);
-      expect(testComponent.sort).toBe('descend');
+      expect(testComponent.sort()).toBe('descend');
       expect(th.nativeElement.querySelector('.ant-table-column-sorter-up').classList).not.toContain('active');
       expect(th.nativeElement.querySelector('.ant-table-column-sorter-down').classList).toContain('active');
       th.nativeElement.querySelector('.ant-table-column-sorters').firstElementChild.click();
       fixture.detectChanges();
       expect(testComponent.sortChange).toHaveBeenCalledTimes(3);
-      expect(testComponent.sort).toBe(null);
+      expect(testComponent.sort()).toBe(null);
     });
 
     it('should left work', () => {
-      testComponent.left = '20px';
+      testComponent.left.set('20px');
       fixture.detectChanges();
       expect(th.nativeElement.classList).toContain('ant-table-cell-fix-left');
       expect(th.nativeElement.style.left).toBe('20px');
     });
 
     it('should right work', () => {
-      testComponent.right = '20px';
+      testComponent.right.set('20px');
       fixture.detectChanges();
       expect(th.nativeElement.classList).toContain('ant-table-cell-fix-right');
       expect(th.nativeElement.style.right).toBe('20px');
@@ -132,12 +124,12 @@ describe('nz-th', () => {
 @Component({
   imports: [NzTableModule],
   template: `
-    @if (!destroy) {
+    @if (!destroy()) {
       <nz-table>
         <th
-          [nzLeft]="left"
-          [nzRight]="right"
-          [nzWidth]="width"
+          [nzLeft]="left()"
+          [nzRight]="right()"
+          [nzWidth]="width()"
           [(nzSortOrder)]="sort"
           (nzSortOrderChange)="sortChange($event)"
           [nzFilters]="filters"
@@ -146,16 +138,15 @@ describe('nz-th', () => {
         ></th>
       </nz-table>
     }
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzThTestNzTableComponent {
   @ViewChild(NzThAddOnComponent, { static: false }) nzThComponent!: NzThAddOnComponent<NzSafeAny>;
-  destroy = false;
-  left: string | boolean = false;
-  right: string | boolean = false;
-  width: string | null = null;
-  sort: string | null = null;
+  readonly destroy = signal(false);
+  readonly left = signal<string | boolean>(false);
+  readonly right = signal<string | boolean>(false);
+  readonly width = signal<string | null>(null);
+  readonly sort = signal<string | null>(null);
   sortChange = jasmine.createSpy('sort change');
   filters = [
     { text: 'filter1', value: '1' },
@@ -199,8 +190,7 @@ interface ItemData {
         }
       </tbody>
     </nz-table>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzThTestTableDefaultFilterComponent {
   nameList = [
@@ -278,7 +268,6 @@ export class NzThTestTableDefaultFilterComponent {
 
 @Component({
   imports: [NzTableModule],
-  template: `<th class="nz-disable-th"></th>`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<th class="nz-disable-th"></th>`
 })
 export class NzTestDisableThComponent {}

@@ -3,11 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, DebugElement, signal } from '@angular/core';
+import { Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzAlertMarqueeComponent } from './alert-marquee.component';
@@ -16,7 +16,7 @@ import { NzAlertModule } from './alert.module';
 describe('NzAlertMarqueeComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations()]
+      providers: [provideNzIconsTesting(), provideNzNoAnimation()]
     });
   });
 
@@ -159,8 +159,7 @@ describe('NzAlertMarqueeComponent', () => {
   imports: [NzAlertModule],
   template: `
     <nz-alert-marquee [nzPauseOnHover]="pauseOnHover()" [nzSpeed]="speed()"> Scrolling message </nz-alert-marquee>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestMarqueeBasicComponent {
   readonly pauseOnHover = signal(false);
@@ -174,7 +173,6 @@ export class NzTestMarqueeBasicComponent {
     <ng-template #message>
       <nz-alert-marquee>Loop banner text</nz-alert-marquee>
     </ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestMarqueeInsideAlertComponent {}

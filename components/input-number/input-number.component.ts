@@ -346,15 +346,17 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
         .monitor(element, true)
         .pipe(takeUntilDestroyed(destroyRef))
         .subscribe(origin => {
-          this.focused.set(!!origin);
+          untracked(() => {
+            this.focused.set(!!origin);
 
-          if (origin) {
-            this.nzFocus.emit();
-          } else {
-            this.fixValue();
-            this.onTouched();
-            this.nzBlur.emit();
-          }
+            if (origin) {
+              this.nzFocus.emit();
+            } else {
+              this.fixValue();
+              this.onTouched();
+              this.nzBlur.emit();
+            }
+          });
         });
 
       destroyRef.onDestroy(() => {

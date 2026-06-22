@@ -104,34 +104,41 @@ describe('comment', () => {
       expect(component.data().length === comments.length).toBeTruthy();
     });
 
-    it('should editor work', async () => {
-      const fixture = TestBed.createComponent(NzDemoCommentEditorComponent);
-      const component = fixture.componentInstance;
-      fixture.autoDetectChanges();
-      await fixture.whenStable();
-      expect(fixture.debugElement.query(By.css('nz-comment .ant-comment-content-detail textarea'))).toBeTruthy();
-      let comments = fixture.debugElement.queryAll(By.css('nz-list nz-comment'));
-      expect(comments.length).toBe(0);
-      expect(component.data().length).toBe(0);
+    describe('editor async submit', () => {
+      beforeEach(() => jasmine.clock().install());
+      afterEach(() => jasmine.clock().uninstall());
 
-      component.value.set('Test Comment 0');
-      component.handleSubmit();
-      await updateNonSignalsInput(fixture, 1000);
+      it('should editor work', async () => {
+        const fixture = TestBed.createComponent(NzDemoCommentEditorComponent);
+        const component = fixture.componentInstance;
+        fixture.autoDetectChanges();
+        await fixture.whenStable();
+        expect(fixture.debugElement.query(By.css('nz-comment .ant-comment-content-detail textarea'))).toBeTruthy();
+        let comments = fixture.debugElement.queryAll(By.css('nz-list nz-comment'));
+        expect(comments.length).toBe(0);
+        expect(component.data().length).toBe(0);
 
-      component.value.set('Test Comment 1');
-      component.handleSubmit();
-      await updateNonSignalsInput(fixture, 1000);
+        component.value.set('Test Comment 0');
+        component.handleSubmit();
+        jasmine.clock().tick(800);
+        await updateNonSignalsInput(fixture);
 
-      comments = fixture.debugElement.queryAll(By.css('nz-list nz-comment'));
-      expect(comments.length).toBeGreaterThan(0);
+        component.value.set('Test Comment 1');
+        component.handleSubmit();
+        jasmine.clock().tick(800);
+        await updateNonSignalsInput(fixture);
 
-      const data = component.data();
-      data.forEach((e, i) => {
-        const comment = comments[i];
-        expect(comment.nativeElement.querySelector('nz-avatar[nz-comment-avatar]')).toBeTruthy();
-        expect(comment.nativeElement.querySelector('.ant-comment-content-author-name').innerText).toBe(e.author);
-        expect(comment.nativeElement.querySelector('.ant-comment-content-detail p').innerText).toBe(e.content);
-        expect(comment.nativeElement.querySelector('.ant-comment-content-author-time').innerText).toBe(e.displayTime);
+        comments = fixture.debugElement.queryAll(By.css('nz-list nz-comment'));
+        expect(comments.length).toBeGreaterThan(0);
+
+        const data = component.data();
+        data.forEach((e, i) => {
+          const comment = comments[i];
+          expect(comment.nativeElement.querySelector('nz-avatar[nz-comment-avatar]')).toBeTruthy();
+          expect(comment.nativeElement.querySelector('.ant-comment-content-author-name').innerText).toBe(e.author);
+          expect(comment.nativeElement.querySelector('.ant-comment-content-detail p').innerText).toBe(e.content);
+          expect(comment.nativeElement.querySelector('.ant-comment-content-author-time').innerText).toBe(e.displayTime);
+        });
       });
     });
 

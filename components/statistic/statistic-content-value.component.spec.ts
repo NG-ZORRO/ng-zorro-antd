@@ -4,7 +4,7 @@
  */
 
 import { DecimalPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { Component, DebugElement, signal, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -32,15 +32,15 @@ describe('nz-statistic-content-value', () => {
 
     it('should render number', () => {
       // Int with group separator, decimal.
-      testComponent.value = 12345.012;
+      testComponent.value.set(12345.012);
       fixture.detectChanges();
       expect(numberEl.nativeElement.querySelector('.ant-statistic-content-value-int').innerText).toBe('12,345');
       expect(numberEl.nativeElement.querySelector('.ant-statistic-content-value-decimal').innerText).toBe('.012');
     });
 
     it('should support template', () => {
-      testComponent.template = testComponent.tpl;
-      testComponent.value = 12345.012;
+      testComponent.template.set(testComponent.tpl);
+      testComponent.value.set(12345.012);
       fixture.detectChanges();
       expect(numberEl.nativeElement.querySelector('.ant-statistic-content-value-int')).toBeFalsy();
       expect(numberEl.nativeElement.querySelector('.ant-statistic-content-value-decimal')).toBeFalsy();
@@ -52,14 +52,13 @@ describe('nz-statistic-content-value', () => {
 @Component({
   imports: [DecimalPipe, NzStatisticModule],
   template: `
-    <nz-statistic-content-value [nzValue]="(value | number)!" [nzValueTemplate]="template" />
+    <nz-statistic-content-value [nzValue]="(value() | number)!" [nzValueTemplate]="template()" />
     <ng-template #tpl let-value>It's {{ value }}</ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestNumberComponent {
   @ViewChild('tpl', { static: true }) tpl?: TemplateRef<{ $implicit: NzStatisticValueType }>;
 
-  value = 1;
-  template?: TemplateRef<{ $implicit: NzStatisticValueType }>;
+  readonly value = signal(1);
+  readonly template = signal<TemplateRef<{ $implicit: NzStatisticValueType }> | undefined>(undefined);
 }

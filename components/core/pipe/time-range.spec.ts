@@ -3,19 +3,18 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NzPipesModule } from 'ng-zorro-antd/core/pipe';
 
 @Component({
   imports: [NzPipesModule],
-  template: ` {{ diff | nzTimeRange: format }} `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: ` {{ diff() | nzTimeRange: format() }} `
 })
 export class NzTestTimeRangeComponent {
-  diff = 1000 * 60 * 60 * 24 * 2 + 1000 * 30;
-  format = 'HH:mm:ss';
+  readonly diff = signal(1000 * 60 * 60 * 24 * 2 + 1000 * 30);
+  readonly format = signal('HH:mm:ss');
 }
 
 describe('nzTimeRange', () => {
@@ -33,25 +32,25 @@ describe('nzTimeRange', () => {
     await fixture.whenStable();
     expect(element.innerText).toBe('48:00:30');
 
-    testComponent.format = 'HH:mm';
-    fixture.changeDetectorRef.markForCheck();
+    testComponent.format.set('HH:mm');
+    fixture.detectChanges();
     await fixture.whenStable();
     expect(element.innerText).toBe('48:00');
 
-    testComponent.format = 'D 天 H 时 m 分 s 秒';
-    fixture.changeDetectorRef.markForCheck();
+    testComponent.format.set('D 天 H 时 m 分 s 秒');
+    fixture.detectChanges();
     await fixture.whenStable();
     expect(element.innerText).toBe('2 天 0 时 0 分 30 秒');
   });
 
   it('should render time correctly with different values', async () => {
-    testComponent.diff = 0;
-    fixture.changeDetectorRef.markForCheck();
+    testComponent.diff.set(0);
+    fixture.detectChanges();
     await fixture.whenStable();
     expect(element.innerText).toBe('00:00:00');
 
-    testComponent.diff = -1000 * 60 * 60 * 24 * 2 + 1000 * 30;
-    fixture.changeDetectorRef.markForCheck();
+    testComponent.diff.set(-1000 * 60 * 60 * 24 * 2 + 1000 * 30);
+    fixture.detectChanges();
     await fixture.whenStable();
     expect(element.innerText).toBe('-48:00:30');
   });

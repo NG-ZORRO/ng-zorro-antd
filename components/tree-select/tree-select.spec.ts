@@ -56,10 +56,9 @@ describe('tree-select', () => {
     overlayContainerElement = oc.getContainerElement();
   }));
 
-  afterEach(inject([OverlayContainer], (oc: OverlayContainer) => {
-    oc.ngOnDestroy();
+  afterEach(() => {
     overlayContainer.ngOnDestroy();
-  }));
+  });
 
   describe('basic', () => {
     let fixture: ComponentFixture<NzTestTreeSelectBasicComponent>;
@@ -209,7 +208,9 @@ describe('tree-select', () => {
       expect(treeSelectComponent.nzOpen).toBe(true);
       const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
       await sleep(0);
+      fixture.detectChanges();
       expect(overlayPane.style.width).toBe('250px');
+
       treeSelectComponent.closeDropdown();
       fixture.detectChanges();
       testComponent.dropdownMatchSelectWidth.set(false);
@@ -218,6 +219,7 @@ describe('tree-select', () => {
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
       await sleep(0);
+      fixture.detectChanges();
       expect(overlayPane.style.minWidth).toBe('250px');
     });
 

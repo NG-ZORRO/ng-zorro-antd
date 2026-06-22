@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, DebugElement, ViewChild } from '@angular/core';
+import { Component, DebugElement, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -126,7 +126,7 @@ describe('nz-float-button-top', () => {
         await scrollTo(window, defaultVisibilityHeight + 1);
 
         expect(componentObject.backTopButton()).toBeTruthy();
-        fixture.componentInstance.customVisibilityHeight = defaultVisibilityHeight - 100;
+        fixture.componentInstance.customVisibilityHeight.set(defaultVisibilityHeight - 100);
         await updateNonSignalsInput(fixture);
 
         expect(componentObject.backTopButton()).toBeTruthy();
@@ -136,7 +136,7 @@ describe('nz-float-button-top', () => {
         await scrollTo(window, defaultVisibilityHeight + 1);
 
         expect(componentObject.backTopButton()).toBeTruthy();
-        fixture.componentInstance.customVisibilityHeight = defaultVisibilityHeight + 100;
+        fixture.componentInstance.customVisibilityHeight.set(defaultVisibilityHeight + 100);
         await updateNonSignalsInput(fixture);
 
         expect(componentObject.backTopButton()).toBeFalsy();
@@ -145,8 +145,7 @@ describe('nz-float-button-top', () => {
       it('should use config value (999) if nzVisibilityHeight is not assigned by user', async () => {
         await scrollTo(window, defaultVisibilityHeight + 1);
 
-        // @ts-ignore
-        fixture.componentInstance.customVisibilityHeight = undefined;
+        fixture.componentInstance.customVisibilityHeight.set(undefined);
         await updateNonSignalsInput(fixture);
 
         expect(componentObject.backTopButton()).toBeFalsy();
@@ -190,7 +189,7 @@ describe('nz-float-button-top', () => {
 
     describe('[nzIcon]', () => {
       it('should custom template work', async () => {
-        fixture.componentInstance.useCustomIconTemplate = true;
+        fixture.componentInstance.useCustomIconTemplate.set(true);
         await scrollTo(window, defaultVisibilityHeight + 1);
         expect(debugElement.query(By.css('.custom-icon'))).toBeTruthy();
       });
@@ -227,28 +226,27 @@ class MockNzScrollService {
   imports: [NzFloatButtonModule],
   template: `
     <nz-float-button-top
-      [nzTarget]="target"
-      [nzVisibilityHeight]="customVisibilityHeight"
-      [nzIcon]="useCustomIconTemplate ? customIcon : null"
+      [nzTarget]="target()"
+      [nzVisibilityHeight]="customVisibilityHeight()"
+      [nzIcon]="useCustomIconTemplate() ? customIcon : null"
       (nzOnClick)="handleClick($event)"
     />
     <div id="fakeTarget"></div>
     <ng-template #customIcon>
       <div class="custom-icon"></div>
     </ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class TestFloatButtonTopComponent {
   @ViewChild(NzFloatButtonTopComponent, { static: true })
   floatButtonTopComponent!: NzFloatButtonTopComponent;
 
-  target!: HTMLElement | string;
-  customVisibilityHeight = defaultVisibilityHeight;
-  useCustomIconTemplate = false;
+  readonly target = signal<HTMLElement | string | null>(null);
+  readonly customVisibilityHeight = signal<number | undefined>(defaultVisibilityHeight);
+  readonly useCustomIconTemplate = signal(false);
   handleClick = jasmine.createSpy('click');
 
   setTarget(target: HTMLElement | string): void {
-    this.target = target;
+    this.target.set(target);
   }
 }

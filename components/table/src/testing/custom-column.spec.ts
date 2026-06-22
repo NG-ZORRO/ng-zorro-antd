@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import { Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -16,10 +16,6 @@ describe('nz-table-custom-column', () => {
   let resultEl: DebugElement;
 
   beforeEach(() => {
-    // todo: use zoneless
-    TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection()]
-    });
     fixture = TestBed.createComponent(NzCustomColumnTestTableComponent);
     fixture.detectChanges();
     testComponent = fixture.componentInstance;
@@ -31,7 +27,7 @@ describe('nz-table-custom-column', () => {
     // age: order = 3
     expect(resultEl.nativeElement.querySelectorAll('.ant-table-cell')[2].getAttribute('nzcellcontrol')).toBe('age');
     expect(resultEl.nativeElement.querySelectorAll('.ant-table-cell')[2].style.order).toBe('3');
-    testComponent.customColumn = [
+    testComponent.customColumn.set([
       {
         value: 'name',
         default: true,
@@ -57,7 +53,7 @@ describe('nz-table-custom-column', () => {
         default: true,
         width: 200
       }
-    ];
+    ]);
     fixture.detectChanges();
     // age: order = 1
     expect(resultEl.nativeElement.querySelectorAll('.ant-table-cell')[2].getAttribute('nzcellcontrol')).toBe('age');
@@ -79,7 +75,7 @@ interface Person {
 @Component({
   imports: [NzDividerModule, NzTableModule],
   template: `
-    <nz-table #basicTable [nzData]="listOfData" [nzCustomColumn]="customColumn">
+    <nz-table #basicTable [nzData]="listOfData" [nzCustomColumn]="customColumn()">
       <thead>
         <tr>
           <th nzCellControl="name">Name</th>
@@ -105,8 +101,7 @@ interface Person {
         }
       </tbody>
     </nz-table>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzCustomColumnTestTableComponent {
   listOfData: Person[] = [
@@ -133,7 +128,7 @@ export class NzCustomColumnTestTableComponent {
     }
   ];
 
-  customColumn: NzCustomColumn[] = [
+  readonly customColumn = signal<NzCustomColumn[]>([
     {
       value: 'name',
       default: true,
@@ -159,5 +154,5 @@ export class NzCustomColumnTestTableComponent {
       default: true,
       width: 200
     }
-  ];
+  ]);
 }

@@ -4,15 +4,8 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DebugElement,
-  provideZoneChangeDetection,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
-import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Component, DebugElement, signal, TemplateRef, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { provideMockDirectionality } from 'ng-zorro-antd/core/testing';
@@ -73,101 +66,89 @@ describe('nz-layout', () => {
     let trigger: DebugElement;
 
     beforeEach(() => {
-      // todo: use zoneless
-      TestBed.configureTestingModule({
-        providers: [provideZoneChangeDetection()]
-      });
       fixture = TestBed.createComponent(NzLayoutSideComponent);
       testComponent = fixture.componentInstance;
       sider = fixture.debugElement.query(By.directive(NzSiderComponent));
     });
 
     it('should nzCollapsed work', () => {
-      testComponent.isCollapsed = false;
+      testComponent.isCollapsed.set(false);
       fixture.detectChanges();
       trigger = fixture.debugElement.query(By.css('.ant-layout-sider-trigger'));
-      expect(
-        sider.nativeElement.style.cssText === 'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;'
-      ).toBe(true);
-      expect(trigger.nativeElement.style.cssText === 'width: 200px;').toBe(true);
+      expect(sider.nativeElement.style.cssText).toBe(
+        'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;'
+      );
+      expect(trigger.nativeElement.style.cssText).toBe('width: 200px;');
       trigger.nativeElement.click();
       fixture.detectChanges();
-      expect(testComponent.isCollapsed).toBe(true);
-      expect(
-        sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;'
-      ).toBe(true);
-      expect(trigger.nativeElement.style.cssText === 'width: 80px;').toBe(true);
+      expect(testComponent.isCollapsed()).toBe(true);
+      expect(sider.nativeElement.style.cssText).toBe('flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;');
+      expect(trigger.nativeElement.style.cssText).toBe('width: 80px;');
       trigger.nativeElement.click();
       fixture.detectChanges();
-      expect(testComponent.isCollapsed).toBe(false);
-      expect(
-        sider.nativeElement.style.cssText === 'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;'
-      ).toBe(true);
-      expect(trigger.nativeElement.style.cssText === 'width: 200px;').toBe(true);
-      testComponent.isCollapsed = true;
+      expect(testComponent.isCollapsed()).toBe(false);
+      expect(sider.nativeElement.style.cssText).toBe(
+        'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;'
+      );
+      expect(trigger.nativeElement.style.cssText).toBe('width: 200px;');
+      testComponent.isCollapsed.set(true);
       fixture.detectChanges();
-      expect(
-        sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;'
-      ).toBe(true);
-      expect(trigger.nativeElement.style.cssText === 'width: 80px;').toBe(true);
-      testComponent.isCollapsed = false;
+      expect(sider.nativeElement.style.cssText).toBe('flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;');
+      expect(trigger.nativeElement.style.cssText).toBe('width: 80px;');
+      testComponent.isCollapsed.set(false);
       fixture.detectChanges();
-      expect(
-        sider.nativeElement.style.cssText === 'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;'
-      ).toBe(true);
-      expect(trigger.nativeElement.style.cssText === 'width: 200px;').toBe(true);
+      expect(sider.nativeElement.style.cssText).toBe(
+        'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;'
+      );
+      expect(trigger.nativeElement.style.cssText).toBe('width: 200px;');
     });
 
     it('should nzWidth work', () => {
-      testComponent.isCollapsed = false;
-      testComponent.width = 300;
+      testComponent.isCollapsed.set(false);
+      testComponent.width.set(300);
       fixture.detectChanges();
       trigger = fixture.debugElement.query(By.css('.ant-layout-sider-trigger'));
-      expect(
-        sider.nativeElement.style.cssText === 'flex: 0 0 300px; max-width: 300px; min-width: 300px; width: 300px;'
-      ).toBe(true);
-      expect(trigger.nativeElement.style.cssText === 'width: 300px;').toBe(true);
+      expect(sider.nativeElement.style.cssText).toBe(
+        'flex: 0 0 300px; max-width: 300px; min-width: 300px; width: 300px;'
+      );
+      expect(trigger.nativeElement.style.cssText).toBe('width: 300px;');
       trigger.nativeElement.click();
       fixture.detectChanges();
-      expect(testComponent.isCollapsed).toBe(true);
-      expect(
-        sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;'
-      ).toBe(true);
-      expect(trigger.nativeElement.style.cssText === 'width: 80px;').toBe(true);
+      expect(testComponent.isCollapsed()).toBe(true);
+      expect(sider.nativeElement.style.cssText).toBe('flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;');
+      expect(trigger.nativeElement.style.cssText).toBe('width: 80px;');
       trigger.nativeElement.click();
       fixture.detectChanges();
-      expect(testComponent.isCollapsed).toBe(false);
-      expect(
-        sider.nativeElement.style.cssText === 'flex: 0 0 300px; max-width: 300px; min-width: 300px; width: 300px;'
-      ).toBe(true);
-      expect(trigger.nativeElement.style.cssText === 'width: 300px;').toBe(true);
-      testComponent.isCollapsed = true;
+      expect(testComponent.isCollapsed()).toBe(false);
+      expect(sider.nativeElement.style.cssText).toBe(
+        'flex: 0 0 300px; max-width: 300px; min-width: 300px; width: 300px;'
+      );
+      expect(trigger.nativeElement.style.cssText).toBe('width: 300px;');
+      testComponent.isCollapsed.set(true);
       fixture.detectChanges();
-      expect(
-        sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;'
-      ).toBe(true);
-      expect(trigger.nativeElement.style.cssText === 'width: 80px;').toBe(true);
-      testComponent.isCollapsed = false;
+      expect(sider.nativeElement.style.cssText).toBe('flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;');
+      expect(trigger.nativeElement.style.cssText).toBe('width: 80px;');
+      testComponent.isCollapsed.set(false);
       fixture.detectChanges();
-      expect(
-        sider.nativeElement.style.cssText === 'flex: 0 0 300px; max-width: 300px; min-width: 300px; width: 300px;'
-      ).toBe(true);
-      expect(trigger.nativeElement.style.cssText === 'width: 300px;').toBe(true);
+      expect(sider.nativeElement.style.cssText).toBe(
+        'flex: 0 0 300px; max-width: 300px; min-width: 300px; width: 300px;'
+      );
+      expect(trigger.nativeElement.style.cssText).toBe('width: 300px;');
     });
 
     it('should nzReverseArrow work', () => {
-      testComponent.isCollapsed = false;
+      testComponent.isCollapsed.set(false);
       fixture.detectChanges();
       trigger = fixture.debugElement.query(By.css('.ant-layout-sider-trigger'));
       expect(trigger.nativeElement.firstElementChild!.classList.contains('anticon-left')).toBe(true);
-      testComponent.isCollapsed = true;
+      testComponent.isCollapsed.set(true);
       fixture.detectChanges();
       expect(trigger.nativeElement.firstElementChild!.classList.contains('anticon-right')).toBe(true);
-      testComponent.isReverseArrow = true;
-      testComponent.isCollapsed = false;
+      testComponent.isReverseArrow.set(true);
+      testComponent.isCollapsed.set(false);
       fixture.detectChanges();
       expect(trigger.nativeElement.firstElementChild!.classList.contains('anticon-right')).toBe(true);
-      testComponent.isCollapsed = true;
+      testComponent.isCollapsed.set(true);
       fixture.detectChanges();
       expect(trigger.nativeElement.firstElementChild!.classList.contains('anticon-left')).toBe(true);
     });
@@ -212,14 +193,10 @@ describe('nz-layout', () => {
       sider = fixture.debugElement.query(By.directive(NzSiderComponent));
     });
 
-    it('should responsive work', fakeAsync(() => {
+    it('should responsive work', async () => {
       viewport.set(500);
       window.dispatchEvent(new Event('resize'));
-      fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      discardPeriodicTasks();
-      fixture.detectChanges();
+      await fixture.whenStable();
       expect(sider.nativeElement.style.cssText).toBe('flex: 0 0 0px; max-width: 0px; min-width: 0px; width: 0px;');
       expect(
         sider.nativeElement
@@ -227,7 +204,7 @@ describe('nz-layout', () => {
           .firstElementChild.getAttribute('nzType')
       ).toBe('menu-fold');
       viewport.reset();
-    }));
+    });
   });
 
   describe('RTL', () => {
@@ -236,7 +213,6 @@ describe('nz-layout', () => {
     let dir: Directionality;
 
     beforeEach(() => {
-      // todo: use zoneless
       TestBed.configureTestingModule({
         providers: [provideMockDirectionality()]
       });
@@ -264,12 +240,11 @@ describe('nz-layout', () => {
       <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="triggerTemplate" />
       <nz-layout>
         <nz-header>
-          <span
+          <nz-icon
             class="trigger"
-            nz-icon
-            [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
-            (click)="isCollapsed = !isCollapsed"
-          ></span>
+            [nzType]="isCollapsed() ? 'menu-unfold' : 'menu-fold'"
+            (click)="isCollapsed.set(!isCollapsed())"
+          />
         </nz-header>
         <nz-content>
           <div>Bill is a cat.</div>
@@ -280,11 +255,10 @@ describe('nz-layout', () => {
     <ng-template #trigger>
       <nz-icon nzType="up" />
     </ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzLayoutCustomTriggerComponent {
-  isCollapsed = false;
+  readonly isCollapsed = signal(false);
   triggerTemplate: TemplateRef<void> | null = null;
   @ViewChild('trigger', { static: true }) customTrigger!: TemplateRef<void>;
 
@@ -298,7 +272,7 @@ export class NzLayoutCustomTriggerComponent {
   imports: [NzLayoutModule],
   template: `
     <nz-layout>
-      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="width" [nzReverseArrow]="isReverseArrow" />
+      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="width()" [nzReverseArrow]="isReverseArrow()" />
       <nz-layout>
         <nz-header />
         <nz-content>
@@ -307,13 +281,12 @@ export class NzLayoutCustomTriggerComponent {
         <nz-footer>Ant Design ©2019 Implement By Angular</nz-footer>
       </nz-layout>
     </nz-layout>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzLayoutSideComponent {
-  isCollapsed = false;
-  isReverseArrow = false;
-  width: string | number = '200px';
+  readonly isCollapsed = signal(false);
+  readonly isReverseArrow = signal(false);
+  readonly width = signal<string | number>('200px');
 }
 
 @Component({
@@ -338,11 +311,10 @@ export class NzLayoutSideComponent {
     <ng-template #zeroTrigger>
       <nz-icon nzType="menu-fold" nzTheme="outline" />
     </ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzLayoutResponsiveComponent {
-  isCollapsed = false;
+  readonly isCollapsed = signal(false);
 }
 
 @Component({
@@ -381,7 +353,6 @@ export class NzLayoutResponsiveComponent {
         <nz-footer>Footer</nz-footer>
       </nz-layout>
     </nz-layout>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzLayoutBasicComponent {}

@@ -4,18 +4,11 @@
  */
 
 import { ENTER } from '@angular/cdk/keycodes';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DebugElement,
-  provideZoneChangeDetection,
-  signal,
-  ViewChild
-} from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Component, DebugElement, signal, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { createKeyboardEvent, dispatchKeyboardEvent, testDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import en_US from 'ng-zorro-antd/i18n/languages/en_US';
@@ -29,9 +22,8 @@ declare const viewport: NzSafeAny;
 
 describe('pagination', () => {
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideZoneChangeDetection()]
+      providers: [provideNzNoAnimation()]
     });
   });
 
@@ -65,13 +57,13 @@ describe('pagination', () => {
       });
 
       it('should small size className correct', () => {
-        testComponent.size = 'small';
+        testComponent.size.set('small');
         fixture.detectChanges();
         expect(paginationRootElement.classList.contains('ant-pagination-mini')).toBe(true);
       });
 
       it('should pageIndex change work', () => {
-        testComponent.pageIndex = 2;
+        testComponent.pageIndex.set(2);
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
         const length = paginationElement.children.length;
@@ -92,10 +84,10 @@ describe('pagination', () => {
 
       it('should change pageIndex change pages list', () => {
         fixture.detectChanges();
-        testComponent.total = 500;
+        testComponent.total.set(500);
         fixture.detectChanges();
         expect(paginationElement.children.length).toBe(9);
-        testComponent.pageIndex = 5;
+        testComponent.pageIndex.set(5);
         fixture.detectChanges();
         expect(paginationElement.children.length).toBe(11);
       });
@@ -106,27 +98,27 @@ describe('pagination', () => {
         (paginationElement.children[0] as HTMLElement).click();
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
-        expect(testComponent.pageIndex).toBe(1);
+        expect(testComponent.pageIndex()).toBe(1);
       });
 
       it('should pre button work', () => {
-        testComponent.pageIndex = 5;
+        testComponent.pageIndex.set(5);
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
         (paginationElement.children[0] as HTMLElement).click();
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
-        expect(testComponent.pageIndex).toBe(4);
+        expect(testComponent.pageIndex()).toBe(4);
       });
 
       it('should next button disabled', () => {
-        testComponent.pageIndex = 5;
+        testComponent.pageIndex.set(5);
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
         (paginationElement.lastElementChild as HTMLElement).click();
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
-        expect(testComponent.pageIndex).toBe(5);
+        expect(testComponent.pageIndex()).toBe(5);
       });
 
       it('should next button work', () => {
@@ -134,7 +126,7 @@ describe('pagination', () => {
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
         (paginationElement.lastElementChild as HTMLElement).click();
         fixture.detectChanges();
-        expect(testComponent.pageIndex).toBe(2);
+        expect(testComponent.pageIndex()).toBe(2);
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
       });
 
@@ -143,45 +135,45 @@ describe('pagination', () => {
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
         (paginationElement.children[3] as HTMLElement).click();
         fixture.detectChanges();
-        expect(testComponent.pageIndex).toBe(3);
+        expect(testComponent.pageIndex()).toBe(3);
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
       });
 
       it('should total change style work', () => {
-        testComponent.total = 500;
+        testComponent.total.set(500);
         fixture.detectChanges();
         expect(paginationElement.children.length).toBe(9);
       });
 
       it('should next five work', () => {
-        testComponent.total = 500;
+        testComponent.total.set(500);
         fixture.detectChanges();
-        testComponent.pageIndex = 46;
+        testComponent.pageIndex.set(46);
         fixture.detectChanges();
         (paginationElement.children[8] as HTMLElement).click();
         fixture.detectChanges();
-        expect(testComponent.pageIndex).toBe(50);
+        expect(testComponent.pageIndex()).toBe(50);
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
         expect(paginationElement.children.length).toBe(9);
       });
 
       it('should pre five work', () => {
-        testComponent.total = 500;
+        testComponent.total.set(500);
         fixture.detectChanges();
-        testComponent.pageIndex = 5;
+        testComponent.pageIndex.set(5);
         fixture.detectChanges();
         expect(paginationElement.children.length).toBe(11);
         (paginationElement.children[2] as HTMLElement).click();
         fixture.detectChanges();
-        expect(testComponent.pageIndex).toBe(1);
+        expect(testComponent.pageIndex()).toBe(1);
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
         expect(paginationElement.children.length).toBe(9);
       });
 
       it('should showSizeChanger work', async () => {
-        testComponent.total = 500;
-        testComponent.pageIndex = 50;
-        testComponent.showSizeChanger = true;
+        testComponent.total.set(500);
+        testComponent.pageIndex.set(50);
+        testComponent.showSizeChanger.set(true);
         fixture.detectChanges();
         await fixture.whenStable();
 
@@ -190,16 +182,16 @@ describe('pagination', () => {
       });
 
       it('should change pageSize correct', () => {
-        testComponent.pageIndex = 5;
+        testComponent.pageIndex.set(5);
         fixture.detectChanges();
         testComponent.nzPaginationComponent.onPageSizeChange(20);
         fixture.detectChanges();
-        expect(testComponent.pageIndex).toBe(3);
+        expect(testComponent.pageIndex()).toBe(3);
         expect(testComponent.pageSizeChange).toHaveBeenCalledTimes(1);
       });
 
       it('should showQuickJumper work', () => {
-        testComponent.showQuickJumper = true;
+        testComponent.showQuickJumper.set(true);
         fixture.detectChanges();
         const input = pagination.nativeElement.querySelector('input');
         input.value = 5;
@@ -210,32 +202,32 @@ describe('pagination', () => {
         dispatchKeyboardEvent(input, 'keydown', ENTER, input);
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
-        expect(testComponent.pageIndex).toBe(5);
+        expect(testComponent.pageIndex()).toBe(5);
         expect(input.value).toBe('');
         dispatchKeyboardEvent(input, 'keydown', ENTER, input);
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
-        expect(testComponent.pageIndex).toBe(5);
+        expect(testComponent.pageIndex()).toBe(5);
         input.value = 'abc';
         dispatchKeyboardEvent(input, 'keydown', ENTER, input);
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
-        expect(testComponent.pageIndex).toBe(5);
+        expect(testComponent.pageIndex()).toBe(5);
         input.value = -1;
         dispatchKeyboardEvent(input, 'keydown', ENTER, input);
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
-        expect(testComponent.pageIndex).toBe(5);
+        expect(testComponent.pageIndex()).toBe(5);
         input.value = 10;
         dispatchKeyboardEvent(input, 'keydown', ENTER, input);
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
-        expect(testComponent.pageIndex).toBe(5);
+        expect(testComponent.pageIndex()).toBe(5);
       });
 
       it('should nzDisabled work', () => {
         fixture.detectChanges();
-        testComponent.disabled = true;
+        testComponent.disabled.set(true);
         fixture.detectChanges();
         expect(paginationRootElement.classList.contains('ant-pagination-disabled')).toBe(true);
       });
@@ -243,16 +235,18 @@ describe('pagination', () => {
 
     describe('simple mode', () => {
       beforeEach(() => {
-        testComponent.simple = true;
+        testComponent.simple.set(true);
         fixture.detectChanges();
         paginationRootElement = pagination.nativeElement;
         paginationElement = pagination.nativeElement.querySelector('ul')!;
       });
+
       it('should simple className work', () => {
         expect(paginationRootElement.classList.contains('ant-pagination-simple')).toBe(true);
         expect(paginationElement.firstElementChild!.classList.contains('ant-pagination-prev')).toBe(true);
         expect(paginationElement.lastElementChild!.classList.contains('ant-pagination-next')).toBe(true);
       });
+
       it('should simple pager jump', () => {
         fixture.detectChanges();
         const input = pagination.nativeElement.querySelector('input');
@@ -264,50 +258,52 @@ describe('pagination', () => {
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
         expect(input.value).toBe('5');
-        expect(testComponent.pageIndex).toBe(5);
+        expect(testComponent.pageIndex()).toBe(5);
         dispatchKeyboardEvent(input, 'keydown', ENTER, input);
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
         expect(input.value).toBe('5');
         input.value = 100;
-        expect(testComponent.pageIndex).toBe(5);
+        expect(testComponent.pageIndex()).toBe(5);
         dispatchKeyboardEvent(input, 'keydown', ENTER, input);
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
-        expect(testComponent.pageIndex).toBe(5);
+        expect(testComponent.pageIndex()).toBe(5);
       });
     });
+
     it('should zero total hide all', () => {
-      testComponent.total = 0;
+      testComponent.total.set(0);
       fixture.detectChanges();
       expect(pagination.nativeElement.innerText).toEqual('');
     });
 
     it('should not crash when pageSize is zero', () => {
-      testComponent.pageSize = 0;
+      testComponent.pageSize.set(0);
       fixture.detectChanges();
       expect(paginationElement.querySelectorAll('.ant-pagination-item').length).toBe(1);
     });
 
     it('should be hidden pagination when total is 0 and nzHideOnSinglePage is true', () => {
-      (testComponent as NzTestPaginationComponent).total = 0;
-      (testComponent as NzTestPaginationComponent).hideOnSinglePage = true;
+      testComponent.total.set(0);
+      testComponent.hideOnSinglePage.set(true);
       fixture.detectChanges();
       expect(fixture.debugElement.nativeElement.querySelector('.ant-pagination').children.length).toBe(0);
     });
+
     it('should be display one more page when the 4th is selected', () => {
-      testComponent.total = 500;
-      testComponent.pageIndex = 4; // he 4th is selected
+      testComponent.total.set(500);
+      testComponent.pageIndex.set(4); // he 4th is selected
       fixture.detectChanges();
       expect(paginationElement.children.length).toBe(10);
-      testComponent.pageIndex = 3;
+      testComponent.pageIndex.set(3);
       fixture.detectChanges();
       expect(paginationElement.children.length).toBe(9);
 
-      testComponent.pageIndex = 47; // the 4th from last is selected
+      testComponent.pageIndex.set(47); // the 4th from last is selected
       fixture.detectChanges();
       expect(paginationElement.children.length).toBe(10);
-      testComponent.pageIndex = 48;
+      testComponent.pageIndex.set(48);
       fixture.detectChanges();
       expect(paginationElement.children.length).toBe(9);
     });
@@ -317,12 +313,14 @@ describe('pagination', () => {
     let fixture: ComponentFixture<NzTestPaginationRenderComponent>;
     let pagination: DebugElement;
     let paginationElement: HTMLElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestPaginationRenderComponent);
       pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
       fixture.detectChanges();
       paginationElement = pagination.nativeElement.querySelector('ul')!;
     });
+
     it('should render correct', () => {
       fixture.detectChanges();
       expect((paginationElement.firstElementChild as HTMLElement).innerText).toBe('Previous');
@@ -339,14 +337,14 @@ describe('pagination', () => {
 
     it("should add the class 'ant-pagination-center' when nzAlign is 'center'", () => {
       fixture.detectChanges();
-      fixture.componentInstance.nzAlign.set('center');
+      fixture.componentInstance.align.set('center');
       fixture.detectChanges();
       expect(pagination.nativeElement.classList).toContain('ant-pagination-center');
     });
 
     it("should add the class 'ant-pagination-end' when nzAlign is 'end'", () => {
       fixture.detectChanges();
-      fixture.componentInstance.nzAlign.set('end');
+      fixture.componentInstance.align.set('end');
       fixture.detectChanges();
       expect(pagination.nativeElement.classList).toContain('ant-pagination-end');
     });
@@ -369,16 +367,17 @@ describe('pagination', () => {
     it('should render correct', () => {
       fixture.detectChanges();
       expect((paginationElement.firstElementChild as HTMLElement).innerText.trim()).toBe('1-20 of 85 items');
-      testComponent.pageIndex = 2;
+      testComponent.pageIndex.set(2);
       fixture.detectChanges();
       expect((paginationElement.firstElementChild as HTMLElement).innerText.trim()).toBe('21-40 of 85 items');
-      testComponent.pageIndex = 5;
+      testComponent.pageIndex.set(5);
       fixture.detectChanges();
       expect((paginationElement.firstElementChild as HTMLElement).innerText.trim()).toBe('81-85 of 85 items');
     });
   });
 
-  it('should auto resize work', fakeAsync(() => {
+  it('should auto resize work', async () => {
+    jasmine.clock().install();
     const fixture = TestBed.createComponent(NzTestPaginationAutoResizeComponent);
     const pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
 
@@ -390,12 +389,14 @@ describe('pagination', () => {
     viewport.set(350, 350);
     window.dispatchEvent(new Event('resize'));
     fixture.detectChanges();
-    tick(1000);
+    jasmine.clock().tick(1000);
+    await fixture.whenStable();
     fixture.detectChanges();
     paginationElement = pagination.nativeElement;
     expect(paginationElement.classList).toContain('ant-pagination-mini');
     viewport.reset();
-  }));
+    jasmine.clock().uninstall();
+  });
 
   it('#i18n', () => {
     const fixture = TestBed.createComponent(NzTestPaginationComponent);
@@ -403,10 +404,10 @@ describe('pagination', () => {
     fixture.detectChanges();
     TestBed.inject(NzI18nService).setLocale(en_US);
     fixture.detectChanges();
-    const prevText = (dl.query(By.css('.ant-pagination-prev')).nativeElement as HTMLElement).title;
-    expect(prevText).toBe(en_US.Pagination.prev_page);
-    const nextText = (dl.query(By.css('.ant-pagination-next')).nativeElement as HTMLElement).title;
-    expect(nextText).toBe(en_US.Pagination.next_page);
+    const prevBtn = dl.query(By.css('.ant-pagination-prev')).nativeElement as HTMLElement;
+    expect(prevBtn.title).toBe(en_US.Pagination.prev_page);
+    const nextBtn = dl.query(By.css('.ant-pagination-next')).nativeElement as HTMLElement;
+    expect(nextBtn.title).toBe(en_US.Pagination.next_page);
   });
 
   testDirectionality(() => NzTestPaginationComponent, By.directive(NzPaginationComponent), 'ant-pagination');
@@ -416,42 +417,41 @@ describe('pagination', () => {
   imports: [NzPaginationModule],
   template: `
     <nz-pagination
-      [nzSimple]="simple"
+      [nzSimple]="simple()"
       [(nzPageIndex)]="pageIndex"
-      [nzDisabled]="disabled"
       (nzPageIndexChange)="pageIndexChange($event)"
+      [nzDisabled]="disabled()"
       [(nzPageSize)]="pageSize"
       (nzPageSizeChange)="pageSizeChange($event)"
-      [nzSize]="size"
-      [nzTotal]="total"
-      [nzHideOnSinglePage]="hideOnSinglePage"
+      [nzSize]="size()"
+      [nzTotal]="total()"
+      [nzHideOnSinglePage]="hideOnSinglePage()"
       [nzPageSizeOptions]="pageSizeOptions"
-      [nzShowSizeChanger]="showSizeChanger"
-      [nzShowQuickJumper]="showQuickJumper"
+      [nzShowSizeChanger]="showSizeChanger()"
+      [nzShowQuickJumper]="showQuickJumper()"
     />
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestPaginationComponent {
   @ViewChild(NzPaginationComponent, { static: false }) nzPaginationComponent!: NzPaginationComponent;
-  pageIndex = 1;
-  pageSize = 10;
-  total = 50;
-  disabled = false;
+  readonly pageIndex = signal(1);
+  readonly pageSize = signal(10);
+  readonly total = signal(50);
+  readonly disabled = signal(false);
   pageIndexChange = jasmine.createSpy<NzSafeAny>('pageIndexChange callback');
   pageSizeChange = jasmine.createSpy<NzSafeAny>('pageSizeChange callback');
-  showQuickJumper = false;
-  showSizeChanger = false;
-  hideOnSinglePage = false;
-  pageSizeOptions = [10, 20, 30, 40];
-  simple = false;
-  size: 'default' | 'small' = 'default';
+  readonly showQuickJumper = signal(false);
+  readonly showSizeChanger = signal(false);
+  readonly hideOnSinglePage = signal(false);
+  readonly pageSizeOptions = [10, 20, 30, 40];
+  readonly simple = signal(false);
+  readonly size = signal<'default' | 'small'>('default');
 }
 
 @Component({
   imports: [NzPaginationModule],
   template: `
-    <nz-pagination [nzPageIndex]="1" [nzTotal]="50" [nzItemRender]="renderItemTemplate" [nzAlign]="nzAlign()" />
+    <nz-pagination [nzPageIndex]="1" [nzTotal]="50" [nzItemRender]="renderItemTemplate" [nzAlign]="align()" />
     <ng-template #renderItemTemplate let-type let-page="page">
       @switch (type) {
         @case ('prev') {
@@ -465,11 +465,10 @@ export class NzTestPaginationComponent {
         }
       }
     </ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestPaginationRenderComponent {
-  nzAlign = signal<NzPaginationAlign>('start');
+  readonly align = signal<NzPaginationAlign>('start');
 }
 
 @Component({
@@ -479,16 +478,14 @@ export class NzTestPaginationRenderComponent {
     <ng-template #rangeTemplate let-range="range" let-total>
       {{ range[0] }}-{{ range[1] }} of {{ total }} items
     </ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestPaginationTotalComponent {
-  pageIndex = 1;
+  readonly pageIndex = signal(1);
 }
 
 @Component({
   imports: [NzPaginationModule],
-  template: `<nz-pagination nzResponsive />`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<nz-pagination nzResponsive />`
 })
 export class NzTestPaginationAutoResizeComponent {}

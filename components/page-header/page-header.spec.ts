@@ -6,8 +6,8 @@
 import { Location } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -23,7 +23,7 @@ describe('page-header', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideNzIconsTesting()]
+      providers: [provideNzNoAnimation(), provideNzIconsTesting()]
     });
     location = TestBed.inject(Location);
     spyOn(location, 'getState').and.returnValue({ navigationId: 2 });
@@ -157,5 +157,5 @@ describe('page-header', () => {
 });
 
 testDirectionality(() => NzDemoPageHeaderBasicComponent, By.directive(NzPageHeaderComponent), 'ant-page-header', {
-  providers: [provideNoopAnimations(), provideNzIconsTesting()]
+  providers: [provideNzNoAnimation(), provideNzIconsTesting()]
 });

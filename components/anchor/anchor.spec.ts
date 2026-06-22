@@ -4,11 +4,11 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
-import { ChangeDetectionStrategy, Component, DebugElement, DOCUMENT, ElementRef, ViewChild } from '@angular/core';
+import { Component, DebugElement, DOCUMENT, ElementRef, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { sleep, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzDirectionVHType, NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -27,7 +27,7 @@ describe('anchor', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
     fixture = TestBed.createComponent(TestComponent);
     dl = fixture.debugElement;
@@ -65,7 +65,7 @@ describe('anchor', () => {
     });
 
     it('should be activated when scrolling to the anchor - horizontal', async () => {
-      context.nzDirection = 'horizontal';
+      context.nzDirection.set('horizontal');
       await updateNonSignalsInput(fixture);
       expect(context._scroll).not.toHaveBeenCalled();
       page.scrollTo();
@@ -127,10 +127,11 @@ describe('anchor', () => {
         const linkList = dl.queryAll(By.css('nz-affix'));
         expect(linkList.length).toBe(1);
       });
+
       it(`is [false]`, async () => {
         let linkList = dl.queryAll(By.css('nz-affix'));
         expect(linkList.length).toBe(1);
-        context.nzAffix = false;
+        context.nzAffix.set(false);
         await updateNonSignalsInput(fixture);
         linkList = dl.queryAll(By.css('nz-affix'));
         expect(linkList.length).toBe(0);
@@ -146,7 +147,7 @@ describe('anchor', () => {
 
     describe('[nzCurrentAnchor]', () => {
       it('customize the anchor highlight', async () => {
-        context.nzCurrentAnchor = '#basic';
+        context.nzCurrentAnchor.set('#basic');
         await updateNonSignalsInput(fixture);
         const linkList = dl.queryAll(By.css('.ant-anchor-link'));
         expect(linkList.length).toBeGreaterThan(0);
@@ -158,17 +159,19 @@ describe('anchor', () => {
 
     describe('[nzShowInkInFixed]', () => {
       beforeEach(async () => {
-        context.nzAffix = false;
+        context.nzAffix.set(false);
         await updateNonSignalsInput(fixture);
       });
+
       it('should be show ink when [false]', async () => {
-        context.nzShowInkInFixed = false;
+        context.nzShowInkInFixed.set(false);
         await updateNonSignalsInput(fixture);
         page.scrollTo();
         expect(dl.query(By.css('.ant-anchor-fixed')) == null).toBe(false);
       });
+
       it('should be hide ink when [true]', async () => {
-        context.nzShowInkInFixed = true;
+        context.nzShowInkInFixed.set(true);
         await updateNonSignalsInput(fixture);
         page.scrollTo();
         expect(dl.query(By.css('.ant-anchor-fixed')) == null).toBe(true);
@@ -178,15 +181,16 @@ describe('anchor', () => {
     describe('[nzContainer]', () => {
       it('with window', async () => {
         spyOn(window, 'addEventListener');
-        context.nzContainer = window;
+        context.nzContainer.set(window);
         await updateNonSignalsInput(fixture);
         expect(window.addEventListener).toHaveBeenCalled();
       });
+
       it('with string', async () => {
         spyOn(context, '_click');
         const el = document.querySelector('#target')!;
         spyOn(el, 'addEventListener');
-        context.nzContainer = '#target';
+        context.nzContainer.set('#target');
         await updateNonSignalsInput(fixture);
         expect(el.addEventListener).toHaveBeenCalled();
         page.to('#basic-target');
@@ -205,6 +209,7 @@ describe('anchor', () => {
         page.to('#basic-target');
         expect(context._change).toHaveBeenCalled();
       });
+
       it('should emit nzChange when scrolling to the anchor', async () => {
         spyOn(context, '_change');
         expect(context._change).not.toHaveBeenCalled();
@@ -231,6 +236,7 @@ describe('anchor', () => {
     it(`should show custom template of [nzTemplate]`, () => {
       expect(dl.query(By.css('.nzTemplate-title')) != null).toBe(true);
     });
+
     it(`should show custom template of [nzTitle]`, () => {
       expect(dl.query(By.css('.nzTitle-title')) != null).toBe(true);
     });
@@ -243,7 +249,7 @@ describe('anchor', () => {
     });
 
     it(`should have correct class name in horizontal mode`, async () => {
-      context.nzDirection = 'horizontal';
+      context.nzDirection.set('horizontal');
       await updateNonSignalsInput(fixture);
       const wrapperEl = dl.query(By.css('.ant-anchor-wrapper'));
       expect(wrapperEl.nativeElement.classList).toContain('ant-anchor-wrapper-horizontal');
@@ -289,14 +295,14 @@ describe('anchor', () => {
   imports: [NzAnchorModule],
   template: `
     <nz-anchor
-      [nzAffix]="nzAffix"
-      [nzBounds]="nzBounds"
-      [nzShowInkInFixed]="nzShowInkInFixed"
-      [nzOffsetTop]="nzOffsetTop"
-      [nzTargetOffset]="nzTargetOffset"
-      [nzContainer]="nzContainer"
-      [nzCurrentAnchor]="nzCurrentAnchor"
-      [nzDirection]="nzDirection"
+      [nzAffix]="nzAffix()"
+      [nzBounds]="nzBounds()"
+      [nzShowInkInFixed]="nzShowInkInFixed()"
+      [nzOffsetTop]="nzOffsetTop()"
+      [nzTargetOffset]="nzTargetOffset()"
+      [nzContainer]="nzContainer()"
+      [nzCurrentAnchor]="nzCurrentAnchor()"
+      [nzDirection]="nzDirection()"
       (nzClick)="_click()"
       (nzScroll)="_scroll()"
       (nzChange)="_change()"
@@ -348,19 +354,18 @@ describe('anchor', () => {
   styles: `
     @import '../style/testing.less';
     @import './style/patch.less';
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class TestComponent {
   @ViewChild(NzAnchorComponent, { static: false }) comp!: NzAnchorComponent;
-  nzAffix = true;
-  nzBounds = 5;
-  nzOffsetTop = 0;
-  nzTargetOffset?: number;
-  nzShowInkInFixed = false;
-  nzContainer: NzSafeAny = null;
-  nzCurrentAnchor?: string;
-  nzDirection: NzDirectionVHType = 'vertical';
+  readonly nzAffix = signal(true);
+  readonly nzBounds = signal(5);
+  readonly nzOffsetTop = signal(0);
+  readonly nzTargetOffset = signal<number | undefined>(undefined);
+  readonly nzShowInkInFixed = signal(false);
+  readonly nzContainer = signal<NzSafeAny>(null);
+  readonly nzCurrentAnchor = signal<string | undefined>(undefined);
+  readonly nzDirection = signal<NzDirectionVHType>('vertical');
   _click(): void {}
   _change(): void {}
   _scroll(): void {}

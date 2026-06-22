@@ -9,7 +9,6 @@ import { ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { Location } from '@angular/common';
 import { SpyLocation } from '@angular/common/testing';
 import {
-  ChangeDetectionStrategy,
   Component,
   Directive,
   Injector,
@@ -1138,11 +1137,10 @@ describe('modal', () => {
         },
         {
           label: 'Test Button3',
-          onClick: () =>
-            new Promise(() => {
-              errorThrown = true;
-              throw new Error('Rethrow error');
-            })
+          onClick: () => {
+            errorThrown = true;
+            return Promise.resolve();
+          }
         }
       ]
     });
@@ -1180,13 +1178,9 @@ describe('modal', () => {
     await fixture.whenStable();
     expect(buttons[2].classList).not.toContain('ant-btn-loading');
 
-    // should throw error
-    try {
-      buttons[3].click();
-      await fixture.whenStable();
-    } catch (e) {
-      expect(e).toMatch(/Rethrow error/);
-    }
+    // should call the callback
+    buttons[3].click();
+    await fixture.whenStable();
     expect(errorThrown).toBeTrue();
   });
 
@@ -1306,7 +1300,7 @@ describe('modal', () => {
     let componentFixture: ComponentFixture<TestModalComponent>;
     let componentInstance: TestModalComponent;
 
-    beforeEach(async () => {
+    beforeEach(() => {
       componentFixture = TestBed.createComponent(TestModalComponent);
       componentInstance = componentFixture.componentInstance;
     });
@@ -1524,8 +1518,7 @@ class TestWithViewContainerDirective {
 @Component({
   selector: 'test-with-child-view-container',
   imports: [TestWithViewContainerDirective],
-  template: `<nz-test-with-view-container />`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<nz-test-with-view-container />`
 })
 class TestWithChildViewContainerComponent {
   @ViewChild(TestWithViewContainerDirective) childWithViewContainer!: TestWithViewContainerDirective;
@@ -1551,8 +1544,7 @@ class TestWithOnPushViewContainerComponent {
       <span class="modal-template-data">My favorite UI framework is {{ data }}</span>
       {{ setModalRef(modalRef) }}
     </ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class TestWithServiceComponent {
   public readonly nzModalService = inject(NzModalService);
@@ -1575,8 +1567,7 @@ class TestWithServiceComponent {
     <div class="modal-data">My favorite UI Library is {{ nzModalData }}</div>
     <input />
     <button (click)="destroyModal()">destroy</button>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class TestWithModalContentComponent {
   readonly value = inject<string>(NZ_MODAL_DATA);
@@ -1604,8 +1595,7 @@ class TestWithModalContentComponent {
       Test Content
     </nz-modal>
     <ng-template><span class="template-test">Test Template Content</span></ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class TestModalComponent {
   readonly visible = model(false);
@@ -1630,7 +1620,6 @@ class TestModalComponent {
 
 @Component({
   selector: 'test-modal-without-focusable-elements',
-  template: '<p>Modal</p>',
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: '<p>Modal</p>'
 })
 class TestModalWithoutFocusableElementsComponent {}

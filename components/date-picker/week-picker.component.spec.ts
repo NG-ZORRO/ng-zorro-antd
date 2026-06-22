@@ -4,7 +4,7 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
@@ -20,21 +20,19 @@ describe('week-picker', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideNzNoAnimation()]
     });
+
+    fixture = TestBed.createComponent(NzTestWeekPickerComponent);
+    fixtureInstance = fixture.componentInstance;
   });
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
   }));
-
-  beforeEach(async () => {
-    fixture = TestBed.createComponent(NzTestWeekPickerComponent);
-    fixtureInstance = fixture.componentInstance;
-  });
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
@@ -48,7 +46,7 @@ describe('week-picker', () => {
   });
 
   it('should show week num for week-picker component', async () => {
-    fixtureInstance.useDatePicker = false;
+    fixtureInstance.useDatePicker.set(false);
     await fixture.whenStable();
     await openPickerByClickTrigger();
 
@@ -56,7 +54,7 @@ describe('week-picker', () => {
   });
 
   it('should change input value when click week', async () => {
-    fixtureInstance.value = new Date('2020-02-25');
+    fixtureInstance.value.set(new Date('2020-02-25'));
     await fixture.whenStable();
     await openPickerByClickTrigger();
 
@@ -66,7 +64,7 @@ describe('week-picker', () => {
   });
 
   it('should change panel to week from month', async () => {
-    fixtureInstance.value = new Date('2020-02-25');
+    fixtureInstance.value.set(new Date('2020-02-25'));
     await fixture.whenStable();
     await openPickerByClickTrigger();
 
@@ -104,7 +102,7 @@ describe('week-picker', () => {
 
   // Test for issue #9650 - week highlighting should persist after step button clicks
   async function testWeekHighlightingAfterNavigation(buttonSelector: string): Promise<void> {
-    fixtureInstance.value = new Date('2020-02-25');
+    fixtureInstance.value.set(new Date('2020-02-25'));
     await fixture.whenStable();
     await openPickerByClickTrigger();
 
@@ -127,15 +125,14 @@ describe('week-picker', () => {
 @Component({
   imports: [NzDatePickerModule, FormsModule],
   template: `
-    @if (useDatePicker) {
-      <nz-date-picker nzMode="week" [ngModel]="value" />
+    @if (useDatePicker()) {
+      <nz-date-picker nzMode="week" [(ngModel)]="value" />
     } @else {
-      <nz-week-picker [ngModel]="value" />
+      <nz-week-picker [(ngModel)]="value" />
     }
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestWeekPickerComponent {
-  useDatePicker = true;
-  value: Date | null = null;
+  readonly useDatePicker = signal(true);
+  readonly value = signal<Date | null>(null);
 }

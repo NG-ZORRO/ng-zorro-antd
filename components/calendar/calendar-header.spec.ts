@@ -5,12 +5,13 @@
 
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { ChangeDetectionStrategy, Component, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { FormsModule, NgModel } from '@angular/forms';
+import { Component, signal, TemplateRef, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
+import { updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -22,9 +23,8 @@ registerLocaleData(zh);
 
 describe('calendar Header', () => {
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), provideZoneChangeDetection()]
+      providers: [provideNzNoAnimation()]
     });
   });
 
@@ -48,7 +48,7 @@ describe('calendar Header', () => {
     });
 
     it('should update mode passed in', () => {
-      component.mode = 'year';
+      component.mode.set('year');
 
       fixture.detectChanges();
 
@@ -70,7 +70,7 @@ describe('calendar Header', () => {
 
       fixture.detectChanges();
 
-      expect(component.mode).toBe('year');
+      expect(component.mode()).toBe('year');
     });
   });
 
@@ -96,7 +96,7 @@ describe('calendar Header', () => {
     });
 
     it('should use small size when not in fullscreen', () => {
-      component.fullscreen = false;
+      component.fullscreen.set(false);
 
       fixture.detectChanges();
 
@@ -151,8 +151,8 @@ describe('calendar Header', () => {
       component = fixture.componentInstance;
     });
 
-    it('should emit yearChange when year changed', fakeAsync(() => {
-      tick(1);
+    it('should emit yearChange when year changed', async () => {
+      await updateNonSignalsInput(fixture);
       fixture.detectChanges();
 
       const header = fixture.debugElement.queryAll(By.directive(CalendarHeader))[0];
@@ -162,8 +162,8 @@ describe('calendar Header', () => {
 
       fixture.detectChanges();
 
-      expect(component.year).toBe(2010);
-    }));
+      expect(component.year()).toBe(2010);
+    });
 
     it('should emit monthChange when month changed', () => {
       fixture.detectChanges();
@@ -174,7 +174,7 @@ describe('calendar Header', () => {
 
       fixture.detectChanges();
 
-      expect(component.month).toBe(2);
+      expect(component.month()).toBe(2);
     });
 
     it('should update years when change year', () => {
@@ -192,46 +192,44 @@ describe('calendar Header', () => {
       fixture = TestBed.createComponent(NzTestCalendarHeaderChangesComponent);
     });
 
-    it('should have the default header if custom header is not passed', fakeAsync(() => {
-      fixture.componentInstance.customHeader = undefined;
-      tick(1);
+    it('should have the default header if custom header is not passed', async () => {
+      fixture.componentInstance.customHeader.set(undefined);
+      await updateNonSignalsInput(fixture);
       fixture.detectChanges();
 
       const defaultHeader = fixture.debugElement.query(By.css('.ant-picker-calendar-header'));
       expect(defaultHeader).toBeTruthy();
 
-      fixture.componentInstance.customHeader = fixture.componentInstance.customHeaderElement;
-      tick(1);
+      fixture.componentInstance.customHeader.set(fixture.componentInstance.customHeaderElement);
+      await updateNonSignalsInput(fixture);
       fixture.detectChanges();
 
       const defaultHeader2 = fixture.debugElement.query(By.css('.ant-picker-calendar-header'));
       expect(defaultHeader2).toBeFalsy();
-    }));
+    });
   });
 });
 
 @Component({
-  imports: [FormsModule, NzCalendarHeaderComponent],
+  imports: [NzCalendarHeaderComponent],
   template: `
     <nz-calendar-header />
     <nz-calendar-header [(mode)]="mode" />
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class NzTestCalendarHeaderModeComponent {
-  mode: 'month' | 'year' = 'month';
+  readonly mode = signal<'month' | 'year'>('month');
 }
 
 @Component({
   imports: [NzCalendarHeaderComponent],
   template: `
     <nz-calendar-header />
-    <nz-calendar-header [fullscreen]="fullscreen" />
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+    <nz-calendar-header [fullscreen]="fullscreen()" />
+  `
 })
 class NzTestCalendarHeaderFullscreenComponent {
-  fullscreen = true;
+  readonly fullscreen = signal(true);
 }
 
 @Component({
@@ -239,8 +237,7 @@ class NzTestCalendarHeaderFullscreenComponent {
   template: `
     <nz-calendar-header />
     <nz-calendar-header [activeDate]="activeDate" />
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class NzTestCalendarHeaderActiveDateComponent {
   activeDate = new CandyDate(new Date(2001, 1, 3));
@@ -249,18 +246,21 @@ class NzTestCalendarHeaderActiveDateComponent {
 @Component({
   imports: [NzCalendarHeaderComponent],
   template: `
-    <nz-calendar-header [nzCustomHeader]="customHeader" (yearChange)="year = $event" (monthChange)="month = $event" />
+    <nz-calendar-header
+      [nzCustomHeader]="customHeader()"
+      (yearChange)="year.set($event)"
+      (monthChange)="month.set($event)"
+    />
 
     <ng-template #customHeaderElement>
       <p>custom header</p>
     </ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class NzTestCalendarHeaderChangesComponent {
   @ViewChild('customHeaderElement', { static: true }) customHeaderElement!: TemplateRef<NzSafeAny>;
 
-  year: number | null = null;
-  month: number | null = null;
-  customHeader?: TemplateRef<void>;
+  readonly year = signal<number | null>(null);
+  readonly month = signal<number | null>(null);
+  readonly customHeader = signal<TemplateRef<void> | undefined>(undefined);
 }

@@ -4,13 +4,13 @@
  */
 
 import { SelectionModel } from '@angular/cdk/collections';
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { cloneDeep } from 'lodash';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -31,7 +31,7 @@ export async function waitForNextAnimationFrame(): Promise<void> {
 describe('tree-view based on nzChildrenAccessor', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideNoopAnimations()]
+      providers: [provideNzIconsTesting(), provideNzNoAnimation()]
     });
   });
 
@@ -102,7 +102,7 @@ describe('tree-view based on nzChildrenAccessor', () => {
     it('should nzDirectoryTree work', async () => {
       const treeView = fixture.debugElement.query(By.css('nz-tree-view'));
       expect(treeView.nativeElement.classList).not.toContain('ant-tree-directory');
-      testComponent.directoryTree = true;
+      testComponent.directoryTree.set(true);
       fixture.changeDetectorRef.markForCheck();
       await fixture.whenStable();
       expect(treeView.nativeElement.classList).toContain('ant-tree-directory');
@@ -112,7 +112,7 @@ describe('tree-view based on nzChildrenAccessor', () => {
     it('should nzBlockNode work', async () => {
       const treeView = fixture.debugElement.query(By.css('nz-tree-view'));
       expect(treeView.nativeElement.classList).not.toContain('ant-tree-block-node');
-      testComponent.blockNode = true;
+      testComponent.blockNode.set(true);
       fixture.changeDetectorRef.markForCheck();
       await fixture.whenStable();
       expect(treeView.nativeElement.classList).toContain('ant-tree-block-node');
@@ -286,8 +286,8 @@ const TREE_DATA: TreeNode[] = [
     <nz-tree-view
       [nzDataSource]="dataSource"
       [nzChildrenAccessor]="childrenAccessor"
-      [nzDirectoryTree]="directoryTree"
-      [nzBlockNode]="blockNode"
+      [nzDirectoryTree]="directoryTree()"
+      [nzBlockNode]="blockNode()"
     >
       <nz-tree-node *nzTreeNodeDef="let node" nzTreeNodePadding [nzExpandable]="false">
         <nz-tree-node-toggle nzTreeNodeNoopToggle />
@@ -313,8 +313,7 @@ const TREE_DATA: TreeNode[] = [
         </nz-tree-node-option>
       </nz-tree-node>
     </nz-tree-view>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestTreeViewBasicWithChildrenAccessorComponent implements OnInit {
   @ViewChild(NzTreeViewComponent, { static: true }) tree!: NzTreeViewComponent<TreeNode>;
@@ -322,8 +321,8 @@ export class NzTestTreeViewBasicWithChildrenAccessorComponent implements OnInit 
   hasChild = (_: number, node: TreeNode): boolean => !!node.children?.length;
   selectListSelection = new SelectionModel<TreeNode>(true);
   dataSource!: NzTreeViewNestedDataSource<TreeNode>;
-  directoryTree: boolean = false;
-  blockNode: boolean = false;
+  readonly directoryTree = signal(false);
+  readonly blockNode = signal(false);
 
   ngOnInit(): void {
     this.dataSource = new NzTreeViewNestedDataSource<TreeNode>(this.tree, TREE_DATA);
@@ -353,8 +352,7 @@ export class NzTestTreeViewBasicWithChildrenAccessorComponent implements OnInit 
         </nz-tree-node-option>
       </nz-tree-node>
     </nz-tree-view>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestTreeViewLineComponent implements OnInit {
   @ViewChild(NzTreeViewComponent, { static: true }) tree!: NzTreeViewComponent<TreeNode>;

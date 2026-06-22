@@ -5,20 +5,19 @@
 
 import { NgTemplateOutlet } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DebugElement,
   OnInit,
-  provideZoneChangeDetection,
+  signal,
   TemplateRef,
   ViewChild,
   inject
 } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { testDirectionality } from 'ng-zorro-antd/core/testing';
+import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { BooleanInput, NzDirectionVHType, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -31,9 +30,8 @@ import { NzStepsModule } from './steps.module';
 
 describe('steps', () => {
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting(), provideZoneChangeDetection()]
+      providers: [provideNzIconsTesting()]
     });
   });
 
@@ -50,38 +48,30 @@ describe('steps', () => {
       innerSteps = fixture.debugElement.queryAll(By.directive(NzStepComponent));
     });
 
-    it('should init className correct', fakeAsync(() => {
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+    it('should init className correct', async () => {
+      await stabilize(fixture);
       expect(outStep.nativeElement.className).toBe('ant-steps ant-steps-horizontal ant-steps-label-horizontal');
       expect(innerSteps[0].nativeElement.className).toBe('ant-steps-item ant-steps-item-active ant-steps-item-process');
       expect(innerSteps[1].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
       expect(innerSteps[2].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
-    }));
+    });
 
-    it('should current change correct', fakeAsync(() => {
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+    it('should current change correct', async () => {
+      await stabilize(fixture);
       testComponent.current = 1;
       testComponent.cdr.markForCheck();
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(innerSteps[0].nativeElement.className).toBe('ant-steps-item ant-steps-item-finish');
       expect(innerSteps[1].nativeElement.className).toBe('ant-steps-item ant-steps-item-process ant-steps-item-active');
       expect(innerSteps[2].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
-    }));
+    });
 
-    it('should tail display correct', fakeAsync(() => {
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+    it('should tail display correct', async () => {
+      await stabilize(fixture);
       expect(innerSteps[0].nativeElement.querySelector('.ant-steps-item-tail')).toBeTruthy();
       expect(innerSteps[1].nativeElement.querySelector('.ant-steps-item-tail')).toBeTruthy();
       expect(innerSteps[2].nativeElement.querySelector('.ant-steps-item-tail')).toBeFalsy();
-    }));
+    });
 
     it('should title correct', () => {
       fixture.detectChanges();
@@ -158,41 +148,29 @@ describe('steps', () => {
       expect(outStep.nativeElement.classList).toContain('ant-steps-label-vertical');
     });
 
-    it('should status display correct', fakeAsync(() => {
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+    it('should status display correct', async () => {
+      await stabilize(fixture);
       testComponent.status = 'wait';
       testComponent.cdr.markForCheck();
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(innerSteps[0].nativeElement.className).toBe('ant-steps-item ant-steps-item-active ant-steps-item-wait');
       testComponent.status = 'finish';
       testComponent.cdr.markForCheck();
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(innerSteps[0].nativeElement.className).toBe('ant-steps-item ant-steps-item-active ant-steps-item-finish');
       testComponent.status = 'error';
       testComponent.current = 1;
       testComponent.cdr.markForCheck();
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(innerSteps[1].nativeElement.className).toBe('ant-steps-item ant-steps-item-error ant-steps-item-active');
       expect(innerSteps[0].nativeElement.className).toBe('ant-steps-item ant-steps-item-finish ant-steps-next-error');
-    }));
+    });
 
-    it('should processDot display correct', fakeAsync(() => {
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+    it('should processDot display correct', async () => {
+      await stabilize(fixture);
       testComponent.progressDot = true;
       testComponent.cdr.markForCheck();
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(outStep.nativeElement.classList.contains('ant-steps-dot')).toBe(true);
       expect(
         innerSteps[0].nativeElement
@@ -209,17 +187,13 @@ describe('steps', () => {
           .querySelector('.ant-steps-icon')
           .firstElementChild!.classList.contains('ant-steps-icon-dot')
       ).toBe(true);
-    }));
+    });
 
-    it('should processDot template display correct', fakeAsync(() => {
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+    it('should processDot template display correct', async () => {
+      await stabilize(fixture);
       testComponent.progressDot = testComponent.progressTemplate!;
       testComponent.cdr.markForCheck();
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(outStep.nativeElement.classList.contains('ant-steps-dot')).toBe(true);
       expect(innerSteps[0].nativeElement.querySelector('.ant-steps-icon').firstElementChild.innerText.trim()).toBe(
         'process0'
@@ -245,25 +219,21 @@ describe('steps', () => {
           .querySelector('.ant-steps-icon')
           .lastElementChild.classList.contains('ant-steps-icon-dot')
       ).toBe(true);
-    }));
+    });
 
-    it('should support custom starting index', fakeAsync(() => {
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+    it('should support custom starting index', async () => {
+      await stabilize(fixture);
       testComponent.startIndex = 3;
       testComponent.current = 3;
       testComponent.cdr.markForCheck();
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(innerSteps[0].nativeElement.className).toBe('ant-steps-item ant-steps-item-active ant-steps-item-process');
       expect(innerSteps[1].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
       expect(innerSteps[2].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
       expect(innerSteps[0].nativeElement.querySelector('.ant-steps-icon').innerText.trim()).toBe('4');
       expect(innerSteps[1].nativeElement.querySelector('.ant-steps-icon').innerText.trim()).toBe('5');
       expect(innerSteps[2].nativeElement.querySelector('.ant-steps-icon').innerText.trim()).toBe('6');
-    }));
+    });
   });
 
   describe('inner step string', () => {
@@ -282,7 +252,7 @@ describe('steps', () => {
       expect(innerSteps[0].nativeElement.classList).toContain('ant-steps-item-process');
       expect(innerSteps[1].nativeElement.classList).toContain('ant-steps-item-process');
       expect(innerSteps[2].nativeElement.classList).toContain('ant-steps-item-process');
-      testComponent.status = 'wait';
+      testComponent.status.set('wait');
       fixture.detectChanges();
       expect(innerSteps[0].nativeElement.classList).toContain('ant-steps-item-wait');
       expect(innerSteps[1].nativeElement.classList).toContain('ant-steps-item-wait');
@@ -380,7 +350,7 @@ describe('steps', () => {
   });
 
   describe('step async assign steps', () => {
-    it('should allow steps assigned asynchronously', fakeAsync(() => {
+    it('should allow steps assigned asynchronously', async () => {
       const fixture: ComponentFixture<NzTestStepAsyncComponent> = TestBed.createComponent(NzTestStepAsyncComponent);
       let innerSteps: DebugElement[];
 
@@ -388,9 +358,7 @@ describe('steps', () => {
       innerSteps = fixture.debugElement.queryAll(By.directive(NzStepComponent));
       expect(innerSteps.length).toBe(0);
 
-      tick(1000);
-      fixture.detectChanges();
-      tick();
+      await stabilize(fixture, 1000);
       innerSteps = fixture.debugElement.queryAll(By.directive(NzStepComponent));
       fixture.detectChanges();
       expect(innerSteps.length).toBe(3);
@@ -399,7 +367,7 @@ describe('steps', () => {
       expect(innerSteps[0].nativeElement.querySelector('.ant-steps-icon').innerText.trim()).toBe('');
       expect(innerSteps[1].nativeElement.querySelector('.ant-steps-icon').innerText.trim()).toBe('2');
       expect(innerSteps[2].nativeElement.querySelector('.ant-steps-icon').innerText.trim()).toBe('3');
-    }));
+    });
   });
 
   describe('step clickable', () => {
@@ -413,56 +381,46 @@ describe('steps', () => {
       innerSteps = fixture.debugElement.queryAll(By.directive(NzStepComponent));
     });
 
-    it('should clickable', fakeAsync(() => {
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+    it('should clickable', async () => {
+      await stabilize(fixture);
       innerSteps
         .map(step => step.nativeElement.querySelector('.ant-steps-item-container'))
         .forEach((e: HTMLElement) => {
           expect(e.getAttribute('role')).toBe('button');
         });
-    }));
+    });
 
-    it('should output work', fakeAsync(() => {
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+    it('should output work', async () => {
+      await stabilize(fixture);
       spyOn(testComponent, 'onIndexChange');
       innerSteps[1].nativeElement.querySelector('.ant-steps-item-container').click();
       fixture.detectChanges();
       expect(testComponent.onIndexChange).toHaveBeenCalledWith(1);
-    }));
+    });
 
-    it('should disable work', fakeAsync(() => {
+    it('should disable work', async () => {
       testComponent.disable = true;
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+      await stabilize(fixture);
       const step = innerSteps[0].nativeElement.querySelector('.ant-steps-item-container') as HTMLElement;
       expect(step.getAttribute('role')).not.toBe('button');
       spyOn(testComponent, 'onIndexChange');
       step.click();
       fixture.detectChanges();
       expect(testComponent.onIndexChange).not.toHaveBeenCalled();
-    }));
+    });
 
-    it("should can't click when status is process", fakeAsync(() => {
+    it("should can't click when status is process", async () => {
       testComponent.disable = false;
       testComponent.index.set(0);
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+      await stabilize(fixture);
       spyOn(testComponent, 'onIndexChange');
       innerSteps[0].nativeElement.click();
       fixture.detectChanges();
       expect(testComponent.onIndexChange).not.toHaveBeenCalled();
-    }));
+    });
 
-    it('should enable and disable work', fakeAsync(() => {
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+    it('should enable and disable work', async () => {
+      await stabilize(fixture);
       innerSteps[1].componentInstance.disable();
       fixture.detectChanges();
       spyOn(testComponent, 'onIndexChange');
@@ -475,7 +433,7 @@ describe('steps', () => {
       fixture.detectChanges();
       expect(testComponent.onIndexChange).toHaveBeenCalledTimes(1);
       expect(testComponent.onIndexChange).toHaveBeenCalledWith(1);
-    }));
+    });
   });
 
   describe('navigation', () => {
@@ -487,20 +445,24 @@ describe('steps', () => {
       steps = fixture.debugElement.queryAll(By.directive(NzStepsComponent));
     });
 
-    it('should clickable', fakeAsync(() => {
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
+    it('should clickable', async () => {
+      await stabilize(fixture);
 
       steps
         .map(step => step.nativeElement)
         .forEach((e: HTMLElement) => {
           expect(e.classList).toContain('ant-steps-navigation');
         });
-    }));
+    });
   });
   testDirectionality(() => NzTestOuterStepsComponent, By.directive(NzStepsComponent), 'ant-steps');
 });
+
+async function stabilize<T>(fixture: ComponentFixture<T>, ms?: number): Promise<void> {
+  fixture.detectChanges();
+  await updateNonSignalsInput(fixture, ms);
+  fixture.detectChanges();
+}
 
 @Component({
   selector: 'nz-test-outer-steps',
@@ -543,21 +505,20 @@ export class NzTestOuterStepsComponent {
   imports: [NzIconModule, NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="current">
-      <nz-step [nzTitle]="title" [nzDescription]="description" [nzIcon]="icon" [nzStatus]="status" />
-      <nz-step [nzTitle]="title" [nzDescription]="description" [nzIcon]="icon" [nzStatus]="status" />
-      <nz-step [nzTitle]="title" [nzDescription]="description" [nzIcon]="icon" [nzStatus]="status" />
+      <nz-step [nzTitle]="title" [nzDescription]="description" [nzIcon]="icon" [nzStatus]="status()" />
+      <nz-step [nzTitle]="title" [nzDescription]="description" [nzIcon]="icon" [nzStatus]="status()" />
+      <nz-step [nzTitle]="title" [nzDescription]="description" [nzIcon]="icon" [nzStatus]="status()" />
     </nz-steps>
     <ng-template #titleTemplate>titleTemplate</ng-template>
     <ng-template #descriptionTemplate>descriptionTemplate</ng-template>
     <ng-template #iconTemplate><nz-icon nzType="smile-o" /></ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestInnerStepStringComponent {
   @ViewChild('titleTemplate', { static: false }) titleTemplate?: TemplateRef<void>;
   @ViewChild('descriptionTemplate', { static: false }) descriptionTemplate?: TemplateRef<void>;
   @ViewChild('iconTemplate', { static: false }) iconTemplate?: TemplateRef<void>;
-  status = 'process';
+  readonly status = signal<NzStatusType>('process');
   current = 1;
   icon = 'user';
   title = 'title';
@@ -575,8 +536,7 @@ export class NzTestInnerStepStringComponent {
     <ng-template #titleTemplate>titleTemplate</ng-template>
     <ng-template #descriptionTemplate>descriptionTemplate</ng-template>
     <ng-template #iconTemplate><nz-icon nzType="smile-o" /></ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestInnerStepTemplateComponent {}
 
@@ -588,8 +548,7 @@ export class NzTestInnerStepTemplateComponent {}
         <nz-step />
       }
     </nz-steps>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestStepForComponent {
   steps = [1, 2, 3];
@@ -602,19 +561,18 @@ export class NzTestStepForComponent {
   imports: [NzStepsModule],
   template: `
     <nz-steps [nzCurrent]="1">
-      @for (step of steps; track step) {
+      @for (step of stepsSignal(); track step) {
         <nz-step />
       }
     </nz-steps>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestStepAsyncComponent implements OnInit {
-  steps: number[] = [];
+  readonly stepsSignal = signal<number[]>([]);
 
   ngOnInit(): void {
     setTimeout(() => {
-      this.steps = [1, 2, 3];
+      this.stepsSignal.set([1, 2, 3]);
     }, 1000);
   }
 }

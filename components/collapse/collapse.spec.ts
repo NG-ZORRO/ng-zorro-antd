@@ -4,14 +4,7 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DebugElement,
-  provideZoneChangeDetection,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
+import { Component, DebugElement, signal, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -27,14 +20,8 @@ import { NzCollapseModule } from './collapse.module';
 
 describe('collapse', () => {
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [
-        provideNzIconsTesting(),
-        provideNzNoAnimation(),
-        provideZoneChangeDetection(),
-        provideMockDirectionality()
-      ]
+      providers: [provideNzIconsTesting(), provideNzNoAnimation(), provideMockDirectionality()]
     });
   });
 
@@ -61,7 +48,7 @@ describe('collapse', () => {
     it('should border work', () => {
       fixture.detectChanges();
       expect(collapse.nativeElement!.classList).not.toContain('ant-collapse-borderless');
-      testComponent.bordered = false;
+      testComponent.bordered.set(false);
       fixture.detectChanges();
       expect(collapse.nativeElement!.classList).toContain('ant-collapse-borderless');
     });
@@ -69,7 +56,7 @@ describe('collapse', () => {
     it('should showArrow work', () => {
       fixture.detectChanges();
       expect(panels[0].nativeElement.querySelector('.ant-collapse-arrow').firstElementChild).toBeDefined();
-      testComponent.showArrow = false;
+      testComponent.showArrow.set(false);
       fixture.detectChanges();
       expect(panels[0].nativeElement.querySelector('.ant-collapse-arrow')).toBeNull();
     });
@@ -77,7 +64,7 @@ describe('collapse', () => {
     it('should active work', () => {
       fixture.detectChanges();
       expect(panels[0].nativeElement.classList).not.toContain('ant-collapse-item-active');
-      testComponent.active01 = true;
+      testComponent.active01.set(true);
       fixture.detectChanges();
       expect(panels[0].nativeElement.classList).toContain('ant-collapse-item-active');
       expect(testComponent.active01Change).toHaveBeenCalledTimes(0);
@@ -86,31 +73,31 @@ describe('collapse', () => {
     it('should click work', () => {
       fixture.detectChanges();
       expect(panels[0].nativeElement.classList).not.toContain('ant-collapse-item-active');
-      expect(testComponent.active01).toBe(false);
+      expect(testComponent.active01()).toBe(false);
       panels[0].nativeElement.querySelector('.ant-collapse-header').click();
       fixture.detectChanges();
-      expect(testComponent.active01).toBe(true);
+      expect(testComponent.active01()).toBe(true);
       expect(panels[0].nativeElement.classList).toContain('ant-collapse-item-active');
       expect(testComponent.active01Change).toHaveBeenCalledTimes(1);
     });
 
     it('should accordion work', () => {
-      testComponent.accordion = true;
+      testComponent.accordion.set(true);
       fixture.detectChanges();
       expect(panels[0].nativeElement.classList).not.toContain('ant-collapse-item-active');
-      expect(testComponent.active01).toBe(false);
+      expect(testComponent.active01()).toBe(false);
       panels[0].nativeElement.querySelector('.ant-collapse-header').click();
       fixture.detectChanges();
-      expect(testComponent.active01).toBe(true);
-      expect(testComponent.active02).toBe(false);
+      expect(testComponent.active01()).toBe(true);
+      expect(testComponent.active02()).toBe(false);
       expect(panels[0].nativeElement.classList).toContain('ant-collapse-item-active');
       expect(panels[1].nativeElement.classList).not.toContain('ant-collapse-item-active');
       expect(testComponent.active01Change).toHaveBeenCalledTimes(1);
       expect(testComponent.active02Change).toHaveBeenCalledTimes(0);
       panels[1].nativeElement.querySelector('.ant-collapse-header').click();
       fixture.detectChanges();
-      expect(testComponent.active01).toBe(false);
-      expect(testComponent.active02).toBe(true);
+      expect(testComponent.active01()).toBe(false);
+      expect(testComponent.active02()).toBe(true);
       expect(panels[0].nativeElement.classList).not.toContain('ant-collapse-item-active');
       expect(panels[1].nativeElement.classList).toContain('ant-collapse-item-active');
       expect(testComponent.active01Change).toHaveBeenCalledTimes(2);
@@ -118,26 +105,26 @@ describe('collapse', () => {
     });
 
     it('should click to fold up work with accordion', () => {
-      testComponent.accordion = true;
+      testComponent.accordion.set(true);
       fixture.detectChanges();
       expect(panels[0].nativeElement.classList).not.toContain('ant-collapse-item-active');
-      expect(testComponent.active01).toBe(false);
+      expect(testComponent.active01()).toBe(false);
       panels[0].nativeElement.querySelector('.ant-collapse-header').click();
       fixture.detectChanges();
       panels[1].nativeElement.querySelector('.ant-collapse-header').click();
       fixture.detectChanges();
       panels[0].nativeElement.querySelector('.ant-collapse-header').click();
       fixture.detectChanges();
-      expect(testComponent.active01).toBe(true);
-      expect(testComponent.active02).toBe(false);
+      expect(testComponent.active01()).toBe(true);
+      expect(testComponent.active02()).toBe(false);
       expect(panels[0].nativeElement.classList).toContain('ant-collapse-item-active');
       expect(panels[1].nativeElement.classList).not.toContain('ant-collapse-item-active');
       expect(testComponent.active01Change).toHaveBeenCalledTimes(3);
       expect(testComponent.active02Change).toHaveBeenCalledTimes(2);
       panels[0].nativeElement.querySelector('.ant-collapse-header').click();
       fixture.detectChanges();
-      expect(testComponent.active01).toBe(false);
-      expect(testComponent.active02).toBe(false);
+      expect(testComponent.active01()).toBe(false);
+      expect(testComponent.active02()).toBe(false);
       expect(panels[0].nativeElement.classList).not.toContain('ant-collapse-item-active');
       expect(panels[1].nativeElement.classList).not.toContain('ant-collapse-item-active');
       expect(testComponent.active01Change).toHaveBeenCalledTimes(4);
@@ -153,7 +140,7 @@ describe('collapse', () => {
       fixture.detectChanges();
       expect(panels[0].nativeElement.querySelector('.ant-collapse-extra')).toBeFalsy();
 
-      testComponent.showExtra = 'Extra';
+      testComponent.showExtra.set('Extra');
       fixture.detectChanges();
       const extraEl = panels[0].nativeElement.querySelector('.ant-collapse-extra');
       expect(extraEl!).not.toBeFalsy();
@@ -231,7 +218,7 @@ describe('collapse', () => {
     });
 
     it('should not toggle when nzCollapsible is "disabled"', () => {
-      fixture.componentInstance.collapsible = 'disabled';
+      fixture.componentInstance.collapsible.set('disabled');
       fixture.detectChanges();
 
       const header = panel.nativeElement.querySelector('.ant-collapse-header') as HTMLElement;
@@ -248,7 +235,7 @@ describe('collapse', () => {
     it('should toggle by header when nzCollapsible is "header"', () => {
       // Recreate fixture and set mode BEFORE first detectChanges so listeners bind to header
       const localFixture = TestBed.createComponent(NzTestCollapseCollapsibleComponent);
-      localFixture.componentInstance.collapsible = 'header';
+      localFixture.componentInstance.collapsible.set('header');
       localFixture.detectChanges();
       const localPanel = localFixture.debugElement.query(By.directive(NzCollapsePanelComponent));
 
@@ -305,13 +292,13 @@ describe('collapse', () => {
       expect(collapse.nativeElement!.classList).not.toContain('ant-collapse-large');
 
       // small
-      fixture.componentInstance.size = 'small';
+      fixture.componentInstance.size.set('small');
       fixture.detectChanges();
       expect(collapse.nativeElement!.classList).toContain('ant-collapse-small');
       expect(collapse.nativeElement!.classList).not.toContain('ant-collapse-large');
 
       // large
-      fixture.componentInstance.size = 'large';
+      fixture.componentInstance.size.set('large');
       fixture.detectChanges();
       expect(collapse.nativeElement!.classList).toContain('ant-collapse-large');
       expect(collapse.nativeElement!.classList).not.toContain('ant-collapse-small');
@@ -324,13 +311,13 @@ describe('collapse', () => {
   imports: [NzCollapseModule],
   template: `
     <ng-template #headerTemplate>template</ng-template>
-    <nz-collapse [nzAccordion]="accordion" [nzBordered]="bordered">
+    <nz-collapse [nzAccordion]="accordion()" [nzBordered]="bordered()">
       <nz-collapse-panel
         [(nzActive)]="active01"
         (nzActiveChange)="active01Change($event)"
         [nzHeader]="header"
-        [nzShowArrow]="showArrow"
-        [nzExtra]="showExtra"
+        [nzShowArrow]="showArrow()"
+        [nzExtra]="showExtra()"
       >
         <p>Panel01</p>
       </nz-collapse-panel>
@@ -338,17 +325,16 @@ describe('collapse', () => {
         <p>Panel02</p>
       </nz-collapse-panel>
     </nz-collapse>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestCollapseBasicComponent {
   @ViewChild('headerTemplate', { static: false }) headerTemplate!: TemplateRef<void>;
-  accordion = false;
-  bordered = true;
-  active01 = false;
-  active02 = false;
-  showArrow = true;
-  showExtra = '';
+  readonly accordion = signal(false);
+  readonly bordered = signal(true);
+  readonly active01 = signal(false);
+  readonly active02 = signal(false);
+  readonly showArrow = signal(true);
+  readonly showExtra = signal('');
   header = 'string';
   active01Change = jasmine.createSpy<NzSafeAny>('active01 callback');
   active02Change = jasmine.createSpy<NzSafeAny>('active02 callback');
@@ -363,8 +349,7 @@ export class NzTestCollapseBasicComponent {
         <p>Panel01</p>
       </nz-collapse-panel>
     </nz-collapse>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestCollapseTemplateComponent {}
 
@@ -385,8 +370,7 @@ export class NzTestCollapseTemplateComponent {}
         <nz-icon nzType="caret-right" class="ant-collapse-arrow" />
       </ng-template>
     </nz-collapse>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestCollapseIconComponent {}
 
@@ -396,33 +380,31 @@ export class NzTestCollapseIconComponent {}
     <nz-collapse>
       <nz-collapse-panel
         [(nzActive)]="active"
-        [nzCollapsible]="collapsible"
-        [nzShowArrow]="showArrow"
+        [nzCollapsible]="collapsible()"
+        [nzShowArrow]="showArrow()"
         nzHeader="Header"
       >
         <p>Content</p>
       </nz-collapse-panel>
     </nz-collapse>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestCollapseCollapsibleComponent {
-  active = false;
-  collapsible: 'disabled' | 'header' | 'icon' = 'icon';
-  showArrow = true;
+  readonly active = signal(false);
+  readonly collapsible = signal<'disabled' | 'header' | 'icon'>('icon');
+  readonly showArrow = signal(true);
 }
 
 @Component({
   imports: [NzCollapseModule],
   template: `
-    <nz-collapse [nzSize]="size">
+    <nz-collapse [nzSize]="size()">
       <nz-collapse-panel nzHeader="header" nzActive>
         <p>content</p>
       </nz-collapse-panel>
     </nz-collapse>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestCollapseSizeSpecComponent {
-  size: 'small' | 'middle' | 'large' = 'middle';
+  readonly size = signal<'small' | 'middle' | 'large'>('middle');
 }

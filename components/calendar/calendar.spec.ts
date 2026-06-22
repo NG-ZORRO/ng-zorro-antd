@@ -5,12 +5,12 @@
 
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { ChangeDetectionStrategy, Component, provideZoneChangeDetection } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
+import { Component, signal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NZ_DATE_CONFIG } from 'ng-zorro-antd/i18n/date-config';
@@ -23,13 +23,8 @@ registerLocaleData(zh);
 
 describe('calendar', () => {
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [
-        provideZoneChangeDetection(),
-        provideNoopAnimations(),
-        { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 0 } }
-      ]
+      providers: [provideNzNoAnimation(), { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 0 } }]
     });
   });
 
@@ -53,7 +48,7 @@ describe('calendar', () => {
     });
 
     it('should update mode passed in', () => {
-      component.mode = 'year';
+      component.mode.set('year');
 
       fixture.detectChanges();
 
@@ -73,7 +68,7 @@ describe('calendar', () => {
 
       fixture.detectChanges();
 
-      expect(component.mode).toBe('year');
+      expect(component.mode()).toBe('year');
     });
 
     it('should display date grid in month mode', () => {
@@ -86,7 +81,7 @@ describe('calendar', () => {
     });
 
     it('should display date grid in year mode', () => {
-      component.mode = 'year';
+      component.mode.set('year');
       fixture.detectChanges();
 
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[1];
@@ -131,7 +126,7 @@ describe('calendar', () => {
       expect(component.date0).toBe(now);
     });
 
-    it('should support model binding', fakeAsync(() => {
+    it('should support model binding', async () => {
       fixture.detectChanges();
       const now = new Date();
 
@@ -139,7 +134,7 @@ describe('calendar', () => {
       const calendar = host.injector.get(Calendar);
       const model = host.injector.get(NgModel);
       fixture.detectChanges();
-      flush();
+      await fixture.whenStable();
       fixture.detectChanges();
 
       expect(calendar.activeDate.nativeDate).toBe(component.date1);
@@ -148,7 +143,7 @@ describe('calendar', () => {
       fixture.detectChanges();
 
       expect(component.date1).toBe(now);
-    }));
+    });
 
     it('should update value when year changed', () => {
       fixture.detectChanges();
@@ -245,7 +240,7 @@ describe('calendar', () => {
     });
 
     it('should update fullscreen by nzFullscreen', () => {
-      component.fullscreen = false;
+      component.fullscreen.set(false);
 
       fixture.detectChanges();
 
@@ -256,7 +251,7 @@ describe('calendar', () => {
     });
 
     it('should support imperative access', () => {
-      component.fullscreen = false;
+      component.fullscreen.set(false);
 
       fixture.detectChanges();
 
@@ -412,11 +407,10 @@ describe('calendar', () => {
   template: `
     <nz-calendar />
     <nz-calendar [(nzMode)]="mode" />
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class NzTestCalendarModeComponent {
-  mode: 'month' | 'year' = 'month';
+  readonly mode = signal<'month' | 'year'>('month');
 }
 
 @Component({
@@ -426,8 +420,7 @@ class NzTestCalendarModeComponent {
     <nz-calendar [(nzValue)]="date0" />
     <nz-calendar [(ngModel)]="date1" />
     <nz-calendar [(nzValue)]="date2" [(nzMode)]="mode" />
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class NzTestCalendarValueComponent {
   date0 = new Date(2001, 1, 3);
@@ -440,13 +433,11 @@ class NzTestCalendarValueComponent {
   imports: [NzCalendarModule],
   template: `
     <nz-calendar />
-    <nz-calendar [nzFullscreen]="fullscreen" />
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+    <nz-calendar [nzFullscreen]="fullscreen()" />
+  `
 })
 class NzTestCalendarFullscreenComponent {
-  fullscreen = true;
-  card = false;
+  readonly fullscreen = signal(true);
 }
 
 @Component({
@@ -457,8 +448,7 @@ class NzTestCalendarFullscreenComponent {
     <nz-calendar>
       <ng-container *nzDateCell>Bar</ng-container>
     </nz-calendar>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class NzTestCalendarDateCellComponent {}
 
@@ -470,8 +460,7 @@ class NzTestCalendarDateCellComponent {}
     <nz-calendar>
       <ng-container *nzDateFullCell>Bar</ng-container>
     </nz-calendar>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class NzTestCalendarDateFullCellComponent {}
 
@@ -483,8 +472,7 @@ class NzTestCalendarDateFullCellComponent {}
     <nz-calendar nzMode="year">
       <ng-container *nzMonthCell>Bar</ng-container>
     </nz-calendar>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class NzTestCalendarMonthCellComponent {}
 
@@ -496,8 +484,7 @@ class NzTestCalendarMonthCellComponent {}
     <nz-calendar nzMode="year">
       <ng-container *nzMonthFullCell>Bar</ng-container>
     </nz-calendar>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class NzTestCalendarMonthFullCellComponent {}
 
@@ -510,8 +497,7 @@ class NzTestCalendarMonthFullCellComponent {}
       (nzPanelChange)="panelChange($event)"
       (nzSelectChange)="selectChange($event)"
     />
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class NzTestCalendarChangesComponent {
   mode: 'month' | 'year' = 'month';

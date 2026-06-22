@@ -3,15 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DebugElement,
-  NgModule,
-  inject,
-  provideZoneChangeDetection
-} from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { Component, DebugElement, NgModule, inject, signal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import {
@@ -25,6 +18,7 @@ import {
 } from '@ant-design/icons-angular/icons';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 
 import { NzIconDirective } from './icon.directive';
 import { NzIconModule } from './icon.module';
@@ -35,8 +29,6 @@ describe('nz-icon', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        // todo: use zoneless
-        provideZoneChangeDetection(),
         provideNzIcons([
           LeftOutline,
           RightOutline,
@@ -68,52 +60,52 @@ describe('nz-icon', () => {
     });
 
     it('should change class name when type changes', () => {
-      testComponent.type = 'question-circle';
+      testComponent.type.set('question-circle');
       fixture.detectChanges();
       expect(icons[0].nativeElement.classList.contains('anticon')).toBe(true);
       expect(icons[0].nativeElement.classList.contains('anticon-question-circle')).toBe(true);
       expect(icons[0].nativeElement.classList.contains('anticon-question')).not.toBe(true);
     });
 
-    it('should support spin and cancel', fakeAsync(() => {
+    it('should support spin and cancel', async () => {
       fixture.detectChanges();
-      tick(1000);
+      await updateNonSignalsInput(fixture);
       fixture.detectChanges();
       // Only test fails. Don't know why.
       // expect(icons[0].nativeElement.firstChild.classList.contains('anticon-spin')).toBe(true);
 
-      testComponent.spin = false;
+      testComponent.spin.set(false);
       fixture.detectChanges();
-      tick(1000);
+      await updateNonSignalsInput(fixture);
       fixture.detectChanges();
       expect(icons[0].nativeElement.firstChild.classList.contains('anticon-spin')).toBe(false);
-    }));
+    });
 
-    it('should make loading spin', fakeAsync(() => {
+    it('should make loading spin', async () => {
       fixture.detectChanges();
-      tick(1000);
+      await updateNonSignalsInput(fixture);
       fixture.detectChanges();
       // expect(icons[1].nativeElement.firstChild.classList.contains('anticon-spin')).toBe(true);
-    }));
+    });
 
-    it('should rotate work', fakeAsync(() => {
+    it('should rotate work', async () => {
       fixture.detectChanges();
-      tick(1000);
+      await updateNonSignalsInput(fixture);
       fixture.detectChanges();
       expect(icons[0].nativeElement.firstChild.style.transform).toBeFalsy();
 
-      testComponent.rotate = 120;
+      testComponent.rotate.set(120);
       fixture.detectChanges();
-      tick(1000);
+      await updateNonSignalsInput(fixture);
       fixture.detectChanges();
       expect(icons[0].nativeElement.firstChild.style.transform).toBe('rotate(120deg)');
 
-      testComponent.rotate = 0;
+      testComponent.rotate.set(0);
       fixture.detectChanges();
-      tick(1000);
+      await updateNonSignalsInput(fixture);
       fixture.detectChanges();
       expect(icons[0].nativeElement.firstChild.style.transform).toBeFalsy();
-    }));
+    });
   });
 
   describe('custom', () => {
@@ -227,18 +219,17 @@ describe('nz-icon injection', () => {
 @Component({
   imports: [NzIconModule],
   template: `
-    <nz-icon [nzType]="type" [nzTheme]="theme" [nzSpin]="spin" [nzRotate]="rotate" />
-    <nz-icon nzType="loading" [nzTheme]="theme" />
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+    <nz-icon [nzType]="type()" [nzTheme]="theme()" [nzSpin]="spin()" [nzRotate]="rotate()" />
+    <nz-icon nzType="loading" [nzTheme]="theme()" />
+  `
 })
 export class NzTestIconExtensionsComponent {
   public readonly iconService = inject(NzIconService);
 
-  type = 'question';
-  theme: 'fill' | 'outline' | 'twotone' = 'outline';
-  spin = true;
-  rotate = 0;
+  readonly type = signal('question');
+  readonly theme = signal<'fill' | 'outline' | 'twotone'>('outline');
+  readonly spin = signal(true);
+  readonly rotate = signal(0);
 }
 
 @Component({
@@ -251,8 +242,7 @@ export class NzTestIconExtensionsComponent {
         />
       </svg>
     </nz-icon>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestIconCustomComponent {}
 
@@ -262,8 +252,7 @@ export class NzTestIconCustomComponent {}
     <nz-icon nzIconfont="icon-tuichu" />
     <nz-icon nzIconfont="icon-facebook" />
     <nz-icon nzIconfont="icon-twitter" />
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestIconIconfontComponent {
   private readonly iconService = inject(NzIconService);
@@ -285,8 +274,7 @@ class ChildModule {}
   template: `
     <nz-icon nzType="home" />
     <nz-icon nzType="question" />
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class NzTestIconMultiInjectionComponent {}
 
@@ -296,7 +284,6 @@ class NzTestIconMultiInjectionComponent {}
   template: `
     <nz-icon nzType="home" />
     <nz-icon nzType="question" />
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 class NzTestIconMultiInjectionStandaloneComponent {}

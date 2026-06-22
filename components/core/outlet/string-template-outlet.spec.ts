@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, provideZoneChangeDetection, TemplateRef, ViewChild } from '@angular/core';
+import { Component, signal, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -14,13 +14,6 @@ import { NzStringTemplateOutletDirective } from './string-template-outlet.direct
 describe('string template outlet', () => {
   let fixture: ComponentFixture<StringTemplateOutletTestComponent>;
   let component: StringTemplateOutletTestComponent;
-
-  beforeEach(() => {
-    // todo: use zoneless
-    TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection()]
-    });
-  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(StringTemplateOutletTestComponent);
@@ -36,49 +29,49 @@ describe('string template outlet', () => {
 
   describe('outlet change', () => {
     it('should work when switch between null and string', () => {
-      component.stringTemplateOutlet = 'String Testing';
+      component.stringTemplateOutlet.set('String Testing');
       fixture.detectChanges();
       expect(fixture.nativeElement.innerText).toBe('TargetText String Testing');
-      component.stringTemplateOutlet = null;
+      component.stringTemplateOutlet.set(null);
       fixture.detectChanges();
       expect(fixture.nativeElement.innerText).toBe('TargetText');
     });
 
     it('should work when switch between null and template', () => {
-      component.stringTemplateOutlet = component.stringTpl;
+      component.stringTemplateOutlet.set(component.stringTpl);
       fixture.detectChanges();
       expect(fixture.nativeElement.innerText).toBe('TargetText The data is');
-      component.stringTemplateOutlet = null;
+      component.stringTemplateOutlet.set(null);
       fixture.detectChanges();
       expect(fixture.nativeElement.innerText).toBe('TargetText');
     });
 
     it('should work when switch between string', () => {
-      component.stringTemplateOutlet = 'String Testing';
+      component.stringTemplateOutlet.set('String Testing');
       fixture.detectChanges();
       expect(fixture.nativeElement.innerText).toBe('TargetText String Testing');
-      component.stringTemplateOutlet = 'String String';
+      component.stringTemplateOutlet.set('String String');
       fixture.detectChanges();
       expect(fixture.nativeElement.innerText).toBe('TargetText String String');
     });
 
     it('should work when switch between string and template', () => {
-      component.stringTemplateOutlet = 'String Testing';
+      component.stringTemplateOutlet.set('String Testing');
       fixture.detectChanges();
       expect(fixture.nativeElement.innerText).toBe('TargetText String Testing');
-      component.stringTemplateOutlet = component.stringTpl;
+      component.stringTemplateOutlet.set(component.stringTpl);
       fixture.detectChanges();
       expect(fixture.nativeElement.innerText).toBe('TargetText The data is');
-      component.stringTemplateOutlet = 'String Testing';
+      component.stringTemplateOutlet.set('String Testing');
       fixture.detectChanges();
       expect(fixture.nativeElement.innerText).toBe('TargetText String Testing');
     });
 
     it('should work when switch between template', () => {
-      component.stringTemplateOutlet = component.stringTpl;
+      component.stringTemplateOutlet.set(component.stringTpl);
       fixture.detectChanges();
       expect(fixture.nativeElement.innerText).toBe('TargetText The data is');
-      component.stringTemplateOutlet = component.emptyTpl;
+      component.stringTemplateOutlet.set(component.emptyTpl);
       fixture.detectChanges();
       expect(fixture.nativeElement.innerText).toBe('TargetText Empty Template');
     });
@@ -86,7 +79,7 @@ describe('string template outlet', () => {
 
   describe('context shape change', () => {
     it('should work when context shape change', () => {
-      component.stringTemplateOutlet = component.dataTimeTpl;
+      component.stringTemplateOutlet.set(component.dataTimeTpl);
       const spyOnUpdateContext = spyOn(
         component.nzStringTemplateOutletDirective as NzSafeAny,
         'updateContext'
@@ -97,7 +90,7 @@ describe('string template outlet', () => {
       ).and.callThrough();
       fixture.detectChanges();
       expect(fixture.nativeElement.innerText).toBe('TargetText The data is , The time is');
-      component.context = { $implicit: 'data', time: 'time' };
+      component.context.set({ $implicit: 'data', time: 'time' });
       fixture.detectChanges();
       expect(spyOnUpdateContext).toHaveBeenCalledTimes(0);
       expect(spyOnRecreateView).toHaveBeenCalledTimes(2);
@@ -107,7 +100,7 @@ describe('string template outlet', () => {
 
   describe('context data change', () => {
     it('should work when context implicit change', () => {
-      component.stringTemplateOutlet = component.stringTpl;
+      component.stringTemplateOutlet.set(component.stringTpl);
       const spyOnUpdateContext = spyOn(
         component.nzStringTemplateOutletDirective as NzSafeAny,
         'updateContext'
@@ -118,7 +111,7 @@ describe('string template outlet', () => {
       ).and.callThrough();
       fixture.detectChanges();
       expect(fixture.nativeElement.innerText).toBe('TargetText The data is');
-      component.context = { $implicit: 'data' };
+      component.context.set({ $implicit: 'data' });
       fixture.detectChanges();
       expect(spyOnUpdateContext).toHaveBeenCalledTimes(1);
       expect(spyOnRecreateView).toHaveBeenCalledTimes(1);
@@ -131,20 +124,19 @@ describe('string template outlet', () => {
   imports: [NzOutletModule],
   template: `
     TargetText
-    <ng-container *nzStringTemplateOutlet="stringTemplateOutlet; context: context; let stringTemplateOutlet">
+    <ng-container *nzStringTemplateOutlet="stringTemplateOutlet(); context: context(); let stringTemplateOutlet">
       {{ stringTemplateOutlet }}
     </ng-container>
     <ng-template #stringTpl let-data>The data is {{ data }}</ng-template>
     <ng-template #emptyTpl>Empty Template</ng-template>
     <ng-template #dataTimeTpl let-data let-time="time">The data is {{ data }}, The time is {{ time }}</ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class StringTemplateOutletTestComponent {
   @ViewChild('stringTpl') stringTpl!: TemplateRef<NzSafeAny>;
   @ViewChild('emptyTpl') emptyTpl!: TemplateRef<NzSafeAny>;
   @ViewChild('dataTimeTpl') dataTimeTpl!: TemplateRef<NzSafeAny>;
   @ViewChild(NzStringTemplateOutletDirective) nzStringTemplateOutletDirective!: NzStringTemplateOutletDirective;
-  stringTemplateOutlet: TemplateRef<NzSafeAny> | string | null = null;
-  context: NzSafeAny = { $implicit: '' };
+  readonly stringTemplateOutlet = signal<TemplateRef<NzSafeAny> | string | null>(null);
+  readonly context = signal<NzSafeAny>({ $implicit: '' });
 }

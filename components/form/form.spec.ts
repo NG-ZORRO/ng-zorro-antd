@@ -4,19 +4,11 @@
  */
 
 import { NgTemplateOutlet } from '@angular/common';
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  DebugElement,
-  provideZoneChangeDetection,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
+import { Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzFormModule } from 'ng-zorro-antd/form/form.module';
 
 import { NzFormDirective, NzFormLayoutType } from './form.directive';
@@ -24,9 +16,8 @@ import { NzRequiredMark } from './types';
 
 describe('form', () => {
   beforeEach(() => {
-    // todo: use zoneless
     TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection(), provideNoopAnimations()]
+      providers: [provideNzNoAnimation()]
     });
   });
 
@@ -48,14 +39,14 @@ describe('form', () => {
     });
 
     it('should layout work', () => {
-      testComponent.layout = 'vertical';
+      testComponent.layout.set('vertical');
 
       fixture.detectChanges();
 
       expect(form.nativeElement.classList).toContain('ant-form-vertical');
       expect(form.nativeElement.classList).not.toContain('ant-form-horizontal');
 
-      testComponent.layout = 'inline';
+      testComponent.layout.set('inline');
 
       fixture.detectChanges();
 
@@ -77,9 +68,9 @@ describe('form', () => {
     });
 
     afterEach(() => {
-      testComponent.defaultNoColon = false;
-      testComponent.noColon = false;
-      testComponent.testPriority = false;
+      testComponent.defaultNoColon.set(false);
+      testComponent.noColon.set(false);
+      testComponent.testPriority.set(false);
     });
 
     it('should set default `NoColon` value', () => {
@@ -88,7 +79,7 @@ describe('form', () => {
       );
       labels.forEach(label => expect(label.classList).not.toContain('ant-form-item-no-colon'));
 
-      testComponent.defaultNoColon = true;
+      testComponent.defaultNoColon.set(true);
 
       fixture.detectChanges();
 
@@ -101,12 +92,12 @@ describe('form', () => {
       );
       labels.forEach(label => expect(label.classList).not.toContain('ant-form-item-no-colon'));
 
-      testComponent.defaultNoColon = true;
+      testComponent.defaultNoColon.set(true);
 
       fixture.detectChanges();
 
       labels.forEach(label => expect(label.classList).toContain('ant-form-item-no-colon'));
-      testComponent.testPriority = true;
+      testComponent.testPriority.set(true);
 
       fixture.detectChanges();
 
@@ -119,8 +110,8 @@ describe('form', () => {
         }
       });
 
-      testComponent.defaultNoColon = false;
-      testComponent.noColon = true;
+      testComponent.defaultNoColon.set(false);
+      testComponent.noColon.set(true);
 
       fixture.detectChanges();
 
@@ -156,7 +147,7 @@ describe('form', () => {
     });
 
     it('should handle boolean required mark (false)', () => {
-      testComponent.requiredMark = false;
+      testComponent.requiredMark.set(false);
       fixture.detectChanges();
 
       const requiredLabel = form.nativeElement.querySelector('.required-label label');
@@ -169,7 +160,7 @@ describe('form', () => {
     });
 
     it('should handle optional required mark', () => {
-      testComponent.requiredMark = 'optional';
+      testComponent.requiredMark.set('optional');
       fixture.detectChanges();
 
       const requiredLabel = form.nativeElement.querySelector('.required-label label');
@@ -181,7 +172,7 @@ describe('form', () => {
     });
 
     it('should handle custom template required mark', () => {
-      testComponent.useCustomTemplate = true;
+      testComponent.useCustomTemplate.set(true);
       fixture.detectChanges();
 
       const requiredLabel = form.nativeElement.querySelector('.required-label');
@@ -197,14 +188,14 @@ describe('form', () => {
       const formDirective = form.injector.get(NzFormDirective);
       expect(formDirective.nzRequiredMark()).toBe(true);
 
-      testComponent.requiredMark = 'optional';
+      testComponent.requiredMark.set('optional');
       fixture.detectChanges();
 
       expect(formDirective.nzRequiredMark()).toBe('optional');
     });
 
     it('should handle template context correctly', () => {
-      testComponent.useCustomTemplate = true;
+      testComponent.useCustomTemplate.set(true);
       fixture.detectChanges();
 
       const customTemplateElement = form.nativeElement.querySelector('.custom-required');
@@ -219,42 +210,40 @@ describe('form', () => {
 
 @Component({
   imports: [NzFormModule],
-  template: `<form nz-form [nzLayout]="layout"></form>`,
-  changeDetection: ChangeDetectionStrategy.Eager
+  template: `<form nz-form [nzLayout]="layout()"></form>`
 })
 export class NzTestFormDirectiveComponent {
-  layout: NzFormLayoutType = 'horizontal';
+  readonly layout = signal<NzFormLayoutType>('horizontal');
 }
 
 @Component({
   imports: [NzFormModule],
   template: `
-    <form nz-form [nzNoColon]="defaultNoColon">
+    <form nz-form [nzNoColon]="defaultNoColon()">
       <nz-form-item>
         <nz-form-label>Label</nz-form-label>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label>Label</nz-form-label>
       </nz-form-item>
-      @if (testPriority) {
+      @if (testPriority()) {
         <nz-form-item>
-          <nz-form-label [nzNoColon]="noColon">TEST_PRIORITY</nz-form-label>
+          <nz-form-label [nzNoColon]="noColon()">TEST_PRIORITY</nz-form-label>
         </nz-form-item>
       }
     </form>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
 export class NzTestFormLabelIntegrateComponent {
-  defaultNoColon = false;
-  testPriority = false;
-  noColon = false;
+  readonly defaultNoColon = signal(false);
+  readonly testPriority = signal(false);
+  readonly noColon = signal(false);
 }
 
 @Component({
   imports: [NzFormModule, NgTemplateOutlet],
   template: `
-    <form nz-form [nzRequiredMark]="useCustomTemplate ? customRequiredMarkTemplate : requiredMark">
+    <form nz-form [nzRequiredMark]="useCustomTemplate() ? customRequiredMarkTemplate : requiredMark()">
       <nz-form-item class="required-label">
         <nz-form-label nzRequired>
           <span class="label-content">Required Field</span>
@@ -275,19 +264,9 @@ export class NzTestFormLabelIntegrateComponent {
       }
       <ng-container *ngTemplateOutlet="label" />
     </ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
+  `
 })
-export class NzTestFormRequiredMarkComponent implements AfterViewInit {
-  requiredMark: NzRequiredMark = true;
-  useCustomTemplate = false;
-
-  @ViewChild('customRequiredMarkTemplate', { static: true })
-  customRequiredMarkTemplate!: TemplateRef<{ $implicit: TemplateRef<void>; required: boolean }>;
-
-  ngAfterViewInit(): void {
-    if (this.useCustomTemplate) {
-      this.requiredMark = this.customRequiredMarkTemplate;
-    }
-  }
+export class NzTestFormRequiredMarkComponent {
+  readonly requiredMark = signal<NzRequiredMark>(true);
+  readonly useCustomTemplate = signal(false);
 }
