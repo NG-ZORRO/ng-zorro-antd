@@ -19,7 +19,7 @@ import {
   model,
   signal
 } from '@angular/core';
-import { ComponentFixture, TestBed, inject as testingInject } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { vi } from 'vitest';
 
@@ -51,16 +51,8 @@ describe('modal with animation', () => {
       providers: [NzModalService]
     });
     modalService = TestBed.inject(NzModalService);
-  });
-
-  beforeEach(
-    testingInject([OverlayContainer], (oc: OverlayContainer) => {
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-    })
-  );
-
-  beforeEach(() => {
+    overlayContainer = TestBed.inject(OverlayContainer);
+    overlayContainerElement = overlayContainer.getContainerElement();
     fixture = TestBed.createComponent(TestWithServiceComponent);
   });
 
@@ -188,22 +180,11 @@ describe('modal', () => {
     TestBed.configureTestingModule({
       providers: [NzModalService, provideNzNoAnimation(), { provide: Location, useClass: SpyLocation }]
     });
-  });
-
-  beforeEach(
-    testingInject(
-      [NzModalService, Location, OverlayContainer, NzConfigService],
-      (m: NzModalService, l: Location, oc: OverlayContainer, cs: NzConfigService) => {
-        modalService = m;
-        configService = cs;
-        mockLocation = l as SpyLocation;
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-      }
-    )
-  );
-
-  beforeEach(() => {
+    modalService = TestBed.inject(NzModalService);
+    configService = TestBed.inject(NzConfigService);
+    mockLocation = TestBed.inject(Location) as SpyLocation;
+    overlayContainer = TestBed.inject(OverlayContainer);
+    overlayContainerElement = overlayContainer.getContainerElement();
     fixture = TestBed.createComponent(TestWithServiceComponent);
   });
 
@@ -294,7 +275,7 @@ describe('modal', () => {
 
     expect(() => {
       modalRefComponent.containerInstance.attachComponentPortal(new ComponentPortal(TestWithModalContentComponent));
-    }).toThrowError('Attempting to attach modal content after content is already attached');
+    }).toThrow('Attempting to attach modal content after content is already attached');
 
     const modalRefTemplate = modalService.create({
       nzContent: fixture.componentInstance.templateRef
@@ -304,7 +285,7 @@ describe('modal', () => {
       modalRefTemplate.containerInstance.attachTemplatePortal(
         new TemplatePortal(fixture.componentInstance.templateRef, null!)
       );
-    }).toThrowError('Attempting to attach modal content after content is already attached');
+    }).toThrow('Attempting to attach modal content after content is already attached');
   });
 
   it('should open modal with HTML string', async () => {
@@ -330,13 +311,8 @@ describe('modal', () => {
     });
 
     describe('afterClose', () => {
-      let spy: (value?: unknown) => void;
-
-      beforeEach(() => {
-        spy = vi.fn();
-      });
-
       it('should close and get the result', async () => {
+        const spy = vi.fn();
         modalRef.afterClose.subscribe(spy);
 
         modalRef.close('Hello Modal');
@@ -347,6 +323,7 @@ describe('modal', () => {
       });
 
       it('should destroy and get the result', async () => {
+        const spy = vi.fn();
         modalRef.afterClose.subscribe(spy);
 
         modalRef.destroy('Hello Modal');
@@ -1454,7 +1431,7 @@ describe('modal', () => {
 
       expect(() => {
         modalInstance.close();
-      }).not.toThrowError();
+      }).not.toThrow();
 
       modalInstance.open();
       await fixture.whenStable();
@@ -1475,7 +1452,7 @@ describe('modal', () => {
       expect(() => {
         modalInstance.triggerOk();
         modalInstance.triggerCancel();
-      }).not.toThrowError();
+      }).not.toThrow();
     });
 
     it('should close when the host view is destroyed', async () => {

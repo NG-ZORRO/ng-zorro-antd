@@ -5,7 +5,7 @@
 
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { vi } from 'vitest';
 
@@ -44,7 +44,8 @@ describe('notification', () => {
     await stabilize();
   }
 
-  async function stabilize(): Promise<void> {
+  async function stabilize(ms?: number): Promise<void> {
+    if (ms) vi.advanceTimersByTime(ms);
     await Promise.resolve();
     fixture.detectChanges();
   }
@@ -53,26 +54,15 @@ describe('notification', () => {
     TestBed.configureTestingModule({
       providers: [provideNzConfig({ notification: { nzMaxStack: 2 } }), provideNzIconsTesting(), NzNotificationService]
     });
-
+    notificationService = TestBed.inject(NzNotificationService);
+    overlayContainer = TestBed.inject(OverlayContainer);
+    configService = TestBed.inject(NzConfigService);
     fixture = TestBed.createComponent(NzTestNotificationComponent);
   });
 
   beforeEach(() => vi.useFakeTimers());
-
-  beforeEach(inject(
-    [NzNotificationService, OverlayContainer, NzConfigService],
-    (n: NzNotificationService, oc: OverlayContainer, c: NzConfigService) => {
-      notificationService = n;
-      overlayContainer = oc;
-      configService = c;
-    }
-  ));
-
-  afterEach(() => {
-    notificationService.remove();
-  });
-
   afterEach(() => vi.useRealTimers());
+  afterEach(() => notificationService.remove());
 
   it('should open a message box with success', () => {
     notificationService.success('test-title', 'SUCCESS');
@@ -178,8 +168,7 @@ describe('notification', () => {
     overlayContainerElement = overlayContainer.getContainerElement();
     const messageElement = getMessageElement();
     dispatchMouseEvent(messageElement, 'mouseenter');
-    vi.advanceTimersByTime(2500);
-    await stabilize();
+    await stabilize(2500);
     expect(overlayContainerElement.textContent).toContain('EXISTS');
 
     dispatchMouseEvent(messageElement, 'mouseleave');
@@ -192,8 +181,7 @@ describe('notification', () => {
     const filledMessage = notificationService.success('title', 'SUCCESS', { nzDuration: 0 });
     fixture.detectChanges();
 
-    vi.advanceTimersByTime(5000);
-    await stabilize();
+    await stabilize(5000);
     overlayContainerElement = overlayContainer.getContainerElement();
     expect(overlayContainerElement.textContent).toContain('SUCCESS');
 
@@ -224,8 +212,7 @@ describe('notification', () => {
 
   it('should destroy without animation', async () => {
     notificationService.error('', 'EXISTS', { nzDuration: 1000, nzAnimate: false });
-    vi.advanceTimersByTime(1000);
-    await stabilize();
+    await stabilize(1000);
     overlayContainerElement = overlayContainer.getContainerElement();
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
   });

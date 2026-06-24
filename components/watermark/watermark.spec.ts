@@ -123,7 +123,7 @@ describe('watermark', () => {
 describe('watermark (SSR)', () => {
   // TODO: Move this SSR assertion to a Node-based Vitest environment. The browser runner cannot create
   // the server platform required by `renderApplication`.
-  (it as NzSafeAny).skip('should render water mark on server', async () => {
+  it.skip('should render water mark on server', async () => {
     // `as any` because `ngDevMode` is not exposed on the global namespace typings.
     const ngDevMode = (globalThis as NzSafeAny)['ngDevMode'];
 

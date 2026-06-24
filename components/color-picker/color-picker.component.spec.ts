@@ -121,7 +121,7 @@ describe('color-picker', () => {
     const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
     dispatchMouseEvent(dom, 'click');
     waitingForTooltipToggling();
-    expect(!!overlayContainerElement.querySelector('.ant-popover-inner-content')).toBe(true);
+    expect(overlayContainerElement.querySelector('.ant-popover-inner-content')).not.toBeNull();
   });
 
   it('color-picker nzTrigger hover', () => {
@@ -130,13 +130,13 @@ describe('color-picker', () => {
     const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
     dispatchMouseEvent(dom, 'mouseenter');
     waitingForTooltipToggling();
-    expect(!!overlayContainerElement.querySelector('.ant-popover-inner-content')).toBe(true);
+    expect(overlayContainerElement.querySelector('.ant-popover-inner-content')).not.toBeNull();
   });
 
   it('color-picker nzOpen', () => {
     testComponent.nzOpen.set(true);
     fixture.detectChanges();
-    expect(!!overlayContainerElement.querySelector('.ant-popover-inner-content')).toBe(true);
+    expect(overlayContainerElement.querySelector('.ant-popover-inner-content')).not.toBeNull();
   });
 
   it('color-picker should default to bottomLeft placement with corner fallbacks (#9711)', () => {
@@ -145,7 +145,7 @@ describe('color-picker', () => {
     waitingForTooltipToggling();
 
     const popover = overlayContainerElement.querySelector('.ant-popover');
-    expect(popover).toBeTruthy();
+    expect(popover).not.toBeNull();
     expect(popover!.classList).toContain('ant-popover-placement-bottomLeft');
 
     const colorPicker = resultEl.componentInstance as NzColorPickerComponent & { popoverPlacements: string[] };
@@ -164,7 +164,7 @@ describe('color-picker', () => {
     waitingForTooltipToggling();
 
     const popover = overlayContainerElement.querySelector('.ant-popover') as HTMLElement;
-    expect(popover).toBeTruthy();
+    expect(popover).not.toBeNull();
 
     const rect = popover.getBoundingClientRect();
     expect(rect.right).toBeLessThanOrEqual(window.innerWidth);
@@ -179,7 +179,7 @@ describe('color-picker', () => {
     const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
     dispatchMouseEvent(dom, 'click');
     waitingForTooltipToggling();
-    expect(!!overlayContainerElement.querySelector('.ant-color-picker-clear')).toBe(true);
+    expect(overlayContainerElement.querySelector('.ant-color-picker-clear')).not.toBeNull();
   });
 
   it('color-picker nzTitle', () => {
@@ -195,7 +195,7 @@ describe('color-picker', () => {
   it('color-picker nzFlipFlop', () => {
     testComponent.isFlipFlop.set(true);
     fixture.detectChanges();
-    expect(!!resultEl.nativeElement.querySelector('button')).toBe(true);
+    expect(resultEl.nativeElement.querySelector('button')).not.toBeNull();
   });
 
   it('color-picker nzFormat', () => {
@@ -203,15 +203,15 @@ describe('color-picker', () => {
     const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
     dispatchMouseEvent(dom, 'click');
     waitingForTooltipToggling();
-    expect(!!overlayContainerElement.querySelector('.ant-color-picker-hex-input')).toBe(true);
+    expect(overlayContainerElement.querySelector('.ant-color-picker-hex-input')).not.toBeNull();
     testComponent.nzFormat.set('hsb');
     fixture.detectChanges();
     waitingForTooltipToggling();
-    expect(!!overlayContainerElement.querySelector('.ant-color-picker-hsb-input')).toBe(true);
+    expect(overlayContainerElement.querySelector('.ant-color-picker-hsb-input')).not.toBeNull();
     testComponent.nzFormat.set('rgb');
     fixture.detectChanges();
     waitingForTooltipToggling();
-    expect(!!overlayContainerElement.querySelector('.ant-color-picker-rgb-input')).toBe(true);
+    expect(overlayContainerElement.querySelector('.ant-color-picker-rgb-input')).not.toBeNull();
   });
 
   it('color-picker nzOnOpenChange', () => {
@@ -255,8 +255,7 @@ describe('color-picker', () => {
     const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
     dispatchMouseEvent(dom, 'click');
     waitingForTooltipToggling();
-    const alphaSlider = overlayContainerElement.querySelector('.ant-color-picker-slider-alpha') as Element;
-    expect(alphaSlider).toBeFalsy();
+    expect(overlayContainerElement.querySelector('.ant-color-picker-slider-alpha')).toBeNull();
   });
 
   it('nz-color-format disableAlpha', async () => {
@@ -271,7 +270,7 @@ describe('color-picker', () => {
       dispatchMouseEvent(item, 'click');
       waitingForTooltipToggling();
       const alphaInputElement = overlayContainerElement.querySelector('.ant-color-picker-alpha-input') as Element;
-      expect(alphaInputElement).toBeFalsy();
+      expect(alphaInputElement).toBeNull();
     });
   });
 });
@@ -415,7 +414,7 @@ describe('nz-color-picker with presets', () => {
     waitingForTooltipToggling();
 
     const presetWrapper = overlayContainerElement.querySelector('.ant-color-picker-presets-wrapper');
-    expect(presetWrapper).toBeTruthy();
+    expect(presetWrapper).not.toBeNull();
 
     const collapseItems = overlayContainerElement.querySelectorAll('.ant-collapse-item');
     expect(collapseItems.length).toBe(2);
@@ -430,7 +429,7 @@ describe('nz-color-picker with presets', () => {
     waitingForTooltipToggling();
 
     const presetWrapper = overlayContainerElement.querySelector('.ant-color-picker-presets-wrapper');
-    expect(presetWrapper).toBeFalsy();
+    expect(presetWrapper).toBeNull();
   });
 
   it('should handle preset color selection', async () => {
@@ -443,7 +442,7 @@ describe('nz-color-picker with presets', () => {
     const firstPresetColor = overlayContainerElement.querySelector(
       '.ant-color-picker-presets-items .ant-color-picker-color-block'
     );
-    expect(firstPresetColor).toBeTruthy();
+    expect(firstPresetColor).not.toBeNull();
 
     dispatchMouseEvent(firstPresetColor as Element, 'click');
     fixture.detectChanges();

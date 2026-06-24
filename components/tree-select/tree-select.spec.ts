@@ -466,7 +466,7 @@ describe('tree-select', () => {
       await fixture.whenStable();
       zone.simulateZoneExit();
       fixture.detectChanges();
-      expect(input.style.width === '').toBe(true);
+      expect(input.style.width).toBe('');
     });
 
     it('should set null value work', async () => {
@@ -489,8 +489,6 @@ describe('tree-select', () => {
       testComponent.value.set(['1001', '10001', '100012']);
       await fixture.whenStable();
       expect(testComponent.nzSelectTreeComponent.selectedNodes.length).toBe(3);
-      testComponent.checkStrictly.set(false);
-      fixture.detectChanges();
     });
 
     it('should remove checked when press backs', async () => {

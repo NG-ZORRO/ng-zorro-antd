@@ -5,7 +5,7 @@
 
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild, signal } from '@angular/core';
-import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { vi } from 'vitest';
 
@@ -29,21 +29,17 @@ describe('tooltip', () => {
     });
     fixture = TestBed.createComponent(NzTooltipTestComponent);
     component = fixture.componentInstance;
+    overlayContainer = TestBed.inject(OverlayContainer);
+    overlayContainerElement = overlayContainer.getContainerElement();
     fixture.detectChanges();
   });
 
-  beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
-    overlayContainer = oc;
-    overlayContainerElement = oc.getContainerElement();
-  }));
-
   beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
   });
-
-  afterEach(() => vi.useRealTimers());
 
   function getTextContentOf(selector: string): string | null {
     const el = overlayContainerElement.querySelector(selector);

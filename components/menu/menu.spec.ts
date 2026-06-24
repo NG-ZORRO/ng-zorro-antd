@@ -427,6 +427,8 @@ describe('menu', () => {
       it('should width change correct', async () => {
         fixture.detectChanges();
         const submenu = testComponent.subs.first;
+        // The overlay width follows the trigger's measured width. Mock the measurement
+        // explicitly so the assertion does not depend on browser layout in the test host.
         vi.spyOn(submenu.cdkOverlayOrigin!.nativeElement, 'getBoundingClientRect').mockImplementation(
           () => ({ width: testComponent.width() }) as DOMRect
         );

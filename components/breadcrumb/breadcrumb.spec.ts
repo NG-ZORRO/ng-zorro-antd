@@ -231,7 +231,7 @@ describe('breadcrumb', () => {
       expect(() => {
         fixture = TestBed.createComponent(NzBreadcrumbAutoGenerateErrorDemoComponent);
         fixture.detectChanges();
-      }).toThrowError();
+      }).toThrow();
     });
   });
 

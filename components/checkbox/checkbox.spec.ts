@@ -280,12 +280,11 @@ describe('checkbox component', () => {
   });
 
   it('focus should be called in afterViewInit if nzAutoFocus is set', () => {
-    const focusSpy = vi.spyOn(component, 'focus');
+    vi.spyOn(component, 'focus');
     component.nzAutoFocus = false;
     component.ngAfterViewInit();
     expect(component.focus).not.toHaveBeenCalled();
 
-    focusSpy.mockClear();
     component.nzAutoFocus = true;
     component.ngAfterViewInit();
     expect(component.focus).toHaveBeenCalled();

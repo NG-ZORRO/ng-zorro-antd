@@ -129,6 +129,8 @@ describe('NzScrollService', () => {
     it('should call the custom callback within the Angular zone', async () => {
       let callbackCalled = false;
       let resolveCallback!: () => void;
+      // Wait for the callback itself instead of a fixed frame delay. In CI, RAF can run
+      // after `nextAnimationFrame()`, which would make the `ngZone.run` assertion flaky.
       const callbackDone = new Promise<void>(resolve => {
         resolveCallback = resolve;
       });

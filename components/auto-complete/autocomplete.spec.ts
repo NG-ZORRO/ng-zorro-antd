@@ -8,12 +8,9 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import {
   ApplicationRef,
-  ChangeDetectorRef,
   Component,
   ElementRef,
-  inject,
   NgZone,
-  OnInit,
   QueryList,
   SimpleChanges,
   ViewChild,
@@ -917,31 +914,6 @@ class NzTestAutocompletePropertyComponent {
   readonly options = signal(['Burns Bay Road', 'Downing Street', 'Wall Street']);
   @ViewChild(NzAutocompleteComponent, { static: false }) panel!: NzAutocompleteComponent;
   @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
-}
-
-@Component({
-  imports: [NzAutocompleteModule],
-  template: `<input [nzAutocomplete]="null!" />`
-})
-class NzTestAutocompleteWithoutPanelComponent {
-  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
-}
-
-@Component({
-  imports: [NzAutocompleteModule],
-  template: `
-    <input [nzAutocomplete]="auto" />
-    <nz-autocomplete [nzDataSource]="options()" #auto />
-  `
-})
-class NzTestAutocompleteWithDelayComponent implements OnInit {
-  readonly cdr = inject(ChangeDetectorRef);
-  readonly options = signal<string[]>([]);
-  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
-
-  ngOnInit(): void {
-    setTimeout(() => this.options.set(['One']), 300);
-  }
 }
 
 @Component({

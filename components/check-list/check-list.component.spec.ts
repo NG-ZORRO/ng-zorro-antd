@@ -59,21 +59,21 @@ describe('check-list', () => {
 
   it('basic', () => {
     expect(resultEl.nativeElement.classList).toContain('ant-check-list');
-    expect(!!resultEl.nativeElement.querySelector('.ant-check-list-button .ant-check-list-icon')).toBe(true);
-    expect(!!resultEl.nativeElement.querySelector('.ant-check-list-button .ant-check-list-description')).toBe(true);
+    expect(resultEl.nativeElement.querySelector('.ant-check-list-button .ant-check-list-icon')).not.toBeNull();
+    expect(resultEl.nativeElement.querySelector('.ant-check-list-button .ant-check-list-description')).not.toBeNull();
   });
 
   it('nzVisible', () => {
     testComponent.visible.set(true);
     fixture.detectChanges();
     waitingForTooltipToggling();
-    expect(!!overlayContainerElement.querySelector('.ant-popover-inner-content')).toBe(true);
-    expect(!!overlayContainerElement.querySelector('.ant-popover-inner-content .ant-check-list-header')).toBe(true);
+    expect(overlayContainerElement.querySelector('.ant-popover-inner-content')).not.toBeNull();
+    expect(overlayContainerElement.querySelector('.ant-popover-inner-content .ant-check-list-header')).not.toBeNull();
     expect(
-      !!overlayContainerElement.querySelector(
+      overlayContainerElement.querySelector(
         '.ant-popover-inner-content .ant-check-list-header .ant-check-list-header-title'
       )
-    ).toBe(true);
+    ).not.toBeNull();
   });
 
   it('nzItems', () => {
@@ -86,17 +86,17 @@ describe('check-list', () => {
     ]);
     fixture.detectChanges();
     waitingForTooltipToggling();
-    expect(!!overlayContainerElement.querySelector('.ant-check-list-steps')).toBe(true);
+    expect(overlayContainerElement.querySelector('.ant-check-list-steps')).not.toBeNull();
   });
 
   it('nzProgress', () => {
     testComponent.visible.set(true);
     fixture.detectChanges();
     waitingForTooltipToggling();
-    expect(!!overlayContainerElement.querySelector('.ant-check-list-progressBar')).toBe(true);
+    expect(overlayContainerElement.querySelector('.ant-check-list-progressBar')).not.toBeNull();
     testComponent.progress.set(false);
     fixture.detectChanges();
-    expect(!overlayContainerElement.querySelector('.ant-check-list-progressBar')).toBe(true);
+    expect(overlayContainerElement.querySelector('.ant-check-list-progressBar')).toBeNull();
   });
 
   it('nzIndex', () => {
@@ -167,8 +167,8 @@ describe('check-list', () => {
       }
     ]);
     fixture.detectChanges();
-    expect(!overlayContainerElement.querySelector('.ant-check-list-progressBar')).toBe(true);
-    expect(!!overlayContainerElement.querySelector('.ant-check-list-header-finish')).toBe(true);
+    expect(overlayContainerElement.querySelector('.ant-check-list-progressBar')).toBeNull();
+    expect(overlayContainerElement.querySelector('.ant-check-list-header-finish')).not.toBeNull();
   });
 
   it('lose the list when you are finished', () => {
@@ -186,7 +186,7 @@ describe('check-list', () => {
     if (dom) {
       dispatchMouseEvent(dom, 'click');
       waitingForTooltipToggling();
-      expect(!overlayContainerElement.querySelector('.ant-popover-inner-content')).toBe(true);
+      expect(overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeNull();
     }
   });
 
@@ -198,7 +198,7 @@ describe('check-list', () => {
     if (dom) {
       dispatchMouseEvent(dom, 'click');
       waitingForTooltipToggling();
-      expect(!overlayContainerElement.querySelector('.ant-popover-inner-content')).toBe(true);
+      expect(overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeNull();
     }
   });
 
@@ -210,12 +210,12 @@ describe('check-list', () => {
     if (dom) {
       dispatchMouseEvent(dom, 'click');
       waitingForTooltipToggling();
-      expect(!!overlayContainerElement.querySelector('.ant-check-list-close-check')).toBe(true);
+      expect(overlayContainerElement.querySelector('.ant-check-list-close-check')).not.toBeNull();
       const btnDom = overlayContainerElement.querySelector('.ant-check-list-close-check-action .ant-btn');
       if (btnDom) {
         dispatchMouseEvent(btnDom, 'click');
         waitingForTooltipToggling();
-        expect(!overlayContainerElement.querySelector('.ant-popover-inner-content')).toBe(true);
+        expect(overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeNull();
       }
     }
   });
@@ -229,16 +229,16 @@ describe('check-list', () => {
     dispatchMouseEvent(footer!, 'click');
     waitingForTooltipToggling();
 
-    expect(!!overlayContainerElement.querySelector('.ant-check-list-close-check')).toBe(true);
+    expect(overlayContainerElement.querySelector('.ant-check-list-close-check')).not.toBeNull();
     expect(
-      !!overlayContainerElement.querySelector('.ant-check-list-close-check .ant-check-list-close-check-title')
-    ).toBe(true);
+      overlayContainerElement.querySelector('.ant-check-list-close-check .ant-check-list-close-check-title')
+    ).not.toBeNull();
     expect(
-      !!overlayContainerElement.querySelector('.ant-check-list-close-check .ant-check-list-close-check-action')
-    ).toBe(true);
+      overlayContainerElement.querySelector('.ant-check-list-close-check .ant-check-list-close-check-action')
+    ).not.toBeNull();
     expect(
-      !!overlayContainerElement.querySelector('.ant-check-list-close-check .ant-check-list-close-check-other')
-    ).toBe(true);
+      overlayContainerElement.querySelector('.ant-check-list-close-check .ant-check-list-close-check-other')
+    ).not.toBeNull();
 
     // close manually
     const labelEl = overlayContainerElement.querySelector('.ant-check-list-close-check-other .ant-checkbox-wrapper');

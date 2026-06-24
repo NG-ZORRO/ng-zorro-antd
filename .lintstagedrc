@@ -1,4 +1,4 @@
 {
   "*.less": "stylelint --fix",
-  "*.{md,html,ts}": "eslint --fix --no-warn-ignored"
+  "*.{md,html,ts}": "eslint --fix"
 }

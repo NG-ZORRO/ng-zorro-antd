@@ -33,7 +33,8 @@ describe('message', () => {
     await stabilize();
   }
 
-  async function stabilize(): Promise<void> {
+  async function stabilize(ms?: number): Promise<void> {
+    if (ms) vi.advanceTimersByTime(ms);
     await Promise.resolve();
     fixture.detectChanges();
   }
@@ -47,8 +48,6 @@ describe('message', () => {
     testComponent = fixture.componentInstance;
   });
 
-  beforeEach(() => vi.useFakeTimers());
-
   beforeEach(inject(
     [NzMessageService, OverlayContainer, NzConfigService],
     (m: NzMessageService, oc: OverlayContainer, c: NzConfigService) => {
@@ -58,11 +57,9 @@ describe('message', () => {
     }
   ));
 
-  afterEach(() => {
-    messageService.remove();
-  });
-
+  beforeEach(() => vi.useFakeTimers());
   afterEach(() => vi.useRealTimers());
+  afterEach(() => messageService.remove());
 
   it('should open a message box with success', () => {
     messageService.success('SUCCESS');
@@ -129,8 +126,7 @@ describe('message', () => {
 
     const messageElement = getMessageElement();
     dispatchMouseEvent(messageElement, 'mouseenter');
-    vi.advanceTimersByTime(2250);
-    await stabilize();
+    await stabilize(2250);
     expect(overlayContainerElement.textContent).toContain('EXISTS');
 
     dispatchMouseEvent(messageElement, 'mouseleave');
@@ -143,8 +139,7 @@ describe('message', () => {
     const filledMessage = messageService.success('SUCCESS', { nzDuration: 0 });
     overlayContainerElement = overlayContainer.getContainerElement();
 
-    vi.advanceTimersByTime(4500);
-    await stabilize();
+    await stabilize(4500);
     expect(overlayContainerElement.textContent).toContain('SUCCESS');
 
     messageService.remove(filledMessage.messageId);
@@ -174,8 +169,7 @@ describe('message', () => {
 
   it('should destroy without animation', async () => {
     messageService.error('EXISTS', { nzDuration: 1000, nzAnimate: false });
-    vi.advanceTimersByTime(1000);
-    await stabilize();
+    await stabilize(1000);
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
   });
 

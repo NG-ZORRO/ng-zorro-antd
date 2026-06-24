@@ -22,7 +22,7 @@ import { NzRateComponent } from './rate.component';
 import { NzRateModule } from './rate.module';
 
 describe('rate', () => {
-  describe('basic rate', () => {
+  describe('basic', () => {
     let fixture: ComponentFixture<NzTestRateBasicComponent>;
     let testComponent: NzTestRateBasicComponent;
     let rate: DebugElement;
@@ -41,19 +41,19 @@ describe('rate', () => {
 
     it('should set ngModel work', async () => {
       fixture.detectChanges();
-      const children = Array.prototype.slice.call(rate.nativeElement.firstElementChild.children);
-      expect(children.every((item: HTMLElement) => item.classList.contains('ant-rate-star-zero'))).toBe(true);
+      const children = Array.prototype.slice.call(rate.nativeElement.firstElementChild.children) as HTMLElement[];
+      expect(children.every(item => item.classList.contains('ant-rate-star-zero'))).toBe(true);
       testComponent.value.set(5);
       await stabilize(fixture);
-      expect(children.every((item: HTMLElement) => item.classList.contains('ant-rate-star-full'))).toBe(true);
+      expect(children.every(item => item.classList.contains('ant-rate-star-full'))).toBe(true);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     });
 
-    it('should click work', async () => {
+    it('should click work', () => {
       fixture.detectChanges();
       expect(testComponent.value()).toBe(0);
       rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
-      await stabilize(fixture);
+      fixture.detectChanges();
       expect(testComponent.value()).toBe(4);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
     });
@@ -71,49 +71,49 @@ describe('rate', () => {
       testComponent.value.set(0);
       await stabilize(fixture);
       rate.nativeElement.firstElementChild.children[3].firstElementChild.children[1].click();
-      await stabilize(fixture);
+      fixture.detectChanges();
       expect(testComponent.value()).toBe(3.5);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
     });
 
-    it('should allow clear work', async () => {
+    it('should allow clear work', () => {
       testComponent.allowClear.set(false);
       fixture.detectChanges();
       expect(testComponent.value()).toBe(0);
       rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
-      await stabilize(fixture);
+      fixture.detectChanges();
       expect(testComponent.value()).toBe(4);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
       rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
-      await stabilize(fixture);
+      fixture.detectChanges();
       expect(testComponent.value()).toBe(4);
       testComponent.allowClear.set(true);
       fixture.detectChanges();
       rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
-      await stabilize(fixture);
+      fixture.detectChanges();
       expect(testComponent.value()).toBe(0);
     });
 
-    it('should disable work', async () => {
+    it('should disable work', () => {
       testComponent.disabled.set(true);
       fixture.detectChanges();
       expect(testComponent.value()).toBe(0);
       rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
-      await stabilize(fixture);
+      fixture.detectChanges();
       expect(testComponent.value()).toBe(0);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     });
 
-    it('should count work', async () => {
+    it('should count work', () => {
       fixture.detectChanges();
       expect(rate.nativeElement.firstElementChild.children.length).toBe(5);
       expect(testComponent.value()).toBe(0);
       rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
-      await stabilize(fixture);
+      fixture.detectChanges();
       expect(testComponent.value()).toBe(4);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
       testComponent.count.set(10);
-      await stabilize(fixture);
+      fixture.detectChanges();
       expect(rate.nativeElement.firstElementChild.children.length).toBe(10);
       expect(testComponent.value()).toBe(4);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
@@ -129,18 +129,14 @@ describe('rate', () => {
       expect(rate.nativeElement.querySelector('ul').attributes.getNamedItem('autofocus')).toBe(null);
     });
 
-    it('should focus and blur function work', async () => {
+    it('should focus and blur function work', () => {
       fixture.detectChanges();
       const rateElement = rate.nativeElement.querySelector('ul') as HTMLElement;
       vi.spyOn(rateElement, 'focus');
       vi.spyOn(rateElement, 'blur');
       testComponent.nzRateComponent.focus();
-      await Promise.resolve();
-      fixture.detectChanges();
       expect(rateElement.focus).toHaveBeenCalledTimes(1);
       testComponent.nzRateComponent.blur();
-      await Promise.resolve();
-      fixture.detectChanges();
       expect(rateElement.blur).toHaveBeenCalledTimes(1);
     });
 
@@ -204,7 +200,7 @@ describe('rate', () => {
     });
   });
 
-  describe('rate form', () => {
+  describe('form', () => {
     let fixture: ComponentFixture<NzTestRateFormComponent>;
     let testComponent: NzTestRateFormComponent;
 
@@ -265,7 +261,7 @@ describe('rate', () => {
 
   testDirectionality(() => NzTestRateBasicComponent, By.css('.ant-rate'), 'ant-rate');
 
-  describe('rate character', () => {
+  describe('character', () => {
     let fixture: ComponentFixture<NzTestRateCharacterComponent>;
     let rate: DebugElement;
 
@@ -287,9 +283,7 @@ describe('rate', () => {
 });
 
 async function stabilize<T>(fixture: ComponentFixture<T>): Promise<void> {
-  fixture.detectChanges();
   await updateNonSignalsInput(fixture);
-  fixture.detectChanges();
 }
 
 @Component({
@@ -297,8 +291,8 @@ async function stabilize<T>(fixture: ComponentFixture<T>): Promise<void> {
   imports: [FormsModule, NzRateModule],
   template: `
     <nz-rate
-      [ngModel]="value()"
-      (ngModelChange)="value.set($event); modelChange($event)"
+      [(ngModel)]="value"
+      (ngModelChange)="modelChange($event)"
       (nzOnBlur)="onBlur($event)"
       (nzOnFocus)="onFocus($event)"
       (nzOnHoverChange)="onHoverChange($event)"

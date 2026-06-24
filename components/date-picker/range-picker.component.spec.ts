@@ -439,9 +439,8 @@ describe('range-picker', () => {
       vi.advanceTimersByTime(10000);
       fixture.detectChanges();
       const result = (nzOnChange.mock.calls[0] as Date[][])[0];
-      const resultDays = result.map(date => (date as Date).getDate());
-      expect(resultDays).toContain(+rightText);
-      expect(resultDays).not.toEqual([11, 11]);
+      expect((result[0] as Date).getDate()).toBe(11);
+      expect((result[1] as Date).getDate()).toBe(+rightText);
     });
 
     it('should support correct position for top arrow', () => {
