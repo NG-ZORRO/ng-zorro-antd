@@ -136,6 +136,12 @@
             ],
             "reporters": [
               "default",
+              [
+                "junit",
+                {
+                  "outputFile": "junit/TESTS-vitest.xml"
+                }
+              ],
               "components/vitest-angular-build-cleanup-reporter.mjs"
             ],
             "setupFiles": [
