@@ -12,6 +12,7 @@ import { of } from 'rxjs';
 import { cloneDeep } from 'lodash';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -21,7 +22,7 @@ import { NzTreeNodeIndentLineDirective } from './indent';
 import { NzTreeNodeComponent } from './node';
 import { NzTreeNodePaddingDirective } from './padding';
 import { NzTreeViewComponent } from './tree-view';
-import { waitForNextAnimationFrame } from './tree-view-based-children-accessor.spec';
+import { waitForNextAnimationFrame } from './tree-view-testing';
 import { NzTreeViewModule } from './tree-view.module';
 
 describe('tree-view based on nzLevelAccessor', () => {
@@ -258,24 +259,33 @@ describe('tree-view based on nzLevelAccessor', () => {
       const { tree } = testComponent;
       tree.expandAll();
       // wait for auditTime(0, animationFrameScheduler)
+      fixture.detectChanges();
       await waitForNextAnimationFrame();
       await fixture.whenStable();
+      fixture.detectChanges();
     });
 
     it('should nzTreeNodeIndentLine work', () => {
       const nodes = fixture.debugElement.queryAll(By.directive(NzTreeNodeIndentLineDirective));
       expect(nodes.length).toBe(8);
-      const [parent_1, parent_1_1, leaf_1_1_1, leaf_1_1_2, parent_1_2, leaf_1_2_1, parent_2, leaf_2_1] = nodes.map(
-        node => node.componentInstance as NzTreeNodeComponent<FlatNode>
+      nodes.forEach(node => {
+        (node.injector.get(NzTreeNodeIndentLineDirective) as NzSafeAny).buildIndents();
+      });
+      fixture.detectChanges();
+      const nodeMap = new Map(
+        nodes.map(node => {
+          const treeNode = node.componentInstance as NzTreeNodeComponent<FlatNode>;
+          return [treeNode.data.name, treeNode];
+        })
       );
-      expect(parent_1.indents()).toEqual([]);
-      expect(parent_1_1.indents()).toEqual([true]);
-      expect(leaf_1_1_1.indents()).toEqual([true, true]);
-      expect(leaf_1_1_2.indents()).toEqual([true, true]);
-      expect(parent_1_2.indents()).toEqual([true]);
-      expect(leaf_1_2_1.indents()).toEqual([true, false]);
-      expect(parent_2.indents()).toEqual([]);
-      expect(leaf_2_1.indents()).toEqual([false]);
+      expect(nodeMap.get('parent 1')!.indents()).toEqual([]);
+      expect(nodeMap.get('parent 1-1')!.indents()).toEqual([true]);
+      expect(nodeMap.get('leaf 1-1-1')!.indents()).toEqual([true, true]);
+      expect(nodeMap.get('leaf 1-1-2')!.indents()).toEqual([true, true]);
+      expect(nodeMap.get('parent 1-2')!.indents()).toEqual([true]);
+      expect(nodeMap.get('leaf 1-2-1')!.indents()).toEqual([true, false]);
+      expect(nodeMap.get('parent 2')!.indents()).toEqual([]);
+      expect(nodeMap.get('leaf 2-1')!.indents()).toEqual([false]);
     });
   });
 });

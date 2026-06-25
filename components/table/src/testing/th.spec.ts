@@ -7,6 +7,8 @@ import { ApplicationRef, Component, DebugElement, signal, ViewChild } from '@ang
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -108,8 +110,8 @@ describe('nz-th', () => {
       const appRef = TestBed.inject(ApplicationRef);
       const event = new MouseEvent('click');
 
-      spyOn(appRef, 'tick');
-      spyOn(event, 'stopPropagation').and.callThrough();
+      vi.spyOn(appRef, 'tick');
+      vi.spyOn(event, 'stopPropagation');
 
       fixture.debugElement.nativeElement
         .querySelector('nz-filter-trigger .ant-table-filter-trigger')
@@ -147,12 +149,12 @@ export class NzThTestNzTableComponent {
   readonly right = signal<string | boolean>(false);
   readonly width = signal<string | null>(null);
   readonly sort = signal<string | null>(null);
-  sortChange = jasmine.createSpy('sort change');
+  sortChange = vi.fn();
   filters = [
     { text: 'filter1', value: '1' },
     { text: 'filter2', value: '2' }
   ];
-  filterChange = jasmine.createSpy('filter change');
+  filterChange = vi.fn();
   filterMultiple = true;
 }
 

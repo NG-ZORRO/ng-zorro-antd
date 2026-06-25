@@ -8,6 +8,8 @@ import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { provideMockDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -44,8 +46,8 @@ describe('descriptions', () => {
     });
 
     it('should render spans correctly', () => {
-      const spyOnWarn = spyOn(console, 'warn');
-      spyOnWarn.calls.reset();
+      const spyOnWarn = vi.spyOn(console, 'warn');
+      spyOnWarn.mockClear();
       rows = componentElement.querySelectorAll('.ant-descriptions-row');
       expect(rows.length).toBe(1);
 
@@ -77,7 +79,7 @@ describe('descriptions', () => {
       const tds = componentElement.querySelectorAll('.ant-descriptions-item');
       expect(rows.length).toBe(1);
       expect((tds[1] as HTMLTableCellElement).colSpan).toBe(4);
-      spyOnWarn.calls.reset();
+      spyOnWarn.mockClear();
     });
 
     it('should responsive work', async () => {

@@ -28,7 +28,7 @@ describe('[schematic] ng-generate', () => {
     const appComponentHTML = tree.readContent(appComponentHTMLPath);
     const files = tree.files;
 
-    expect(files).toEqual(jasmine.arrayContaining([ appComponentHTMLPath ]));
+    expect(files).toEqual(expect.arrayContaining([ appComponentHTMLPath ]));
     expect(appComponentHTML).toContain('href="https://github.com/NG-ZORRO/ng-zorro-antd"');
   });
 });

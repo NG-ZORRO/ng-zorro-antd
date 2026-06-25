@@ -3,16 +3,14 @@
   "compilerOptions": {
     "outDir": "../out-tsc/spec",
     "types": [
-      "jasmine"
+      "vitest/globals"
     ]
   },
   "files": [
-    "test.ts"
+    "vitest-setup.ts"
   ],
   "include": [
     "**/*.spec.ts",
-    "**/*.d.ts",
-    "../node_modules/@types/jasmine/index.d.ts",
-    "../node_modules/karma-viewport/dist/index.d.ts"
+    "**/*.d.ts"
   ]
 }

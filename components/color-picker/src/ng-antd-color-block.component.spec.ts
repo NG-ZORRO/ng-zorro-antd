@@ -31,7 +31,7 @@ describe('NgxColorBlockComponent', () => {
   it('color-block click', () => {
     fixture.detectChanges();
     resultEl.nativeElement.click();
-    expect(component.isClick()).toBeTrue();
+    expect(component.isClick()).toBe(true);
   });
 });
 

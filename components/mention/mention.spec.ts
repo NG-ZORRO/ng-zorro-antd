@@ -12,6 +12,8 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
 import {
@@ -35,7 +37,6 @@ import { NzMentionComponent } from './mention.component';
 import { NzMentionModule } from './mention.module';
 
 describe('mention', () => {
-  let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   const scrolledSubject = new Subject();
 
@@ -55,13 +56,11 @@ describe('mention', () => {
   });
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
-    overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
   }));
 
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
-    overlayContainer.ngOnDestroy();
   }));
 
   describe('toggling', () => {
@@ -162,8 +161,8 @@ describe('mention', () => {
       const option = overlayContainerElement.querySelector('.ant-mentions-dropdown-menu-item') as HTMLElement;
       const event = new MouseEvent('mousedown');
 
-      spyOn(appRef, 'tick');
-      spyOn(event, 'preventDefault').and.callThrough();
+      vi.spyOn(appRef, 'tick');
+      vi.spyOn(event, 'preventDefault');
 
       option.dispatchEvent(event);
 
@@ -401,23 +400,23 @@ describe('mention', () => {
   describe('property', () => {
     let fixture: ComponentFixture<NzTestPropertyMentionComponent>;
     let textarea: HTMLTextAreaElement;
-    let spyNzOnSearch: jasmine.Spy;
+    let spyNzOnSearch: ReturnType<typeof vi.spyOn>;
 
     beforeEach(async () => {
       fixture = TestBed.createComponent(NzTestPropertyMentionComponent);
       fixture.detectChanges();
       await stabilize(fixture);
       textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
-      spyNzOnSearch = spyOn(fixture.componentInstance, 'onSearchChange');
+      spyNzOnSearch = vi.spyOn(fixture.componentInstance, 'onSearchChange');
     });
 
     afterEach(() => {
-      spyNzOnSearch?.calls.reset();
+      spyNzOnSearch?.mockClear();
     });
 
     describe('async suggestions', () => {
-      beforeEach(() => jasmine.clock().install());
-      afterEach(() => jasmine.clock().uninstall());
+      beforeEach(() => vi.useFakeTimers());
+      afterEach(() => vi.useRealTimers());
 
       it('should open the dropdown when the async load suggestions', async () => {
         fixture.detectChanges();
@@ -427,12 +426,13 @@ describe('mention', () => {
         fixture.componentInstance.fetchSuggestions();
         fixture.detectChanges();
 
-        await stabilize(fixture);
+        await Promise.resolve();
         fixture.detectChanges();
         expect(overlayContainerElement.querySelector('.ant-mentions-dropdown .anticon-loading')).toBeTruthy();
-        jasmine.clock().tick(500);
+        vi.advanceTimersByTime(500);
         fixture.detectChanges();
-        await stabilize(fixture);
+        await Promise.resolve();
+        fixture.detectChanges();
         expect(overlayContainerElement.querySelector('.ant-mentions-dropdown .anticon-loading')).toBeFalsy();
       });
     });
@@ -712,7 +712,7 @@ describe('mention', () => {
     });
 
     it('should emit nzOnClear when clear button is clicked', async () => {
-      const spy = spyOn(fixture.componentInstance, 'onClear');
+      const spy = vi.spyOn(fixture.componentInstance, 'onClear');
       fixture.componentInstance.allowClear.set(true);
       fixture.detectChanges();
       typeInElement('test value', textarea);

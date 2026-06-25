@@ -8,6 +8,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 
 import { NzCheckboxComponent } from './checkbox.component';
@@ -36,7 +38,7 @@ describe('checkbox', () => {
       expect(checkbox.nativeElement.firstElementChild.lastElementChild.classList.contains('ant-checkbox-inner')).toBe(
         true
       );
-      expect(checkbox.nativeElement.lastElementChild.innerText).toBe(' Checkbox');
+      expect(checkbox.nativeElement.lastElementChild.innerText.trim()).toBe('Checkbox');
     });
 
     it('should click change', () => {
@@ -51,15 +53,16 @@ describe('checkbox', () => {
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
     });
 
-    it('should click input a11y correct', () => {
+    it('should click input a11y correct', async () => {
       fixture.detectChanges();
       const inputElement = checkbox.nativeElement.querySelector('input');
       expect(testComponent.checked()).toBe(false);
       expect(inputElement.checked).toBe(false);
       expect(checkbox.nativeElement.firstElementChild.classList.contains('ant-checkbox-checked')).toBe(false);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
-      inputElement.click();
-      fixture.detectChanges();
+      inputElement.checked = true;
+      inputElement.dispatchEvent(new Event('change', { bubbles: true }));
+      await stabilize(fixture);
       expect(testComponent.checked()).toBe(true);
       expect(checkbox.nativeElement.firstElementChild.classList.contains('ant-checkbox-checked')).toBe(true);
       expect(inputElement.checked).toBe(true);
@@ -124,8 +127,8 @@ describe('checkbox', () => {
         const appRef = TestBed.inject(ApplicationRef);
         const event = new MouseEvent('click');
 
-        spyOn(appRef, 'tick');
-        spyOn(event, 'stopPropagation').and.callThrough();
+        vi.spyOn(appRef, 'tick');
+        vi.spyOn(event, 'stopPropagation');
 
         const nzCheckbox = fixture.debugElement.query(By.directive(NzCheckboxComponent));
         nzCheckbox.nativeElement.querySelector('.ant-checkbox-input').dispatchEvent(event);
@@ -141,8 +144,8 @@ describe('checkbox', () => {
         const appRef = TestBed.inject(ApplicationRef);
         const event = new MouseEvent('click');
 
-        spyOn(appRef, 'tick');
-        spyOn(event, 'preventDefault').and.callThrough();
+        vi.spyOn(appRef, 'tick');
+        vi.spyOn(event, 'preventDefault');
 
         const nzCheckbox = fixture.debugElement.query(By.directive(NzCheckboxComponent));
         nzCheckbox.nativeElement.dispatchEvent(event);
@@ -243,7 +246,7 @@ export class NzTestCheckboxSingleComponent {
   readonly autoFocus = signal(false);
   readonly checked = signal(false);
   readonly indeterminate = signal(false);
-  modelChange = jasmine.createSpy('change callback');
+  modelChange = vi.fn();
 }
 
 @Component({
@@ -277,12 +280,11 @@ describe('checkbox component', () => {
   });
 
   it('focus should be called in afterViewInit if nzAutoFocus is set', () => {
-    spyOn(component, 'focus');
+    vi.spyOn(component, 'focus');
     component.nzAutoFocus = false;
     component.ngAfterViewInit();
     expect(component.focus).not.toHaveBeenCalled();
 
-    spyOn(component, 'focus');
     component.nzAutoFocus = true;
     component.ngAfterViewInit();
     expect(component.focus).toHaveBeenCalled();

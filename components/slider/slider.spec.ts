@@ -10,6 +10,8 @@ import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import {
   dispatchFakeEvent,
@@ -111,7 +113,7 @@ describe('slider', () => {
     });
 
     it('should not change value without emitting a change event', () => {
-      const onChangeSpy = jasmine.createSpy('slider onChange');
+      const onChangeSpy = vi.fn();
 
       sliderInstance.nzOnAfterChange.subscribe(onChangeSpy);
       sliderInstance.value = 50;
@@ -158,7 +160,7 @@ describe('slider', () => {
     });
 
     it('should not emit change when disabled', () => {
-      const onChangeSpy = jasmine.createSpy('slider onChange');
+      const onChangeSpy = vi.fn();
       sliderInstance.nzOnAfterChange.subscribe(onChangeSpy);
 
       dispatchSlideEventSequence(sliderNativeElement, 0, 0.5);
@@ -189,13 +191,13 @@ describe('slider', () => {
       overlayContainerElement = oc.getContainerElement();
     }));
 
-    beforeEach(() => jasmine.clock().install());
-    afterEach(() => jasmine.clock().uninstall());
+    beforeEach(() => vi.useFakeTimers());
+    afterEach(() => vi.useRealTimers());
 
     it('should always display tooltips if set to `always`', async () => {
       testComponent.show.set('always');
       fixture.detectChanges();
-      jasmine.clock().tick(400);
+      vi.advanceTimersByTime(400);
       await fixture.whenStable();
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toContain('0');
@@ -215,7 +217,7 @@ describe('slider', () => {
       const handlerHost = sliderNativeElement.querySelector('nz-slider-handle')!;
 
       testComponent.show.set('never');
-      jasmine.clock().tick(400);
+      vi.advanceTimersByTime(400);
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).not.toContain('0');
 
@@ -247,13 +249,13 @@ describe('slider', () => {
       overlayContainerElement = oc.getContainerElement();
     }));
 
-    beforeEach(() => jasmine.clock().install());
-    afterEach(() => jasmine.clock().uninstall());
+    beforeEach(() => vi.useFakeTimers());
+    afterEach(() => vi.useRealTimers());
 
     it('should preview template tooltip', async () => {
       testComponent.show.set('always');
       fixture.detectChanges();
-      jasmine.clock().tick(400);
+      vi.advanceTimersByTime(400);
       await fixture.whenStable();
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toContain('Slider value: 0');
@@ -282,8 +284,9 @@ describe('slider', () => {
       sliderNativeElement = sliderInstance.slider.nativeElement;
     });
 
-    it('should set the default value from the attribute', () => {
-      fixture.whenStable().then(() => expect(sliderInstance.value).toBe(26));
+    it('should set the default value from the attribute', async () => {
+      await fixture.whenStable();
+      expect(sliderInstance.value).toBe(26);
     });
 
     it('should set the correct value on click', () => {
@@ -375,7 +378,7 @@ describe('slider', () => {
     });
 
     // TODO: Pass this testing by increase precision
-    xit('should round the value inside the label based on the provided step', () => {
+    it.skip('should round the value inside the label based on the provided step', () => {
       const testStep = (step: number, expected: string): void => {
         fixture.componentInstance.step.set(step);
         fixture.detectChanges();
@@ -490,19 +493,17 @@ describe('slider', () => {
       trackFillElement = sliderNativeElement.querySelector('.ant-slider-track') as HTMLElement;
     });
 
-    it('should set the value equal to the max value', () => {
-      fixture.whenStable().then(() => {
-        expect(sliderInstance.value).toBe(6);
-        expect(sliderInstance.nzMin).toBe(4);
-        expect(sliderInstance.nzMax).toBe(6);
-      });
+    it('should set the value equal to the max value', async () => {
+      await fixture.whenStable();
+      expect(sliderInstance.value).toBe(6);
+      expect(sliderInstance.nzMin).toBe(4);
+      expect(sliderInstance.nzMax).toBe(6);
     });
 
-    it('should set the fill to the max value', () => {
-      fixture.whenStable().then(() => {
-        fixture.detectChanges();
-        expect(trackFillElement.style.width).toBe('100%');
-      });
+    it('should set the fill to the max value', async () => {
+      await fixture.whenStable();
+      fixture.detectChanges();
+      expect(trackFillElement.style.width).toBe('100%');
     });
   });
 
@@ -518,19 +519,17 @@ describe('slider', () => {
       trackFillElement = sliderNativeElement.querySelector('.ant-slider-track') as HTMLElement;
     });
 
-    it('should set the value equal to the middle value', () => {
-      fixture.whenStable().then(() => {
-        expect(sliderInstance.value).toBe(0);
-        expect(sliderInstance.nzMin).toBe(-5);
-        expect(sliderInstance.nzMax).toBe(5);
-      });
+    it('should set the value equal to the middle value', async () => {
+      await fixture.whenStable();
+      expect(sliderInstance.value).toBe(0);
+      expect(sliderInstance.nzMin).toBe(-5);
+      expect(sliderInstance.nzMax).toBe(5);
     });
 
-    it('should set the fill to the middle value', () => {
-      fixture.whenStable().then(() => {
-        fixture.detectChanges();
-        expect(trackFillElement.style.width).toBe('50%');
-      });
+    it('should set the fill to the middle value', async () => {
+      await fixture.whenStable();
+      fixture.detectChanges();
+      expect(trackFillElement.style.width).toBe('50%');
     });
   });
 
@@ -691,7 +690,7 @@ describe('slider', () => {
 
       dispatchClickEventSequence(sliderNativeElement, 0.1);
 
-      // Potentially a bug of jasmine or karma. Event handler makes calling stack destroyed.
+      // Dispatching the second click in the same stack breaks the event handler state.
       // dispatchClickEventSequence(sliderNativeElement, 0.8);
       fixture.detectChanges();
 
@@ -739,7 +738,7 @@ describe('slider', () => {
     });
 
     it('should show/hide tooltip when enter/leave a handler', () => {
-      jasmine.clock().install();
+      vi.useFakeTimers();
       const handlerHost = sliderNativeElement.querySelector('nz-slider-handle')!;
 
       dispatchClickEventSequence(sliderNativeElement, 0.13);
@@ -750,9 +749,9 @@ describe('slider', () => {
       expect(overlayContainerElement.textContent).toContain('VALUE-13');
 
       dispatchMouseEvent(handlerHost, 'mouseleave');
-      jasmine.clock().tick(400);
+      vi.advanceTimersByTime(400);
       expect(overlayContainerElement.textContent).not.toContain('VALUE-13');
-      jasmine.clock().uninstall();
+      vi.useRealTimers();
     });
 
     // fix #5699, Slider should work with decimals as well
@@ -927,7 +926,7 @@ describe('slider', () => {
     });
 
     it('should trigger nzOnAfterChange', () => {
-      const onChangeSpy = jasmine.createSpy('slider onChange');
+      const onChangeSpy = vi.fn();
 
       sliderInstance.nzOnAfterChange.subscribe(onChangeSpy);
       dispatchKeyboardEvent(sliderNativeElement, 'keydown', RIGHT_ARROW);
@@ -1133,7 +1132,8 @@ class SliderWithFormControlComponent {
 
 @Component({
   imports: [FormsModule, NzSliderModule],
-  template: `<nz-slider [nzTooltipVisible]="show()" [ngModel]="value" />`
+  template: `<nz-slider [nzTooltipVisible]="show()" [ngModel]="value" />`,
+  styles: [styles]
 })
 class SliderShowTooltipComponent {
   readonly show = signal<NzSliderShowTooltip>('default');
@@ -1157,7 +1157,8 @@ class NzTestSliderKeyboardComponent {
     <ng-template #titleTemplate let-value>
       <span>Slider value: {{ value }}</span>
     </ng-template>
-  `
+  `,
+  styles: [styles]
 })
 class SliderShowTemplateTooltipComponent {
   readonly show = signal<NzSliderShowTooltip>('default');

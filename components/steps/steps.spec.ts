@@ -17,6 +17,8 @@ import {
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { BooleanInput, NzDirectionVHType, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -392,7 +394,7 @@ describe('steps', () => {
 
     it('should output work', async () => {
       await stabilize(fixture);
-      spyOn(testComponent, 'onIndexChange');
+      vi.spyOn(testComponent, 'onIndexChange');
       innerSteps[1].nativeElement.querySelector('.ant-steps-item-container').click();
       fixture.detectChanges();
       expect(testComponent.onIndexChange).toHaveBeenCalledWith(1);
@@ -403,7 +405,7 @@ describe('steps', () => {
       await stabilize(fixture);
       const step = innerSteps[0].nativeElement.querySelector('.ant-steps-item-container') as HTMLElement;
       expect(step.getAttribute('role')).not.toBe('button');
-      spyOn(testComponent, 'onIndexChange');
+      vi.spyOn(testComponent, 'onIndexChange');
       step.click();
       fixture.detectChanges();
       expect(testComponent.onIndexChange).not.toHaveBeenCalled();
@@ -413,7 +415,7 @@ describe('steps', () => {
       testComponent.disable = false;
       testComponent.index.set(0);
       await stabilize(fixture);
-      spyOn(testComponent, 'onIndexChange');
+      vi.spyOn(testComponent, 'onIndexChange');
       innerSteps[0].nativeElement.click();
       fixture.detectChanges();
       expect(testComponent.onIndexChange).not.toHaveBeenCalled();
@@ -423,7 +425,7 @@ describe('steps', () => {
       await stabilize(fixture);
       innerSteps[1].componentInstance.disable();
       fixture.detectChanges();
-      spyOn(testComponent, 'onIndexChange');
+      vi.spyOn(testComponent, 'onIndexChange');
       innerSteps[1].nativeElement.querySelector('.ant-steps-item-container').click();
       fixture.detectChanges();
       expect(testComponent.onIndexChange).not.toHaveBeenCalled();

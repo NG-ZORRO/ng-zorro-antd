@@ -9,6 +9,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormArray, FormControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzInputOtpComponent } from 'ng-zorro-antd/input/input-otp.component';
 
@@ -55,7 +57,7 @@ describe('NzInputOtpComponent', () => {
   });
 
   it('should focus on the next input after input is entered', () => {
-    spyOn(inputElements[1].nativeElement, 'focus');
+    vi.spyOn(inputElements[1].nativeElement, 'focus');
     inputElements[0].nativeElement.value = '2';
     inputElements[0].triggerEventHandler('input', { target: inputElements[0].nativeElement });
 
@@ -68,7 +70,7 @@ describe('NzInputOtpComponent', () => {
     inputElements[1].triggerEventHandler('input', { target: inputElements[1].nativeElement });
     fixture.detectChanges();
 
-    spyOn(inputElements[0].nativeElement, 'select');
+    vi.spyOn(inputElements[0].nativeElement, 'select');
     const event = new KeyboardEvent('keydown', { keyCode: BACKSPACE });
     inputElements[1].triggerEventHandler('keydown', event);
 
@@ -82,7 +84,7 @@ describe('NzInputOtpComponent', () => {
       clipboardData: new DataTransfer()
     });
     event.clipboardData?.setData('text', '123456');
-    spyOn(event, 'preventDefault');
+    vi.spyOn(event, 'preventDefault');
 
     inputElements[0].triggerEventHandler('paste', event);
     fixture.detectChanges();
@@ -102,7 +104,7 @@ describe('NzInputOtpComponent', () => {
       clipboardData: new DataTransfer()
     });
     event.clipboardData?.setData('text', '789');
-    spyOn(event, 'preventDefault');
+    vi.spyOn(event, 'preventDefault');
 
     inputElements[0].triggerEventHandler('paste', event);
     fixture.detectChanges();
@@ -146,8 +148,8 @@ describe('NzInputOtpComponent', () => {
 
   it('should set disabled state correctly when disabled input changes', () => {
     (component as NzSafeAny)['otpArray'] = new FormArray([]);
-    const spy = spyOn(component['otpArray'], 'disable').and.callThrough();
-    const enableSpy = spyOn(component['otpArray'], 'enable').and.callThrough();
+    const spy = vi.spyOn(component['otpArray'], 'disable');
+    const enableSpy = vi.spyOn(component['otpArray'], 'enable');
 
     component.disabled = true;
     component.ngOnChanges({
@@ -164,7 +166,7 @@ describe('NzInputOtpComponent', () => {
   });
 
   it('should reset form array if the provided value is empty', () => {
-    const spy = spyOn(component['otpArray'], 'reset');
+    const spy = vi.spyOn(component['otpArray'], 'reset');
 
     component.writeValue('');
 
@@ -184,7 +186,7 @@ describe('NzInputOtpComponent', () => {
   });
 
   it('should register onChange callback', () => {
-    const callback = jasmine.createSpy('onChangeCallback');
+    const callback = vi.fn();
     component.registerOnChange(callback);
 
     component['onChangeCallback']?.('test value');
@@ -193,7 +195,7 @@ describe('NzInputOtpComponent', () => {
   });
 
   it('should register onTouched callback', () => {
-    const callback = jasmine.createSpy('onTouched');
+    const callback = vi.fn();
     component.registerOnTouched(callback);
 
     component.onTouched();
@@ -211,8 +213,8 @@ describe('NzInputOtpComponent', () => {
       new FormControl<string>('', { nonNullable: true })
     ]);
 
-    const spy = spyOn(component['otpArray'], 'enable').and.callThrough();
-    const disableSpy = spyOn(component['otpArray'], 'disable').and.callThrough();
+    const spy = vi.spyOn(component['otpArray'], 'enable');
+    const disableSpy = vi.spyOn(component['otpArray'], 'disable');
 
     component.setDisabledState(false);
 
@@ -222,7 +224,7 @@ describe('NzInputOtpComponent', () => {
 
   it('should call onChangeCallback with the joined internalValue', () => {
     component['internalValue'] = ['1', '2', '3', '4', '5', '6'];
-    const callback = jasmine.createSpy('onChangeCallback');
+    const callback = vi.fn();
     component['onChangeCallback'] = callback;
 
     component['emitValue']();

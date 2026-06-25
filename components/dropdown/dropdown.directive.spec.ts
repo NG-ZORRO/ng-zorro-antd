@@ -9,6 +9,8 @@ import { Component, signal } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
@@ -37,11 +39,11 @@ describe('dropdown', () => {
     overlayContainer.ngOnDestroy();
   }));
 
-  beforeEach(() => jasmine.clock().install());
-  afterEach(() => jasmine.clock().uninstall());
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
 
   // TODO: why this works well with ChromeHeadless but fails with ChromeHeadlessCI?
-  xdescribe('placement and arrow', () => {
+  describe.skip('placement and arrow', () => {
     let fixture: ComponentFixture<NzTestDropdownArrowComponent>;
 
     beforeEach(() => {
@@ -64,7 +66,7 @@ describe('dropdown', () => {
       // Change placement while open should update placement class
       fixture.componentInstance.placement.set('topRight');
       await stabilize(fixture);
-      expect(dropdown.classList.contains('ant-dropdown-placement-topRight')).toBeTrue();
+      expect(dropdown.classList.contains('ant-dropdown-placement-topRight')).toBe(true);
     });
 
     it('should map center placements to top/bottom classes', async () => {
@@ -75,12 +77,12 @@ describe('dropdown', () => {
       await stabilize(fixture, 1000);
       const dropdown = overlayContainerElement.querySelector('.ant-dropdown') as HTMLElement;
       expect(dropdown).not.toBeNull();
-      expect(dropdown.classList.contains('ant-dropdown-show-arrow')).toBeTrue();
+      expect(dropdown.classList.contains('ant-dropdown-show-arrow')).toBe(true);
       const isBottomFamily =
         dropdown.classList.contains('ant-dropdown-placement-bottom') ||
         dropdown.classList.contains('ant-dropdown-placement-bottomLeft') ||
         dropdown.classList.contains('ant-dropdown-placement-bottomRight');
-      expect(isBottomFamily).toBeTrue();
+      expect(isBottomFamily).toBe(true);
 
       // Switch to topCenter
       fixture.componentInstance.placement.set('topCenter');
@@ -89,7 +91,7 @@ describe('dropdown', () => {
         dropdown.classList.contains('ant-dropdown-placement-top') ||
         dropdown.classList.contains('ant-dropdown-placement-topLeft') ||
         dropdown.classList.contains('ant-dropdown-placement-topRight');
-      expect(isTopFamily).toBeTrue();
+      expect(isTopFamily).toBe(true);
     });
   });
 
@@ -210,7 +212,7 @@ describe('dropdown', () => {
 
 async function stabilize<T>(fixture: ComponentFixture<T>, ms?: number): Promise<void> {
   fixture.detectChanges();
-  jasmine.clock().tick(ms ?? 0);
+  vi.advanceTimersByTime(ms ?? 0);
   await fixture.whenStable();
   fixture.detectChanges();
 }
@@ -271,7 +273,7 @@ export class NzTestDropdownComponent {
 })
 export class NzTestDropdownVisibleComponent {
   readonly visible = signal(false);
-  triggerVisible = jasmine.createSpy('visibleChange');
+  triggerVisible = vi.fn();
 }
 
 @Component({

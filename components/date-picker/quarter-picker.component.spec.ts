@@ -11,9 +11,10 @@ import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
 import isBefore from 'date-fns/isBefore';
+import { vi } from 'vitest';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
-import { dispatchMouseEvent, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
+import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/util';
@@ -34,7 +35,7 @@ describe('quater-picker', () => {
     });
   });
 
-  beforeEach(() => jasmine.clock().install());
+  beforeEach(() => vi.useFakeTimers());
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainer = oc;
@@ -53,7 +54,7 @@ describe('quater-picker', () => {
     overlayContainer.ngOnDestroy();
   });
 
-  afterEach(() => jasmine.clock().uninstall());
+  afterEach(() => vi.useRealTimers());
 
   it('should show quarter panel', async () => {
     fixtureInstance.nzFormat.set(undefined); // cover branch
@@ -87,7 +88,6 @@ describe('quater-picker', () => {
 
   it('should nz-quarter-picker work', async () => {
     fixtureInstance.useSuite.set(2);
-    await fixture.whenRenderingDone();
     await stabilize(500);
     await openPickerByClickTrigger();
     expect(getPickerContainer()).not.toBeNull();
@@ -100,7 +100,6 @@ describe('quater-picker', () => {
   it('should nz-range-picker "nzValue" work', async () => {
     fixtureInstance.useSuite.set(4);
     fixtureInstance.nzValue.set([new Date('2024-04-30'), new Date('2025-12-30')]);
-    await fixture.whenRenderingDone();
     await stabilize(500);
     const panels = overlayContainerElement.querySelectorAll('.ant-picker-quarter-panel');
     expect(panels).not.toBeNull();
@@ -197,12 +196,10 @@ describe('quater-picker', () => {
     await stabilize(500);
   }
 
-  async function stabilize(ms?: number): Promise<void> {
+  async function stabilize(ms = 500): Promise<void> {
     fixture.detectChanges();
-    if (typeof ms === 'number') {
-      jasmine.clock().tick(ms);
-    }
-    await updateNonSignalsInput(fixture);
+    vi.advanceTimersByTime(ms);
+    await Promise.resolve();
     fixture.detectChanges();
   }
 

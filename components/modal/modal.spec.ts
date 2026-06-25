@@ -19,7 +19,9 @@ import {
   model,
   signal
 } from '@angular/core';
-import { ComponentFixture, TestBed, inject as testingInject } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { vi } from 'vitest';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
@@ -49,16 +51,8 @@ describe('modal with animation', () => {
       providers: [NzModalService]
     });
     modalService = TestBed.inject(NzModalService);
-  });
-
-  beforeEach(
-    testingInject([OverlayContainer], (oc: OverlayContainer) => {
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-    })
-  );
-
-  beforeEach(() => {
+    overlayContainer = TestBed.inject(OverlayContainer);
+    overlayContainerElement = overlayContainer.getContainerElement();
     fixture = TestBed.createComponent(TestWithServiceComponent);
   });
 
@@ -114,7 +108,7 @@ describe('modal with animation', () => {
       nzContent: TestWithModalContentComponent
     });
 
-    const spy = jasmine.createSpy('afterOpen spy');
+    const spy = vi.fn();
     modalRef.afterOpen.subscribe(spy);
     expect(spy).not.toHaveBeenCalled();
 
@@ -143,8 +137,8 @@ describe('modal with animation', () => {
 
   describe('NzModalRef', () => {
     it('should omit any action when closing', async () => {
-      const onOk = jasmine.createSpy('onOk', () => {});
-      const onCancel = jasmine.createSpy('onCancel', () => {});
+      const onOk = vi.fn();
+      const onCancel = vi.fn();
       const modalRef = modalService.create({
         nzContent: TestWithModalContentComponent,
         nzOnOk: onOk,
@@ -186,22 +180,11 @@ describe('modal', () => {
     TestBed.configureTestingModule({
       providers: [NzModalService, provideNzNoAnimation(), { provide: Location, useClass: SpyLocation }]
     });
-  });
-
-  beforeEach(
-    testingInject(
-      [NzModalService, Location, OverlayContainer, NzConfigService],
-      (m: NzModalService, l: Location, oc: OverlayContainer, cs: NzConfigService) => {
-        modalService = m;
-        configService = cs;
-        mockLocation = l as SpyLocation;
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-      }
-    )
-  );
-
-  beforeEach(() => {
+    modalService = TestBed.inject(NzModalService);
+    configService = TestBed.inject(NzConfigService);
+    mockLocation = TestBed.inject(Location) as SpyLocation;
+    overlayContainer = TestBed.inject(OverlayContainer);
+    overlayContainerElement = overlayContainer.getContainerElement();
     fixture = TestBed.createComponent(TestWithServiceComponent);
   });
 
@@ -292,7 +275,7 @@ describe('modal', () => {
 
     expect(() => {
       modalRefComponent.containerInstance.attachComponentPortal(new ComponentPortal(TestWithModalContentComponent));
-    }).toThrowError('Attempting to attach modal content after content is already attached');
+    }).toThrow('Attempting to attach modal content after content is already attached');
 
     const modalRefTemplate = modalService.create({
       nzContent: fixture.componentInstance.templateRef
@@ -302,7 +285,7 @@ describe('modal', () => {
       modalRefTemplate.containerInstance.attachTemplatePortal(
         new TemplatePortal(fixture.componentInstance.templateRef, null!)
       );
-    }).toThrowError('Attempting to attach modal content after content is already attached');
+    }).toThrow('Attempting to attach modal content after content is already attached');
   });
 
   it('should open modal with HTML string', async () => {
@@ -328,13 +311,8 @@ describe('modal', () => {
     });
 
     describe('afterClose', () => {
-      let spy: jasmine.Spy;
-
-      beforeEach(() => {
-        spy = jasmine.createSpy('afterClose callback');
-      });
-
       it('should close and get the result', async () => {
+        const spy = vi.fn();
         modalRef.afterClose.subscribe(spy);
 
         modalRef.close('Hello Modal');
@@ -345,6 +323,7 @@ describe('modal', () => {
       });
 
       it('should destroy and get the result', async () => {
+        const spy = vi.fn();
         modalRef.afterClose.subscribe(spy);
 
         modalRef.destroy('Hello Modal');
@@ -356,11 +335,11 @@ describe('modal', () => {
     });
 
     describe('animation', () => {
-      xit('should emit when modal closing animation is complete', async () => {
+      it.skip('should emit when modal closing animation is complete', async () => {
         // todo: test with animation
       });
 
-      xit('should dispose the modal if view container is destroyed while animating', async () => {
+      it.skip('should dispose the modal if view container is destroyed while animating', async () => {
         // todo: test with animation
       });
     });
@@ -537,7 +516,7 @@ describe('modal', () => {
     const ref2 = modalService.create({
       nzContent: TestWithModalContentComponent
     });
-    const spy = jasmine.createSpy('afterAllClose spy');
+    const spy = vi.fn();
 
     modalService.afterAllClose.subscribe(spy);
 
@@ -551,7 +530,7 @@ describe('modal', () => {
   });
 
   it('should emit the afterAllClose stream on subscribe if there are no open modals', () => {
-    const spy = jasmine.createSpy('afterAllClose spy');
+    const spy = vi.fn();
     modalService.afterAllClose.subscribe(spy);
     expect(spy).toHaveBeenCalled();
   });
@@ -737,7 +716,7 @@ describe('modal', () => {
   });
 
   it('should complete close streams when the injectable is destroyed', async () => {
-    const afterAllCloseSpy = jasmine.createSpy('after all closed spy');
+    const afterAllCloseSpy = vi.fn();
     modalService.afterAllClose.subscribe({
       complete: afterAllCloseSpy
     });
@@ -762,7 +741,7 @@ describe('modal', () => {
 
   it('should have the componentInstance available in the afterClose callback', async () => {
     const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
-    const spy = jasmine.createSpy('afterClose spy');
+    const spy = vi.fn();
     modalRef.afterClose.subscribe(() => {
       spy();
       expect(modalRef.componentInstance).toBeTruthy();
@@ -944,13 +923,19 @@ describe('modal', () => {
       });
       await fixture.whenStable();
 
-      expectAsync(modalRef.triggerOk()).toBeRejectedWith('Promise.reject');
+      const okPromise = modalRef.triggerOk().then(
+        () => {
+          throw new Error('Expected triggerOk to reject.');
+        },
+        error => error
+      );
       await fixture.whenStable();
 
       expect(modalRef.getConfig().nzOkLoading).toBe(true);
       expect(overlayContainerElement.querySelector('nz-modal-container')).not.toBeNull();
 
       await sleep(200);
+      expect(await okPromise).toBe('Promise.reject');
       await fixture.whenStable();
 
       expect(modalRef.getConfig().nzOkLoading).toBe(false);
@@ -1058,7 +1043,7 @@ describe('modal', () => {
     });
 
     it('should the ok button work', async () => {
-      const spy = jasmine.createSpy('afterClose spy');
+      const spy = vi.fn();
       modalRef.afterClose.subscribe(spy);
 
       const okButton = getOkButton();
@@ -1069,7 +1054,7 @@ describe('modal', () => {
     });
 
     it('should the cancel button work', async () => {
-      const spy = jasmine.createSpy('afterClose spy');
+      const spy = vi.fn();
       modalRef.afterClose.subscribe(spy);
 
       const cancelButton = getCancelButton();
@@ -1181,7 +1166,7 @@ describe('modal', () => {
     // should call the callback
     buttons[3].click();
     await fixture.whenStable();
-    expect(errorThrown).toBeTrue();
+    expect(errorThrown).toBe(true);
   });
 
   describe('confirm', () => {
@@ -1306,8 +1291,8 @@ describe('modal', () => {
     });
 
     it('should nzVisible work', async () => {
-      const openSpy = jasmine.createSpy('open spy');
-      const closeSpy = jasmine.createSpy('close spy');
+      const openSpy = vi.fn();
+      const closeSpy = vi.fn();
 
       componentInstance.nzModalComponent.afterClose.subscribe(closeSpy);
       componentInstance.nzModalComponent.afterOpen.subscribe(openSpy);
@@ -1329,7 +1314,7 @@ describe('modal', () => {
     });
 
     it('should set nzVisible to false when implicitly closed', async () => {
-      const closeSpy = jasmine.createSpy('close spy');
+      const closeSpy = vi.fn();
       componentInstance.nzModalComponent.afterClose.subscribe(closeSpy);
       expect(closeSpy).not.toHaveBeenCalled();
 
@@ -1446,7 +1431,7 @@ describe('modal', () => {
 
       expect(() => {
         modalInstance.close();
-      }).not.toThrowError();
+      }).not.toThrow();
 
       modalInstance.open();
       await fixture.whenStable();
@@ -1467,7 +1452,7 @@ describe('modal', () => {
       expect(() => {
         modalInstance.triggerOk();
         modalInstance.triggerCancel();
-      }).not.toThrowError();
+      }).not.toThrow();
     });
 
     it('should close when the host view is destroyed', async () => {
@@ -1600,8 +1585,8 @@ class TestWithModalContentComponent {
 class TestModalComponent {
   readonly visible = model(false);
   readonly draggable = signal(false);
-  cancelSpy = jasmine.createSpy('cancel spy');
-  okSpy = jasmine.createSpy('ok spy');
+  cancelSpy = vi.fn();
+  okSpy = vi.fn();
   @ViewChild(NzModalComponent, { static: true }) nzModalComponent!: NzModalComponent;
   @ViewChild(TemplateRef, { static: true }) templateRef!: TemplateRef<{}>;
 

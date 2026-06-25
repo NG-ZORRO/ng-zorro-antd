@@ -16,6 +16,8 @@ import {
 } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { nextAnimationFrame } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -414,7 +416,7 @@ describe('form-control', () => {
 
       const mockEvent: AnimationCallbackEvent = {
         target: formControl.nativeElement.querySelector('.ant-form-item-explain'),
-        animationComplete: jasmine.createSpy('animationComplete')
+        animationComplete: vi.fn()
       };
 
       formControl.componentInstance.onAnimationLeave(mockEvent);

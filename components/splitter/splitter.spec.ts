@@ -8,6 +8,8 @@ import { Component, DebugElement, DOCUMENT, NgZone, signal } from '@angular/core
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import {
   dispatchMouseEvent,
   dispatchTouchEvent,
@@ -52,8 +54,7 @@ interface PanelProps {
     </nz-splitter>
   `,
   styles: `
-    @import '../style/testing.less';
-    @import './style/entry.less';
+    @import './style/testing.less';
 
     :host nz-splitter {
       height: 100px;
@@ -136,7 +137,7 @@ describe('nz-splitter', () => {
     it('should correct render', () => {
       fixture.detectChanges();
       expect(container.query(By.css('.ant-splitter'))).toBeTruthy();
-      expect(container.queryAll(By.css('.ant-splitter-panel'))).toHaveSize(2);
+      expect(container.queryAll(By.css('.ant-splitter-panel'))).toHaveLength(2);
       expect(container.query(By.css('.ant-splitter-bar'))).toBeTruthy();
     });
 
@@ -162,20 +163,20 @@ describe('nz-splitter', () => {
     it('should resizable work', async () => {
       component.panels.set([{ size: 20 }, { resizable: false }, {}]);
       await fixture.whenStable();
-      expect(container.queryAll(By.css('.ant-splitter-bar-dragger'))).toHaveSize(2);
-      expect(container.queryAll(By.css('.ant-splitter-bar-dragger-disabled'))).toHaveSize(2);
+      expect(container.queryAll(By.css('.ant-splitter-bar-dragger'))).toHaveLength(2);
+      expect(container.queryAll(By.css('.ant-splitter-bar-dragger-disabled'))).toHaveLength(2);
 
       component.panels.set([{ size: 20 }, {}, { resizable: false }]);
       await fixture.whenStable();
-      expect(container.queryAll(By.css('.ant-splitter-bar-dragger'))).toHaveSize(2);
-      expect(container.queryAll(By.css('.ant-splitter-bar-dragger-disabled'))).toHaveSize(1);
+      expect(container.queryAll(By.css('.ant-splitter-bar-dragger'))).toHaveLength(2);
+      expect(container.queryAll(By.css('.ant-splitter-bar-dragger-disabled'))).toHaveLength(1);
     });
 
     describe('drag', () => {
       beforeEach(() => {
-        spyOn(component, 'onResizeStart');
-        spyOn(component, 'onResize');
-        spyOn(component, 'onResizeEnd');
+        vi.spyOn(component, 'onResizeStart');
+        vi.spyOn(component, 'onResize');
+        vi.spyOn(component, 'onResizeEnd');
       });
 
       it('should mouse move work', async () => {
@@ -305,15 +306,15 @@ describe('nz-splitter', () => {
       }
 
       beforeEach(() => {
-        spyOn(component, 'onResize');
-        spyOn(component, 'onResizeEnd');
+        vi.spyOn(component, 'onResize');
+        vi.spyOn(component, 'onResizeEnd');
       });
 
       it('basic', async () => {
         component.panels.set([{ size: 20, collapsible: true }, { collapsible: true }]);
         await fixture.whenStable();
 
-        expect(container.queryAll(By.css('.ant-splitter-bar-collapse-icon'))).toHaveSize(2);
+        expect(container.queryAll(By.css('.ant-splitter-bar-collapse-icon'))).toHaveLength(2);
         expect(container.query(By.css('.ant-splitter-bar-collapse-start'))).toBeTruthy();
         expect(container.query(By.css('.ant-splitter-bar-collapse-end'))).toBeTruthy();
 
@@ -328,8 +329,8 @@ describe('nz-splitter', () => {
           {}
         ]);
         await fixture.whenStable();
-        expect(container.queryAll(By.css('.ant-splitter-bar-collapse-start'))).toHaveSize(2);
-        expect(container.queryAll(By.css('.ant-splitter-bar-collapse-end'))).toHaveSize(1);
+        expect(container.queryAll(By.css('.ant-splitter-bar-collapse-start'))).toHaveLength(2);
+        expect(container.queryAll(By.css('.ant-splitter-bar-collapse-end'))).toHaveLength(1);
       });
 
       it('collapsible - true', async () => {
@@ -491,9 +492,9 @@ describe('nz-splitter', () => {
           }
         ]);
 
-        spyOn(component, 'onResizeStart');
-        spyOn(component, 'onResize');
-        spyOn(component, 'onResizeEnd');
+        vi.spyOn(component, 'onResizeStart');
+        vi.spyOn(component, 'onResize');
+        vi.spyOn(component, 'onResizeEnd');
       });
 
       it('should only update after mouse up', async () => {
@@ -608,8 +609,8 @@ describe('nz-splitter', () => {
       container = fixture.debugElement;
       component = fixture.componentInstance;
 
-      spyOn(component, 'onResize');
-      spyOn(component, 'onResizeEnd');
+      vi.spyOn(component, 'onResize');
+      vi.spyOn(component, 'onResizeEnd');
     });
 
     it('rtl', async () => {

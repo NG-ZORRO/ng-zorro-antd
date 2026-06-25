@@ -7,6 +7,8 @@ import { Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzFourDirectionType, NzShapeSCType } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -88,7 +90,7 @@ describe('nz-float-button-group', () => {
       testComponent.nzOpen.set(true);
       testComponent.nzTrigger.set('click');
       fixture.detectChanges();
-      const openChangeSpy = spyOn(groupComponent.nzOpenChange, 'emit');
+      const openChangeSpy = vi.spyOn(groupComponent.nzOpenChange, 'emit');
       resultEl.nativeElement.getElementsByClassName('ant-btn')[0].dispatchEvent(new MouseEvent('click'));
       fixture.detectChanges();
       expect(resultEl.nativeElement.getElementsByClassName('anticon')[0].getAttribute('nztype') === 'close').toBe(true);
@@ -100,7 +102,7 @@ describe('nz-float-button-group', () => {
       testComponent.nzOpen.set(false);
       testComponent.nzTrigger.set('click');
       fixture.detectChanges();
-      const openChangeSpy = spyOn(groupComponent.nzOpenChange, 'emit');
+      const openChangeSpy = vi.spyOn(groupComponent.nzOpenChange, 'emit');
       resultEl.nativeElement.getElementsByClassName('ant-btn')[0].dispatchEvent(new MouseEvent('click'));
       fixture.detectChanges();
       expect(resultEl.nativeElement.getElementsByClassName('anticon')[0].getAttribute('nztype') === 'close').toBe(
@@ -114,7 +116,7 @@ describe('nz-float-button-group', () => {
       testComponent.nzOpen.set(true);
       testComponent.nzTrigger.set('click');
       fixture.detectChanges();
-      const openChangeSpy = spyOn(groupComponent.nzOpenChange, 'emit');
+      const openChangeSpy = vi.spyOn(groupComponent.nzOpenChange, 'emit');
       resultEl.nativeElement.getElementsByClassName('ant-btn')[0].dispatchEvent(new MouseEvent('click'));
       fixture.detectChanges();
       expect(openChangeSpy).toHaveBeenCalledWith(false);

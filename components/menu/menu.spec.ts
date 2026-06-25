@@ -9,6 +9,8 @@ import { Component, DebugElement, ElementRef, QueryList, signal, ViewChild, View
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchFakeEvent, provideMockDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
@@ -292,7 +294,7 @@ describe('menu', () => {
 
       it('should submenu mouseenter work', () => {
         fixture.detectChanges();
-        const mouseenterCallback = jasmine.createSpy('mouseenter callback');
+        const mouseenterCallback = vi.fn();
         const subs = testComponent.subs.toArray();
         const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
 
@@ -305,7 +307,7 @@ describe('menu', () => {
 
       it('should have "hover" as default trigger', () => {
         fixture.detectChanges();
-        const mouseenterCallback = jasmine.createSpy('mouseenter callback');
+        const mouseenterCallback = vi.fn();
         const subs = testComponent.subs.toArray();
         const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
 
@@ -319,7 +321,7 @@ describe('menu', () => {
       it('should have not open with mouse hover if trigger is set to "click"', () => {
         testComponent.nzTriggerSubMenuAction.set('click');
         fixture.detectChanges();
-        const mouseenterCallback = jasmine.createSpy('mouseenter callback');
+        const mouseenterCallback = vi.fn();
         const subs = testComponent.subs.toArray();
         const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
 
@@ -332,7 +334,7 @@ describe('menu', () => {
       it('should open with mouse click if trigger is set to "click"', () => {
         testComponent.nzTriggerSubMenuAction.set('click');
         fixture.detectChanges();
-        const mouseenterCallback = jasmine.createSpy('mouseenter callback');
+        const mouseenterCallback = vi.fn();
         const subs = testComponent.subs.toArray();
         const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
         (subs[0].nzSubmenuService as NzSafeAny).isMouseEnterTitleOrOverlay$.subscribe(mouseenterCallback);
@@ -343,7 +345,7 @@ describe('menu', () => {
 
       it('should submenu mouseleave work', () => {
         fixture.detectChanges();
-        const mouseleaveCallback = jasmine.createSpy('mouseleave callback');
+        const mouseleaveCallback = vi.fn();
         const subs = testComponent.subs.toArray();
         const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
 
@@ -357,7 +359,7 @@ describe('menu', () => {
       it('should nested submenu work', () => {
         testComponent.open.set(true);
         fixture.detectChanges();
-        const nestedCallback = jasmine.createSpy('nested callback');
+        const nestedCallback = vi.fn();
         const subs = testComponent.subs.toArray();
 
         (subs[0].nzSubmenuService as NzSafeAny).isChildSubMenuOpen$.subscribe(nestedCallback);
@@ -372,7 +374,7 @@ describe('menu', () => {
         testComponent.open.set(true);
         testComponent.disabled.set(true);
         fixture.detectChanges();
-        const nestedCallback = jasmine.createSpy('nested callback');
+        const nestedCallback = vi.fn();
         const subs = testComponent.subs.toArray();
 
         (subs[0].nzSubmenuService as NzSafeAny).isChildSubMenuOpen$.subscribe(nestedCallback);
@@ -397,7 +399,7 @@ describe('menu', () => {
       it('should click submenu menu item close', () => {
         testComponent.open.set(true);
         fixture.detectChanges();
-        const nestedCallback = jasmine.createSpy('nested callback');
+        const nestedCallback = vi.fn();
         const subs = testComponent.subs.toArray();
         subs[1].nzOpen = true;
         fixture.detectChanges();
@@ -412,7 +414,7 @@ describe('menu', () => {
       it('should click submenu disabled menu item not close', () => {
         testComponent.open.set(true);
         fixture.detectChanges();
-        const nestedCallback = jasmine.createSpy('nested callback');
+        const nestedCallback = vi.fn();
         const subs = testComponent.subs.toArray();
 
         (subs[1].nzSubmenuService as NzSafeAny).isMouseEnterTitleOrOverlay$.subscribe(nestedCallback);
@@ -422,18 +424,25 @@ describe('menu', () => {
         expect(nestedCallback).toHaveBeenCalledTimes(0);
       });
 
-      it('should width change correct', () => {
+      it('should width change correct', async () => {
         fixture.detectChanges();
+        const submenu = testComponent.subs.first;
+        // The overlay width follows the trigger's measured width. Mock the measurement
+        // explicitly so the assertion does not depend on browser layout in the test host.
+        vi.spyOn(submenu.cdkOverlayOrigin!.nativeElement, 'getBoundingClientRect').mockImplementation(
+          () => ({ width: testComponent.width() }) as DOMRect
+        );
         testComponent.open.set(true);
-        fixture.detectChanges();
-        const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
+        await stabilize(fixture);
+        let overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
         expect(overlayPane.style.width).toBe('200px');
         testComponent.open.set(false);
         fixture.detectChanges();
         testComponent.width.set(300);
         fixture.detectChanges();
         testComponent.open.set(true);
-        fixture.detectChanges();
+        await stabilize(fixture);
+        overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
         expect(overlayPane.style.width).toBe('300px');
       });
 

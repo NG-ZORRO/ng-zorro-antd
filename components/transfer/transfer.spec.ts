@@ -9,8 +9,10 @@ import { By } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
-import { testDirectionality } from 'ng-zorro-antd/core/testing';
+import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
 import { NzFormControlStatusType, NzFormModule } from 'ng-zorro-antd/form';
 import en_US from 'ng-zorro-antd/i18n/languages/en_US';
@@ -76,7 +78,7 @@ describe('transfer', () => {
     it('nzOneWay', () => {
       instance.nzOneWay.set(true);
       fixture.detectChanges();
-      expect(!pageObject.rightList.querySelector('.ant-transfer-list-header .ant-transfer-list-checkbox')).toBeTrue();
+      expect(!pageObject.rightList.querySelector('.ant-transfer-list-header .ant-transfer-list-checkbox')).toBe(true);
       expect(debugElement.queryAll(By.css('.ant-transfer-operation .ant-btn')).length).toBe(1);
       expect(
         debugElement.query(By.css('.ant-transfer-operation .ant-btn .anticon')).nativeElement.getAttribute('nztype')
@@ -213,7 +215,7 @@ describe('transfer', () => {
       pageObject.checkItem('right', 0);
       expect(instance.comp.rightDataSource.filter(w => w.checked).length).toBe(1);
       window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Shift' }));
-      expect(instance.comp.isShiftPressed).toBeTrue();
+      expect(instance.comp.isShiftPressed).toBe(true);
       fixture.detectChanges();
       const multiSelectEndIndex = 9;
       pageObject.checkItem('right', multiSelectEndIndex);
@@ -221,7 +223,7 @@ describe('transfer', () => {
         COUNT - LEFT_COUNT - DISABLED - multiSelectEndIndex + 1
       );
       window.dispatchEvent(new KeyboardEvent('keyup', { key: 'Shift' }));
-      expect(instance.comp.isShiftPressed).toBeFalse();
+      expect(instance.comp.isShiftPressed).toBe(false);
     });
 
     describe('#notFoundContent', () => {
@@ -263,7 +265,7 @@ describe('transfer', () => {
         // All operation buttons muse be disabled
         expect(debugElement.queryAll(By.css('.ant-transfer-operation .ant-btn[disabled]')).length).toBe(2);
         // All search inputs must be disabled
-        expect(debugElement.queryAll(By.css('.ant-transfer-list-search.ant-input-disabled')).length).toBe(2);
+        expect(debugElement.queryAll(By.css('.ant-transfer-list-search input[disabled]')).length).toBe(2);
         // All items must be disabled
         expect(debugElement.queryAll(By.css('.ant-transfer-list-content-item-disabled')).length).toBe(COUNT);
         // All checkboxes (include 2 check-all) must be disabled
@@ -274,14 +276,14 @@ describe('transfer', () => {
         pageObject.expectLeft(LEFT_COUNT).search('left', '1');
         expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
         instance.nzDisabled.set(true);
-        fixture.detectChanges();
-        await fixture.whenStable();
+        // The search box clear icon visibility is debounced by the input-affix
+        // control, so wait for that small async update before clicking it.
+        await updateNonSignalsInput(fixture, 50);
         const clearBtn = pageObject.leftList.querySelector(
           '.ant-transfer-list-search .ant-input-clear-icon:not(.ant-input-clear-icon-hidden)'
         ) as HTMLElement | null;
         clearBtn?.click();
-        fixture.detectChanges();
-        await fixture.whenStable();
+        await updateNonSignalsInput(fixture, 50);
         expect(pageObject.leftList.querySelectorAll('.ant-transfer-list-content-item').length).toBe(1);
       });
 
@@ -356,8 +358,8 @@ describe('transfer', () => {
         const appRef = TestBed.inject(ApplicationRef);
         const event = new MouseEvent('click');
 
-        spyOn(appRef, 'tick');
-        spyOn(event, 'stopPropagation').and.callThrough();
+        vi.spyOn(appRef, 'tick');
+        vi.spyOn(event, 'stopPropagation');
 
         const [label] = fixture.nativeElement.querySelectorAll('.ant-transfer-list-content-item label');
 
@@ -381,8 +383,8 @@ describe('transfer', () => {
       pageObject.rightBtn.click();
       fixture.detectChanges();
 
-      expect(selectAll).not.toHaveClass('ant-checkbox-checked');
-      expect(selectAll).not.toHaveClass('ant-checkbox-indeterminate');
+      expect(selectAll.classList.contains('ant-checkbox-checked')).toBe(false);
+      expect(selectAll.classList.contains('ant-checkbox-indeterminate')).toBe(false);
     });
   });
 

@@ -7,6 +7,8 @@ import { Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { testDirectionality } from 'ng-zorro-antd/core/testing';
 
@@ -171,9 +173,9 @@ export class NzTestTagBasicComponent {
   readonly color = signal<string | undefined>(undefined);
   readonly checked = signal(false);
   readonly bordered = signal(true);
-  onClose = jasmine.createSpy('on close');
-  afterClose = jasmine.createSpy('after close');
-  checkedChange = jasmine.createSpy('after close');
+  onClose = vi.fn();
+  afterClose = vi.fn();
+  checkedChange = vi.fn();
 }
 
 @Component({

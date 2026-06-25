@@ -9,6 +9,8 @@ import { Component, Provider, Type, ViewChild, inject } from '@angular/core';
 import { ComponentFixture, inject as testingInject, TestBed } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import {
   createKeyboardEvent,
@@ -142,7 +144,7 @@ describe('context-menu', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
-    const closeSpy = spyOn(component.nzContextMenuService, 'close');
+    const closeSpy = vi.spyOn(component.nzContextMenuService, 'close');
     overlayContainerElement.querySelector('ul')!.click();
     expect(closeSpy).toHaveBeenCalledTimes(0);
     document.body.click();

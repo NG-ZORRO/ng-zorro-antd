@@ -7,6 +7,8 @@ import { ApplicationRef, Component, signal, WritableSignal } from '@angular/core
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
 import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
@@ -114,7 +116,7 @@ describe('button', () => {
     });
 
     it('should hide icon when loading correct', () => {
-      jasmine.clock().install();
+      vi.useFakeTimers();
       fixture.detectChanges();
       const buttonElement = fixture.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
       expect(buttonElement.classList.contains('ant-btn-loading')).toBe(false);
@@ -127,12 +129,12 @@ describe('button', () => {
       expect(buttonElement.classList.contains('ant-btn-loading')).toBe(true);
       expect(buttonElement.firstElementChild!.classList.contains('ant-btn-loading-icon')).toBe(true);
       expect(buttonElement.querySelector('.anticon-poweroff').style.cssText).toBe('display: none;');
-      jasmine.clock().tick(1000);
+      vi.advanceTimersByTime(1000);
       fixture.detectChanges();
       expect(buttonElement.classList.contains('ant-btn-loading')).toBe(false);
       expect(buttonElement.firstElementChild!.classList.contains('ant-btn-loading-icon')).toBe(false);
       expect(buttonElement.querySelector('.anticon-poweroff').style.cssText).toBe('');
-      jasmine.clock().uninstall();
+      vi.useRealTimers();
     });
   });
 
@@ -216,7 +218,7 @@ describe('button', () => {
 
     it('should not trigger change detection when the button is clicked', () => {
       const appRef = TestBed.inject(ApplicationRef);
-      const spy = spyOn(appRef, 'tick').and.callThrough();
+      const spy = vi.spyOn(appRef, 'tick');
       buttonElement.dispatchEvent(new MouseEvent('click'));
       buttonElement.dispatchEvent(new MouseEvent('click'));
       // Previously, it would've caused ApplicationRef.tick to be called twice.
@@ -227,8 +229,8 @@ describe('button', () => {
       component.nzLoading.set(true);
       fixture.detectChanges();
       const event = new MouseEvent('click');
-      const preventDefaultSpy = spyOn(event, 'preventDefault').and.callThrough();
-      const stopImmediatePropagationSpy = spyOn(event, 'stopImmediatePropagation').and.callThrough();
+      const preventDefaultSpy = vi.spyOn(event, 'preventDefault');
+      const stopImmediatePropagationSpy = vi.spyOn(event, 'stopImmediatePropagation');
       buttonElement.dispatchEvent(event);
       expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
       expect(stopImmediatePropagationSpy).toHaveBeenCalledTimes(1);
@@ -251,8 +253,8 @@ describe('anchor', () => {
     component.disabled.set(true);
     fixture.detectChanges();
     const event = new MouseEvent('click');
-    const preventDefaultSpy = spyOn(event, 'preventDefault').and.callThrough();
-    const stopImmediatePropagationSpy = spyOn(event, 'stopImmediatePropagation').and.callThrough();
+    const preventDefaultSpy = vi.spyOn(event, 'preventDefault');
+    const stopImmediatePropagationSpy = vi.spyOn(event, 'stopImmediatePropagation');
     anchorElement.dispatchEvent(event);
     expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
     expect(stopImmediatePropagationSpy).toHaveBeenCalledTimes(1);

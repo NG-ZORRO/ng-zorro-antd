@@ -8,6 +8,8 @@ import { Component, DebugElement, TemplateRef, signal } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -25,7 +27,7 @@ describe('check-list', () => {
 
   function waitingForTooltipToggling(): void {
     fixture.detectChanges();
-    jasmine.clock().tick(500);
+    vi.advanceTimersByTime(500);
     fixture.detectChanges();
   }
 
@@ -47,31 +49,31 @@ describe('check-list', () => {
     overlayContainerElement = oc.getContainerElement();
   }));
 
-  beforeEach(() => jasmine.clock().install());
+  beforeEach(() => vi.useFakeTimers());
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
   });
 
-  afterEach(() => jasmine.clock().uninstall());
+  afterEach(() => vi.useRealTimers());
 
   it('basic', () => {
     expect(resultEl.nativeElement.classList).toContain('ant-check-list');
-    expect(!!resultEl.nativeElement.querySelector('.ant-check-list-button .ant-check-list-icon')).toBeTrue();
-    expect(!!resultEl.nativeElement.querySelector('.ant-check-list-button .ant-check-list-description')).toBeTrue();
+    expect(resultEl.nativeElement.querySelector('.ant-check-list-button .ant-check-list-icon')).not.toBeNull();
+    expect(resultEl.nativeElement.querySelector('.ant-check-list-button .ant-check-list-description')).not.toBeNull();
   });
 
   it('nzVisible', () => {
     testComponent.visible.set(true);
     fixture.detectChanges();
     waitingForTooltipToggling();
-    expect(!!overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeTrue();
-    expect(!!overlayContainerElement.querySelector('.ant-popover-inner-content .ant-check-list-header')).toBeTrue();
+    expect(overlayContainerElement.querySelector('.ant-popover-inner-content')).not.toBeNull();
+    expect(overlayContainerElement.querySelector('.ant-popover-inner-content .ant-check-list-header')).not.toBeNull();
     expect(
-      !!overlayContainerElement.querySelector(
+      overlayContainerElement.querySelector(
         '.ant-popover-inner-content .ant-check-list-header .ant-check-list-header-title'
       )
-    ).toBeTrue();
+    ).not.toBeNull();
   });
 
   it('nzItems', () => {
@@ -84,17 +86,17 @@ describe('check-list', () => {
     ]);
     fixture.detectChanges();
     waitingForTooltipToggling();
-    expect(!!overlayContainerElement.querySelector('.ant-check-list-steps')).toBeTrue();
+    expect(overlayContainerElement.querySelector('.ant-check-list-steps')).not.toBeNull();
   });
 
   it('nzProgress', () => {
     testComponent.visible.set(true);
     fixture.detectChanges();
     waitingForTooltipToggling();
-    expect(!!overlayContainerElement.querySelector('.ant-check-list-progressBar')).toBeTrue();
+    expect(overlayContainerElement.querySelector('.ant-check-list-progressBar')).not.toBeNull();
     testComponent.progress.set(false);
     fixture.detectChanges();
-    expect(!overlayContainerElement.querySelector('.ant-check-list-progressBar')).toBeTrue();
+    expect(overlayContainerElement.querySelector('.ant-check-list-progressBar')).toBeNull();
   });
 
   it('nzIndex', () => {
@@ -165,8 +167,8 @@ describe('check-list', () => {
       }
     ]);
     fixture.detectChanges();
-    expect(!overlayContainerElement.querySelector('.ant-check-list-progressBar')).toBeTrue();
-    expect(!!overlayContainerElement.querySelector('.ant-check-list-header-finish')).toBeTrue();
+    expect(overlayContainerElement.querySelector('.ant-check-list-progressBar')).toBeNull();
+    expect(overlayContainerElement.querySelector('.ant-check-list-header-finish')).not.toBeNull();
   });
 
   it('lose the list when you are finished', () => {
@@ -184,7 +186,7 @@ describe('check-list', () => {
     if (dom) {
       dispatchMouseEvent(dom, 'click');
       waitingForTooltipToggling();
-      expect(!overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeTrue();
+      expect(overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeNull();
     }
   });
 
@@ -196,7 +198,7 @@ describe('check-list', () => {
     if (dom) {
       dispatchMouseEvent(dom, 'click');
       waitingForTooltipToggling();
-      expect(!overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeTrue();
+      expect(overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeNull();
     }
   });
 
@@ -208,12 +210,12 @@ describe('check-list', () => {
     if (dom) {
       dispatchMouseEvent(dom, 'click');
       waitingForTooltipToggling();
-      expect(!!overlayContainerElement.querySelector('.ant-check-list-close-check')).toBeTrue();
+      expect(overlayContainerElement.querySelector('.ant-check-list-close-check')).not.toBeNull();
       const btnDom = overlayContainerElement.querySelector('.ant-check-list-close-check-action .ant-btn');
       if (btnDom) {
         dispatchMouseEvent(btnDom, 'click');
         waitingForTooltipToggling();
-        expect(!overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeTrue();
+        expect(overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeNull();
       }
     }
   });
@@ -227,16 +229,16 @@ describe('check-list', () => {
     dispatchMouseEvent(footer!, 'click');
     waitingForTooltipToggling();
 
-    expect(!!overlayContainerElement.querySelector('.ant-check-list-close-check')).toBeTrue();
+    expect(overlayContainerElement.querySelector('.ant-check-list-close-check')).not.toBeNull();
     expect(
-      !!overlayContainerElement.querySelector('.ant-check-list-close-check .ant-check-list-close-check-title')
-    ).toBeTrue();
+      overlayContainerElement.querySelector('.ant-check-list-close-check .ant-check-list-close-check-title')
+    ).not.toBeNull();
     expect(
-      !!overlayContainerElement.querySelector('.ant-check-list-close-check .ant-check-list-close-check-action')
-    ).toBeTrue();
+      overlayContainerElement.querySelector('.ant-check-list-close-check .ant-check-list-close-check-action')
+    ).not.toBeNull();
     expect(
-      !!overlayContainerElement.querySelector('.ant-check-list-close-check .ant-check-list-close-check-other')
-    ).toBeTrue();
+      overlayContainerElement.querySelector('.ant-check-list-close-check .ant-check-list-close-check-other')
+    ).not.toBeNull();
 
     // close manually
     const labelEl = overlayContainerElement.querySelector('.ant-check-list-close-check-other .ant-checkbox-wrapper');

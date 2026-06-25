@@ -8,6 +8,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { expect, vi } from 'vitest';
+
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
 import { NzInputSearchDirective, NzInputSearchEvent } from './input-search.directive';
@@ -124,40 +126,40 @@ describe('input-search', () => {
   });
 
   it('should be emit search event when click search button', async () => {
-    spyOn(component, 'onSearch');
+    vi.spyOn(component, 'onSearch');
     const searchButtonElement: HTMLButtonElement = fixture.nativeElement.querySelector('.ant-input-search-button');
     component.value.set('test');
     fixture.detectChanges();
     await fixture.whenStable();
     searchButtonElement.click();
     expect(component.onSearch).toHaveBeenCalledTimes(1);
-    expect(component.onSearch).toHaveBeenCalledWith({ value: 'test', event: jasmine.any(Event), source: 'input' });
+    expect(component.onSearch).toHaveBeenCalledWith({ value: 'test', event: expect.any(Event), source: 'input' });
   });
 
   it('should be emit search event when keydown enter', async () => {
-    spyOn(component, 'onSearch');
+    vi.spyOn(component, 'onSearch');
     const inputElement: HTMLInputElement = fixture.nativeElement.querySelector('input');
     component.value.set('test');
     fixture.detectChanges();
     await fixture.whenStable();
     inputElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
     expect(component.onSearch).toHaveBeenCalledTimes(1);
-    expect(component.onSearch).toHaveBeenCalledWith({ value: 'test', event: jasmine.any(Event), source: 'input' });
+    expect(component.onSearch).toHaveBeenCalledWith({ value: 'test', event: expect.any(Event), source: 'input' });
   });
 
   it('should be emit search event when click clear button', async () => {
-    spyOn(component, 'onSearch');
+    vi.spyOn(component, 'onSearch');
     const clearButtonElement: HTMLElement = fixture.nativeElement.querySelector('.ant-input-clear-icon');
     component.value.set('test');
     fixture.detectChanges();
     await fixture.whenStable();
     clearButtonElement.click();
     expect(component.onSearch).toHaveBeenCalledTimes(1);
-    expect(component.onSearch).toHaveBeenCalledWith({ value: '', event: jasmine.any(Event), source: 'clear' });
+    expect(component.onSearch).toHaveBeenCalledWith({ value: '', event: expect.any(Event), source: 'clear' });
   });
 
   it('should not emit search event when loading', async () => {
-    spyOn(component, 'onSearch');
+    vi.spyOn(component, 'onSearch');
     const searchButtonElement: HTMLButtonElement = fixture.nativeElement.querySelector('.ant-input-search-button');
     const inputElement: HTMLInputElement = fixture.nativeElement.querySelector('input');
     const clearButtonElement: HTMLElement = fixture.nativeElement.querySelector('.ant-input-clear-icon');

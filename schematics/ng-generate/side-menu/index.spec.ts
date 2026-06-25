@@ -33,7 +33,7 @@ describe('[schematic] side-menu', () => {
     expect(welcomeContent).toContain('standalone: false');
 
     expect(tree.files).toEqual(
-      jasmine.arrayContaining([
+      expect.arrayContaining([
         '/projects/ng-zorro/src/app/app.html',
         '/projects/ng-zorro/src/app/app.css',
         '/projects/ng-zorro/src/app/app.ts',
@@ -57,7 +57,7 @@ describe('[schematic] side-menu', () => {
       expect(welcomeContent).toContain('welcome.component.less');
 
       expect(tree.files).toEqual(
-        jasmine.arrayContaining([
+        expect.arrayContaining([
           '/projects/ng-zorro/src/app/app.less',
           '/projects/ng-zorro/src/app/pages/welcome/welcome.component.less'
         ])
@@ -70,7 +70,7 @@ describe('[schematic] side-menu', () => {
       const tree = await runner.runSchematic('ng-add', options, appTree);
 
       expect(tree.files).toEqual(
-        jasmine.arrayContaining([
+        expect.arrayContaining([
           '/projects/ng-zorro/src/app/app.less',
           '/projects/ng-zorro/src/app/pages/welcome/welcome.component.less'
         ])

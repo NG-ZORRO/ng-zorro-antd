@@ -7,6 +7,8 @@ import { Component, ElementRef, signal, viewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
+import { vi } from 'vitest';
+
 import { updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType, NzVariant } from 'ng-zorro-antd/core/types';
 
@@ -200,7 +202,7 @@ describe('input-wrapper allow clear', () => {
   });
 
   it('should be emit nzClear event when click clear icon', async () => {
-    spyOn(component, 'onClear');
+    vi.spyOn(component, 'onClear');
     component.value.set('test');
     await stabilize(fixture);
     expect(component.onClear).not.toHaveBeenCalled();

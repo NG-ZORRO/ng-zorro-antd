@@ -11,8 +11,10 @@ import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
-import { dispatchFakeEvent, dispatchMouseEvent, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
+import { dispatchFakeEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { NzDatePickerSizeType } from 'ng-zorro-antd/date-picker/date-picker.component';
 import { getPickerAbstract, getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
@@ -39,13 +41,13 @@ describe('year-picker', () => {
     debugElement = fixture.debugElement;
   });
 
-  beforeEach(() => jasmine.clock().install());
+  beforeEach(() => vi.useFakeTimers());
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainerElement = oc.getContainerElement();
   }));
 
-  afterEach(() => jasmine.clock().uninstall());
+  afterEach(() => vi.useRealTimers());
 
   describe('general api testing', () => {
     beforeEach(() => fixtureInstance.useSuite.set(1));
@@ -73,7 +75,7 @@ describe('year-picker', () => {
       expect(fixtureInstance.nzValue()).toBe(initial);
       expect(debugElement.query(clearBtnSelector)).toBeDefined();
 
-      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      const nzOnChange = vi.spyOn(fixtureInstance, 'nzOnChange');
       debugElement.query(clearBtnSelector).nativeElement.click();
       await stabilize(500);
       expect(fixtureInstance.nzValue()).toBe(initial);
@@ -107,7 +109,7 @@ describe('year-picker', () => {
       fixtureInstance.useSuite.set(2);
 
       fixture.detectChanges();
-      await fixture.whenRenderingDone();
+      await stabilize(500);
       expect(getPickerContainer()).toBeNull();
 
       fixtureInstance.nzOpen.set(true);
@@ -121,7 +123,6 @@ describe('year-picker', () => {
 
     it('should nz-year-picker work', async () => {
       fixtureInstance.useSuite.set(4);
-      await fixture.whenRenderingDone();
       await stabilize(500);
       expect(getPickerContainer()).not.toBeNull();
       const pickerInput = getPickerInput(fixture.debugElement);
@@ -184,7 +185,7 @@ describe('year-picker', () => {
     });
 
     it('should support nzOnOpenChange', async () => {
-      const nzOnOpenChange = spyOn(fixtureInstance, 'nzOnOpenChange');
+      const nzOnOpenChange = vi.spyOn(fixtureInstance, 'nzOnOpenChange');
       fixture.detectChanges();
       await openPickerByClickTrigger();
       expect(nzOnOpenChange).toHaveBeenCalledWith(true);
@@ -203,7 +204,7 @@ describe('year-picker', () => {
 
     it('should support nzOnChange', async () => {
       fixtureInstance.nzValue.set(new Date('2018-11'));
-      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      const nzOnChange = vi.spyOn(fixtureInstance, 'nzOnChange');
       fixture.detectChanges();
       await openPickerByClickTrigger();
 
@@ -212,7 +213,7 @@ describe('year-picker', () => {
       dispatchMouseEvent(cell, 'click');
       await stabilize(500);
       expect(nzOnChange).toHaveBeenCalled();
-      const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
+      const result = (nzOnChange.mock.calls[0] as Date[])[0];
       expect(result.getFullYear()).toBe(parseInt(cellText, 10));
     });
   }); // /general api testing
@@ -308,12 +309,10 @@ describe('year-picker', () => {
     await stabilize(500);
   }
 
-  async function stabilize(ms?: number): Promise<void> {
+  async function stabilize(ms = 500): Promise<void> {
     fixture.detectChanges();
-    if (typeof ms === 'number') {
-      jasmine.clock().tick(ms);
-    }
-    await updateNonSignalsInput(fixture);
+    vi.advanceTimersByTime(ms);
+    await Promise.resolve();
     fixture.detectChanges();
   }
 });

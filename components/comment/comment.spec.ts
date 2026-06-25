@@ -7,6 +7,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -105,8 +107,8 @@ describe('comment', () => {
     });
 
     describe('editor async submit', () => {
-      beforeEach(() => jasmine.clock().install());
-      afterEach(() => jasmine.clock().uninstall());
+      beforeEach(() => vi.useFakeTimers());
+      afterEach(() => vi.useRealTimers());
 
       it('should editor work', async () => {
         const fixture = TestBed.createComponent(NzDemoCommentEditorComponent);
@@ -120,12 +122,12 @@ describe('comment', () => {
 
         component.value.set('Test Comment 0');
         component.handleSubmit();
-        jasmine.clock().tick(800);
+        vi.advanceTimersByTime(800);
         await updateNonSignalsInput(fixture);
 
         component.value.set('Test Comment 1');
         component.handleSubmit();
-        jasmine.clock().tick(800);
+        vi.advanceTimersByTime(800);
         await updateNonSignalsInput(fixture);
 
         comments = fixture.debugElement.queryAll(By.css('nz-list nz-comment'));

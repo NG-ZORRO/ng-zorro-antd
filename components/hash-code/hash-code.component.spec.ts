@@ -37,7 +37,7 @@ describe('hash-code', () => {
     expect(dom.querySelector('.ant-hash-code-header-title').innerText).toBe('HashCode');
     expect(dom.querySelectorAll('.ant-hash-code-code-value-block').length).toBe(8);
     expect(dom.querySelector('.ant-hash-code-header-logo').innerText).toBe('Antd');
-    expect(!!dom.querySelector('.ant-hash-code-texaure')).toBeTrue();
+    expect(!!dom.querySelector('.ant-hash-code-texaure')).toBe(true);
   });
 
   it('should value length work', () => {
@@ -57,8 +57,8 @@ describe('hash-code', () => {
   it('should mode single work', () => {
     testComponent.mode.set('single');
     fixture.detectChanges();
-    expect(!!resultEl.nativeElement.querySelector('.ant-hash-code-header')).toBeFalse();
-    expect(!!resultEl.nativeElement.querySelector('.ant-hash-code-header-copy')).toBeTrue();
+    expect(!!resultEl.nativeElement.querySelector('.ant-hash-code-header')).toBe(false);
+    expect(!!resultEl.nativeElement.querySelector('.ant-hash-code-header-copy')).toBe(true);
     expect(resultEl.nativeElement.classList).toContain('ant-hash-code-single');
   });
 
@@ -71,8 +71,8 @@ describe('hash-code', () => {
   it('should rect mode work', () => {
     testComponent.mode.set('rect');
     fixture.detectChanges();
-    expect(!!resultEl.nativeElement.querySelector('.ant-hash-code-header')).toBeFalse();
-    expect(!!resultEl.nativeElement.querySelector('.ant-hash-code-header-copy')).toBeTrue();
+    expect(!!resultEl.nativeElement.querySelector('.ant-hash-code-header')).toBe(false);
+    expect(!!resultEl.nativeElement.querySelector('.ant-hash-code-header-copy')).toBe(true);
     expect(resultEl.nativeElement.classList).toContain('ant-hash-code-rect');
   });
 

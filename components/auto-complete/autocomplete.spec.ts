@@ -8,12 +8,9 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import {
   ApplicationRef,
-  ChangeDetectorRef,
   Component,
   ElementRef,
-  inject,
   NgZone,
-  OnInit,
   QueryList,
   SimpleChanges,
   ViewChild,
@@ -24,6 +21,8 @@ import { ComponentFixture, inject as testingInject, TestBed } from '@angular/cor
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
+
+import { vi } from 'vitest';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import {
@@ -260,11 +259,11 @@ describe('auto-complete', () => {
       fixture.detectChanges();
 
       const appRef = TestBed.inject(ApplicationRef);
-      spyOn(appRef, 'tick');
+      vi.spyOn(appRef, 'tick');
 
       const option = overlayContainerElement.querySelector('nz-auto-option') as HTMLElement;
       const event = new MouseEvent('mousedown');
-      spyOn(event, 'preventDefault');
+      vi.spyOn(event, 'preventDefault');
 
       option.dispatchEvent(event);
       option.dispatchEvent(new MouseEvent('mouseenter'));
@@ -827,8 +826,8 @@ describe('auto-complete', () => {
         which: 13,
         keyCode: 13
       });
-      spyOnProperty(trigger, 'activeOption', 'get').and.returnValue(null);
-      spyOn(trigger, 'closePanel');
+      vi.spyOn(trigger, 'activeOption', 'get').mockReturnValue(null);
+      vi.spyOn(trigger, 'closePanel');
 
       trigger.handleKeydown(event);
 
@@ -915,31 +914,6 @@ class NzTestAutocompletePropertyComponent {
   readonly options = signal(['Burns Bay Road', 'Downing Street', 'Wall Street']);
   @ViewChild(NzAutocompleteComponent, { static: false }) panel!: NzAutocompleteComponent;
   @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
-}
-
-@Component({
-  imports: [NzAutocompleteModule],
-  template: `<input [nzAutocomplete]="null!" />`
-})
-class NzTestAutocompleteWithoutPanelComponent {
-  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
-}
-
-@Component({
-  imports: [NzAutocompleteModule],
-  template: `
-    <input [nzAutocomplete]="auto" />
-    <nz-autocomplete [nzDataSource]="options()" #auto />
-  `
-})
-class NzTestAutocompleteWithDelayComponent implements OnInit {
-  readonly cdr = inject(ChangeDetectorRef);
-  readonly options = signal<string[]>([]);
-  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
-
-  ngOnInit(): void {
-    setTimeout(() => this.options.set(['One']), 300);
-  }
 }
 
 @Component({

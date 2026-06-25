@@ -5,6 +5,8 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { vi } from 'vitest';
+
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { en_US, NzI18nModule } from 'ng-zorro-antd/i18n';
 
@@ -70,7 +72,7 @@ describe('Coverage supplements', () => {
     it('should emit panelChange with correct mode when value changes', () => {
       fixture.componentRef.setInput('mode', 'week');
       fixture.detectChanges();
-      spyOn(componentInstance.panelChange, 'emit');
+      vi.spyOn(componentInstance.panelChange, 'emit').mockImplementation(() => {});
       const newValue = new CandyDate('2020-03-15');
       componentInstance.changeValue(newValue);
       expect(componentInstance.panelChange.emit).toHaveBeenCalledWith({

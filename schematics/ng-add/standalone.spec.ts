@@ -167,7 +167,7 @@ describe('[standalone] ng-add schematic', () => {
     const options = { ...defaultOptions, i18n: 'zh_CN' };
     await runner.runSchematic('ng-add-setup-project', { ...defaultOptions }, appTree);
 
-    spyOn(console, 'log');
+    vi.spyOn(console, 'log').mockImplementation(() => {});
 
     const tree = await runner.runSchematic('ng-add-setup-project', options, appTree);
     const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.config.ts');
@@ -177,6 +177,6 @@ describe('[standalone] ng-add schematic', () => {
     expect(fileContent).not.toContain('provideNzI18n(zh_CN)');
     expect(fileContent).not.toContain('registerLocaleData(zh)');
 
-    expect(console.log).toHaveBeenCalledWith(jasmine.stringMatching(/Could not add the registerLocaleData to file/));
+    expect(console.log).toHaveBeenCalledWith(expect.stringMatching(/Could not add the registerLocaleData to file/));
   });
 });

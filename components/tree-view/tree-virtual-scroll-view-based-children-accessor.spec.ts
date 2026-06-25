@@ -10,50 +10,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
-import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
 import { NzTreeViewNestedDataSource } from './nested-data-source';
-import { NzTreeNodeComponent } from './node';
 import { NzTreeNodePaddingDirective } from './padding';
-import { waitForNextAnimationFrame } from './tree-view-based-children-accessor.spec';
+import { finishInit, triggerScroll } from './tree-view-testing';
 import { NzTreeViewModule } from './tree-view.module';
 import { NzTreeVirtualScrollViewComponent } from './tree-virtual-scroll-view';
-
-/**
- * Finish initializing the virtual scroll component at the beginning of a test.
- * @param fixture Test Component include NzTreeVirtualScrollViewComponent
- */
-export async function finishInit(fixture: ComponentFixture<NzSafeAny>): Promise<void> {
-  // set the height of the viewport to 180px, the height of node to 30px.
-  fixture.debugElement.nativeElement
-    .querySelector('.cdk-virtual-scroll-viewport')!
-    .setAttribute('style', 'height: 180px; width: 200px;');
-  fixture.debugElement.queryAll(By.directive(NzTreeNodeComponent))!.map(node => {
-    node.nativeElement.setAttribute('style', 'width: 100%; height: 30px;');
-  });
-  // render the viewport.
-  await fixture.whenStable();
-
-  // Flush the initial fake scroll event.
-  await waitForNextAnimationFrame(); // flush animation frame
-  await fixture.whenStable();
-}
-
-/**
- * Trigger a scroll event on the viewport (optionally setting a new scroll offset).
- * @param viewport virtual scroll viewport
- * @param offset scroll distance
- */
-export async function triggerScroll(viewport: CdkVirtualScrollViewport, offset?: number): Promise<void> {
-  if (offset !== undefined) {
-    viewport.scrollToOffset(offset);
-  }
-  dispatchFakeEvent(viewport.scrollable!.getElementRef().nativeElement, 'scroll');
-  await waitForNextAnimationFrame();
-}
 
 describe('virtual scroll based nzChildrenAccessor', () => {
   beforeEach(() => {

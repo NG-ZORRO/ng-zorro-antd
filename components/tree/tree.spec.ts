@@ -7,6 +7,8 @@ import { ApplicationRef, Component, signal, TemplateRef, ViewChild } from '@angu
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
 
+import { vi } from 'vitest';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchMouseEvent, dispatchTouchEvent, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzFormatEmitEvent, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
@@ -177,15 +179,16 @@ describe('tree', () => {
           fixture.detectChanges();
           await stabilize(fixture, 300);
           // Then
-          expect(component.treeComponent.getMatchedNodeList().length)
-            .withContext('treeComponent.getMatchedNodeList().length')
-            .toBe(then.matchedNodeList);
-          expect(component.treeComponent.nzFlattenNodes.length)
-            .withContext('treeComponent.nzFlattenNodes.length')
-            .toBe(then.nzFlattenNodes);
-          expect(nativeElement.querySelectorAll('nz-tree-node').length)
-            .withContext('number of displayed nz-tree-node elements')
-            .toBe(then.nzFlattenNodes);
+          expect(component.treeComponent.getMatchedNodeList().length, 'treeComponent.getMatchedNodeList().length').toBe(
+            then.matchedNodeList
+          );
+          expect(component.treeComponent.nzFlattenNodes.length, 'treeComponent.nzFlattenNodes.length').toBe(
+            then.nzFlattenNodes
+          );
+          expect(
+            nativeElement.querySelectorAll('nz-tree-node').length,
+            'number of displayed nz-tree-node elements'
+          ).toBe(then.nzFlattenNodes);
         });
       });
 
@@ -231,8 +234,8 @@ describe('tree', () => {
           const appRef = TestBed.inject(ApplicationRef);
           const event = new MouseEvent('mousedown');
 
-          spyOn(appRef, 'tick');
-          spyOn(event, 'preventDefault').and.callThrough();
+          vi.spyOn(appRef, 'tick');
+          vi.spyOn(event, 'preventDefault');
 
           const treeNode = nativeElement.querySelector('nz-tree-node')!;
           treeNode.dispatchEvent(event);
@@ -262,7 +265,7 @@ describe('tree', () => {
       });
 
       it('should not trigger checkbox if node is disabled ', () => {
-        const spy = spyOn(component, 'nzEvent');
+        const spy = vi.spyOn(component, 'nzEvent');
         component.nodes.set([
           {
             title: '0-0',
@@ -319,7 +322,7 @@ describe('tree', () => {
 
     describe('mouse event trigger', () => {
       it('should select node when clicking', async () => {
-        const spy = spyOn(component, 'nzEvent');
+        const spy = vi.spyOn(component, 'nzEvent');
         expect(spy).not.toHaveBeenCalled();
 
         // get first node 0-0
@@ -333,7 +336,7 @@ describe('tree', () => {
       });
 
       it('should expand node when clicking switcher', async () => {
-        const spy = spyOn(component, 'nzEvent');
+        const spy = vi.spyOn(component, 'nzEvent');
         // get first node 0-0
         const node = nativeElement.querySelector('.ant-tree-switcher')!;
         dispatchMouseEvent(node, 'click');
@@ -345,7 +348,7 @@ describe('tree', () => {
       });
 
       it('should check node when clicking checkbox', async () => {
-        const spy = spyOn(component, 'nzEvent');
+        const spy = vi.spyOn(component, 'nzEvent');
         // get first node 0-0
         const node = nativeElement.querySelector('.ant-tree-checkbox')!;
         dispatchMouseEvent(node, 'click');
@@ -357,7 +360,7 @@ describe('tree', () => {
       });
 
       it('should trigger contextmenu event', async () => {
-        const spy = spyOn(component, 'nzEvent');
+        const spy = vi.spyOn(component, 'nzEvent');
         // get first node 0-0
         const node = nativeElement.querySelector('.ant-tree-node-content-wrapper')!;
         dispatchMouseEvent(node, 'contextmenu');
@@ -366,7 +369,7 @@ describe('tree', () => {
       });
 
       it('should trigger dblclick event', async () => {
-        const spy = spyOn(component, 'nzEvent');
+        const spy = vi.spyOn(component, 'nzEvent');
         // get first node 0-0
         const node = nativeElement.querySelector('.ant-tree-node-content-wrapper')!;
         dispatchMouseEvent(node, 'dblclick');
@@ -383,24 +386,24 @@ describe('tree', () => {
     let component: NzTestTreeDraggableComponent;
     let nativeElement: Element;
 
-    let dragStartSpy: jasmine.Spy;
-    let dragEnterSpy: jasmine.Spy;
-    let dragOverSpy: jasmine.Spy;
-    let dragLeaveSpy: jasmine.Spy;
-    let dropSpy: jasmine.Spy;
-    let dragEndSpy: jasmine.Spy;
+    let dragStartSpy: ReturnType<typeof vi.spyOn>;
+    let dragEnterSpy: ReturnType<typeof vi.spyOn>;
+    let dragOverSpy: ReturnType<typeof vi.spyOn>;
+    let dragLeaveSpy: ReturnType<typeof vi.spyOn>;
+    let dropSpy: ReturnType<typeof vi.spyOn>;
+    let dragEndSpy: ReturnType<typeof vi.spyOn>;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTreeDraggableComponent);
       component = fixture.componentInstance;
       nativeElement = fixture.debugElement.nativeElement;
 
-      dragStartSpy = spyOn(component, 'onDragStart').and.callThrough();
-      dragEnterSpy = spyOn(component, 'onDragEnter').and.callThrough();
-      dragOverSpy = spyOn(component, 'onDragOver').and.callThrough();
-      dragLeaveSpy = spyOn(component, 'onDragLeave').and.callThrough();
-      dropSpy = spyOn(component, 'onDrop').and.callThrough();
-      dragEndSpy = spyOn(component, 'onDragEnd').and.callThrough();
+      dragStartSpy = vi.spyOn(component, 'onDragStart');
+      dragEnterSpy = vi.spyOn(component, 'onDragEnter');
+      dragOverSpy = vi.spyOn(component, 'onDragOver');
+      dragLeaveSpy = vi.spyOn(component, 'onDragLeave');
+      dropSpy = vi.spyOn(component, 'onDrop');
+      dragEndSpy = vi.spyOn(component, 'onDragEnd');
       fixture.detectChanges();
     });
 
@@ -459,7 +462,7 @@ describe('tree', () => {
         expect(shownNodes.length).toEqual(7);
       });
 
-      xit('should trigger drag over event', async () => {
+      it.skip('should trigger drag over event', async () => {
         //  ============ over with different position in next test ==============
         /**
          * nzTreeService#calcDropPosition

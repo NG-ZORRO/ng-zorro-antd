@@ -9,6 +9,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
 import { dispatchEvent, dispatchKeyboardEvent, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType, NzStatus, NzVariant } from 'ng-zorro-antd/core/types';
@@ -243,12 +245,12 @@ describe('input-number', () => {
     component.max.set(2);
     component.value = 3;
     fixture.detectChanges();
-    await fixture.whenStable();
+    await updateNonSignalsInput(fixture);
     expect(hostElement.classList).toContain('ant-input-number-out-of-range');
 
     component.value = 0;
     fixture.detectChanges();
-    await fixture.whenStable();
+    await updateNonSignalsInput(fixture);
     expect(hostElement.classList).toContain('ant-input-number-out-of-range');
   });
 
@@ -354,7 +356,7 @@ describe('input-number', () => {
   it('should be set disabled by ng control', async () => {
     component.controlDisabled.set(true);
     fixture.detectChanges();
-    await fixture.whenStable();
+    await updateNonSignalsInput(fixture);
     expect(hostElement.querySelector('input')!.disabled).toBeTruthy();
     expect(hostElement.classList).toContain('ant-input-number-disabled');
   });
@@ -457,7 +459,7 @@ describe('input-number', () => {
   });
 
   it('should be work onStep', () => {
-    const onStep = spyOn(component, 'onStep');
+    const onStep = vi.spyOn(component, 'onStep');
     const input = hostElement.querySelector('input')!;
 
     upStepByKeyboard();

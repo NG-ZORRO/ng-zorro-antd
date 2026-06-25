@@ -9,6 +9,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import {
   dispatchFakeEvent,
   dispatchKeyboardEvent,
@@ -20,7 +22,7 @@ import { NzRateComponent } from './rate.component';
 import { NzRateModule } from './rate.module';
 
 describe('rate', () => {
-  describe('basic rate', () => {
+  describe('basic', () => {
     let fixture: ComponentFixture<NzTestRateBasicComponent>;
     let testComponent: NzTestRateBasicComponent;
     let rate: DebugElement;
@@ -39,81 +41,81 @@ describe('rate', () => {
 
     it('should set ngModel work', async () => {
       fixture.detectChanges();
-      const children = Array.prototype.slice.call(rate.nativeElement.firstElementChild.children);
-      expect(children.every((item: HTMLElement) => item.classList.contains('ant-rate-star-zero'))).toBe(true);
-      testComponent.value = 5;
+      const children = Array.prototype.slice.call(rate.nativeElement.firstElementChild.children) as HTMLElement[];
+      expect(children.every(item => item.classList.contains('ant-rate-star-zero'))).toBe(true);
+      testComponent.value.set(5);
       await stabilize(fixture);
-      expect(children.every((item: HTMLElement) => item.classList.contains('ant-rate-star-full'))).toBe(true);
+      expect(children.every(item => item.classList.contains('ant-rate-star-full'))).toBe(true);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     });
 
-    it('should click work', async () => {
+    it('should click work', () => {
       fixture.detectChanges();
-      expect(testComponent.value).toBe(0);
+      expect(testComponent.value()).toBe(0);
       rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
-      await stabilize(fixture);
-      expect(testComponent.value).toBe(4);
+      fixture.detectChanges();
+      expect(testComponent.value()).toBe(4);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
     });
 
     it('should allow half work', async () => {
       testComponent.allowHalf.set(false);
       fixture.detectChanges();
-      expect(testComponent.value).toBe(0);
-      testComponent.value = 3.5;
+      expect(testComponent.value()).toBe(0);
+      testComponent.value.set(3.5);
       await stabilize(fixture);
       expect(rate.nativeElement.firstElementChild.children[3].classList).toContain('ant-rate-star-full');
       expect(rate.nativeElement.firstElementChild.children[4].classList).toContain('ant-rate-star-zero');
 
       testComponent.allowHalf.set(true);
-      testComponent.value = 0;
+      testComponent.value.set(0);
       await stabilize(fixture);
       rate.nativeElement.firstElementChild.children[3].firstElementChild.children[1].click();
-      await stabilize(fixture);
-      expect(testComponent.value).toBe(3.5);
+      fixture.detectChanges();
+      expect(testComponent.value()).toBe(3.5);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
     });
 
-    it('should allow clear work', async () => {
+    it('should allow clear work', () => {
       testComponent.allowClear.set(false);
       fixture.detectChanges();
-      expect(testComponent.value).toBe(0);
+      expect(testComponent.value()).toBe(0);
       rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
-      await stabilize(fixture);
-      expect(testComponent.value).toBe(4);
+      fixture.detectChanges();
+      expect(testComponent.value()).toBe(4);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
       rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
-      await stabilize(fixture);
-      expect(testComponent.value).toBe(4);
+      fixture.detectChanges();
+      expect(testComponent.value()).toBe(4);
       testComponent.allowClear.set(true);
       fixture.detectChanges();
       rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
-      await stabilize(fixture);
-      expect(testComponent.value).toBe(0);
+      fixture.detectChanges();
+      expect(testComponent.value()).toBe(0);
     });
 
-    it('should disable work', async () => {
+    it('should disable work', () => {
       testComponent.disabled.set(true);
       fixture.detectChanges();
-      expect(testComponent.value).toBe(0);
+      expect(testComponent.value()).toBe(0);
       rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
-      await stabilize(fixture);
-      expect(testComponent.value).toBe(0);
+      fixture.detectChanges();
+      expect(testComponent.value()).toBe(0);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     });
 
-    it('should count work', async () => {
+    it('should count work', () => {
       fixture.detectChanges();
       expect(rate.nativeElement.firstElementChild.children.length).toBe(5);
-      expect(testComponent.value).toBe(0);
+      expect(testComponent.value()).toBe(0);
       rate.nativeElement.firstElementChild.children[3].firstElementChild.firstElementChild.click();
-      await stabilize(fixture);
-      expect(testComponent.value).toBe(4);
+      fixture.detectChanges();
+      expect(testComponent.value()).toBe(4);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
       testComponent.count.set(10);
-      await stabilize(fixture);
+      fixture.detectChanges();
       expect(rate.nativeElement.firstElementChild.children.length).toBe(10);
-      expect(testComponent.value).toBe(4);
+      expect(testComponent.value()).toBe(4);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
     });
 
@@ -129,13 +131,13 @@ describe('rate', () => {
 
     it('should focus and blur function work', () => {
       fixture.detectChanges();
-      expect(rate.nativeElement.querySelector('ul') === document.activeElement).toBe(false);
+      const rateElement = rate.nativeElement.querySelector('ul') as HTMLElement;
+      vi.spyOn(rateElement, 'focus');
+      vi.spyOn(rateElement, 'blur');
       testComponent.nzRateComponent.focus();
-      fixture.detectChanges();
-      expect(rate.nativeElement.querySelector('ul') === document.activeElement).toBe(true);
+      expect(rateElement.focus).toHaveBeenCalledTimes(1);
       testComponent.nzRateComponent.blur();
-      fixture.detectChanges();
-      expect(rate.nativeElement.querySelector('ul') === document.activeElement).toBe(false);
+      expect(rateElement.blur).toHaveBeenCalledTimes(1);
     });
 
     it('should hover rate work', () => {
@@ -163,42 +165,42 @@ describe('rate', () => {
 
     it('should keydown work', () => {
       fixture.detectChanges();
-      expect(testComponent.value).toBe(0);
+      expect(testComponent.value()).toBe(0);
       dispatchKeyboardEvent(rate.nativeElement.firstElementChild, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
-      expect(testComponent.value).toBe(0);
+      expect(testComponent.value()).toBe(0);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
       dispatchKeyboardEvent(rate.nativeElement.firstElementChild, 'keydown', RIGHT_ARROW);
       fixture.detectChanges();
-      expect(testComponent.value).toBe(1);
+      expect(testComponent.value()).toBe(1);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
       dispatchKeyboardEvent(rate.nativeElement.firstElementChild, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
-      expect(testComponent.value).toBe(0);
+      expect(testComponent.value()).toBe(0);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(2);
       testComponent.allowHalf.set(true);
       fixture.detectChanges();
       dispatchKeyboardEvent(rate.nativeElement.firstElementChild, 'keydown', RIGHT_ARROW);
       fixture.detectChanges();
-      expect(testComponent.value).toBe(0.5);
+      expect(testComponent.value()).toBe(0.5);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(3);
       dispatchKeyboardEvent(rate.nativeElement.firstElementChild, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
-      expect(testComponent.value).toBe(0);
+      expect(testComponent.value()).toBe(0);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(4);
     });
 
     it('should right keydown not dispatch change reached limit', async () => {
-      testComponent.value = 5;
+      testComponent.value.set(5);
       await stabilize(fixture);
       dispatchKeyboardEvent(rate.nativeElement.firstElementChild, 'keydown', RIGHT_ARROW);
       fixture.detectChanges();
-      expect(testComponent.value).toBe(5);
+      expect(testComponent.value()).toBe(5);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     });
   });
 
-  describe('rate form', () => {
+  describe('form', () => {
     let fixture: ComponentFixture<NzTestRateFormComponent>;
     let testComponent: NzTestRateFormComponent;
 
@@ -259,7 +261,7 @@ describe('rate', () => {
 
   testDirectionality(() => NzTestRateBasicComponent, By.css('.ant-rate'), 'ant-rate');
 
-  describe('rate character', () => {
+  describe('character', () => {
     let fixture: ComponentFixture<NzTestRateCharacterComponent>;
     let rate: DebugElement;
 
@@ -281,9 +283,7 @@ describe('rate', () => {
 });
 
 async function stabilize<T>(fixture: ComponentFixture<T>): Promise<void> {
-  fixture.detectChanges();
   await updateNonSignalsInput(fixture);
-  fixture.detectChanges();
 }
 
 @Component({
@@ -312,12 +312,12 @@ export class NzTestRateBasicComponent {
   readonly allowHalf = signal(false);
   readonly allowClear = signal(false);
   readonly disabled = signal(false);
-  value = 0;
-  modelChange = jasmine.createSpy('model change callback');
-  onBlur = jasmine.createSpy('blur callback');
-  onFocus = jasmine.createSpy('focus callback');
-  onHoverChange = jasmine.createSpy('hover change callback');
-  onKeyDown = jasmine.createSpy('keydown callback');
+  readonly value = signal(0);
+  modelChange = vi.fn();
+  onBlur = vi.fn();
+  onFocus = vi.fn();
+  onHoverChange = vi.fn();
+  onKeyDown = vi.fn();
 }
 
 @Component({

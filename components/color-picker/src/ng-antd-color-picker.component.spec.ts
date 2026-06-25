@@ -190,8 +190,7 @@ describe('NgxColorPickerComponent', () => {
   `,
   encapsulation: ViewEncapsulation.None,
   styles: `
-    @import '../../style/testing.less';
-    @import '../style/entry.less';
+    @import '../style/testing.less';
   `
 })
 export class NzxTestColorPickerComponent {

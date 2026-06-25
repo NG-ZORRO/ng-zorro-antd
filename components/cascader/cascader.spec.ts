@@ -39,6 +39,8 @@ import { ComponentFixture, TestBed, inject as testingInject } from '@angular/cor
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { vi } from 'vitest';
+
 import { NzDemoCascaderMultipleComponent } from 'ng-zorro-antd/cascader/demo/multiple';
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
@@ -152,7 +154,7 @@ describe('cascader', () => {
     it('should input change event stopPropagation', () => {
       fixture.detectChanges();
       const fakeInputChangeEvent = createFakeEvent('change', true, true);
-      spyOn(fakeInputChangeEvent, 'stopPropagation');
+      vi.spyOn(fakeInputChangeEvent, 'stopPropagation').mockImplementation(() => {});
       getInputEl().dispatchEvent(fakeInputChangeEvent);
       fixture.detectChanges();
       expect(fakeInputChangeEvent.stopPropagation).toHaveBeenCalled();
@@ -449,7 +451,7 @@ describe('cascader', () => {
       await updateNonSignalsInput(fixture);
       expect(testComponent.values()).toEqual(['zhejiang', 'hangzhou', 'xihu']);
 
-      spyOn(testComponent, 'onClear');
+      vi.spyOn(testComponent, 'onClear').mockImplementation(() => {});
       expect(testComponent.onClear).not.toHaveBeenCalled();
       cascader.nativeElement.querySelector('.ant-select-clear nz-icon').click();
       fixture.detectChanges();
@@ -463,7 +465,7 @@ describe('cascader', () => {
       await updateNonSignalsInput(fixture);
       expect(testComponent.values()).toEqual(['zhejiang', 'hangzhou', 'xihu']);
 
-      spyOn(testComponent, 'onClear');
+      vi.spyOn(testComponent, 'onClear').mockImplementation(() => {});
       testComponent.cascader.clearSelection();
       fixture.detectChanges();
       expect(testComponent.values()).toEqual([]);
@@ -1016,7 +1018,7 @@ describe('cascader', () => {
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       await updateNonSignalsInput(fixture);
       fixture.detectChanges();
-      expect(testComponent.cascader.menuOpen()).toBeFalse();
+      expect(testComponent.cascader.menuOpen()).toBe(false);
     });
 
     it('should navigate left when press BACKSPACE', async () => {
@@ -1049,7 +1051,7 @@ describe('cascader', () => {
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
-      expect(testComponent.cascader.menuOpen()).toBeFalse();
+      expect(testComponent.cascader.menuOpen()).toBe(false);
     });
 
     it('should select option when press ENTER', async () => {
@@ -1392,7 +1394,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       testComponent.nzShowSearch.set(true);
       fixture.detectChanges();
-      const spy = spyOn(testComponent.cascader, 'focus');
+      const spy = vi.spyOn(testComponent.cascader, 'focus').mockImplementation(() => {});
       cascader.nativeElement.click();
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
@@ -1621,7 +1623,7 @@ describe('cascader', () => {
       testComponent.nzShowSearch.set(true);
       testComponent.nzOptions.set(options5);
       fixture.detectChanges();
-      const spy = spyOn(testComponent.cascader, 'focus');
+      const spy = vi.spyOn(testComponent.cascader, 'focus').mockImplementation(() => {});
       cascader.nativeElement.click();
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
@@ -1785,7 +1787,7 @@ describe('cascader', () => {
         await fixture.whenStable();
         expect(testComponent.onValueChanges).toHaveBeenCalled();
         expect(testComponent.cascader.menuOpen()).toBe(true);
-        spyOn(testComponent.cascader, 'onClickOutside');
+        vi.spyOn(testComponent.cascader, 'onClickOutside').mockImplementation(() => {});
         dispatchFakeEvent(document.body, 'click');
         expect(testComponent.cascader.onClickOutside).toHaveBeenCalled();
         expect(testComponent.cascader.menuOpen()).toBe(true);
@@ -1803,7 +1805,7 @@ describe('cascader', () => {
         expect(testComponent.values()).toEqual([['zhejiang', 'hangzhou'], ['jiangsu']]);
         expect(testComponent.cascader.menuOpen()).toBe(true);
 
-        spyOn(testComponent.cascader, 'clearSelection');
+        vi.spyOn(testComponent.cascader, 'clearSelection').mockImplementation(() => {});
         expect(cascader.nativeElement.querySelector('.ant-select-clear .anticon')).toBeDefined();
         cascader.nativeElement.querySelector('.ant-select-clear .anticon').click();
         expect(cascader.componentInstance.clearSelection).toHaveBeenCalled();
@@ -1899,15 +1901,15 @@ describe('cascader', () => {
       expect(tags.length).toBe(3);
     });
 
-    it('should check state conduct up and down', () => {
+    it('should check state conduct up and down', async () => {
       cascader.componentInstance.setMenuOpen(true);
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
 
       // firstly, expand all columns (for convenience)
       getItemAtColumnAndRow(1, 2)!.click();
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
       getItemAtColumnAndRow(2, 1)!.click();
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
 
       const rootEl = getCheckboxAtColumnAndRow(1, 2)!;
       const parentEl = getCheckboxAtColumnAndRow(2, 1)!;
@@ -1915,7 +1917,7 @@ describe('cascader', () => {
 
       // check parent option
       parentEl.click();
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
       expect(parentEl.classList).toContain('ant-cascader-checkbox-checked');
       // Conduct Down: then all children should be checked
       expect(children.every(c => c.classList.contains('ant-cascader-checkbox-checked'))).toBe(true);
@@ -1924,7 +1926,7 @@ describe('cascader', () => {
 
       // uncheck a child option
       children[0]!.click();
-      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
       // Conduct Up: then parent should be half checked
       expect(parentEl.classList).toContain('ant-cascader-checkbox-indeterminate');
       // Conduct Up: and root should be half checked
@@ -1991,7 +1993,7 @@ describe('cascader', () => {
     });
 
     it('should change check state trigger ngModelChange', async () => {
-      spyOn(testComponent, 'onChanges');
+      vi.spyOn(testComponent, 'onChanges').mockImplementation(() => {});
       expect(testComponent.onChanges).not.toHaveBeenCalled();
       cascader.componentInstance.setMenuOpen(true);
       await fixture.whenStable();
@@ -2076,7 +2078,7 @@ describe('cascader', () => {
       });
 
       it('should add item work', async () => {
-        spyOn(testComponent, 'onChanges');
+        vi.spyOn(testComponent, 'onChanges').mockImplementation(() => {});
         setValues(2);
         testComponent.values.update(values => [['light', 'a'], ...values.slice(1)]);
         await updateNonSignalsInput(fixture);
@@ -2117,7 +2119,7 @@ describe('cascader', () => {
     });
 
     it('should nzLoadData work', async () => {
-      spyOn(testComponent, 'addCallTimes');
+      vi.spyOn(testComponent, 'addCallTimes').mockImplementation(() => {});
 
       fixture.detectChanges();
       expect(testComponent.values()).toBeNull();
@@ -2174,7 +2176,7 @@ describe('cascader', () => {
     });
 
     it('should nzLoadData work when specifies default value', async () => {
-      spyOn(testComponent, 'addCallTimes');
+      vi.spyOn(testComponent, 'addCallTimes').mockImplementation(() => {});
       testComponent.values.set(['zhejiang', 'hangzhou', 'xihu']);
       await sleep(3000);
       fixture.detectChanges();
@@ -2801,8 +2803,8 @@ export class NzDemoCascaderDefaultComponent {
   readonly nzPlacement = signal<NzCascaderPlacement>('bottomLeft');
   readonly nzVariant = signal<NzVariant>('outlined');
 
-  onOpenChange = jasmine.createSpy<(open: boolean) => void>('open change');
-  onValueChanges = jasmine.createSpy('value change');
+  onOpenChange = vi.fn<(open: boolean) => void>();
+  onValueChanges = vi.fn();
   onClear(): void {}
   fakeChangeOn = (node: NzSafeAny, _index: number): boolean => node.value === 'zhejiang';
 }
@@ -2860,8 +2862,8 @@ export class NzDemoCascaderLoadDataComponent {
   };
 
   addCallTimes(): void {}
-  onOpenChange = jasmine.createSpy<(open: boolean) => void>('open change');
-  onValueChanges = jasmine.createSpy('value change');
+  onOpenChange = vi.fn<(open: boolean) => void>();
+  onValueChanges = vi.fn();
 }
 
 @Component({
