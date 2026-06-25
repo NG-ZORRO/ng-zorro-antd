@@ -25,7 +25,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NzConfigService, onConfigChangeEventForComponent } from 'ng-zorro-antd/core/config';
 import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular, getElementOffset, isNotNil } from 'ng-zorro-antd/core/util';
 
 import { FADE_CLASS_NAME_MAP, MODAL_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME, ZOOM_CLASS_NAME_MAP } from './modal-config';
@@ -41,17 +40,17 @@ type AnimationState = 'enter-start' | 'enter-active' | 'leave-start' | 'leave-ac
 
 @Directive()
 export class BaseModalContainerComponent extends BasePortalOutlet {
-  readonly document: Document = inject(DOCUMENT);
-  readonly cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
-  readonly config: ModalOptions = inject(ModalOptions);
-  protected ngZone: NgZone = inject(NgZone);
-  protected host: ElementRef<HTMLElement> = inject(ElementRef);
-  protected focusTrapFactory: FocusTrapFactory = inject(FocusTrapFactory);
-  protected render: Renderer2 = inject(Renderer2);
-  protected overlayRef: OverlayRef = inject(OverlayRef);
-  protected nzConfigService: NzConfigService = inject(NzConfigService);
-  protected animationType = inject(ANIMATION_MODULE_TYPE, { optional: true });
-  protected destroyRef = inject(DestroyRef);
+  readonly document = inject(DOCUMENT);
+  readonly cdr = inject(ChangeDetectorRef);
+  readonly config = inject(ModalOptions);
+  protected readonly ngZone = inject(NgZone);
+  protected readonly host: ElementRef<HTMLElement> = inject(ElementRef);
+  protected readonly focusTrapFactory = inject(FocusTrapFactory);
+  protected readonly renderer = inject(Renderer2);
+  protected readonly overlayRef = inject(OverlayRef);
+  protected readonly nzConfigService = inject(NzConfigService);
+  protected readonly animationType = inject(ANIMATION_MODULE_TYPE, { optional: true });
+  protected readonly destroyRef = inject(DestroyRef);
 
   portalOutlet!: CdkPortalOutlet;
   modalElementRef!: ElementRef<HTMLDivElement>;
@@ -70,14 +69,12 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
   private oldMaskStyle: Record<string, string> | null = null;
 
   get showMask(): boolean {
-    const defaultConfig: NzSafeAny = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) || {};
-
+    const defaultConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) || {};
     return !!getValueWithConfig<boolean>(this.config.nzMask, defaultConfig.nzMask, true);
   }
 
   get maskClosable(): boolean {
-    const defaultConfig: NzSafeAny = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) || {};
-
+    const defaultConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) || {};
     return !!getValueWithConfig<boolean>(this.config.nzMaskClosable, defaultConfig.nzMaskClosable, true);
   }
 
@@ -105,6 +102,10 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
 
   onOkClick(): void {
     this.okTriggered.emit();
+  }
+
+  markForCheck(): void {
+    this.cdr.markForCheck();
   }
 
   attachComponentPortal<T>(portal: ComponentPortal<T>): ComponentRef<T> {
@@ -154,7 +155,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
       const x = lastPosition.left + previouslyDOMRect.width / 2;
       const y = lastPosition.top + previouslyDOMRect.height / 2;
       const transformOrigin = `${x - modalElement.offsetLeft}px ${y - modalElement.offsetTop}px 0px`;
-      this.render.setStyle(modalElement, 'transform-origin', transformOrigin);
+      this.renderer.setStyle(modalElement, 'transform-origin', transformOrigin);
     }
   }
 
@@ -260,7 +261,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
     const backdropElement = this.overlayRef.backdropElement;
     if (backdropElement) {
       if (isNotNil(this.config.nzZIndex)) {
-        this.render.setStyle(backdropElement, 'z-index', this.config.nzZIndex);
+        this.renderer.setStyle(backdropElement, 'z-index', this.config.nzZIndex);
       }
     }
   }
@@ -271,7 +272,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
       if (this.oldMaskStyle) {
         const styles = this.oldMaskStyle as Record<string, string>;
         Object.keys(styles).forEach(key => {
-          this.render.removeStyle(backdropElement, key);
+          this.renderer.removeStyle(backdropElement, key);
         });
         this.oldMaskStyle = null;
       }
@@ -281,7 +282,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
       if (typeof this.config.nzMaskStyle === 'object' && Object.keys(this.config.nzMaskStyle).length) {
         const styles: Record<string, string> = { ...this.config.nzMaskStyle };
         Object.keys(styles).forEach(key => {
-          this.render.setStyle(backdropElement, key, styles[key]);
+          this.renderer.setStyle(backdropElement, key, styles[key]);
         });
         this.oldMaskStyle = styles;
       }

@@ -72,6 +72,7 @@ import {
 } from './typings';
 
 const MOUSE_EVENT_DELAY = 150;
+const LAZY_LOAD_DELAY = 150;
 
 describe('cascader', () => {
   let overlayContainer: OverlayContainer;
@@ -2131,7 +2132,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(1);
 
-      await sleep(600); // wait for first row to load finish
+      await sleep(LAZY_LOAD_DELAY); // wait for first row to load finish
       fixture.detectChanges();
       expect(getAllColumns().length).toBe(1);
       expect(testComponent.values()).toBeNull(); // not select yet
@@ -2140,7 +2141,7 @@ describe('cascader', () => {
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
 
       itemEl1.click();
-      await sleep(600);
+      await sleep(LAZY_LOAD_DELAY);
       fixture.detectChanges();
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(2);
       expect(getAllColumns().length).toBe(2);
@@ -2151,7 +2152,7 @@ describe('cascader', () => {
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
 
       itemEl2.click();
-      await sleep(600);
+      await sleep(LAZY_LOAD_DELAY);
       fixture.detectChanges();
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(3);
       expect(getAllColumns().length).toBe(3);
@@ -2163,13 +2164,13 @@ describe('cascader', () => {
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
 
       itemEl3.click();
-      await sleep(600);
+      await sleep(LAZY_LOAD_DELAY);
       fixture.detectChanges();
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(4);
       expect(testComponent.values()).toBeNull(); // not select yet
 
       itemEl3.click(); // re-click again, this time it is a leaf
-      await sleep(600);
+      await sleep(LAZY_LOAD_DELAY);
       fixture.detectChanges();
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(4);
       expect(testComponent.values()).toEqual(['zhejiang', 'hangzhou', 'xihu']);
@@ -2178,7 +2179,7 @@ describe('cascader', () => {
     it('should nzLoadData work when specifies default value', async () => {
       vi.spyOn(testComponent, 'addCallTimes').mockImplementation(() => {});
       testComponent.values.set(['zhejiang', 'hangzhou', 'xihu']);
-      await sleep(3000);
+      await sleep(LAZY_LOAD_DELAY * 3 + 16);
       fixture.detectChanges();
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(3);
       expect(testComponent.cascader.cascaderService.columns.length).toBe(3);
@@ -2188,26 +2189,26 @@ describe('cascader', () => {
     it('should not emit error after clear search and reopen it', async () => {
       fixture.detectChanges();
       testComponent.cascader.setMenuOpen(true);
-      await sleep(1000); // wait for first row to load finish
+      await sleep(LAZY_LOAD_DELAY); // wait for first row to load finish
       fixture.detectChanges();
       const itemEl1 = getItemAtColumnAndRow(1, 1)!;
 
       itemEl1.click();
-      await sleep(600);
+      await sleep(LAZY_LOAD_DELAY);
       fixture.detectChanges();
       const itemEl2 = getItemAtColumnAndRow(2, 1)!;
 
       itemEl2.click();
-      await sleep(600);
+      await sleep(LAZY_LOAD_DELAY);
       fixture.detectChanges();
       const itemEl3 = getItemAtColumnAndRow(3, 1)!;
 
       itemEl3.click();
-      await sleep(600);
+      await sleep(LAZY_LOAD_DELAY);
       fixture.detectChanges();
 
       itemEl3.click(); // re-click again, this time it is a leaf
-      await sleep(600);
+      await sleep(LAZY_LOAD_DELAY);
       fixture.detectChanges();
       cascader.nativeElement.querySelector('.ant-select-clear .anticon').click();
       testComponent.cascader.setMenuOpen(true);
@@ -2857,7 +2858,7 @@ export class NzDemoCascaderLoadDataComponent {
         } else {
           reject();
         }
-      }, 500);
+      }, LAZY_LOAD_DELAY);
     });
   };
 

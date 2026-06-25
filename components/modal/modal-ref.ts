@@ -141,7 +141,7 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
   updateConfig(config: ModalOptions): void {
     Object.assign(this.config, config);
     this.containerInstance.bindBackdropStyle();
-    this.containerInstance.cdr.markForCheck();
+    this.containerInstance.markForCheck();
   }
 
   getState(): NzModalState {

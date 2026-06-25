@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { DestroyRef, Directive, ElementRef, EventEmitter, inject, NgZone, OnInit, Output } from '@angular/core';
+import { DestroyRef, Directive, ElementRef, EventEmitter, inject, NgZone, Output } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, Subscription } from 'rxjs';
 
@@ -24,7 +24,7 @@ const SPEED_OFF_MULTIPLE = 0.995 ** REFRESH_INTERVAL;
 @Directive({
   selector: '[nzTabScrollList]'
 })
-export class NzTabScrollListDirective implements OnInit {
+export class NzTabScrollListDirective {
   private ngZone = inject(NgZone);
   private destroyRef = inject(DestroyRef);
   private el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
@@ -42,7 +42,7 @@ export class NzTabScrollListDirective implements OnInit {
   @Output() readonly offsetChange = new EventEmitter<NzTabScrollListOffsetEvent>();
   @Output() readonly tabScroll = new EventEmitter<NzTabScrollEvent>();
 
-  ngOnInit(): void {
+  constructor() {
     const wheel$ = fromEventOutsideAngular<WheelEvent>(this.el, 'wheel');
     const touchstart$ = fromEventOutsideAngular<TouchEvent>(this.el, 'touchstart');
     const touchmove$ = fromEventOutsideAngular<TouchEvent>(this.el, 'touchmove');

@@ -270,6 +270,7 @@ export class NzTestIconIconfontComponent {
 class ChildModule {}
 
 @Component({
+  selector: 'nz-test-icon-multi-injection',
   imports: [NzIconModule, ChildModule],
   template: `
     <nz-icon nzType="home" />
@@ -279,6 +280,7 @@ class ChildModule {}
 class NzTestIconMultiInjectionComponent {}
 
 @Component({
+  selector: 'nz-test-icon-multi-injection-standalone',
   imports: [NzIconModule],
   providers: [provideNzIconsPatch([QuestionOutline])],
   template: `

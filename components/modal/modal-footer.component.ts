@@ -3,13 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectorRef, Component, inject, input, output } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { isPromise } from 'ng-zorro-antd/core/util';
-import { NzI18nService, NzModalI18nInterface } from 'ng-zorro-antd/i18n';
+import { NzI18nPipe } from 'ng-zorro-antd/i18n';
 
 import { NzModalRef } from './modal-ref';
 import { ModalButtonOptions, ModalOptions } from './modal-types';
@@ -17,12 +16,13 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
 @Component({
   selector: 'div[nz-modal-footer]',
   exportAs: 'nzModalFooterBuiltin',
+  imports: [NzOutletModule, NzButtonModule, NzI18nPipe],
   template: `
     @if (config.nzFooter) {
       <ng-container
-        *nzStringTemplateOutlet="config.nzFooter; context: { $implicit: config.nzData, modalRef: modalRef }"
+        *nzStringTemplateOutlet="config.nzFooter; context: { $implicit: config.nzData, modalRef: modalRef() }"
       >
-        @if (buttonsFooter) {
+        @if (buttons) {
           @for (button of buttons; track button) {
             <button
               nz-button
@@ -52,7 +52,7 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
           [nzLoading]="config.nzCancelLoading"
           [disabled]="config.nzCancelDisabled"
         >
-          {{ config.nzCancelText || locale.cancelText }}
+          {{ config.nzCancelText || ('Modal.cancelText' | nzI18n) }}
         </button>
       }
       @if (config.nzOkText !== null) {
@@ -65,37 +65,26 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
           [nzLoading]="config.nzOkLoading"
           [disabled]="config.nzOkDisabled"
         >
-          {{ config.nzOkText || locale.okText }}
+          {{ config.nzOkText || ('Modal.okText' | nzI18n) }}
         </button>
       }
     }
   `,
   host: {
     class: 'ant-modal-footer'
-  },
-  changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [NzOutletModule, NzButtonModule]
+  }
 })
 export class NzModalFooterComponent {
-  private i18n = inject(NzI18nService);
+  private readonly cdr = inject(ChangeDetectorRef);
   public readonly config = inject(ModalOptions);
 
-  buttonsFooter = false;
-  buttons: ModalButtonOptions[] = [];
-  locale!: NzModalI18nInterface;
-  @Output() readonly cancelTriggered = new EventEmitter<void>();
-  @Output() readonly okTriggered = new EventEmitter<void>();
-  @Input() modalRef!: NzModalRef;
+  readonly modalRef = input.required<NzModalRef>();
+  readonly cancelTriggered = output();
+  readonly okTriggered = output();
 
-  constructor() {
-    if (Array.isArray(this.config.nzFooter)) {
-      this.buttonsFooter = true;
-      this.buttons = (this.config.nzFooter as ModalButtonOptions[]).map(mergeDefaultOption);
-    }
-    this.i18n.localeChange.pipe(takeUntilDestroyed()).subscribe(() => {
-      this.locale = this.i18n.getLocaleData('Modal');
-    });
-  }
+  protected buttons = Array.isArray(this.config.nzFooter)
+    ? (this.config.nzFooter as ModalButtonOptions[]).map(mergeDefaultOption)
+    : null;
 
   onCancel(): void {
     this.cancelTriggered.emit();
@@ -105,13 +94,17 @@ export class NzModalFooterComponent {
     this.okTriggered.emit();
   }
 
+  markForCheck(): void {
+    this.cdr.markForCheck();
+  }
+
   /**
    * Returns the value of the specified key.
    * If it is a function, run and return the return value of the function.
    */
   getButtonCallableProp(options: ModalButtonOptions, prop: keyof ModalButtonOptions): boolean {
     const value = options[prop];
-    const componentInstance = this.modalRef.getContentComponent();
+    const componentInstance = this.modalRef().getContentComponent();
     return typeof value === 'function' ? value.apply(options, componentInstance && [componentInstance]) : value;
   }
 

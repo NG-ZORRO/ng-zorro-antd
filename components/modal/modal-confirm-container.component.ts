@@ -5,21 +5,11 @@
 
 import { CdkScrollable } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, PortalModule } from '@angular/cdk/portal';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  EventEmitter,
-  OnInit,
-  Output,
-  ViewChild,
-  inject
-} from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NzI18nService, NzModalI18nInterface } from 'ng-zorro-antd/i18n';
+import { NzI18nPipe } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPipesModule } from 'ng-zorro-antd/pipes';
 
@@ -29,6 +19,15 @@ import { BaseModalContainerComponent } from './modal-container.directive';
 @Component({
   selector: 'nz-modal-confirm-container',
   exportAs: 'nzModalConfirmContainer',
+  imports: [
+    NzPipesModule,
+    NzI18nPipe,
+    NzIconModule,
+    NzModalCloseComponent,
+    NzOutletModule,
+    PortalModule,
+    NzButtonModule
+  ],
   template: `
     <div
       #modalElement
@@ -68,7 +67,7 @@ import { BaseModalContainerComponent } from './modal-container.directive';
                   [nzLoading]="config.nzCancelLoading"
                   [disabled]="config.nzCancelDisabled"
                 >
-                  {{ config.nzCancelText || locale.cancelText }}
+                  {{ config.nzCancelText || ('Modal.cancelText' | nzI18n) }}
                 </button>
               }
               @if (config.nzOkText !== null) {
@@ -81,7 +80,7 @@ import { BaseModalContainerComponent } from './modal-container.directive';
                   [disabled]="config.nzOkDisabled"
                   [nzDanger]="config.nzOkDanger"
                 >
-                  {{ config.nzOkText || locale.okText }}
+                  {{ config.nzOkText || ('Modal.okText' | nzI18n) }}
                 </button>
               }
             </div>
@@ -91,8 +90,6 @@ import { BaseModalContainerComponent } from './modal-container.directive';
     </div>
   `,
   hostDirectives: [CdkScrollable],
-  // Using OnPush for modal caused footer can not to detect changes. we can fix it when 8.x.
-  changeDetection: ChangeDetectionStrategy.Eager,
   host: {
     tabindex: '-1',
     role: 'dialog',
@@ -101,12 +98,9 @@ import { BaseModalContainerComponent } from './modal-container.directive';
     '[class.ant-modal-centered]': 'config.nzCentered',
     '[style.zIndex]': 'config.nzZIndex',
     '(click)': 'onContainerClick($event)'
-  },
-  imports: [NzPipesModule, NzIconModule, NzModalCloseComponent, NzOutletModule, PortalModule, NzButtonModule]
+  }
 })
 export class NzModalConfirmContainerComponent extends BaseModalContainerComponent implements OnInit {
-  private i18n = inject(NzI18nService);
-
   @ViewChild(CdkPortalOutlet, { static: true }) set _portalOutlet(portalOutlet: CdkPortalOutlet) {
     this.portalOutlet = portalOutlet;
   }
@@ -115,15 +109,6 @@ export class NzModalConfirmContainerComponent extends BaseModalContainerComponen
   }
   @Output() override readonly cancelTriggered = new EventEmitter<void>();
   @Output() override readonly okTriggered = new EventEmitter<void>();
-  locale!: NzModalI18nInterface;
-
-  constructor() {
-    super();
-
-    this.i18n.localeChange.pipe(takeUntilDestroyed()).subscribe(() => {
-      this.locale = this.i18n.getLocaleData('Modal');
-    });
-  }
 
   ngOnInit(): void {
     this.setupMouseListeners(this.modalElementRef);

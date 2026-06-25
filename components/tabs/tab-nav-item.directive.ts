@@ -12,13 +12,13 @@ import { NzTabComponent } from './tab.component';
   selector: '[nzTabNavItem]'
 })
 export class NzTabNavItemDirective implements FocusableOption {
-  @Input({ transform: booleanAttribute }) disabled: boolean = false;
-  @Input() tab!: NzTabComponent;
-  @Input({ transform: booleanAttribute }) active: boolean = false;
+  public readonly elementRef: ElementRef<HTMLElement> = inject(ElementRef<HTMLElement>);
+  private el = this.elementRef.nativeElement;
+  private parentElement = this.el.parentElement!;
 
-  public elementRef: ElementRef<HTMLElement> = inject(ElementRef<HTMLElement>);
-  private el: HTMLElement = this.elementRef.nativeElement;
-  private parentElement: HTMLElement = this.el.parentElement!;
+  @Input() tab!: NzTabComponent;
+  @Input({ transform: booleanAttribute }) disabled = false;
+  @Input({ transform: booleanAttribute }) active = false;
 
   focus(): void {
     this.el.focus({ preventScroll: true });

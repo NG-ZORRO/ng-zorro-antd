@@ -20,7 +20,7 @@ import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { overlayZIndexSetter } from 'ng-zorro-antd/core/overlay';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { isNotNil } from 'ng-zorro-antd/core/util';
+import { isNotNil, isTemplateRef } from 'ng-zorro-antd/core/util';
 
 import { MODAL_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME, NZ_MODAL_DATA } from './modal-config';
 import { NzModalConfirmContainerComponent } from './modal-confirm-container.component';
@@ -34,10 +34,10 @@ type ContentType<T> = ComponentType<T> | TemplateRef<T> | string;
 
 @Injectable()
 export class NzModalService implements OnDestroy {
-  private injector = inject(Injector);
-  private nzConfigService = inject(NzConfigService);
-  private directionality = inject(Directionality);
-  private parentModal = inject(NzModalService, { skipSelf: true, optional: true });
+  private readonly injector = inject(Injector);
+  private readonly nzConfigService = inject(NzConfigService);
+  private readonly directionality = inject(Directionality);
+  private readonly parentModal = inject(NzModalService, { skipSelf: true, optional: true });
 
   private openModalsAtThisLevel: NzModalRef[] = [];
   private readonly afterAllClosedAtThisLevel = new Subject<void>();
@@ -53,7 +53,7 @@ export class NzModalService implements OnDestroy {
 
   readonly afterAllClose: Observable<void> = defer(() =>
     this.openModals.length ? this._afterAllClosed : this._afterAllClosed.pipe(startWith(undefined))
-  ) as Observable<void>;
+  );
 
   create<T, D = NzSafeAny, R = NzSafeAny>(config: ModalOptions<T, D, R>): NzModalRef<T, R> {
     return this.open<T, D, R>(config.nzContent as ComponentType<T>, config);
@@ -132,7 +132,7 @@ export class NzModalService implements OnDestroy {
   }
 
   private createOverlay(config: ModalOptions): OverlayRef {
-    const globalConfig: NzSafeAny = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) || {};
+    const globalConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) || {};
 
     return createOverlayRef(this.injector, {
       hasBackdrop: true,
@@ -179,12 +179,12 @@ export class NzModalService implements OnDestroy {
   ): NzModalRef<T, R> {
     const modalRef = new NzModalRef<T, R>(overlayRef, config, modalContainer);
 
-    if (componentOrTemplateRef instanceof TemplateRef) {
+    if (isTemplateRef(componentOrTemplateRef)) {
       modalContainer.attachTemplatePortal(
         new TemplatePortal<T>(componentOrTemplateRef, null!, {
           $implicit: config.nzData,
           modalRef
-        } as NzSafeAny)
+        } as T)
       );
     } else if (isNotNil(componentOrTemplateRef) && typeof componentOrTemplateRef !== 'string') {
       const injector = this.createInjector<T, D, R>(modalRef, config);

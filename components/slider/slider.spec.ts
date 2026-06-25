@@ -1031,6 +1031,7 @@ class SliderWithStepComponent {
 }
 
 @Component({
+  selector: 'nz-test-slider-with-value-smaller-than-min',
   imports: [FormsModule, NzSliderModule],
   template: `<nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6" />`,
   styles: [styles]
@@ -1038,6 +1039,7 @@ class SliderWithStepComponent {
 class SliderWithValueSmallerThanMinComponent {}
 
 @Component({
+  selector: 'nz-test-slider-with-value-zero',
   imports: [FormsModule, NzSliderModule],
   template: `<nz-slider [ngModel]="0" [nzMin]="-5" [nzMax]="5" />`,
   styles: [styles]
@@ -1045,6 +1047,7 @@ class SliderWithValueSmallerThanMinComponent {}
 class SliderWithValueZeroComponent {}
 
 @Component({
+  selector: 'nz-test-slider-with-value-greater-than-max',
   imports: [FormsModule, NzSliderModule],
   template: `<nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6" />`,
   styles: [styles]
@@ -1052,6 +1055,7 @@ class SliderWithValueZeroComponent {}
 class SliderWithValueGreaterThanMaxComponent {}
 
 @Component({
+  selector: 'nz-test-vertical-slider',
   imports: [NzSliderModule],
   template: `<nz-slider nzVertical />`,
   styles: [styles]
@@ -1059,6 +1063,7 @@ class SliderWithValueGreaterThanMaxComponent {}
 class VerticalSliderComponent {}
 
 @Component({
+  selector: 'nz-test-reverse-slider',
   imports: [NzSliderModule],
   template: `
     <nz-slider nzReverse [nzMarks]="marks" />
@@ -1071,6 +1076,7 @@ class ReverseSliderComponent {
 }
 
 @Component({
+  selector: 'nz-test-reverse-slider-with-min-and-max',
   imports: [NzSliderModule],
   template: `<nz-slider [nzMin]="4" [nzMax]="6" nzReverse />`,
   styles: [styles]
@@ -1078,6 +1084,7 @@ class ReverseSliderComponent {
 class ReverseSliderWithMinAndMaxComponent {}
 
 @Component({
+  selector: 'nz-test-mixed-slider',
   imports: [NzSliderModule],
   template: `
     <nz-slider
@@ -1108,6 +1115,7 @@ class MixedSliderComponent {
 }
 
 @Component({
+  selector: 'nz-test-slider-with-form-control',
   imports: [ReactiveFormsModule, NzSliderModule],
   template: `
     <form>
@@ -1131,6 +1139,7 @@ class SliderWithFormControlComponent {
 }
 
 @Component({
+  selector: 'nz-test-slider-show-tooltip',
   imports: [FormsModule, NzSliderModule],
   template: `<nz-slider [nzTooltipVisible]="show()" [ngModel]="value" />`,
   styles: [styles]
@@ -1142,6 +1151,7 @@ class SliderShowTooltipComponent {
 }
 
 @Component({
+  selector: 'nz-test-slider-keyboard',
   imports: [NzSliderModule],
   template: `<nz-slider [nzRange]="range()" [nzDisabled]="disabled()" />`
 })
@@ -1151,6 +1161,7 @@ class NzTestSliderKeyboardComponent {
 }
 
 @Component({
+  selector: 'nz-test-slider-show-template-tooltip',
   imports: [FormsModule, NzSliderModule],
   template: `
     <nz-slider [nzTooltipVisible]="show()" [ngModel]="value" [nzTipFormatter]="titleTemplate" />
@@ -1236,7 +1247,6 @@ function dispatchSlideStartEvent(sliderElement: HTMLElement, percent: number): v
   const y = dimensions.top + dimensions.height * percent;
 
   dispatchMouseenterEvent(sliderElement);
-
   dispatchMouseEvent(sliderElement, 'mousedown', x, y);
 }
 
