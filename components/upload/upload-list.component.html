@@ -67,7 +67,7 @@
       </ng-template>
 
       <ng-template #removeIcon>
-        @if (icons.showRemoveIcon) {
+        @if (file.showRemove) {
           <button
             type="button"
             nz-button
@@ -77,7 +77,11 @@
             [attr.title]="locale.removeFile"
             class="ant-upload-list-item-card-actions-btn"
           >
-            <nz-icon nzType="delete" />
+            @if (icons.removeIcon) {
+              <ng-template [ngTemplateOutlet]="icons.removeIcon" [ngTemplateOutletContext]="{ $implicit: file }" />
+            } @else {
+              <nz-icon nzType="delete" />
+            }
           </button>
         }
       </ng-template>
@@ -93,7 +97,11 @@
             [attr.title]="locale.downloadFile"
             class="ant-upload-list-item-card-actions-btn"
           >
-            <nz-icon nzType="download" />
+            @if (icons.downloadIcon) {
+              <ng-template [ngTemplateOutlet]="icons.downloadIcon" [ngTemplateOutletContext]="{ $implicit: file }" />
+            } @else {
+              <nz-icon nzType="download" />
+            }
           </button>
         }
       </ng-template>
@@ -104,6 +112,12 @@
             <ng-template [ngTemplateOutlet]="downloadIcon" />
             <ng-template [ngTemplateOutlet]="removeIcon" />
           </span>
+        }
+      </ng-template>
+
+      <ng-template #extra>
+        @if (icons.extra) {
+          <ng-template [ngTemplateOutlet]="icons.extra" [ngTemplateOutletContext]="{ $implicit: file }" />
         }
       </ng-template>
 
@@ -119,10 +133,12 @@
             (click)="handlePreview(file, $event)"
           >
             {{ file.name }}
+            <ng-template [ngTemplateOutlet]="extra" />
           </a>
         } @else {
           <span class="ant-upload-list-item-name" [attr.title]="file.name" (click)="handlePreview(file, $event)">
             {{ file.name }}
+            <ng-template [ngTemplateOutlet]="extra" />
           </span>
         }
         <ng-template [ngTemplateOutlet]="downloadOrDelete" />
@@ -137,7 +153,7 @@
       @if (!file.isUploading) {
         @if (_listType === 'picture-card') {
           <span class="ant-upload-list-item-actions">
-            @if (icons.showPreviewIcon) {
+            @if (file.showPreview) {
               <a
                 [href]="file.url || file.thumbUrl"
                 target="_blank"
@@ -146,7 +162,11 @@
                 [style]="!(file.url || file.thumbUrl) ? { opacity: 0.5, 'pointer-events': 'none' } : null"
                 (click)="handlePreview(file, $event)"
               >
-                <nz-icon nzType="eye" />
+                @if (icons.previewIcon) {
+                  <ng-template [ngTemplateOutlet]="icons.previewIcon" [ngTemplateOutletContext]="{ $implicit: file }" />
+                } @else {
+                  <nz-icon nzType="eye" />
+                }
               </a>
             }
             @if (file.status === 'done') {
