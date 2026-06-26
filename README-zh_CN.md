@@ -46,7 +46,7 @@ NG-ZORRO
 
 ## 🖥 支持环境
 
-- Angular `^21.0.0` [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+- Angular `^22.0.0` [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 - 支持服务端渲染
 - 现代浏览器，[浏览器支持](https://angular.cn/reference/versions#browser-support)
 - [Electron](http://electron.atom.io/)
@@ -120,8 +120,6 @@ $ npm install
 $ npm run start
 ```
 
-浏览器会自动打开。
-
 ## 🤝 如何贡献
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/pulls)
@@ -145,7 +143,7 @@ $ npm run start
 3. [![Discord](https://img.shields.io/discord/748677963142135818?label=Discord&style=flat-square)](https://discord.com/channels/748677963142135818/764322550712893451)
 4. 加入钉钉 NG-ZORRO 自助服务群（中文）
 
-<img src="https://img.alicdn.com/imgextra/i2/O1CN01996NqO1ykdnAdOLqG_!!6000000006617-2-tps-864-822.png" width="300" height="300" loading="lazy" alt="ding talk qr-code">
+<img src="https://img.alicdn.com/imgextra/i2/O1CN01q5dkHH270giZpjKdN_!!6000000007735-2-tps-824-838.png" width="300" height="300" loading="lazy" alt="dingtalk qr-code">
 
 ## 🎉 谁在使用
 

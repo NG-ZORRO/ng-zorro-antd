@@ -16,11 +16,12 @@ tag: '{{version}}'
 
 ---
 
-## 22.0.0-alpha.0
+## 22.0.0-alpha.1
 
 `2026-06-12`
 
-Support Angular v22
+- Support Angular v22
+- All components use OnPush change detection strategy
 
 > **NOTE**: v22 is still in alpha stage and may contain breaking changes in future releases.
 
