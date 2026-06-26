@@ -6,7 +6,7 @@
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { CdkScrollable } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, PortalModule } from '@angular/cdk/portal';
-import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { NzPipesModule } from 'ng-zorro-antd/pipes';
 
@@ -18,6 +18,15 @@ import { NzModalTitleComponent } from './modal-title.component';
 @Component({
   selector: 'nz-modal-container',
   exportAs: 'nzModalContainer',
+  imports: [
+    NzModalCloseComponent,
+    NzModalTitleComponent,
+    PortalModule,
+    NzModalFooterComponent,
+    NzPipesModule,
+    CdkDrag,
+    CdkDragHandle
+  ],
   hostDirectives: [CdkScrollable],
   template: `
     <div
@@ -56,8 +65,6 @@ import { NzModalTitleComponent } from './modal-title.component';
       </div>
     </div>
   `,
-  // Using OnPush for modal caused footer can not to detect changes. we can fix it when 8.x.
-  changeDetection: ChangeDetectionStrategy.Eager,
   host: {
     tabindex: '-1',
     role: 'dialog',
@@ -66,16 +73,7 @@ import { NzModalTitleComponent } from './modal-title.component';
     '[class.ant-modal-centered]': 'config.nzCentered',
     '[style.zIndex]': 'config.nzZIndex',
     '(click)': 'onContainerClick($event)'
-  },
-  imports: [
-    NzModalCloseComponent,
-    NzModalTitleComponent,
-    PortalModule,
-    NzModalFooterComponent,
-    NzPipesModule,
-    CdkDrag,
-    CdkDragHandle
-  ]
+  }
 })
 export class NzModalContainerComponent extends BaseModalContainerComponent implements OnInit {
   @ViewChild(CdkPortalOutlet, { static: true }) set _portalOutlet(portalOutlet: CdkPortalOutlet) {
@@ -83,6 +81,12 @@ export class NzModalContainerComponent extends BaseModalContainerComponent imple
   }
   @ViewChild('modalElement', { static: true }) set _modalElementRef(elementRef: ElementRef<HTMLDivElement>) {
     this.modalElementRef = elementRef;
+  }
+  @ViewChild(NzModalFooterComponent) private modalFooter?: NzModalFooterComponent;
+
+  override markForCheck(): void {
+    super.markForCheck();
+    this.modalFooter?.markForCheck();
   }
 
   ngOnInit(): void {

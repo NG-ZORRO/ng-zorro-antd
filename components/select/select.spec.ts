@@ -1821,7 +1821,7 @@ describe('select finalVariant', () => {
       [nzMaxMultipleCount]="nzMaxMultipleCount()"
       (nzOnSearch)="searchValueChange($event)"
     >
-      @for (o of listOfOption(); track o) {
+      @for (o of listOfOption(); track o.nzValue) {
         <nz-option
           [nzValue]="o.nzValue"
           [nzLabel]="o.nzLabel"
@@ -1830,7 +1830,7 @@ describe('select finalVariant', () => {
           [nzHide]="o.nzHide"
         />
       }
-      @for (group of listOfGroup(); track group) {
+      @for (group of listOfGroup(); track group.nzLabel) {
         <nz-option-group [nzLabel]="group.nzLabel">
           @for (o of group.children; track o) {
             <nz-option
@@ -1908,7 +1908,7 @@ export class TestSelectTemplateDefaultComponent {
       [(nzOpen)]="nzOpen"
       (nzOpenChange)="valueChange($event)"
     >
-      @for (o of listOfOption(); track o) {
+      @for (o of listOfOption(); track o.nzValue) {
         <nz-option [nzValue]="o.nzValue" [nzLabel]="o.nzLabel" [nzDisabled]="o.nzDisabled" [nzHide]="o.nzHide" />
       }
     </nz-select>
@@ -1942,7 +1942,7 @@ export class TestSelectTemplateMultipleComponent {
       [nzTokenSeparators]="nzTokenSeparators()"
       [nzMaxTagPlaceholder]="nzMaxTagPlaceholder() ?? null"
     >
-      @for (o of listOfOption(); track o) {
+      @for (o of listOfOption(); track o.nzValue) {
         <nz-option [nzValue]="o.nzValue" [nzLabel]="o.nzLabel" [nzDisabled]="o.nzDisabled" [nzHide]="o.nzHide" />
       }
     </nz-select>

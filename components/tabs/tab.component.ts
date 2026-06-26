@@ -46,6 +46,8 @@ export const NZ_TAB_SET = new InjectionToken<NzSafeAny>(typeof ngDevMode !== 'un
   `
 })
 export class NzTabComponent implements OnChanges, OnDestroy {
+  readonly closestTabSet = inject(NZ_TAB_SET);
+
   @Input() nzTitle: string | TemplateRef<TabTemplateContext> = '';
   @Input({ transform: booleanAttribute }) nzClosable = false;
   @Input() nzCloseIcon: string | TemplateRef<NzSafeAny> = 'close';
@@ -59,13 +61,12 @@ export class NzTabComponent implements OnChanges, OnDestroy {
   @ContentChild(NzTabLinkTemplateDirective, { static: false }) nzTabLinkTemplateDirective!: NzTabLinkTemplateDirective;
   @ContentChild(NzTabDirective, { static: false, read: TemplateRef }) template: TemplateRef<void> | null = null;
   @ContentChild(NzTabLinkDirective, { static: false }) linkDirective!: NzTabLinkDirective;
-  @ViewChild('contentTemplate', { static: true }) contentTemplate!: TemplateRef<NzSafeAny>;
+  @ViewChild('contentTemplate', { static: true }) contentTemplate!: TemplateRef<void>;
 
-  isActive: boolean = false;
+  isActive = false;
   hasBeenActive = false;
   position: number | null = null;
   origin: number | null = null;
-  closestTabSet = inject(NZ_TAB_SET);
 
   readonly stateChanges = new Subject<void>();
 

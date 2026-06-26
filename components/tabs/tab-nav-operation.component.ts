@@ -4,17 +4,17 @@
  */
 
 import {
-  ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   Input,
-  OnDestroy,
   Output,
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
-  inject
+  inject,
+  signal
 } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -42,13 +42,13 @@ import { NzTabNavItemDirective } from './tab-nav-item.directive';
       [nzDropdownMenu]="menu"
       [nzOverlayStyle]="{ minWidth: '46px' }"
       [nzMatchWidthElement]="null"
-      (nzVisibleChange)="menuVisChange($event)"
+      (nzVisibleChange)="menuVisibleChange($event)"
       (mouseenter)="showItems()"
     >
       <nz-icon nzType="ellipsis" />
     </button>
     <nz-dropdown-menu #menu="nzDropdownMenu">
-      @if (menuOpened) {
+      @if (menuOpened()) {
         <ul nz-menu>
           @for (item of items; track item) {
             <li
@@ -78,18 +78,24 @@ import { NzTabNavItemDirective } from './tab-nav-item.directive';
   },
   imports: [NzDropdownModule, NzIconModule, NzOutletModule, NzTabAddButtonComponent, NzMenuModule]
 })
-export class NzTabNavOperationComponent implements OnDestroy {
+export class NzTabNavOperationComponent {
+  private readonly element: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
+
   @Input() items: NzTabNavItemDirective[] = [];
   @Input({ transform: booleanAttribute }) addable: boolean = false;
   @Input() addIcon: string | TemplateRef<NzSafeAny> = 'plus';
 
   @Output() readonly addClicked = new EventEmitter<void>();
   @Output() readonly selected = new EventEmitter<NzTabNavItemDirective>();
-  closeAnimationWaitTimeoutId?: ReturnType<typeof setTimeout>;
-  menuOpened = false;
 
-  private cdr = inject(ChangeDetectorRef);
-  private readonly element: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
+  private closeAnimationWaitTimeoutId?: ReturnType<typeof setTimeout>;
+  protected readonly menuOpened = signal(false);
+
+  constructor() {
+    inject(DestroyRef).onDestroy(() => {
+      clearTimeout(this.closeAnimationWaitTimeoutId);
+    });
+  }
 
   onSelect(item: NzTabNavItemDirective): void {
     if (!item.disabled) {
@@ -104,30 +110,23 @@ export class NzTabNavOperationComponent implements OnDestroy {
       item.tab.nzContextmenu.emit(e);
     }
   }
+
   showItems(): void {
     clearTimeout(this.closeAnimationWaitTimeoutId);
-    this.menuOpened = true;
-    this.cdr.markForCheck();
+    this.menuOpened.set(true);
   }
 
-  menuVisChange(visible: boolean): void {
+  protected menuVisibleChange(visible: boolean): void {
     if (!visible) {
-      this.closeAnimationWaitTimeoutId = setTimeout(() => {
-        this.menuOpened = false;
-        this.cdr.markForCheck();
-      }, 150);
+      this.closeAnimationWaitTimeoutId = setTimeout(() => this.menuOpened.set(false), 150);
     }
   }
 
   getElementWidth(): number {
-    return this.element?.offsetWidth || 0;
+    return this.element.offsetWidth || 0;
   }
 
   getElementHeight(): number {
-    return this.element?.offsetHeight || 0;
-  }
-
-  ngOnDestroy(): void {
-    clearTimeout(this.closeAnimationWaitTimeoutId);
+    return this.element.offsetHeight || 0;
   }
 }

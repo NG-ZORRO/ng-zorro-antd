@@ -44,11 +44,9 @@ describe('tabs', () => {
 
   describe('basic', () => {
     let fixture: ComponentFixture<SimpleTabsTestComponent>;
-    let element: HTMLElement;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(SimpleTabsTestComponent);
-      element = fixture.nativeElement;
     });
 
     it('should default to the first tab', () => {
@@ -57,7 +55,9 @@ describe('tabs', () => {
 
     it('should load content on first change detection pass', () => {
       fixture.detectChanges();
-      expect(element.querySelectorAll('.ant-tabs-tabpane')[0]!.textContent).toContain(`Content of Tab Pane 1`);
+      expect(fixture.nativeElement.querySelectorAll('.ant-tabs-tabpane')[0]!.textContent).toContain(
+        `Content of Tab Pane 1`
+      );
     });
 
     it('should change selected index on click', async () => {
@@ -94,7 +94,7 @@ describe('tabs', () => {
     it('should update tab positions when selected index is changed', async () => {
       fixture.detectChanges();
       const component: NzTabsComponent = fixture.debugElement.query(By.css('nz-tabs'))!.componentInstance;
-      const tabs: NzTabComponent[] = component.tabs.toArray();
+      const tabs = component.tabs.toArray();
 
       expect(tabs[0].position).toBeLessThan(0);
       expect(tabs[1].position).toBe(0);
@@ -208,14 +208,12 @@ describe('tabs', () => {
       await stabilize(fixture);
 
       expect(component.handleSelection).toHaveBeenCalledTimes(0);
-      await stabilize(fixture, 300);
     });
 
     it('should clean up the tabs QueryList on destroy', () => {
       const component: NzTabsComponent = fixture.debugElement.query(By.css('nz-tabs'))!.componentInstance;
       const spy = vi.fn();
       const subscription = component.tabs.changes.subscribe({ complete: spy });
-
       fixture.destroy();
 
       expect(spy).toHaveBeenCalled();
@@ -285,14 +283,13 @@ describe('tabs', () => {
     });
 
     it('should set the correct tabBarStyle', async () => {
-      await stabilize(fixture, 200);
+      await stabilize(fixture, 32);
 
       const component = fixture.debugElement.componentInstance;
       const tabsNav = fixture.debugElement.query(By.css('nz-tabs-nav'))!.nativeElement;
       component.tabBarStyle.set({ color: 'rgb(255, 0, 0)' });
 
-      await stabilize(fixture, 200);
-
+      await stabilize(fixture, 32);
       expect(tabsNav.style.color).toBe('rgb(255, 0, 0)');
     });
 
@@ -305,7 +302,6 @@ describe('tabs', () => {
 
       component.centered.set(true);
       fixture.detectChanges();
-
       expect(tabSet.classList).toContain('ant-tabs-centered');
     });
 
@@ -313,7 +309,6 @@ describe('tabs', () => {
       const component = fixture.debugElement.componentInstance;
       component.selectedIndex.set(0);
       component.canDeactivate.set((_: number, next: number) => next !== 2);
-
       fixture.detectChanges();
 
       let tabLabel = fixture.debugElement.queryAll(By.css('.ant-tabs-tab'))[1];
@@ -462,15 +457,15 @@ describe('tabs', () => {
 
   describe('dynamic tabs', () => {
     let fixture: ComponentFixture<DynamicTabsTestComponent>;
+    let component: NzTabsComponent;
 
     beforeEach(async () => {
       fixture = TestBed.createComponent(DynamicTabsTestComponent);
-      await stabilize(fixture, 300);
+      await stabilize(fixture, 32);
+      component = fixture.debugElement.query(By.css('nz-tabs'))!.componentInstance as NzTabsComponent;
     });
 
     it('should be able to add a new tab, select it, and have correct origin position', async () => {
-      const component: NzTabsComponent = fixture.debugElement.query(By.css('nz-tabs'))!.componentInstance;
-
       let tabs: NzTabComponent[] = component.tabs.toArray();
       expect(tabs[0].origin).toBe(null);
       expect(tabs[1].origin).toBe(0);
@@ -479,14 +474,14 @@ describe('tabs', () => {
       // Add a new tab on the right and select it, expect an origin >= than 0 (animate right)
       fixture.componentInstance.tabs.update(tabs => [...tabs, { title: 'New tab', content: 'to right of index' }]);
       fixture.componentInstance.selectedIndex.set(4);
-      await stabilize(fixture);
+      fixture.detectChanges();
 
       tabs = component.tabs.toArray();
       expect(tabs[3].origin).toBeGreaterThanOrEqual(0);
 
       // Add a new tab in the beginning and select it, expect an origin < than 0 (animate left)
       fixture.componentInstance.selectedIndex.set(0);
-      await stabilize(fixture);
+      fixture.detectChanges();
 
       fixture.componentInstance.tabs.update(tabs => [...tabs, { title: 'New tab', content: 'to left of index' }]);
       await stabilize(fixture);
@@ -496,11 +491,9 @@ describe('tabs', () => {
     });
 
     it('should update selected index if the last tab removed while selected', async () => {
-      const component: NzTabsComponent = fixture.debugElement.query(By.css('nz-tabs'))!.componentInstance;
-
       const numberOfTabs = component.tabs.length;
       fixture.componentInstance.selectedIndex.set(numberOfTabs - 1);
-      await stabilize(fixture);
+      fixture.detectChanges();
 
       // Remove last tab while last tab is selected, expect the next tab over to be selected
       fixture.componentInstance.tabs.update(tabs => tabs.slice(0, -1));
@@ -510,31 +503,25 @@ describe('tabs', () => {
       expect(fixture.componentInstance.selectedIndex()).toBe(numberOfTabs - 2);
     });
 
-    it('should maintain the selected tab if a new tab is added', () => {
-      fixture.detectChanges();
-      const component: NzTabsComponent = fixture.debugElement.query(By.css('nz-tabs'))!.componentInstance;
-
+    it('should maintain the selected tab if a new tab is added', async () => {
       fixture.componentInstance.selectedIndex.set(1);
       fixture.detectChanges();
 
       // Add a new tab at the beginning.
       fixture.componentInstance.tabs.update(tabs => [{ title: 'New tab', content: 'at the start' }, ...tabs]);
-      fixture.detectChanges();
+      await stabilize(fixture);
 
       expect(component.nzSelectedIndex).toBe(2);
       expect(component.tabs.toArray()[2].isActive).toBe(true);
     });
 
-    it('should maintain the selected tab if a tab is removed', () => {
+    it('should maintain the selected tab if a tab is removed', async () => {
       // Select the second tab.
       fixture.componentInstance.selectedIndex.set(1);
-      fixture.detectChanges();
-
-      const component: NzTabsComponent = fixture.debugElement.query(By.css('nz-tabs'))!.componentInstance;
 
       // Remove the first tab that is right before the selected one.
       fixture.componentInstance.tabs.update(tabs => tabs.slice(1));
-      fixture.detectChanges();
+      await stabilize(fixture);
 
       // Since the first tab has been removed and the second one was selected before, the selected
       // tab moved one position to the right. Meaning that the tab is now the first tab.
@@ -543,12 +530,8 @@ describe('tabs', () => {
     });
 
     it('should be able to select a new tab after creation', async () => {
-      fixture.detectChanges();
-      const component: NzTabsComponent = fixture.debugElement.query(By.css('nz-tabs'))!.componentInstance;
-
       fixture.componentInstance.tabs.update(tabs => [...tabs, { title: 'Last tab', content: 'at the end' }]);
       fixture.componentInstance.selectedIndex.set(3);
-
       await stabilize(fixture);
 
       expect(component.nzSelectedIndex).toBe(3);
@@ -556,7 +539,6 @@ describe('tabs', () => {
     });
 
     it('should not fire `selectedTabChange` when the amount of tabs changes', async () => {
-      fixture.detectChanges();
       fixture.componentInstance.selectedIndex.set(1);
       fixture.detectChanges();
 
@@ -569,7 +551,6 @@ describe('tabs', () => {
     });
 
     it('should show add btn after all tabs are removed', () => {
-      fixture.detectChanges();
       fixture.componentInstance.tabs.set([]);
       fixture.detectChanges();
       const btnCount = fixture.debugElement.queryAll(By.css('.ant-tabs-nav-add')).length;
@@ -583,9 +564,7 @@ describe('tabs', () => {
 
       expect(fixture.debugElement.queryAll(By.css('.ant-tabs-tab')).length).toBe(0);
 
-      await stabilize(fixture, 200);
-      await stabilize(fixture, 200);
-
+      await stabilize(fixture, 32);
       expect(fixture.debugElement.queryAll(By.css('.ant-tabs-tab')).length).toBe(3);
     });
   });
@@ -598,8 +577,8 @@ describe('tabs', () => {
       const groups = fixture.componentInstance.tabSets.toArray();
 
       expect(groups.length).toBe(2);
-      expect(groups[0].tabs.map((tab: NzTabComponent) => tab.nzTitle)).toEqual(['Tab 0', 'Tab 1']);
-      expect(groups[1].tabs.map((tab: NzTabComponent) => tab.nzTitle)).toEqual(['Inner Tab 0', 'Inner Tab 1']);
+      expect(groups[0].tabs.map(tab => tab.nzTitle)).toEqual(['Tab 0', 'Tab 1']);
+      expect(groups[1].tabs.map(tab => tab.nzTitle)).toEqual(['Inner Tab 0', 'Inner Tab 1']);
     });
 
     it('should pick up indirect descendant tabs', () => {
@@ -607,7 +586,7 @@ describe('tabs', () => {
       fixture.detectChanges();
 
       const tabs = fixture.componentInstance.tabSet.tabs;
-      expect(tabs.map((tab: NzTabComponent) => tab.nzTitle)).toEqual(['Tab 0', 'Tab 1']);
+      expect(tabs.map(tab => tab.nzTitle)).toEqual(['Tab 0', 'Tab 1']);
     });
   });
 
@@ -620,10 +599,10 @@ describe('tabs', () => {
       fixture = TestBed.createComponent(ScrollableTabsTestComponent);
       element = fixture.nativeElement;
       overlayContainerElement = TestBed.inject(OverlayContainer).getContainerElement();
-      await stabilize(fixture, 300);
+      await stabilize(fixture, 32);
     });
 
-    it('should hide the overflow tabs', () => {
+    it('should hide the overflow tabs', async () => {
       const tabSetComponent = fixture.componentInstance.tabSet;
       expect(tabSetComponent.tabNavBarRef.hiddenItems.length).toBeGreaterThan(0);
       expect(element.querySelector('nz-tab-nav-operation')).not.toBeNull();
@@ -636,10 +615,10 @@ describe('tabs', () => {
       });
 
       dispatchFakeEvent(element.querySelector('nz-tab-nav-operation')!, 'mouseenter');
-      await stabilize(fixture, 300);
+      await stabilize(fixture, 32);
 
       const inMenu = overlayContainerElement.querySelectorAll<HTMLLIElement>('.ant-tabs-dropdown-menu-item');
-      inMenu.forEach((tab: HTMLLIElement) => {
+      inMenu.forEach(tab => {
         expect(tab.textContent!.trim()).toBe('Title in menu');
       });
     });
@@ -648,7 +627,7 @@ describe('tabs', () => {
       const tabsList = element.querySelector('.ant-tabs-nav-list')! as HTMLElement;
       const translateX = getTranslate(tabsList.style.transform).x;
       fixture.componentInstance.selectedIndex.set(10);
-      await stabilize(fixture, 300);
+      await stabilize(fixture, 32);
 
       const newTranslateX = getTranslate(tabsList.style.transform).x;
       expect(translateX).toBeGreaterThan(newTranslateX);
@@ -656,7 +635,7 @@ describe('tabs', () => {
 
     it('should handle the positions correctly', async () => {
       fixture.componentInstance.position.set('left');
-      fixture.detectChanges();
+      await stabilize(fixture, 32);
 
       const tabsList = element.querySelector('.ant-tabs-nav-list')! as HTMLElement;
       const translateY = getTranslate(tabsList.style.transform).y;
@@ -666,7 +645,7 @@ describe('tabs', () => {
       expect(translateY).toBe(0);
 
       fixture.componentInstance.selectedIndex.set(15);
-      await stabilize(fixture, 300);
+      await stabilize(fixture, 32);
 
       const newTranslateX = getTranslate(tabsList.style.transform).x;
       const newTranslateY = getTranslate(tabsList.style.transform).y;
@@ -676,7 +655,6 @@ describe('tabs', () => {
 
     it('should set transform to visible and select when selected on nav-operation', async () => {
       vi.spyOn(fixture.componentInstance, 'handleSelection');
-      fixture.detectChanges();
       expect(fixture.componentInstance.handleSelection).toHaveBeenCalledTimes(0);
 
       const tabsList = element.querySelector('.ant-tabs-nav-list')! as HTMLElement;
@@ -685,8 +663,7 @@ describe('tabs', () => {
         .componentInstance as NzTabNavOperationComponent;
 
       navOperation.onSelect(navOperation.items[5]);
-
-      await stabilize(fixture, 300);
+      await stabilize(fixture, 32);
 
       const newTranslateX = getTranslate(tabsList.style.transform).x;
       expect(translateX).toBeGreaterThan(newTranslateX);
@@ -709,8 +686,7 @@ describe('tabs', () => {
       };
 
       tabNavBarComponent.onOffsetChange(event);
-
-      await stabilize(fixture, 300);
+      await stabilize(fixture, 32);
 
       translateX = getTranslate(tabsList.style.transform).x;
       expect(translateX).toBe(-200);
@@ -718,7 +694,7 @@ describe('tabs', () => {
 
     it('should set transformY when scroll(mock)', async () => {
       fixture.componentInstance.position.set('left');
-      await stabilize(fixture, 300);
+      await stabilize(fixture, 32);
 
       const tabNavBarComponent = fixture.debugElement.query(By.directive(NzTabNavBarComponent))!
         .componentInstance as NzTabNavBarComponent;
@@ -734,8 +710,7 @@ describe('tabs', () => {
       };
 
       tabNavBarComponent.onOffsetChange(event);
-
-      await stabilize(fixture, 300);
+      await stabilize(fixture, 32);
 
       translateY = getTranslate(tabsList.style.transform).y;
       expect(translateY).toBe(-200);
@@ -773,7 +748,6 @@ describe('tabs', () => {
   describe('router', () => {
     let fixture: ComponentFixture<RouterTabsTestComponent>;
     let tabs: DebugElement;
-    let router: Router;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -786,10 +760,11 @@ describe('tabs', () => {
     });
 
     it('should change router and emit handleSelection once when click', async () => {
+      const router = TestBed.inject(Router);
+      const component = fixture.componentInstance;
+
       await fixture.ngZone!.run(async () => {
-        router = TestBed.inject(Router);
         await router.navigateByUrl('/');
-        const component = fixture.componentInstance;
         await stabilize(fixture);
 
         expect((tabs.componentInstance as NzTabsComponent).nzSelectedIndex).toBe(0);
@@ -799,12 +774,12 @@ describe('tabs', () => {
         // select the second tab
         const tabLabel = fixture.debugElement.queryAll(By.css('.ant-tabs-tab'))[1];
         tabLabel.nativeElement.click();
-        await stabilize(fixture, 300);
+        await stabilize(fixture, 32);
 
         expect(component.handleSelection).toHaveBeenCalled();
 
         await router.navigateByUrl('/two');
-        await stabilize(fixture, 300);
+        await stabilize(fixture, 32);
         expect(router.url).toBe('/two');
       });
     });
@@ -814,39 +789,39 @@ describe('tabs', () => {
     let fixture: ComponentFixture<SimpleTabsRenderingComponent>;
     let element: HTMLElement;
 
-    beforeEach(async () => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(SimpleTabsRenderingComponent);
       element = fixture.nativeElement;
-      await stabilize(fixture, 0);
     });
 
     it('should delay rendering and preserve DOM of tabpane', async () => {
+      await stabilize(fixture, 32);
       expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(1);
       fixture.componentInstance.selectedIndex.set(1);
-      await stabilize(fixture, 300);
+      await stabilize(fixture, 32);
       expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(2);
       fixture.componentInstance.selectedIndex.set(2);
-      await stabilize(fixture, 300);
+      await stabilize(fixture, 32);
       expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(3);
     });
 
     it('should render inactive tab when forceRender is true', async () => {
       fixture.componentInstance.forceRender.set(true);
-      await stabilize(fixture, 300);
+      await stabilize(fixture, 32);
       expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(3);
     });
 
     it('should destroy inactive tab when destroyInactiveTabPane is true', async () => {
       fixture.componentInstance.destroyInactiveTabPane.set(true);
-      await stabilize(fixture, 300);
+      await stabilize(fixture, 32);
       expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(1);
 
       fixture.componentInstance.selectedIndex.set(1);
-      await stabilize(fixture, 300);
+      await stabilize(fixture, 32);
       expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(1);
 
       fixture.componentInstance.selectedIndex.set(2);
-      await stabilize(fixture, 300);
+      await stabilize(fixture, 32);
       expect(element.querySelectorAll('.ant-tabs-tabpane').length).toBe(1);
     });
   });
@@ -885,26 +860,24 @@ describe('tabs', () => {
     });
 
     it('should update active tab when tabs changed', async () => {
-      await stabilize(fixture, 0);
+      await stabilize(fixture);
 
       await router.navigateByUrl('/one');
-      await stabilize(fixture, 0);
+      await stabilize(fixture);
 
       const comp = fixture.componentInstance;
 
       await router.navigateByUrl('/three');
-      await stabilize(fixture, 0);
+      await stabilize(fixture);
 
       comp.tabs.set(comp.lazyTabs);
-      await stabilize(fixture, 0);
+      await stabilize(fixture);
       await router.navigateByUrl('/three');
-      await stabilize(fixture, 0);
-      await stabilize(fixture, 0);
+      await stabilize(fixture);
 
       comp.selectedIdx.set(2);
-      await stabilize(fixture, 0);
+      await stabilize(fixture);
       expect(comp.selectedIdx()).toBe(2);
-      await stabilize(fixture, 300);
     });
   });
 
@@ -924,10 +897,9 @@ describe('tabs', () => {
     let fixture: ComponentFixture<IndicatorTabsTestComponent>;
     let element: HTMLElement;
 
-    beforeEach(async () => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(IndicatorTabsTestComponent);
       element = fixture.nativeElement;
-      await stabilize(fixture, 300);
     });
 
     it('should set indicator width and horizontal alignment', async () => {
@@ -935,8 +907,7 @@ describe('tabs', () => {
         size: 20,
         align: 'end'
       });
-
-      await stabilize(fixture, 300);
+      await stabilize(fixture, 32);
 
       const activeTab = element.querySelector('.ant-tabs-tab-active') as HTMLElement;
       const inkBar = element.querySelector('.ant-tabs-ink-bar') as HTMLElement;
@@ -951,7 +922,7 @@ describe('tabs', () => {
         size: 10,
         align: 'start'
       });
-      await stabilize(fixture, 300);
+      await stabilize(fixture, 32);
 
       const inkBar = element.querySelector('.ant-tabs-ink-bar') as HTMLElement;
       const previousWidth = inkBar.style.width;
@@ -961,7 +932,7 @@ describe('tabs', () => {
         size: 30,
         align: 'end'
       });
-      await stabilize(fixture, 300);
+      await stabilize(fixture, 32);
 
       expect(inkBar.style.width).toBe('30px');
       expect(inkBar.style.width).not.toBe(previousWidth);
@@ -974,8 +945,7 @@ describe('tabs', () => {
         size: origin => origin / 2,
         align: 'center'
       });
-
-      await stabilize(fixture, 300);
+      await stabilize(fixture, 32);
 
       const activeTab = element.querySelector('.ant-tabs-tab-active') as HTMLElement;
       const inkBar = element.querySelector('.ant-tabs-ink-bar') as HTMLElement;
@@ -1024,9 +994,9 @@ class SimpleTabsTestComponent {
   readonly centered = signal(false);
   readonly canDeactivate = signal<NzSafeAny>(null);
 
-  handleSelection(_event: number): void {}
-  handleClose(_event: { index: number }): void {}
-  handleAdd(): void {}
+  handleSelection = vi.fn();
+  handleClose = vi.fn();
+  handleAdd = vi.fn();
 }
 
 @Component({
@@ -1091,7 +1061,7 @@ class DisableTabsTestComponent {
   readonly disabled = signal(false);
   @ViewChildren(NzTabComponent) tabs!: QueryList<NzTabComponent>;
 
-  handleSelection(_event: number): void {}
+  handleSelection = vi.fn();
 }
 
 @Component({
@@ -1118,7 +1088,7 @@ class DynamicTabsTestComponent {
     { title: 'Tab 2', content: 'Content of Tab Pane 2' }
   ]);
 
-  handleSelection(_event: number): void {}
+  handleSelection = vi.fn();
 }
 
 @Component({
@@ -1151,7 +1121,7 @@ class ScrollableTabsTestComponent {
   tabs: NzSafeAny[] = Array(30).fill(null);
   @ViewChild(NzTabsComponent, { static: true }) tabSet!: NzTabsComponent;
 
-  handleSelection(_event: number): void {}
+  handleSelection = vi.fn();
 }
 
 @Component({
@@ -1239,7 +1209,7 @@ class TabSetWithIndirectDescendantTabsTestComponent {
   `
 })
 export class RouterTabsTestComponent {
-  handleSelection(_event: number): void {}
+  handleSelection = vi.fn();
 }
 
 @Component({

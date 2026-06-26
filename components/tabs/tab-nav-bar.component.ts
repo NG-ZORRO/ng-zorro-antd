@@ -62,9 +62,9 @@ const CSS_TRANSFORM_TIME = 150;
     NgTemplateOutlet
   ],
   template: `
-    @if (startExtraContent()) {
+    @if (startExtraContent(); as extraContent) {
       <div class="ant-tabs-extra-content">
-        <ng-template [ngTemplateOutlet]="startExtraContent()!.templateRef" />
+        <ng-template [ngTemplateOutlet]="extraContent.templateRef" />
       </div>
     }
     <div
@@ -109,9 +109,9 @@ const CSS_TRANSFORM_TIME = 150;
       [addable]="addable"
       [items]="hiddenItems"
     />
-    @if (endExtraContent()) {
+    @if (endExtraContent(); as extraContent) {
       <div class="ant-tabs-extra-content">
-        <ng-template [ngTemplateOutlet]="endExtraContent()!.templateRef" />
+        <ng-template [ngTemplateOutlet]="extraContent.templateRef" />
       </div>
     } @else if (extraTemplate) {
       <div class="ant-tabs-extra-content">
@@ -223,9 +223,6 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
   }
 
   ngAfterViewInit(): void {
-    const dirChange = this.directionality.change.asObservable();
-    const resize = this.viewportRuler.change(150);
-
     const realign = (): void => {
       this.updateScrollListPosition();
       this.alignInkBarToSelectedTab();
@@ -239,10 +236,8 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
 
     merge(this.nzResizeObserver.observe(this.navWrapRef), this.nzResizeObserver.observe(this.navListRef))
       .pipe(takeUntilDestroyed(this.destroyRef), auditTime(16, RESIZE_SCHEDULER))
-      .subscribe(() => {
-        realign();
-      });
-    merge(dirChange, resize, this.items.changes)
+      .subscribe(() => realign());
+    merge(this.directionality.change, this.viewportRuler.change(150), this.items.changes)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         Promise.resolve().then(realign);
@@ -308,8 +303,7 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
   }
 
   handleKeydown(event: KeyboardEvent): void {
-    const inNavigationList = this.navWrapRef.nativeElement.contains(event.target as HTMLElement);
-    if (hasModifierKey(event) || !inNavigationList) {
+    if (hasModifierKey(event) || !this.navWrapRef.nativeElement.contains(event.target as HTMLElement)) {
       return;
     }
 
@@ -337,7 +331,7 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
       return true;
     }
 
-    const tab = this.items ? this.items.toArray()[index] : null;
+    const tab = this.items.toArray()[index];
     return !!tab && !tab.disabled;
   }
 
@@ -428,8 +422,8 @@ export class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked,
   }
 
   private resetSizes(): void {
-    this.addButtonWidth = this.addBtnRef ? this.addBtnRef.getElementWidth() : 0;
-    this.addButtonHeight = this.addBtnRef ? this.addBtnRef.getElementHeight() : 0;
+    this.addButtonWidth = this.addBtnRef?.getElementWidth() || 0;
+    this.addButtonHeight = this.addBtnRef?.getElementHeight() || 0;
     this.operationWidth = this.operationRef.getElementWidth();
     this.operationHeight = this.operationRef.getElementHeight();
     this.wrapperWidth = this.navWrapRef.nativeElement.offsetWidth || 0;

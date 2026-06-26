@@ -11,19 +11,17 @@ import {
   AfterContentChecked,
   AfterContentInit,
   booleanAttribute,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   contentChildren,
   ContentChildren,
   DestroyRef,
-  EventEmitter,
   forwardRef,
   inject,
   input,
   Input,
   NgZone,
-  Output,
+  output,
   QueryList,
   TemplateRef,
   ViewChild,
@@ -34,7 +32,7 @@ import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { merge, Observable, of, Subscription } from 'rxjs';
 import { delay, filter, first, startWith } from 'rxjs/operators';
 
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
@@ -58,15 +56,12 @@ import { NzTabNavBarComponent } from './tab-nav-bar.component';
 import { NzTabNavItemDirective } from './tab-nav-item.directive';
 import { NZ_TAB_SET, NzTabComponent } from './tab.component';
 
-const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tabs';
-
 let nextId = 0;
 
 @Component({
   selector: 'nz-tabs',
   exportAs: 'nzTabs',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [
     {
       provide: NZ_TAB_SET,
@@ -195,13 +190,13 @@ let nextId = 0;
   ]
 })
 export class NzTabsComponent implements AfterContentChecked, AfterContentInit {
-  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+  readonly _nzModuleName: NzConfigKey = 'tabs';
 
-  public nzConfigService = inject(NzConfigService);
-  private ngZone = inject(NgZone);
-  private cdr = inject(ChangeDetectorRef);
   protected readonly dir = inject(Directionality).valueSignal;
-  private destroyRef = inject(DestroyRef);
+  private readonly ngZone = inject(NgZone);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly router = inject(Router, { optional: true });
 
   @Input()
   get nzSelectedIndex(): number | null {
@@ -227,12 +222,11 @@ export class NzTabsComponent implements AfterContentChecked, AfterContentInit {
   @Input({ transform: booleanAttribute }) nzDestroyInactiveTabPane = false;
 
   readonly nzIndicator = input<NzIndicator>();
-
-  @Output() readonly nzSelectChange: EventEmitter<NzTabChangeEvent> = new EventEmitter<NzTabChangeEvent>(true);
-  @Output() readonly nzSelectedIndexChange: EventEmitter<number> = new EventEmitter<number>();
-  @Output() readonly nzTabListScroll = new EventEmitter<NzTabScrollEvent>();
-  @Output() readonly nzClose = new EventEmitter<{ index: number }>();
-  @Output() readonly nzAdd = new EventEmitter<void>();
+  readonly nzSelectChange = output<NzTabChangeEvent>();
+  readonly nzSelectedIndexChange = output<number>();
+  readonly nzTabListScroll = output<NzTabScrollEvent>();
+  readonly nzClose = output<{ index: number }>();
+  readonly nzAdd = output();
 
   get position(): NzTabPositionMode {
     return ['top', 'bottom'].indexOf(this.nzTabPosition) === -1 ? 'vertical' : 'horizontal';
@@ -246,12 +240,8 @@ export class NzTabsComponent implements AfterContentChecked, AfterContentInit {
     return this.nzType === 'editable-card';
   }
 
-  get line(): boolean {
-    return this.nzType === 'line';
-  }
-
   get inkBarAnimated(): boolean {
-    return this.line && (typeof this.nzAnimated === 'boolean' ? this.nzAnimated : this.nzAnimated.inkBar);
+    return this.nzType === 'line' && (typeof this.nzAnimated === 'boolean' ? this.nzAnimated : this.nzAnimated.inkBar);
   }
 
   get tabPaneAnimated(): boolean {
@@ -276,7 +266,6 @@ export class NzTabsComponent implements AfterContentChecked, AfterContentInit {
   private selectedIndex: number | null = null;
   private tabLabelSubscription = Subscription.EMPTY;
   private canDeactivateSubscription = Subscription.EMPTY;
-  private router = inject(Router, { optional: true });
 
   constructor() {
     this.tabSetId = nextId++;
@@ -292,9 +281,6 @@ export class NzTabsComponent implements AfterContentChecked, AfterContentInit {
     this.ngZone.runOutsideAngular(() => {
       Promise.resolve().then(() => this.setUpRouter());
     });
-
-    this.subscribeToTabLabels();
-    this.subscribeToAllTabChanges();
 
     // Subscribe to changes of the number of tabs, to be
     // able to re-render the content as new tabs are added or removed.
@@ -319,6 +305,8 @@ export class NzTabsComponent implements AfterContentChecked, AfterContentInit {
       this.subscribeToTabLabels();
       this.cdr.markForCheck();
     });
+
+    this.subscribeToAllTabChanges();
   }
 
   ngAfterContentChecked(): void {
@@ -393,10 +381,7 @@ export class NzTabsComponent implements AfterContentChecked, AfterContentInit {
   }
 
   private subscribeToTabLabels(): void {
-    if (this.tabLabelSubscription) {
-      this.tabLabelSubscription.unsubscribe();
-    }
-
+    this.tabLabelSubscription.unsubscribe();
     this.tabLabelSubscription = merge(...this.tabs.map(tab => tab.stateChanges)).subscribe(() =>
       this.cdr.markForCheck()
     );
@@ -411,8 +396,7 @@ export class NzTabsComponent implements AfterContentChecked, AfterContentInit {
 
   canDeactivateFun(pre: number, next: number): Observable<boolean> {
     if (typeof this.nzCanDeactivate === 'function') {
-      const observable = wrapIntoObservable(this.nzCanDeactivate(pre, next));
-      return observable.pipe(first(), takeUntilDestroyed(this.destroyRef));
+      return wrapIntoObservable(this.nzCanDeactivate(pre, next)).pipe(first(), takeUntilDestroyed(this.destroyRef));
     } else {
       return of(true);
     }
@@ -473,10 +457,7 @@ export class NzTabsComponent implements AfterContentChecked, AfterContentInit {
       }
       merge(this.router.events.pipe(filter(e => e instanceof NavigationEnd)), this.tabLinks.changes)
         .pipe(startWith(true), delay(0), takeUntilDestroyed(this.destroyRef))
-        .subscribe(() => {
-          this.updateRouterActive();
-          this.cdr.markForCheck();
-        });
+        .subscribe(() => this.updateRouterActive());
     }
   }
 
@@ -486,7 +467,10 @@ export class NzTabsComponent implements AfterContentChecked, AfterContentInit {
       if (index !== this.selectedIndex) {
         this.setSelectedIndex(index);
       }
-      Promise.resolve().then(() => (this.nzHideAll = index === -1));
+      Promise.resolve().then(() => {
+        this.nzHideAll = index === -1;
+        this.cdr.markForCheck();
+      });
     }
   }
 
@@ -501,14 +485,16 @@ export class NzTabsComponent implements AfterContentChecked, AfterContentInit {
   }
 
   private isLinkActive(router: Router | null): (link?: RouterLink | null) => boolean {
-    return (link?: RouterLink | null) =>
-      link
-        ? !!router?.isActive(link.urlTree || '', {
-            paths: this.nzLinkExact ? 'exact' : 'subset',
-            queryParams: this.nzLinkExact ? 'exact' : 'subset',
-            fragment: 'ignored',
-            matrixParams: 'ignored'
-          })
-        : false;
+    return (link?: RouterLink | null): boolean => {
+      if (!router || !link) {
+        return false;
+      }
+      return router.isActive(link.urlTree || '', {
+        paths: this.nzLinkExact ? 'exact' : 'subset',
+        queryParams: this.nzLinkExact ? 'exact' : 'subset',
+        fragment: 'ignored',
+        matrixParams: 'ignored'
+      });
+    };
   }
 }
