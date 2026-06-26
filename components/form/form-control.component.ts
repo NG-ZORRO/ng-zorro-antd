@@ -218,12 +218,15 @@ export class NzFormControlComponent implements OnChanges, OnInit, AfterContentIn
       return false;
     } else {
       const { dirty, touched, status } = this.validateControl;
+      if (!dirty && !touched) {
+        return false;
+      }
       if (statusType) {
         // Signal forms' interop control does not implement `hasError`, so guard the call.
-        const hasError = (this.validateControl as Partial<AbstractControl>).hasError?.(statusType) ?? false;
-        return (!!dirty || !!touched) && hasError;
+        return (this.validateControl as Partial<AbstractControl>).hasError?.(statusType) ?? false;
+      } else {
+        return status === validStatus;
       }
-      return (!!dirty || !!touched) && status === validStatus;
     }
   }
 

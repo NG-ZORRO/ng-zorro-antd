@@ -685,23 +685,3 @@ export class NzTestSignalFormControlComponent {
     required(path.name, { message: 'Name is required!' });
   });
 }
-
-@Component({
-  imports: [NzFormModule, NzInputModule, FormField],
-  template: `
-    <form nz-form>
-      <nz-form-item>
-        <nz-form-control nzErrorTip="Name is required!">
-          <input nz-input [formField]="userForm.name" />
-        </nz-form-control>
-      </nz-form-item>
-    </form>
-  `,
-  changeDetection: ChangeDetectionStrategy.Eager
-})
-export class NzTestSignalFormControlComponent {
-  readonly model = signal({ name: '' });
-  readonly userForm = form(this.model, path => {
-    required(path.name, { message: 'Name is required!' });
-  });
-}
