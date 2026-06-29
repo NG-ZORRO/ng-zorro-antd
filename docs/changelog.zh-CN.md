@@ -16,11 +16,12 @@ tag: '{{version}}'
 
 ---
 
-## 22.0.0-alpha.0
+## 22.0.0-alpha.1
 
 `2026-06-12`
 
-支持 Angular v22
+- 支持 Angular v22
+- 所有组件均使用 OnPush
 
 > **注意**: v22 仍然处于预览阶段，未来版本可能会包含破坏性变更。
 
@@ -47,6 +48,15 @@ tag: '{{version}}'
 | `ng-zorro-antd/transfer`      | `NzTransferSearchComponent`, `[nz-transfer-search]`                                  |
 | `ng-zorro-antd/upload`        | `nz-upload[nzTransformFile]`, `NzUploadTransformFileType`                            |
 | `ng-zorro-antd/upload`        | `ZipButtonOptions#transformFile`                                                     |
+
+## 21.3.2
+
+`2026-06-27`
+
+### Bug Fixes
+
+- **schematics:** 确保 schematics 以 commonjs 格式发布 ([#9848](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9848)) ([1196369](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1196369990a04b9d52283efd64dfcb0f99532bd7))
+- **select:** 防止下拉选项溢出 ([#9849](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9849)) ([a2b5d1f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a2b5d1f9229465be97b163a62564ef774ecd3cf9))
 
 ## 21.3.1
 

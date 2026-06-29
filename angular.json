@@ -141,8 +141,7 @@
                 {
                   "outputFile": "junit/TESTS-vitest.xml"
                 }
-              ],
-              "components/vitest-angular-build-cleanup-reporter.mjs"
+              ]
             ],
             "setupFiles": [
               "components/vitest-setup.ts"
