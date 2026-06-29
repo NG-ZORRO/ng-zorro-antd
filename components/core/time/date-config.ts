@@ -19,7 +19,7 @@ export const NZ_DATE_CONFIG = new InjectionToken<NzDateConfig>(
   typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-date-config' : ''
 );
 
-/** Injection token for date locale (should be a date-fns Locale object). */
+/** Injection token for the date locale used by the configured date adapter. */
 export const NZ_DATE_LOCALE = new InjectionToken<unknown>(
   typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-date-locale' : ''
 );

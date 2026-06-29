@@ -47,7 +47,7 @@ import {
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { DATE_PICKER_POSITION_MAP, DEFAULT_DATE_PICKER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
-import { NzDateAdapter } from 'ng-zorro-antd/core/time';
+import { NzDateAdapter, ɵprovideNzDefaultDateAdapter } from 'ng-zorro-antd/core/time';
 import {
   NgClassInterface,
   NzPlacement,
@@ -170,6 +170,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
   },
   hostDirectives: [NzSpaceCompactItemDirective],
   providers: [
+    ...ɵprovideNzDefaultDateAdapter(),
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzTimePickerComponent),

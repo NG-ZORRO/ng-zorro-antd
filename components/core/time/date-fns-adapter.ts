@@ -3,7 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { EnvironmentProviders, Injectable, makeEnvironmentProviders, inject } from '@angular/core';
+import {
+  EnvironmentProviders,
+  Injectable,
+  Optional,
+  Provider,
+  SkipSelf,
+  makeEnvironmentProviders,
+  inject
+} from '@angular/core';
 
 import {
   type Locale,
@@ -46,6 +54,39 @@ import {
 import { NzDateAdapter, DateMode } from './date-adapter';
 import { NZ_DATE_CONFIG, NZ_DATE_CONFIG_DEFAULT, NZ_DATE_LOCALE, NzDateConfig } from './date-config';
 
+export {
+  addMonths as ɵdateFnsAddMonths,
+  addYears as ɵdateFnsAddYears,
+  differenceInCalendarDays as ɵdateFnsDifferenceInCalendarDays,
+  differenceInCalendarMonths as ɵdateFnsDifferenceInCalendarMonths,
+  differenceInCalendarQuarters as ɵdateFnsDifferenceInCalendarQuarters,
+  differenceInCalendarYears as ɵdateFnsDifferenceInCalendarYears,
+  differenceInHours as ɵdateFnsDifferenceInHours,
+  differenceInMinutes as ɵdateFnsDifferenceInMinutes,
+  differenceInSeconds as ɵdateFnsDifferenceInSeconds,
+  getQuarter as ɵdateFnsGetQuarter,
+  getISOWeek as ɵdateFnsGetISOWeek,
+  format as ɵdateFnsFormat,
+  isFirstDayOfMonth as ɵdateFnsIsFirstDayOfMonth,
+  isLastDayOfMonth as ɵdateFnsIsLastDayOfMonth,
+  isSameDay as ɵdateFnsIsSameDay,
+  isSameHour as ɵdateFnsIsSameHour,
+  isSameMinute as ɵdateFnsIsSameMinute,
+  isSameMonth as ɵdateFnsIsSameMonth,
+  isSameQuarter as ɵdateFnsIsSameQuarter,
+  isSameSecond as ɵdateFnsIsSameSecond,
+  isSameYear as ɵdateFnsIsSameYear,
+  isToday as ɵdateFnsIsToday,
+  isValid as ɵdateFnsIsValid,
+  setDay as ɵdateFnsSetDay,
+  setMonth as ɵdateFnsSetMonth,
+  setQuarter as ɵdateFnsSetQuarter,
+  setYear as ɵdateFnsSetYear,
+  parse as ɵdateFnsParse,
+  startOfMonth as ɵdateFnsStartOfMonth,
+  startOfWeek as ɵdateFnsStartOfWeek
+} from 'date-fns';
+
 /**
  * Date adapter for date-fns.
  *
@@ -53,7 +94,7 @@ import { NZ_DATE_CONFIG, NZ_DATE_CONFIG_DEFAULT, NZ_DATE_LOCALE, NzDateConfig } 
  *
  * @note Requires date-fns as a peer dependency.
  */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
   private readonly dateLocale = inject(NZ_DATE_LOCALE, { optional: true });
   private readonly dateConfig = inject(NZ_DATE_CONFIG, { optional: true });
@@ -179,15 +220,6 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
     if (typeof value === 'string') {
       // Convert Angular-style bracket literals to date-fns single-quote literals
       const formatString = (parseFormat as string).replace(/\[(.*?)\]/g, "'$1'");
-      // For ISO 8601 date-only strings (yyyy-MM-dd), use native Date parsing for UTC consistency
-      // This aligns with NativeDateAdapter behavior and JavaScript's default ISO parsing
-      const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
-      if (formatString === 'yyyy-MM-dd' && isoDateRegex.test(value)) {
-        const parsed = new Date(value);
-        if (this.isValid(parsed)) {
-          return parsed;
-        }
-      }
       return fnsParse(value, formatString, new Date(), {
         locale: this.locale,
         weekStartsOn: this.getFirstDayOfWeek() as 0 | 1 | 2 | 3 | 4 | 5 | 6,
@@ -338,7 +370,7 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
     }
     switch (mode) {
       case 'decade':
-        return Math.abs(this.getYear(first) - this.getYear(second)) < 11;
+        return Math.floor(this.getYear(first) / 10) === Math.floor(this.getYear(second) / 10);
       case 'year':
         return isSameYear(first, second);
       case 'quarter':
@@ -425,4 +457,22 @@ export function provideNzDateFnsAdapter(config?: NzDateConfig): EnvironmentProvi
     { provide: NzDateAdapter, useExisting: DateFnsDateAdapter },
     { provide: NZ_DATE_CONFIG, useValue: { ...NZ_DATE_CONFIG_DEFAULT, ...config } }
   ]);
+}
+
+/**
+ * Provides the date-fns adapter as a component-local fallback.
+ *
+ * A parent/root adapter always wins, so applications can override the adapter once
+ * at the root while existing users keep a working default.
+ */
+export function ɵprovideNzDefaultDateAdapter(): Provider[] {
+  return [
+    DateFnsDateAdapter,
+    {
+      provide: NzDateAdapter,
+      deps: [[new Optional(), new SkipSelf(), NzDateAdapter], DateFnsDateAdapter],
+      useFactory: (parentAdapter: NzDateAdapter<Date> | null, fallbackAdapter: DateFnsDateAdapter) =>
+        parentAdapter ?? fallbackAdapter
+    }
+  ];
 }

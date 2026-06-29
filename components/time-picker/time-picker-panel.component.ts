@@ -30,7 +30,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
-import { NzDateAdapter } from 'ng-zorro-antd/core/time';
+import { NzDateAdapter, ɵprovideNzDefaultDateAdapter } from 'ng-zorro-antd/core/time';
 import { fromEventOutsideAngular, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 
@@ -147,6 +147,7 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
     '[class.ant-picker-time-panel-placement-bottomLeft]': `!nzInDatePicker`
   },
   providers: [
+    ...ɵprovideNzDefaultDateAdapter(),
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzTimePickerPanelComponent),

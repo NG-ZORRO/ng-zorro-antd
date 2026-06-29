@@ -17,6 +17,8 @@ import { getProjectStyle } from '../utils/project-style';
 // @ts-ignore
 import { hammerjsVersion, zorroVersion } from '../utils/version-names';
 
+const dateFnsVersion = '^2.16.1';
+
 export default function(options: Schema): Rule {
   return chain([
     (host: Tree, context: SchematicContext) => {
@@ -27,6 +29,9 @@ export default function(options: Schema): Rule {
       // version based on the current build version (substituted version placeholder).
       if (!options.skipPackageJson) {
         addPackageJsonDependency(host, { name: 'ng-zorro-antd', version: zorroVersion, type: NodeDependencyType.Default });
+        if ((options.dateAdapter ?? 'date-fns') === 'date-fns') {
+          addPackageJsonDependency(host, { name: 'date-fns', version: dateFnsVersion, type: NodeDependencyType.Default });
+        }
         if (options.gestures) {
           addPackageJsonDependency(host, { name: 'hammerjs', version: hammerjsVersion, type: NodeDependencyType.Default });
         }

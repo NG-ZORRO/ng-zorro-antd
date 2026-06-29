@@ -19,7 +19,7 @@ import {
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
-import { CandyDate, NzDateAdapter } from 'ng-zorro-antd/core/time';
+import { CandyDate, NzDateAdapter, ɵprovideNzDefaultDateAdapter } from 'ng-zorro-antd/core/time';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
@@ -78,6 +78,7 @@ import { PREFIX_CLASS } from './util';
       }
     </div>
   `,
+  providers: [...ɵprovideNzDefaultDateAdapter()],
   encapsulation: ViewEncapsulation.None
 })
 export class CalendarFooterComponent implements OnChanges {

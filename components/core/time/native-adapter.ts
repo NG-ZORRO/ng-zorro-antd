@@ -138,7 +138,28 @@ export class NativeDateAdapter extends NzDateAdapter<Date, string> {
     if (typeof value === 'number') {
       return new Date(value);
     }
-    return value ? new Date(Date.parse(value as string)) : null;
+    if (value instanceof Date) {
+      return new Date(value.getTime());
+    }
+    if (typeof value !== 'string') {
+      return null;
+    }
+    const text = value.trim();
+    if (!text) {
+      return null;
+    }
+    if (typeof parseFormat === 'string') {
+      const parsedByFormat = this.parseByToken(text, parseFormat);
+      if (parsedByFormat) {
+        return parsedByFormat;
+      }
+    }
+    const dateOnly = text.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (dateOnly) {
+      return this.createDateOrInvalid(Number(dateOnly[1]), Number(dateOnly[2]) - 1, Number(dateOnly[3]));
+    }
+    const timestamp = Date.parse(text);
+    return isNaN(timestamp) ? this.invalid() : new Date(timestamp);
   }
 
   format(date: Date, displayFormat: unknown): string {
@@ -382,7 +403,7 @@ export class NativeDateAdapter extends NzDateAdapter<Date, string> {
     }
     switch (mode) {
       case 'decade':
-        return Math.abs(this.getYear(first) - this.getYear(second)) < 11;
+        return Math.floor(this.getYear(first) / 10) === Math.floor(this.getYear(second) / 10);
       case 'year':
         return this.getYear(first) === this.getYear(second);
       case 'quarter':
@@ -493,6 +514,94 @@ export class NativeDateAdapter extends NzDateAdapter<Date, string> {
       }
     }
     return null;
+  }
+
+  /**
+   * Parses the date-fns-style token subset used by NG-ZORRO default formats.
+   * This intentionally stays small; complex calendar parsing belongs in custom adapters.
+   */
+  private parseByToken(value: string, formatStr: string): Date | null {
+    const tokenPatterns: Record<string, string> = {
+      yyyy: '(?<year>\\d{4})',
+      yy: '(?<year2>\\d{2})',
+      MM: '(?<month>\\d{2})',
+      M: '(?<month>\\d{1,2})',
+      dd: '(?<day>\\d{2})',
+      d: '(?<day>\\d{1,2})',
+      HH: '(?<hour>\\d{2})',
+      H: '(?<hour>\\d{1,2})',
+      mm: '(?<minute>\\d{2})',
+      m: '(?<minute>\\d{1,2})',
+      ss: '(?<second>\\d{2})',
+      s: '(?<second>\\d{1,2})'
+    };
+    const tokens = Object.keys(tokenPatterns).sort((a, b) => b.length - a.length);
+    let source = '';
+    for (let i = 0; i < formatStr.length; ) {
+      if (formatStr[i] === '[') {
+        const end = formatStr.indexOf(']', i + 1);
+        const literal = end === -1 ? formatStr.slice(i + 1) : formatStr.slice(i + 1, end);
+        source += this.escapeRegex(literal);
+        i = end === -1 ? formatStr.length : end + 1;
+        continue;
+      }
+      const token = tokens.find(item => formatStr.startsWith(item, i));
+      if (token) {
+        source += tokenPatterns[token];
+        i += token.length;
+      } else {
+        source += this.escapeRegex(formatStr[i]);
+        i++;
+      }
+    }
+    let match: RegExpMatchArray | null;
+    try {
+      match = value.match(new RegExp(`^${source}$`));
+    } catch {
+      return null;
+    }
+    if (!match?.groups) {
+      return null;
+    }
+    const year = match.groups['year']
+      ? Number(match.groups['year'])
+      : match.groups['year2']
+        ? 2000 + Number(match.groups['year2'])
+        : this.today().getFullYear();
+    const month = match.groups['month'] ? Number(match.groups['month']) - 1 : 0;
+    const day = match.groups['day'] ? Number(match.groups['day']) : 1;
+    const hour = match.groups['hour'] ? Number(match.groups['hour']) : 0;
+    const minute = match.groups['minute'] ? Number(match.groups['minute']) : 0;
+    const second = match.groups['second'] ? Number(match.groups['second']) : 0;
+    if (
+      !inRange(month, 0, 11) ||
+      !inRange(day, 1, 31) ||
+      !inRange(hour, 0, 23) ||
+      !inRange(minute, 0, 59) ||
+      !inRange(second, 0, 59)
+    ) {
+      return this.invalid();
+    }
+    const result = this.createDateOrInvalid(year, month, day);
+    if (!this.isValid(result)) {
+      return result;
+    }
+    return this.setTime(result, hour, minute, second);
+  }
+
+  private createDateOrInvalid(year: number, month: number, date: number): Date {
+    try {
+      const result = this.createDate(year, month, date);
+      return this.getYear(result) === year && this.getMonth(result) === month && this.getDate(result) === date
+        ? result
+        : this.invalid();
+    } catch {
+      return this.invalid();
+    }
+  }
+
+  private escapeRegex(value: string): string {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
   // =============================================================

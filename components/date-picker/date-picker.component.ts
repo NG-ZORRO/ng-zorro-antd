@@ -54,7 +54,14 @@ import {
 } from 'ng-zorro-antd/core/form';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { DATE_PICKER_POSITION_MAP, DEFAULT_DATE_PICKER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
-import { CandyDate, cloneDate, CompatibleValue, NzDateAdapter, wrongSortOrder } from 'ng-zorro-antd/core/time';
+import {
+  CandyDate,
+  cloneDate,
+  CompatibleValue,
+  NzDateAdapter,
+  ɵprovideNzDefaultDateAdapter,
+  wrongSortOrder
+} from 'ng-zorro-antd/core/time';
 import {
   BooleanInput,
   FunctionProp,
@@ -253,6 +260,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
   },
   hostDirectives: [NzSpaceCompactItemDirective],
   providers: [
+    ...ɵprovideNzDefaultDateAdapter(),
     DatePickerService,
     { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'picker' },
     {

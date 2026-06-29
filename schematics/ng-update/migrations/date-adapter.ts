@@ -8,10 +8,12 @@ import { Migration, WorkspacePath } from '@angular/cdk/schematics';
 import * as ts from 'typescript';
 
 /**
- * Migration that adds `provideNzDateFnsAdapter()` to the application root providers
- * when date-picker, calendar, or time-picker components are used.
+ * Migration that adds `provideNzDateFnsAdapter()` to root providers when an
+ * application already imports date components from its root config.
  *
- * This is required for v22 where NzDateAdapter is no longer provided by default.
+ * Components still have a date-fns fallback for backwards compatibility; this
+ * migration makes the selected adapter explicit in projects where it can do so
+ * safely.
  */
 export class DateAdapterMigration extends Migration<null> {
   /** Pattern to match date-picker, calendar, time-picker imports */

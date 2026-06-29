@@ -6,13 +6,16 @@
 import { formatDate } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
 
-import { format as fnsFormat, getISOWeek as fnsGetISOWeek, parse as fnsParse, getQuarter } from 'date-fns';
-
 import {
   type WeekDayIndex,
   NZ_DATE_CONFIG,
+  NzDateAdapter,
   NzDateConfig,
   mergeDateConfig,
+  ɵdateFnsFormat as fnsFormat,
+  ɵdateFnsGetISOWeek as fnsGetISOWeek,
+  ɵdateFnsGetQuarter as getQuarter,
+  ɵdateFnsParse as fnsParse,
   ɵNgTimeParser
 } from 'ng-zorro-antd/core/time';
 
@@ -48,8 +51,47 @@ export abstract class DateHelperService {
 }
 
 /**
+ * DateHelper compatibility wrapper that delegates to NzDateAdapter.
+ * @deprecated Use {@link NzDateAdapter} directly instead. Will be removed in v23.
+ */
+export class DateHelperByDateAdapter extends DateHelperService {
+  // Adapter is supplied by DATE_HELPER_SERVICE_FACTORY.
+
+  constructor(
+    i18n: NzI18nService,
+    private readonly adapter: NzDateAdapter<Date>
+  ) {
+    super(i18n);
+  }
+
+  getISOWeek(date: Date): number {
+    return this.adapter.getISOWeek(date);
+  }
+
+  getFirstDayOfWeek(): WeekDayIndex {
+    return this.adapter.getFirstDayOfWeek() as WeekDayIndex;
+  }
+
+  format(date: Date | null, formatStr: string): string {
+    return date ? this.adapter.format(date, formatStr) : '';
+  }
+
+  parseDate(text: string, formatStr: string = 'yyyy-MM-dd'): Date {
+    return this.adapter.parse(text, formatStr) ?? new Date();
+  }
+
+  parseTime(text: string, formatStr: string = 'HH:mm:ss'): Date | undefined {
+    try {
+      return this.adapter.parseTime(text, formatStr) ?? undefined;
+    } catch {
+      return this.adapter.parse(text, formatStr) ?? undefined;
+    }
+  }
+}
+
+/**
  * DateHelper that handles date formats with date-fns
- * @deprecated Use `NzDateAdapter` directly instead. Will be removed in v23.
+ * @deprecated Use {@link NzDateAdapter} directly instead. Will be removed in v23.
  */
 export class DateHelperByDateFns extends DateHelperService {
   getISOWeek(date: Date): number {

@@ -3,13 +3,23 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Component, inject } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { enUS } from 'date-fns/locale';
 
 import { NzDateAdapter } from './date-adapter';
 import { NZ_DATE_LOCALE } from './date-config';
-import { DateFnsDateAdapter, provideNzDateFnsAdapter } from './date-fns-adapter';
+import { DateFnsDateAdapter, provideNzDateFnsAdapter, ɵprovideNzDefaultDateAdapter } from './date-fns-adapter';
+import { NativeDateAdapter, provideNzNativeDateAdapter } from './native-adapter';
+
+@Component({
+  template: '',
+  providers: [...ɵprovideNzDefaultDateAdapter()]
+})
+class NzTestDefaultDateAdapterComponent {
+  adapter = inject(NzDateAdapter);
+}
 
 describe('DateFnsDateAdapter', () => {
   let adapter: DateFnsDateAdapter;
@@ -22,6 +32,26 @@ describe('DateFnsDateAdapter', () => {
   });
 
   // --- Material Core Methods ---
+
+  describe('default provider', () => {
+    it('should provide date-fns adapter as fallback', () => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        providers: [ɵprovideNzDefaultDateAdapter()]
+      });
+      expect(TestBed.inject(NzDateAdapter)).toBeInstanceOf(DateFnsDateAdapter);
+    });
+
+    it('should use parent adapter before date-fns fallback', () => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [NzTestDefaultDateAdapterComponent],
+        providers: [provideNzNativeDateAdapter()]
+      });
+      const fixture = TestBed.createComponent(NzTestDefaultDateAdapterComponent);
+      expect(fixture.componentInstance.adapter).toBeInstanceOf(NativeDateAdapter);
+    });
+  });
 
   describe('material core', () => {
     it('today() should return current date', () => {

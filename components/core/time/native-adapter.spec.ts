@@ -199,6 +199,23 @@ describe('NativeDateAdapter', () => {
       expect(result).toBeTruthy();
       expect(result!.getFullYear()).toBe(2024);
     });
+
+    it('should parse string input by token format', () => {
+      const result = adapter.parse('2024-06-15 14:30:45', 'yyyy-MM-dd HH:mm:ss');
+      expect(result).toBeTruthy();
+      expect(result!.getFullYear()).toBe(2024);
+      expect(result!.getMonth()).toBe(5);
+      expect(result!.getDate()).toBe(15);
+      expect(result!.getHours()).toBe(14);
+      expect(result!.getMinutes()).toBe(30);
+      expect(result!.getSeconds()).toBe(45);
+    });
+
+    it('should return invalid date for invalid token-parsed dates', () => {
+      const result = adapter.parse('2024-02-31', 'yyyy-MM-dd');
+      expect(result).toBeTruthy();
+      expect(adapter.isValid(result!)).toBeFalsy();
+    });
   });
 
   // --- Material Derived Methods ---

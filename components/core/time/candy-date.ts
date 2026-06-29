@@ -3,45 +3,44 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  addMonths,
-  addYears,
-  differenceInCalendarDays,
-  differenceInCalendarMonths,
-  differenceInCalendarYears,
-  differenceInCalendarQuarters,
-  differenceInHours,
-  differenceInMinutes,
-  differenceInSeconds,
-  isFirstDayOfMonth,
-  isLastDayOfMonth,
-  isSameDay,
-  isSameHour,
-  isSameMinute,
-  isSameMonth,
-  isSameSecond,
-  isSameYear,
-  isSameQuarter,
-  isToday,
-  isValid,
-  setDay,
-  setMonth,
-  setYear,
-  startOfMonth,
-  startOfWeek,
-  getQuarter,
-  setQuarter
-} from 'date-fns';
-
 import { warn } from 'ng-zorro-antd/core/logger';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { DateMode } from './date-adapter';
 import { WeekDayIndex } from './date-config';
+import {
+  ɵdateFnsAddMonths as addMonths,
+  ɵdateFnsAddYears as addYears,
+  ɵdateFnsDifferenceInCalendarDays as differenceInCalendarDays,
+  ɵdateFnsDifferenceInCalendarMonths as differenceInCalendarMonths,
+  ɵdateFnsDifferenceInCalendarQuarters as differenceInCalendarQuarters,
+  ɵdateFnsDifferenceInCalendarYears as differenceInCalendarYears,
+  ɵdateFnsDifferenceInHours as differenceInHours,
+  ɵdateFnsDifferenceInMinutes as differenceInMinutes,
+  ɵdateFnsDifferenceInSeconds as differenceInSeconds,
+  ɵdateFnsGetQuarter as getQuarter,
+  ɵdateFnsIsFirstDayOfMonth as isFirstDayOfMonth,
+  ɵdateFnsIsLastDayOfMonth as isLastDayOfMonth,
+  ɵdateFnsIsSameDay as isSameDay,
+  ɵdateFnsIsSameHour as isSameHour,
+  ɵdateFnsIsSameMinute as isSameMinute,
+  ɵdateFnsIsSameMonth as isSameMonth,
+  ɵdateFnsIsSameQuarter as isSameQuarter,
+  ɵdateFnsIsSameSecond as isSameSecond,
+  ɵdateFnsIsSameYear as isSameYear,
+  ɵdateFnsIsToday as isToday,
+  ɵdateFnsIsValid as isValid,
+  ɵdateFnsSetDay as setDay,
+  ɵdateFnsSetMonth as setMonth,
+  ɵdateFnsSetQuarter as setQuarter,
+  ɵdateFnsSetYear as setYear,
+  ɵdateFnsStartOfMonth as startOfMonth,
+  ɵdateFnsStartOfWeek as startOfWeek
+} from './date-fns-adapter';
 
 export type CandyDateMode = DateMode;
 export type NormalizedMode = 'decade' | 'year' | 'month';
-export type CandyDateType = CandyDate | Date | null;
+export type CandyDateType = CandyDate | Date | null | undefined;
 export type SingleValue = CandyDate | null;
 export type CompatibleValue = SingleValue | SingleValue[];
 
@@ -226,10 +225,13 @@ export class CandyDate implements IndexableObject {
   }
 
   isSame(date: CandyDateType, grain: CandyDateMode = 'day'): boolean {
+    if (date == null) {
+      return false;
+    }
     let fn;
     switch (grain) {
       case 'decade':
-        fn = (pre: Date, next: Date) => Math.abs(pre.getFullYear() - next.getFullYear()) < 11;
+        fn = (pre: Date, next: Date) => Math.floor(pre.getFullYear() / 10) === Math.floor(next.getFullYear() / 10);
         break;
       case 'year':
         fn = isSameYear;
@@ -287,7 +289,7 @@ export class CandyDate implements IndexableObject {
   }
 
   isBefore(date: CandyDateType, grain: CandyDateMode = 'day'): boolean {
-    if (date === null) {
+    if (date == null) {
       return false;
     }
     let fn;

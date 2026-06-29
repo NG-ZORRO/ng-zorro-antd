@@ -1,0 +1,279 @@
+---
+order: 4
+title: 自定义日期库
+---
+
+NG-ZORRO 的日期类组件通过 `NzDateAdapter` 访问日期能力。默认情况下组件会使用内置的 `date-fns` 适配器；如果你希望改用 native `Date`、Day.js、Luxon、Jalali 或其他日期库，可以在应用根配置中提供自己的 adapter。
+
+## 使用内置 Adapter
+
+默认 adapter 基于 `date-fns`。如果你想显式配置它，可以使用 `provideNzDateFnsAdapter`：
+
+```ts
+import { ApplicationConfig } from '@angular/core';
+import { enUS } from 'date-fns/locale';
+
+import { provideNzDateFnsAdapter, NZ_DATE_LOCALE } from 'ng-zorro-antd/core/time';
+
+export const appConfig: ApplicationConfig = {
+  providers: [provideNzDateFnsAdapter({ firstDayOfWeek: 1 }), { provide: NZ_DATE_LOCALE, useValue: enUS }]
+};
+```
+
+如果你不希望依赖 `date-fns`，可以使用内置的 native adapter：
+
+```ts
+import { ApplicationConfig } from '@angular/core';
+
+import { provideNzNativeDateAdapter, NZ_DATE_LOCALE } from 'ng-zorro-antd/core/time';
+
+export const appConfig: ApplicationConfig = {
+  providers: [provideNzNativeDateAdapter({ firstDayOfWeek: 1 }), { provide: NZ_DATE_LOCALE, useValue: 'zh-CN' }]
+};
+```
+
+## 使用自定义 Adapter
+
+自定义 adapter 需要继承 `NzDateAdapter<D, L>`，其中 `D` 是组件使用的日期值类型，`L` 是 locale 类型。为了保持现有组件 API 与表单值兼容，推荐让 `D` 继续使用 `Date`，只把格式化、解析和日期计算委托给第三方日期库。
+
+先在你的应用中安装需要的日期库：
+
+```bash
+npm install dayjs
+```
+
+下面示例使用 Day.js 实现一个 `NzDateAdapter<Date, string>`：
+
+```ts
+import { Injectable } from '@angular/core';
+
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import isoWeek from 'dayjs/plugin/isoWeek';
+import localeData from 'dayjs/plugin/localeData';
+import quarterOfYear from 'dayjs/plugin/quarterOfYear';
+import 'dayjs/locale/zh-cn';
+
+import { NzDateAdapter } from 'ng-zorro-antd/core/time';
+
+dayjs.extend(customParseFormat);
+dayjs.extend(isoWeek);
+dayjs.extend(localeData);
+dayjs.extend(quarterOfYear);
+
+@Injectable()
+export class DayjsDateAdapter extends NzDateAdapter<Date, string> {
+  constructor() {
+    super();
+    this.setLocale('zh-cn');
+  }
+
+  override setLocale(locale: string): void {
+    dayjs.locale(locale);
+    super.setLocale(locale);
+  }
+
+  today(): Date {
+    return new Date();
+  }
+
+  createDate(year: number, month: number, date: number): Date {
+    const result = dayjs().year(year).month(month).date(date).startOf('day');
+    return result.isValid() && result.month() === month ? result.toDate() : this.invalid();
+  }
+
+  clone(date: Date): Date {
+    return new Date(date.getTime());
+  }
+
+  getYear(date: Date): number {
+    return dayjs(date).year();
+  }
+
+  getMonth(date: Date): number {
+    return dayjs(date).month();
+  }
+
+  getDate(date: Date): number {
+    return dayjs(date).date();
+  }
+
+  getDayOfWeek(date: Date): number {
+    return dayjs(date).day();
+  }
+
+  getNumDaysInMonth(date: Date): number {
+    return dayjs(date).daysInMonth();
+  }
+
+  getYearName(date: Date): string {
+    return dayjs(date).format('YYYY');
+  }
+
+  getMonthNames(style: 'long' | 'short' | 'narrow'): string[] {
+    const format = style === 'long' ? 'MMMM' : style === 'short' ? 'MMM' : 'M';
+    return Array.from({ length: 12 }, (_, i) => dayjs().month(i).format(format));
+  }
+
+  getDateNames(): string[] {
+    return Array.from({ length: 31 }, (_, i) => String(i + 1));
+  }
+
+  getDayOfWeekNames(style: 'long' | 'short' | 'narrow'): string[] {
+    const format = style === 'long' ? 'dddd' : style === 'short' ? 'ddd' : 'dd';
+    return Array.from({ length: 7 }, (_, i) => dayjs().day(i).format(format));
+  }
+
+  getFirstDayOfWeek(): number {
+    return dayjs.localeData().firstDayOfWeek();
+  }
+
+  addCalendarYears(date: Date, years: number): Date {
+    return dayjs(date).add(years, 'year').toDate();
+  }
+
+  addCalendarMonths(date: Date, months: number): Date {
+    return dayjs(date).add(months, 'month').toDate();
+  }
+
+  addCalendarDays(date: Date, days: number): Date {
+    return dayjs(date).add(days, 'day').toDate();
+  }
+
+  format(date: Date, displayFormat: unknown): string {
+    return this.isValid(date) ? dayjs(date).format(String(displayFormat)) : '';
+  }
+
+  parse(value: unknown, parseFormat: unknown): Date | null {
+    if (value == null || value === '') {
+      return null;
+    }
+    if (value instanceof Date) {
+      return this.clone(value);
+    }
+    const parsed =
+      typeof parseFormat === 'string'
+        ? dayjs(String(value), parseFormat, this.locale, true)
+        : dayjs(value as string | number);
+    return parsed.isValid() ? parsed.toDate() : this.invalid();
+  }
+
+  isDateInstance(obj: unknown): boolean {
+    return obj instanceof Date;
+  }
+
+  isValid(date: Date): boolean {
+    return date instanceof Date && !isNaN(date.getTime());
+  }
+
+  invalid(): Date {
+    return new Date(NaN);
+  }
+
+  toIso8601(date: Date): string {
+    return dayjs(date).format('YYYY-MM-DD');
+  }
+
+  getQuarter(date: Date): number {
+    return dayjs(date).quarter();
+  }
+
+  setQuarter(date: Date, quarter: number): Date {
+    return dayjs(date).quarter(quarter).toDate();
+  }
+
+  startOfQuarter(date: Date): Date {
+    return dayjs(date).startOf('quarter').toDate();
+  }
+
+  getISOWeek(date: Date): number {
+    return dayjs(date).isoWeek();
+  }
+
+  setYear(date: Date, year: number): Date {
+    return dayjs(date).year(year).toDate();
+  }
+
+  setMonth(date: Date, month: number): Date {
+    return dayjs(date).month(month).toDate();
+  }
+
+  setDate(date: Date, dateOfMonth: number): Date {
+    return dayjs(date).date(dateOfMonth).toDate();
+  }
+
+  override setTime(date: Date, hours: number, minutes: number, seconds: number): Date {
+    return dayjs(date).hour(hours).minute(minutes).second(seconds).millisecond(0).toDate();
+  }
+
+  override getHours(date: Date): number {
+    return dayjs(date).hour();
+  }
+
+  override getMinutes(date: Date): number {
+    return dayjs(date).minute();
+  }
+
+  override getSeconds(date: Date): number {
+    return dayjs(date).second();
+  }
+
+  override parseTime(value: unknown, parseFormat: unknown = 'HH:mm:ss'): Date | null {
+    return this.parse(value, parseFormat);
+  }
+
+  override addSeconds(date: Date, amount: number): Date {
+    return dayjs(date).add(amount, 'second').toDate();
+  }
+
+  override getMilliseconds(date: Date): number {
+    return dayjs(date).millisecond();
+  }
+
+  override getTime(date: Date): number {
+    return date.getTime();
+  }
+}
+```
+
+在应用根配置中注册它：
+
+```ts
+import { ApplicationConfig } from '@angular/core';
+
+import { provideNzDateAdapter, NZ_DATE_LOCALE } from 'ng-zorro-antd/core/time';
+
+import { DayjsDateAdapter } from './dayjs-date-adapter';
+
+export const appConfig: ApplicationConfig = {
+  providers: [provideNzDateAdapter(DayjsDateAdapter), { provide: NZ_DATE_LOCALE, useValue: 'zh-cn' }]
+};
+```
+
+## 在业务代码中使用 Adapter
+
+如果业务代码需要和组件使用同一套日期规则，可以直接注入 `NzDateAdapter`：
+
+```ts
+import { Component, inject } from '@angular/core';
+
+import { NzDateAdapter } from 'ng-zorro-antd/core/time';
+
+@Component({
+  selector: 'app-demo',
+  template: `{{ label }}`
+})
+export class DemoComponent {
+  private readonly dateAdapter = inject(NzDateAdapter);
+
+  readonly value = this.dateAdapter.today();
+  readonly label = this.dateAdapter.format(this.value, 'YYYY-MM-DD');
+}
+```
+
+## 注意事项
+
+- DatePicker、Calendar、TimePicker 会优先使用应用根部提供的 adapter。没有显式配置时，组件会回退到默认的 `date-fns` adapter。
+- `format` 与 `parse` 的格式字符串由当前 adapter 解释。切换日期库后，请确认 `nzFormat`、默认格式和手动解析格式都符合新日期库的 token 语法。
+- 如果使用 TimePicker 或 DatePicker 的时间选择能力，请实现 `setTime`、`getHours`、`getMinutes`、`getSeconds`、`parseTime`、`addSeconds` 等时间相关方法。
+- `NZ_DATE_LOCALE` 的值会传给当前 adapter。不同日期库的 locale 类型可能不同，自定义 adapter 需要自行解释这个值。
