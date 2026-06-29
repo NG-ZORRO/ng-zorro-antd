@@ -16,6 +16,15 @@ tag: '{{version}}'
 
 ---
 
+## 21.3.2
+
+`2026-06-27`
+
+### Bug Fixes
+
+- **schematics:** 确保 schematics 以 commonjs 格式发布 ([#9848](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9848)) ([1196369](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1196369990a04b9d52283efd64dfcb0f99532bd7))
+- **select:** 防止下拉选项溢出 ([#9849](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9849)) ([a2b5d1f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a2b5d1f9229465be97b163a62564ef774ecd3cf9))
+
 ## 21.3.1
 
 `2026-06-05`

@@ -10,7 +10,7 @@ description: A dropdown menu for displaying choices.
 
 - A dropdown menu for displaying choices - an elegant alternative to the native `<select>` element.
 - Utilizing [Radio](/components/radio/en) is recommended when there are fewer total options (less than 5).
-- You probably need [AutoComplete](/components/auto-complete) if you're looking for an input box that can be typed or selected.
+- You probably need [AutoComplete](/components/auto-complete/en) if you're looking for an input box that can be typed or selected.
 
 ## API
 
