@@ -49,6 +49,15 @@ Remove the following APIs which were marked as deprecated in the previous versio
 | `ng-zorro-antd/upload`        | `nz-upload[nzTransformFile]`, `NzUploadTransformFileType`                            |
 | `ng-zorro-antd/upload`        | `ZipButtonOptions#transformFile`                                                     |
 
+## 21.3.2
+
+`2026-06-27`
+
+### Bug Fixes
+
+- **schematics:** ensure schematics publish as commonjs ([#9848](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9848)) ([1196369](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1196369990a04b9d52283efd64dfcb0f99532bd7))
+- **select:** prevent dropdown option overflow ([#9849](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9849)) ([a2b5d1f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a2b5d1f9229465be97b163a62564ef774ecd3cf9))
+
 ## 21.3.1
 
 `2026-06-05`

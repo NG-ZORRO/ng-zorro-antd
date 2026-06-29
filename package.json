@@ -36,6 +36,7 @@
   "devDependencies": {
     "@angular-devkit/core": "^22.0.4",
     "@angular-devkit/schematics": "^22.0.4",
+    "@angular/animations": "^22.0.2",
     "@angular/build": "^22.0.4",
     "@angular/cli": "^22.0.4",
     "@angular/common": "^22.0.2",
