@@ -5,7 +5,7 @@
 
 import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@angular/core';
 
-import { DateHelperService } from 'ng-zorro-antd/i18n';
+import { NzDateAdapter } from 'ng-zorro-antd/core/time';
 
 import { NzDateMode } from '../standard-types';
 import { AbstractPanelHeader } from './abstract-panel-header';
@@ -19,7 +19,7 @@ import { transCompatFormat } from './util';
   templateUrl: './abstract-panel-header.html'
 })
 export class MonthHeaderComponent extends AbstractPanelHeader {
-  private readonly dateHelper = inject(DateHelperService);
+  private readonly dateAdapter = inject(NzDateAdapter);
 
   override mode: NzDateMode = 'month';
 
@@ -32,7 +32,7 @@ export class MonthHeaderComponent extends AbstractPanelHeader {
           this.mode = 'year';
           this.changeMode('year');
         },
-        label: this.dateHelper.format(this.value.nativeDate, transCompatFormat(this.locale.yearFormat))
+        label: this.dateAdapter.format(this.value.nativeDate, transCompatFormat(this.locale.yearFormat))
       }
     ];
   }

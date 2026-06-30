@@ -38,17 +38,42 @@ import {
   ɵdateFnsStartOfWeek as startOfWeek
 } from './date-fns-adapter';
 
+/**
+ * @deprecated Use `DateMode` and `NzDateAdapter` directly instead. Will be removed in v23.
+ */
 export type CandyDateMode = DateMode;
+
+/**
+ * @deprecated Use `NzDateAdapter` directly instead. Will be removed in v23.
+ */
 export type NormalizedMode = 'decade' | 'year' | 'month';
+
+/**
+ * @deprecated Use `Date` and `NzDateAdapter` directly instead. Will be removed in v23.
+ */
 export type CandyDateType = CandyDate | Date | null | undefined;
+
+/**
+ * @deprecated Use `Date | null` directly instead. Will be removed in v23.
+ */
 export type SingleValue = CandyDate | null;
+
+/**
+ * @deprecated Use `Date | null` or `(Date | null)[]` directly instead. Will be removed in v23.
+ */
 export type CompatibleValue = SingleValue | SingleValue[];
 
+/**
+ * @deprecated Use `NzDateAdapter.isBeforeWithMode` directly instead. Will be removed in v23.
+ */
 export function wrongSortOrder(rangeValue: SingleValue[]): boolean {
   const [start, end] = rangeValue;
   return !!start && !!end && end.isBeforeDay(start);
 }
 
+/**
+ * @deprecated Use `NzDateAdapter` directly instead. Will be removed in v23.
+ */
 export function normalizeRangeValue(
   value: SingleValue[],
   hasTimePicker: boolean,
@@ -79,6 +104,9 @@ export function normalizeRangeValue(
   return [newStart, newEnd];
 }
 
+/**
+ * @deprecated Use `Date` cloning directly instead. Will be removed in v23.
+ */
 export function cloneDate(value: CompatibleValue): CompatibleValue {
   if (Array.isArray(value)) {
     return value.map(v => (v instanceof CandyDate ? v.clone() : null));

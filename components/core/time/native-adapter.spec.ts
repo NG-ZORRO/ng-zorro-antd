@@ -173,6 +173,28 @@ describe('NativeDateAdapter', () => {
       expect(typeof result).toBe('string');
       expect(result).toContain('2024');
     });
+
+    it('should zero-pad numeric time tokens', () => {
+      const date = new Date(2024, 0, 2, 0, 5, 6);
+      expect(adapter.format(date, 'yyyy-MM-dd HH:mm:ss')).toBe('2024-01-02 00:05:06');
+    });
+
+    it('should keep bracket literals out of token replacement', () => {
+      const date = new Date(2024, 0, 2, 0, 5, 6);
+      expect(adapter.format(date, 'yyyy-[Q]Q [at] HH:mm')).toBe('2024-Q1 at 00:05');
+    });
+
+    it('should not replace tokens inside formatted values', () => {
+      const date = new Date(2024, 2, 2);
+      expect(adapter.format(date, 'MMMM M')).toBe('March 3');
+    });
+
+    it('should support date table weekday tokens', () => {
+      const date = new Date(2024, 0, 2);
+      expect(adapter.format(date, 'E')).toBe('Tue');
+      expect(adapter.format(date, 'EEEEE')).toBe('T');
+      expect(adapter.format(date, 'EEEEEE')).toBe('T');
+    });
   });
 
   describe('parse', () => {

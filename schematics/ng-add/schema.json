@@ -133,7 +133,7 @@
           },
           {
             "value": "native",
-            "label": "Native (Zero dependency)"
+            "label": "Native (Intl-based)"
           },
           {
             "value": "none",

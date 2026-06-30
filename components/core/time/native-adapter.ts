@@ -31,7 +31,7 @@ function inRange(value: number, min: number, max: number): boolean {
 }
 
 /**
- * Zero-dependency date adapter using native Date and Intl.DateTimeFormat.
+ * Date adapter using native Date and Intl.DateTimeFormat.
  * Fully aligned with Angular Material's NativeDateAdapter implementation.
  */
 @Injectable()
@@ -617,70 +617,76 @@ export class NativeDateAdapter extends NzDateAdapter<Date, string> {
       return '';
     }
     const locale = this.locale as string;
-    let result = formatStr;
 
-    // Quarter tokens (NG-ZORRO specific)
-    const quarter = this.getQuarter(date);
-    result = result.replace(/Q{4,}/g, quarter.toString());
-    result = result.replace(/QQQ/g, `Q${quarter}`);
-    result = result.replace(/QQ/g, quarter < 10 ? `0${quarter}` : quarter.toString());
-    result = result.replace(/Q(?![Q\]])/g, quarter.toString());
-
-    // Use Intl.DateTimeFormat via _format for standard tokens (UTC-safe)
-    const dtfYearFull = new Intl.DateTimeFormat(locale, { year: 'numeric', timeZone: 'utc' });
-    const dtfYear2Digit = new Intl.DateTimeFormat(locale, { year: '2-digit', timeZone: 'utc' });
-    const dtfMonth2Digit = new Intl.DateTimeFormat(locale, { month: '2-digit', timeZone: 'utc' });
     const dtfMonthShort = new Intl.DateTimeFormat(locale, { month: 'short', timeZone: 'utc' });
     const dtfMonthLong = new Intl.DateTimeFormat(locale, { month: 'long', timeZone: 'utc' });
-    const dtfDay2Digit = new Intl.DateTimeFormat(locale, { day: '2-digit', timeZone: 'utc' });
+    const dtfWeekdayNarrow = new Intl.DateTimeFormat(locale, { weekday: 'narrow', timeZone: 'utc' });
     const dtfWeekdayShort = new Intl.DateTimeFormat(locale, { weekday: 'short', timeZone: 'utc' });
     const dtfWeekdayLong = new Intl.DateTimeFormat(locale, { weekday: 'long', timeZone: 'utc' });
-    const dtfHour24 = new Intl.DateTimeFormat(locale, { hour: '2-digit', hour12: false, timeZone: 'utc' });
-    const dtfMinute = new Intl.DateTimeFormat(locale, { minute: '2-digit', timeZone: 'utc' });
-    const dtfSecond = new Intl.DateTimeFormat(locale, { second: '2-digit', timeZone: 'utc' });
 
-    const yearFull = this._format(dtfYearFull, date);
-    const year2Digit = this._format(dtfYear2Digit, date);
-    const month2Digit = this._format(dtfMonth2Digit, date);
-    const monthShort = this._format(dtfMonthShort, date);
-    const monthLong = this._format(dtfMonthLong, date);
-    const day2Digit = this._format(dtfDay2Digit, date);
-    const weekdayShort = this._format(dtfWeekdayShort, date);
-    const weekdayLong = this._format(dtfWeekdayLong, date);
-    const hour24 = this._format(dtfHour24, date);
-    const minute = this._format(dtfMinute, date);
-    const second = this._format(dtfSecond, date);
+    const quarter = this.getQuarter(date);
+    const hour12 = date.getHours() % 12 || 12;
+    const tokenValues: Record<string, string> = {
+      yyyy: date.getFullYear().toString().padStart(4, '0'),
+      yy: this._2digit(date.getFullYear() % 100),
+      MMMM: this._format(dtfMonthLong, date),
+      MMM: this._format(dtfMonthShort, date),
+      MM: this._2digit(date.getMonth() + 1),
+      M: (date.getMonth() + 1).toString(),
+      dd: this._2digit(date.getDate()),
+      d: date.getDate().toString(),
+      EEEEEE: this._format(dtfWeekdayNarrow, date),
+      EEEEE: this._format(dtfWeekdayNarrow, date),
+      EEEE: this._format(dtfWeekdayLong, date),
+      EEE: this._format(dtfWeekdayShort, date),
+      EE: this._format(dtfWeekdayShort, date),
+      E: this._format(dtfWeekdayShort, date),
+      HH: this._2digit(date.getHours()),
+      H: date.getHours().toString(),
+      hh: this._2digit(hour12),
+      h: hour12.toString(),
+      mm: this._2digit(date.getMinutes()),
+      m: date.getMinutes().toString(),
+      ss: this._2digit(date.getSeconds()),
+      s: date.getSeconds().toString(),
+      ww: this._2digit(this.getISOWeek(date)),
+      w: this.getISOWeek(date).toString(),
+      QQQ: `Q${quarter}`,
+      QQ: this._2digit(quarter),
+      Q: quarter.toString(),
+      a: date.getHours() < 12 ? 'AM' : 'PM'
+    };
+    const tokens = Object.keys(tokenValues).sort((a, b) => b.length - a.length);
+    let result = '';
 
-    // Apply replacements
-    const replacements: Array<[RegExp, string]> = [
-      [/yyyy/g, yearFull],
-      [/yy/g, year2Digit],
-      [/MMMM/g, monthLong],
-      [/MMM/g, monthShort],
-      [/MM/g, month2Digit],
-      [/M(?![Mo])/, (date.getMonth() + 1).toString()],
-      [/dd/g, day2Digit],
-      [/d(?![d ])/, date.getDate().toString()],
-      [/EEEE/g, weekdayLong],
-      [/EEE/g, weekdayShort],
-      [/HH/g, hour24],
-      [/H(?![H ])/, date.getHours().toString()],
-      [/hh/g, this._2digit(date.getHours() % 12 || 12)],
-      [/h(?![h ])/, (date.getHours() % 12 || 12).toString()],
-      [/mm/g, minute],
-      [/m(?![m ])/, date.getMinutes().toString()],
-      [/ss/g, second],
-      [/s(?![s ])/, date.getSeconds().toString()],
-      [/ww/g, this._2digit(this.getISOWeek(date))],
-      [/w(?![w ])/, this.getISOWeek(date).toString()]
-    ];
+    for (let i = 0; i < formatStr.length; ) {
+      if (formatStr[i] === '[') {
+        const end = formatStr.indexOf(']', i + 1);
+        result += end === -1 ? formatStr.slice(i + 1) : formatStr.slice(i + 1, end);
+        i = end === -1 ? formatStr.length : end + 1;
+        continue;
+      }
 
-    for (const [pattern, replacement] of replacements) {
-      result = result.replace(pattern, replacement);
+      if (formatStr[i] === 'Q') {
+        let end = i + 1;
+        while (formatStr[end] === 'Q') {
+          end++;
+        }
+        const length = end - i;
+        result += length >= 4 ? quarter.toString() : tokenValues['Q'.repeat(length)];
+        i = end;
+        continue;
+      }
+
+      const token = tokens.find(item => formatStr.startsWith(item, i));
+      if (token) {
+        result += tokenValues[token];
+        i += token.length;
+      } else {
+        result += formatStr[i];
+        i++;
+      }
     }
-
-    // Handle bracket-escaped tokens
-    result = result.replace(/\[([^\]]+)\]/g, '$1');
 
     return result;
   }
@@ -688,7 +694,7 @@ export class NativeDateAdapter extends NzDateAdapter<Date, string> {
 
 /**
  * Provides the NativeDateAdapter as the NzDateAdapter implementation.
- * NativeDateAdapter is a zero-dependency adapter using native Date and Intl.DateTimeFormat.
+ * NativeDateAdapter uses native Date and Intl.DateTimeFormat.
  *
  * @param config Optional configuration for the adapter
  * @returns EnvironmentProviders for the NativeDateAdapter

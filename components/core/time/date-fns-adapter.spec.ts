@@ -304,6 +304,15 @@ describe('DateFnsDateAdapter', () => {
   // --- getFirstDayOfWeek ---
 
   describe('getFirstDayOfWeek', () => {
+    it('should default to Monday when no date-fns locale is configured', () => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        providers: [provideNzDateFnsAdapter()]
+      });
+      const a = TestBed.inject(NzDateAdapter) as DateFnsDateAdapter;
+      expect(a.getFirstDayOfWeek()).toBe(1);
+    });
+
     it('should return configured firstDayOfWeek', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({

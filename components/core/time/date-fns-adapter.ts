@@ -6,6 +6,7 @@
 import {
   EnvironmentProviders,
   Injectable,
+  Injector,
   Optional,
   Provider,
   SkipSelf,
@@ -170,7 +171,7 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
     if (this.dateConfig?.firstDayOfWeek != null) {
       return this.dateConfig.firstDayOfWeek;
     } else {
-      return this.locale?.options?.weekStartsOn ?? 0;
+      return this.locale?.options?.weekStartsOn ?? 1;
     }
   }
 
@@ -470,9 +471,9 @@ export function ɵprovideNzDefaultDateAdapter(): Provider[] {
     DateFnsDateAdapter,
     {
       provide: NzDateAdapter,
-      deps: [[new Optional(), new SkipSelf(), NzDateAdapter], DateFnsDateAdapter],
-      useFactory: (parentAdapter: NzDateAdapter<Date> | null, fallbackAdapter: DateFnsDateAdapter) =>
-        parentAdapter ?? fallbackAdapter
+      deps: [[new Optional(), new SkipSelf(), NzDateAdapter], Injector],
+      useFactory: (parentAdapter: NzDateAdapter<Date> | null, injector: Injector) =>
+        parentAdapter ?? injector.get(DateFnsDateAdapter)
     }
   ];
 }

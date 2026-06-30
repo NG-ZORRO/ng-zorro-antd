@@ -20,7 +20,7 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-如果你不希望依赖 `date-fns`，可以使用内置的 native adapter：
+如果你希望日期能力使用原生 `Date` 和 `Intl.DateTimeFormat` 语义，可以使用内置的 native adapter：
 
 ```ts
 import { ApplicationConfig } from '@angular/core';

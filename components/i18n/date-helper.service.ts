@@ -21,6 +21,9 @@ import {
 
 import { NzI18nService } from './nz-i18n.service';
 
+/**
+ * @deprecated Use `NzDateAdapter` directly instead. Will be removed in v23.
+ */
 export function DATE_HELPER_SERVICE_FACTORY(): DateHelperService {
   const i18n = inject(NzI18nService);
   return i18n.getDateLocale() ? new DateHelperByDateFns(i18n) : new DateHelperByDatePipe(i18n);

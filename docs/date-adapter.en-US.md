@@ -20,7 +20,7 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-If you do not want to depend on `date-fns`, use the built-in native adapter:
+If you prefer native `Date` and `Intl.DateTimeFormat` semantics for date operations, use the built-in native adapter:
 
 ```ts
 import { ApplicationConfig } from '@angular/core';

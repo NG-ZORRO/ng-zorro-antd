@@ -6,9 +6,8 @@
 import { ChangeDetectionStrategy, Component, inject, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
-import { CandyDate } from 'ng-zorro-antd/core/time';
+import { CandyDate, NzDateAdapter } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
-import { DateHelperService } from 'ng-zorro-antd/i18n';
 
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell } from './interface';
@@ -22,7 +21,7 @@ import { DateBodyRow, DateCell } from './interface';
   imports: [NzStringTemplateOutletDirective]
 })
 export class MonthTableComponent extends AbstractTable implements OnChanges, OnInit {
-  private readonly dateHelper = inject(DateHelperService);
+  private readonly dateAdapter = inject(NzDateAdapter);
 
   override MAX_ROW = 4;
   override MAX_COL = 3;
@@ -44,7 +43,7 @@ export class MonthTableComponent extends AbstractTable implements OnChanges, OnI
       for (let colIndex = 0; colIndex < this.MAX_COL; colIndex++) {
         const month = this.activeDate.setMonth(monthValue);
         const isDisabled = this.isDisabledMonth(month);
-        const content = this.dateHelper.format(month.nativeDate, 'MMM');
+        const content = this.dateAdapter.format(month.nativeDate, 'MMM');
         const cell: DateCell = {
           trackByIndex: colIndex,
           value: month.nativeDate,
