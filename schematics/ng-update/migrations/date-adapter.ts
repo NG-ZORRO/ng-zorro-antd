@@ -3,87 +3,261 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Migration, WorkspacePath } from '@angular/cdk/schematics';
+import { DevkitMigration, getProjectMainFile, WorkspacePath } from '@angular/cdk/schematics';
 
+import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
+import { findAppConfig } from '@schematics/angular/utility/standalone/app_config';
+import {
+  findBootstrapApplicationCall,
+  findProvidersLiteral,
+  isMergeAppConfigCall
+} from '@schematics/angular/utility/standalone/util';
 import * as ts from 'typescript';
 
 /**
- * Migration that adds `provideNzDateFnsAdapter()` to root providers when an
- * application already imports date components from its root config.
+ * Migration that adds `provideNzDateFnsAdapter()` to root providers.
  *
  * Components still have a date-fns fallback for backwards compatibility; this
- * migration makes the selected adapter explicit in projects where it can do so
- * safely.
+ * migration makes the default adapter explicit in projects where it can do so
+ * safely. Projects that already configure a date adapter are left unchanged.
  */
-export class DateAdapterMigration extends Migration<null> {
-  /** Pattern to match date-picker, calendar, time-picker imports */
-  private readonly dateComponentPattern = /ng-zorro-antd\/(date-picker|calendar|time-picker)/;
+export class DateAdapterMigration extends DevkitMigration<null> {
+  /** Provider APIs that indicate the project already has an explicit date adapter choice. */
+  private readonly dateAdapterProviderPattern =
+    /^(provideNzDateAdapter|provideNzDateFnsAdapter|provideNzNativeDateAdapter)$/;
 
-  /** Pattern to match NzDateAdapter imports */
-  private readonly dateAdapterImportPattern =
-    /NzDateAdapter|provideNzDateAdapter|provideNzDateFnsAdapter|provideNzNativeDateAdapter/;
-
-  /** Whether the file uses date components */
+  /** Always enabled; the migration is scoped by project target in postAnalysis. */
   enabled: boolean = true;
 
-  visitNode(node: ts.Node): void {
-    // Check for imports of date-related components
-    if (ts.isImportDeclaration(node)) {
-      this._checkImportDeclaration(node);
+  postAnalysis(): void {
+    if (this.context.isTestTarget) {
+      return;
+    }
+
+    const mainFile = getProjectMainFile(this.context.project);
+
+    if (this.addProviderToStandaloneApp(mainFile)) {
+      return;
+    }
+
+    this.addProviderToNgModuleApp(mainFile);
+  }
+
+  private addProviderToStandaloneApp(mainFile: string): boolean {
+    try {
+      const bootstrapCall = findBootstrapApplicationCall(this.context.tree, mainFile);
+      const appConfig = findAppConfig(bootstrapCall, this.context.tree, mainFile);
+      if (appConfig) {
+        const appConfigSource = this.getSourceFile(appConfig.filePath);
+        if (this.hasDateAdapterProvider(appConfigSource)) {
+          return true;
+        }
+
+        const providersLiteral = findProvidersLiteral(appConfig.node);
+        const filePath = this.fileSystem.resolve(appConfig.filePath);
+
+        this.insertProviderImport(appConfigSource, filePath);
+
+        if (providersLiteral) {
+          this.addProviderToArray(providersLiteral, filePath);
+        } else {
+          this.addProvidersProperty(appConfig.node, filePath);
+        }
+
+        return true;
+      }
+
+      const mainSource = this.getSourceFile(mainFile);
+      if (this.hasDateAdapterProvider(mainSource)) {
+        return true;
+      }
+
+      const filePath = this.fileSystem.resolve(mainFile);
+      this.insertProviderImport(mainSource, filePath);
+      this.addProviderToBootstrapCall(bootstrapCall, filePath);
+
+      return true;
+    } catch {
+      return false;
     }
   }
 
-  private _checkImportDeclaration(node: ts.ImportDeclaration): void {
-    const moduleSpecifier = node.moduleSpecifier.getText();
+  private addProviderToBootstrapCall(bootstrapCall: ts.CallExpression, filePath: WorkspacePath): void {
+    const providerConfig = `{\n  providers: [provideNzDateFnsAdapter()]\n}`;
 
-    // Check if this file imports from date-picker, calendar, or time-picker
-    if (this.dateComponentPattern.test(moduleSpecifier)) {
-      const sourceFile = node.getSourceFile();
-      const fileName = sourceFile.fileName;
+    if (bootstrapCall.arguments.length === 1) {
+      this.fileSystem.edit(filePath).insertRight(bootstrapCall.arguments[0].getEnd(), `, ${providerConfig}`);
+      return;
+    }
 
-      // Check if the file already imports NzDateAdapter or provider functions
-      if (this._hasDateAdapterImport(sourceFile)) {
-        return;
-      }
+    const secondArgument = bootstrapCall.arguments[1];
+    if (isMergeAppConfigCall(secondArgument)) {
+      const separator = secondArgument.arguments.length === 0 ? '' : ', ';
+      this.fileSystem.edit(filePath).insertRight(secondArgument.getEnd() - 1, `${separator}${providerConfig}`);
+      return;
+    }
 
-      // Skip if this is not an app config or main file
-      if (!this._isAppConfigFile(fileName)) {
-        return;
-      }
+    this.failures.push({
+      filePath,
+      message: 'Could not statically analyze bootstrapApplication config to add provideNzDateFnsAdapter().'
+    });
+  }
 
-      // Add the provider import and call
-      this._addDateAdapterProvider(sourceFile, node);
+  private addProviderToNgModuleApp(mainFile: string): void {
+    let appModulePath: string;
+
+    try {
+      appModulePath = getAppModulePath(this.context.tree, mainFile);
+    } catch {
+      this.createFailureAtMainFile(
+        mainFile,
+        'Could not find root providers to add provideNzDateFnsAdapter(). Please add it manually.'
+      );
+      return;
+    }
+
+    const sourceFile = this.getSourceFile(appModulePath);
+    if (this.hasDateAdapterProvider(sourceFile)) {
+      return;
+    }
+
+    const ngModuleMetadata = this.findNgModuleMetadata(sourceFile);
+    if (!ngModuleMetadata) {
+      this.createFailureAtMainFile(
+        appModulePath,
+        'Could not find NgModule metadata to add provideNzDateFnsAdapter(). Please add it manually.'
+      );
+      return;
+    }
+
+    const filePath = this.fileSystem.resolve(appModulePath);
+    const providersLiteral = this.findProvidersProperty(ngModuleMetadata);
+
+    this.insertProviderImport(sourceFile, filePath);
+
+    if (providersLiteral) {
+      this.addProviderToArray(providersLiteral, filePath);
+    } else {
+      this.addProvidersProperty(ngModuleMetadata, filePath);
     }
   }
 
-  /** Check if source file already has date adapter imports */
-  private _hasDateAdapterImport(sourceFile: ts.SourceFile): boolean {
-    let hasImport = false;
+  private hasDateAdapterProvider(sourceFile: ts.SourceFile): boolean {
+    let hasProvider = false;
 
-    ts.forEachChild(sourceFile, node => {
-      if (ts.isImportDeclaration(node)) {
-        const importText = node.getText();
-        if (this.dateAdapterImportPattern.test(importText)) {
-          hasImport = true;
+    const visit = (node: ts.Node): void => {
+      if (hasProvider) {
+        return;
+      }
+
+      if (ts.isCallExpression(node)) {
+        const expression = node.expression;
+        if (ts.isIdentifier(expression) && this.dateAdapterProviderPattern.test(expression.text)) {
+          hasProvider = true;
+          return;
         }
       }
-    });
 
-    return hasImport;
+      if (ts.isPropertyAssignment(node) && ts.isIdentifier(node.name) && node.name.text === 'provide') {
+        const initializer = node.initializer;
+        if (ts.isIdentifier(initializer) && initializer.text === 'NzDateAdapter') {
+          hasProvider = true;
+          return;
+        }
+      }
+
+      ts.forEachChild(node, visit);
+    };
+
+    visit(sourceFile);
+    return hasProvider;
   }
 
-  /** Check if the file is likely an app config or main bootstrap file */
-  private _isAppConfigFile(fileName: string): boolean {
-    const appConfigPatterns = [/app\.config\.ts$/, /app\.module\.ts$/, /main\.ts$/, /bootstrap\.ts$/, /app\.ts$/];
+  private findNgModuleMetadata(sourceFile: ts.SourceFile): ts.ObjectLiteralExpression | null {
+    let metadata: ts.ObjectLiteralExpression | null = null;
 
-    return appConfigPatterns.some(pattern => pattern.test(fileName));
+    const visit = (node: ts.Node): void => {
+      if (metadata) {
+        return;
+      }
+
+      if (ts.isDecorator(node) && ts.isCallExpression(node.expression)) {
+        const expression = node.expression.expression;
+        const args = node.expression.arguments;
+        if (
+          ts.isIdentifier(expression) &&
+          expression.text === 'NgModule' &&
+          args.length > 0 &&
+          ts.isObjectLiteralExpression(args[0])
+        ) {
+          metadata = args[0];
+          return;
+        }
+      }
+
+      ts.forEachChild(node, visit);
+    };
+
+    visit(sourceFile);
+    return metadata;
   }
 
-  /** Add provideNzDateFnsAdapter import and provider call */
-  private _addDateAdapterProvider(sourceFile: ts.SourceFile, importNode: ts.ImportDeclaration): void {
-    const filePath = this.fileSystem.resolve(sourceFile.fileName);
+  private findProvidersProperty(metadata: ts.ObjectLiteralExpression): ts.ArrayLiteralExpression | null {
+    for (const property of metadata.properties) {
+      if (
+        ts.isPropertyAssignment(property) &&
+        ts.isIdentifier(property.name) &&
+        property.name.text === 'providers' &&
+        ts.isArrayLiteralExpression(property.initializer)
+      ) {
+        return property.initializer;
+      }
+    }
 
-    // Find the last import declaration
+    return null;
+  }
+
+  private addProvidersProperty(metadata: ts.ObjectLiteralExpression, filePath: WorkspacePath): void {
+    const providerProperty = 'providers: [provideNzDateFnsAdapter()]';
+    const properties = metadata.properties;
+
+    if (properties.length === 0) {
+      this.fileSystem.edit(filePath).insertRight(metadata.getStart() + 1, providerProperty);
+      return;
+    }
+
+    const lastProperty = properties[properties.length - 1];
+    this.fileSystem.edit(filePath).insertRight(lastProperty.getEnd(), `, ${providerProperty}`);
+  }
+
+  /** Add provider to array */
+  private addProviderToArray(arrayNode: ts.ArrayLiteralExpression, filePath: WorkspacePath): void {
+    const elements = arrayNode.elements;
+
+    for (const element of elements) {
+      if (ts.isCallExpression(element)) {
+        const expr = element.expression;
+        if (ts.isIdentifier(expr) && expr.getText() === 'provideNzDateFnsAdapter') {
+          return;
+        }
+      }
+    }
+
+    const providerCall = 'provideNzDateFnsAdapter()';
+
+    if (elements.length === 0) {
+      this.fileSystem.edit(filePath).insertRight(arrayNode.getStart() + 1, providerCall);
+    } else {
+      const lastElement = elements[elements.length - 1];
+      this.fileSystem.edit(filePath).insertRight(lastElement.getEnd(), `, ${providerCall}`);
+    }
+  }
+
+  private insertProviderImport(sourceFile: ts.SourceFile, filePath: WorkspacePath): void {
+    if (this.hasNamedImport(sourceFile, 'provideNzDateFnsAdapter', 'ng-zorro-antd/core/time')) {
+      return;
+    }
+
     let lastImport: ts.ImportDeclaration | null = null;
     ts.forEachChild(sourceFile, node => {
       if (ts.isImportDeclaration(node)) {
@@ -91,92 +265,44 @@ export class DateAdapterMigration extends Migration<null> {
       }
     });
 
+    const importToAdd = `\nimport { provideNzDateFnsAdapter } from 'ng-zorro-antd/core/time';\n`;
+
     if (lastImport) {
-      // Add import for provideNzDateFnsAdapter after the last import
-      const importToAdd = `\nimport { provideNzDateFnsAdapter } from 'ng-zorro-antd/core/time';\n`;
       this.fileSystem.edit(filePath).insertRight(lastImport.getEnd(), importToAdd);
-    }
-
-    // Find providers array and add the provider
-    this._findAndAddProvider(sourceFile, filePath);
-  }
-
-  /** Find providers array/function and add provideNzDateFnsAdapter */
-  private _findAndAddProvider(sourceFile: ts.SourceFile, filePath: WorkspacePath): void {
-    // Look for providers: [...] or makeEnvironmentProviders([...])
-    ts.forEachChild(sourceFile, node => {
-      this._visitNodeForProviders(node, filePath);
-    });
-  }
-
-  private _visitNodeForProviders(node: ts.Node, filePath: WorkspacePath): void {
-    // Check for providers array literal
-    if (ts.isArrayLiteralExpression(node)) {
-      const parent = node.parent;
-      if (ts.isPropertyAssignment(parent) && parent.name.getText() === 'providers') {
-        this._addProviderToArray(node, filePath);
-      }
-    }
-
-    // Check for makeEnvironmentProviders call
-    if (ts.isCallExpression(node)) {
-      const expression = node.expression;
-      if (ts.isIdentifier(expression) && expression.getText() === 'makeEnvironmentProviders') {
-        const args = node.arguments;
-        if (args.length > 0 && ts.isArrayLiteralExpression(args[0])) {
-          this._addProviderToArray(args[0], filePath);
-        }
-      }
-    }
-
-    // Check for bootstrapApplication call
-    if (ts.isCallExpression(node)) {
-      const expression = node.expression;
-      if (ts.isIdentifier(expression) && expression.getText() === 'bootstrapApplication') {
-        // Second argument is options object with providers
-        const args = node.arguments;
-        if (args.length > 1 && ts.isObjectLiteralExpression(args[1])) {
-          args[1].properties.forEach(prop => {
-            if (ts.isPropertyAssignment(prop) && prop.name.getText() === 'providers') {
-              if (ts.isArrayLiteralExpression(prop.initializer)) {
-                this._addProviderToArray(prop.initializer, filePath);
-              }
-            }
-          });
-        }
-      }
-    }
-
-    // Recursively visit children
-    ts.forEachChild(node, child => {
-      this._visitNodeForProviders(child, filePath);
-    });
-  }
-
-  /** Add provider to array */
-  private _addProviderToArray(arrayNode: ts.ArrayLiteralExpression, filePath: WorkspacePath): void {
-    const elements = arrayNode.elements;
-
-    // Check if provideNzDateFnsAdapter is already in the array
-    for (const element of elements) {
-      if (ts.isCallExpression(element)) {
-        const expr = element.expression;
-        if (ts.isIdentifier(expr) && expr.getText() === 'provideNzDateFnsAdapter') {
-          return; // Already present
-        }
-      }
-    }
-
-    // Add the provider
-    const providerCall = 'provideNzDateFnsAdapter()';
-
-    if (elements.length === 0) {
-      // Empty array: insert inside brackets
-      this.fileSystem.edit(filePath).insertRight(arrayNode.getStart() + 1, providerCall);
     } else {
-      // Non-empty array: insert after last element with comma
-      const lastElement = elements[elements.length - 1];
-      this.fileSystem.edit(filePath).insertRight(lastElement.getEnd(), `, ${providerCall}`);
+      this.fileSystem.edit(filePath).insertRight(0, `${importToAdd}\n`);
     }
+  }
+
+  private hasNamedImport(sourceFile: ts.SourceFile, symbolName: string, moduleName: string): boolean {
+    for (const statement of sourceFile.statements) {
+      if (
+        !ts.isImportDeclaration(statement) ||
+        !ts.isStringLiteralLike(statement.moduleSpecifier) ||
+        statement.moduleSpecifier.text !== moduleName ||
+        !statement.importClause?.namedBindings ||
+        !ts.isNamedImports(statement.importClause.namedBindings)
+      ) {
+        continue;
+      }
+
+      if (statement.importClause.namedBindings.elements.some(element => element.name.text === symbolName)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  private getSourceFile(filePath: string): ts.SourceFile {
+    const sourceText = this.context.tree.readText(filePath);
+    return ts.createSourceFile(filePath, sourceText, ts.ScriptTarget.Latest, true);
+  }
+
+  private createFailureAtMainFile(filePath: string, message: string): void {
+    this.failures.push({
+      filePath: this.fileSystem.resolve(filePath),
+      message
+    });
   }
 }
