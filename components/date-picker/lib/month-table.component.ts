@@ -11,6 +11,7 @@ import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell } from './interface';
+import { getMonthShortLabel } from './util';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -43,7 +44,7 @@ export class MonthTableComponent extends AbstractTable implements OnChanges, OnI
       for (let colIndex = 0; colIndex < this.MAX_COL; colIndex++) {
         const month = this.activeDate.setMonth(monthValue);
         const isDisabled = this.isDisabledMonth(month);
-        const content = this.dateAdapter.format(month.nativeDate, 'MMM');
+        const content = getMonthShortLabel(this.dateAdapter, month.nativeDate, this.locale);
         const cell: DateCell = {
           trackByIndex: colIndex,
           value: month.nativeDate,

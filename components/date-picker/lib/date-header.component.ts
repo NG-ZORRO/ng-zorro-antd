@@ -9,7 +9,7 @@ import { NzDateAdapter } from 'ng-zorro-antd/core/time';
 
 import { AbstractPanelHeader } from './abstract-panel-header';
 import { PanelSelector } from './interface';
-import { transCompatFormat } from './util';
+import { getMonthShortLabel, transCompatFormat } from './util';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -38,7 +38,7 @@ export class DateHeaderComponent extends AbstractPanelHeader {
           this.mode = 'month';
           this.changeMode('month');
         },
-        label: this.dateAdapter.format(this.value.nativeDate, this.locale.monthFormat || 'MMM')
+        label: getMonthShortLabel(this.dateAdapter, this.value.nativeDate, this.locale)
       }
     ];
   }

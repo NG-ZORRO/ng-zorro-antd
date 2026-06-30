@@ -6,7 +6,14 @@
 import { ChangeDetectionStrategy, Component, inject, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
-import { CandyDate, NzDateAdapter, WeekDayIndex } from 'ng-zorro-antd/core/time';
+import {
+  CandyDate,
+  DateFnsDateAdapter,
+  NZ_DATE_CONFIG,
+  NZ_DATE_LOCALE,
+  NzDateAdapter,
+  WeekDayIndex
+} from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
@@ -27,6 +34,8 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
 
   private i18n = inject(NzI18nService);
   private dateAdapter = inject(NzDateAdapter);
+  private dateLocale = inject(NZ_DATE_LOCALE, { optional: true });
+  private dateConfig = inject(NZ_DATE_CONFIG, { optional: true });
 
   private changeValueFromInside(value: CandyDate): void {
     // Only change date, does not change time
@@ -115,6 +124,9 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
   }
 
   private getFirstDayOfWeek(): WeekDayIndex {
+    if (this.dateAdapter instanceof DateFnsDateAdapter && !this.dateLocale && this.dateConfig?.firstDayOfWeek == null) {
+      return this.i18n.getLocaleId().toLowerCase().startsWith('zh') ? 1 : 0;
+    }
     return this.dateAdapter.getFirstDayOfWeek() as WeekDayIndex;
   }
 

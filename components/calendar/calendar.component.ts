@@ -21,7 +21,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { CandyDate } from 'ng-zorro-antd/core/time';
+import { CandyDate, ɵprovideNzDefaultDateAdapter } from 'ng-zorro-antd/core/time';
 import { LibPackerModule } from 'ng-zorro-antd/date-picker';
 
 import {
@@ -38,7 +38,10 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
 @Component({
   selector: 'nz-calendar',
   exportAs: 'nzCalendar',
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }],
+  providers: [
+    ...ɵprovideNzDefaultDateAdapter(),
+    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }
+  ],
   imports: [NzCalendarHeaderComponent, LibPackerModule],
   template: `
     <nz-calendar-header
