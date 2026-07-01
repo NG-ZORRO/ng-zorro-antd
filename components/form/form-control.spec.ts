@@ -14,6 +14,7 @@ import {
   ValidatorFn,
   Validators
 } from '@angular/forms';
+import { form, FormField, required } from '@angular/forms/signals';
 import { By } from '@angular/platform-browser';
 
 import { vi } from 'vitest';
@@ -429,6 +430,49 @@ describe('form-control', () => {
       expect(formControl.componentInstance.nzValidateAnimationLeave()).toBe('nz-animate-disabled');
     });
   });
+
+  // https://github.com/NG-ZORRO/ng-zorro-antd/issues/9714
+  describe('signal forms', () => {
+    let fixture: ComponentFixture<NzTestSignalFormControlComponent>;
+    let testComponent: NzTestSignalFormControlComponent;
+    let formItem: DebugElement;
+    let formControl: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestSignalFormControlComponent);
+      testComponent = fixture.componentInstance;
+      formItem = fixture.debugElement.query(By.directive(NzFormItemComponent));
+      formControl = fixture.debugElement.query(By.directive(NzFormControlComponent));
+      fixture.detectChanges();
+    });
+
+    it('should not show error before the field is touched', () => {
+      expect(formItem.nativeElement.classList).not.toContain(statusMap.error);
+      expect(formControl.nativeElement.querySelector('.ant-form-item-explain')).toBeNull();
+    });
+
+    it('should display the error tip once the invalid field is touched', () => {
+      testComponent.userForm.name().markAsTouched();
+      fixture.detectChanges();
+
+      expect(formItem.nativeElement.classList).toContain(statusMap.error);
+      expect(formControl.nativeElement.querySelector('.ant-form-item-explain').textContent).toContain(
+        'Name is required!'
+      );
+    });
+
+    it('should clear the error once the field becomes valid', () => {
+      testComponent.userForm.name().markAsTouched();
+      fixture.detectChanges();
+      expect(formItem.nativeElement.classList).toContain(statusMap.error);
+
+      testComponent.model.set({ name: 'NG-ZORRO' });
+      fixture.detectChanges();
+
+      expect(formItem.nativeElement.classList).not.toContain(statusMap.error);
+      expect(formItem.nativeElement.classList).toContain(statusMap.success);
+    });
+  });
 });
 
 @Component({
@@ -620,5 +664,24 @@ export class NzTestNoopAnimationsFormControlComponent {
   private readonly formBuilder = inject(FormBuilder);
   formGroup = this.formBuilder.group({
     input: this.formBuilder.control('', [Validators.required])
+  });
+}
+
+@Component({
+  imports: [NzFormModule, NzInputModule, FormField],
+  template: `
+    <form nz-form>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Name is required!">
+          <input nz-input [formField]="userForm.name" />
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  `
+})
+export class NzTestSignalFormControlComponent {
+  readonly model = signal({ name: '' });
+  readonly userForm = form(this.model, path => {
+    required(path.name, { message: 'Name is required!' });
   });
 }

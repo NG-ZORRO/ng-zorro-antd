@@ -11,7 +11,10 @@ import {
   Component,
   ContentChild,
   DestroyRef,
+  effect,
+  EffectRef,
   inject,
+  Injector,
   Input,
   OnChanges,
   OnInit,
@@ -76,9 +79,11 @@ export class NzFormControlComponent implements OnChanges, OnInit, AfterContentIn
   public i18n = inject(NzI18nService);
   private nzFormStatusService = inject(NzFormStatusService);
   private destroyRef = inject(DestroyRef);
+  private injector = inject(Injector);
 
   private _hasFeedback = false;
   private validateChanges: Subscription = Subscription.EMPTY;
+  private validateEffect?: EffectRef;
   private validateString: string | null = null;
   private localeId!: string;
   private autoErrorTip?: string;
@@ -98,7 +103,7 @@ export class NzFormControlComponent implements OnChanges, OnInit, AfterContentIn
   validateControl: AbstractControl | NgModel | null = null;
   innerTip: string | TemplateRef<{ $implicit: AbstractControl | NgModel }> | null = null;
 
-  @ContentChild(NgControl, { static: false }) defaultValidateControl?: FormControlName | FormControlDirective;
+  @ContentChild(NgControl, { static: false }) defaultValidateControl?: NgControl;
   @Input() nzSuccessTip?: string | TemplateRef<{ $implicit: AbstractControl | NgModel }>;
   @Input() nzWarningTip?: string | TemplateRef<{ $implicit: AbstractControl | NgModel }>;
   @Input() nzErrorTip?: string | TemplateRef<{ $implicit: AbstractControl | NgModel }>;
@@ -121,13 +126,22 @@ export class NzFormControlComponent implements OnChanges, OnInit, AfterContentIn
   }
 
   @Input()
-  set nzValidateStatus(value: string | AbstractControl | FormControlName | NgModel) {
+  set nzValidateStatus(value: string | AbstractControl | FormControlName | NgModel | NgControl) {
     if (value instanceof AbstractControl || value instanceof NgModel) {
       this.validateControl = value;
       this.validateString = null;
       this.watchControl();
     } else if (value instanceof FormControlName) {
       this.validateControl = value.control;
+      this.validateString = null;
+      this.watchControl();
+    } else if (value != null && typeof value !== 'string') {
+      // Signal forms expose their state through an `NgControl`-compatible object
+      // (e.g. Angular's `InteropNgControl`) provided by the `[field]`/`[control]`
+      // directive. It mimics `AbstractControl` getters but neither extends
+      // `AbstractControl` nor exposes a `statusChanges` observable, so the
+      // `instanceof` branches above miss it. Fall back to its `control` reference.
+      this.validateControl = (value.control ?? value) as AbstractControl;
       this.validateString = null;
       this.watchControl();
     } else {
@@ -139,18 +153,32 @@ export class NzFormControlComponent implements OnChanges, OnInit, AfterContentIn
 
   private watchControl(): void {
     this.validateChanges.unsubscribe();
+    this.validateEffect?.destroy();
+    this.validateEffect = undefined;
+
+    if (!this.validateControl) {
+      return;
+    }
+
     /** miss detect https://github.com/angular/angular/issues/10887 **/
-    if (this.validateControl && this.validateControl.statusChanges) {
+    if (this.validateControl.statusChanges) {
       this.validateChanges = (this.validateControl.statusChanges as Observable<NzSafeAny>)
         .pipe(startWith(null), takeUntilDestroyed(this.destroyRef))
-        .subscribe(() => {
-          if (!this.disableAutoTips) {
-            this.updateAutoErrorTip();
-          }
-          this.setStatus();
-          this.cdr.markForCheck();
-        });
+        .subscribe(() => this.syncStatusFromControl());
+    } else {
+      // Signal forms have no `statusChanges` observable; their state lives in signals.
+      // Reading those signals (status, errors, dirty, touched) inside an effect keeps
+      // the displayed status and error tips in sync with the field.
+      this.validateEffect = effect(() => this.syncStatusFromControl(), { injector: this.injector });
     }
+  }
+
+  private syncStatusFromControl(): void {
+    if (!this.disableAutoTips) {
+      this.updateAutoErrorTip();
+    }
+    this.setStatus();
+    this.cdr.markForCheck();
   }
 
   private setStatus(): void {
@@ -190,9 +218,15 @@ export class NzFormControlComponent implements OnChanges, OnInit, AfterContentIn
       return false;
     } else {
       const { dirty, touched, status } = this.validateControl;
-      return (
-        (!!dirty || !!touched) && (statusType ? this.validateControl.hasError(statusType) : status === validStatus)
-      );
+      if (!dirty && !touched) {
+        return false;
+      }
+      if (statusType) {
+        // Signal forms' interop control does not implement `hasError`, so guard the call.
+        return (this.validateControl as Partial<AbstractControl>).hasError?.(statusType) ?? false;
+      } else {
+        return status === validStatus;
+      }
     }
   }
 
