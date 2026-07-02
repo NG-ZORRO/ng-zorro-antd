@@ -15,6 +15,9 @@ export const NzIsMenuInsideDropdownToken = new InjectionToken<boolean>(
   typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-is-in-dropdown-menu' : ''
 );
 
+/** @deprecated Use {@link NzIsMenuInsideDropdownToken} instead. Removed in v22. */
+export { NzIsMenuInsideDropdownToken as NzIsMenuInsideDropDownToken };
+
 /**
  * A token to hold the local {@link MenuService} instance. This is used for nested menu.
  * @note Internally used only, please do not use it.

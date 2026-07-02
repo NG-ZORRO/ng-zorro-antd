@@ -12,3 +12,6 @@ import { Directive } from '@angular/core';
   }
 })
 export class NzDropdownADirective {}
+
+/** @deprecated Use {@link NzDropdownADirective} instead. */
+export { NzDropdownADirective as NzDropDownADirective };

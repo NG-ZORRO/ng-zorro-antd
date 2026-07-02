@@ -267,3 +267,6 @@ export class NzDropdownDirective implements AfterViewInit, OnChanges {
     }
   }
 }
+
+/** @deprecated Use {@link NzDropdownDirective} instead. */
+export { NzDropdownDirective as NzDropDownDirective };
