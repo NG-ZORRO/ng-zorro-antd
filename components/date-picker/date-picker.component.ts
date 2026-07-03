@@ -101,7 +101,6 @@ import {
 import { PREFIX_CLASS } from './util';
 
 const POPUP_STYLE_PATCH = { position: 'relative' }; // Aim to override antd's style to support overlay's position strategy (position:absolute will cause it not working because the overlay can't get the height/width of it's content)
-const ISO_DATE_ONLY_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'datePicker';
 
 export type NzDatePickerSizeType = 'large' | 'default' | 'small';
@@ -645,11 +644,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   }
 
   private checkValidDate(value: string): CandyDate | null {
-    const parsedDate =
-      this.nzFormat === 'yyyy-MM-dd' && ISO_DATE_ONLY_REGEX.test(value)
-        ? new Date(value)
-        : this.dateAdapter.parse(value, this.nzFormat);
-    const date = new CandyDate(parsedDate);
+    const date = new CandyDate(this.dateAdapter.parse(value, this.nzFormat));
 
     if (!date.isValid() || value !== this.dateAdapter.format(date.nativeDate, this.nzFormat)) {
       return null;

@@ -969,7 +969,7 @@ describe('range-picker', () => {
       rightInput.dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
       vi.advanceTimersByTime(500);
-      expect(nzOnChange).toHaveBeenCalledWith([new Date(newDateString[0]), new Date(newDateString[1])]);
+      expect(nzOnChange).toHaveBeenCalledWith([new Date(2019, 8, 15), new Date(2020, 9, 10)]);
     });
 
     it('should not change value when click ESC', () => {
