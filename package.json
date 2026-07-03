@@ -152,8 +152,8 @@
     "postcss-sass": "^0.5.0",
     "postcss-scss": "^3.0.0",
     "postcss-markdown": {
-      "remark": "^14.0.0",
-      "remark-parse": "^11.0.0"
+      "remark": "^13.0.0",
+      "remark-parse": "^10.0.0"
     }
   }
 }
