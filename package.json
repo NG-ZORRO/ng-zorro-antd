@@ -119,7 +119,6 @@
     "sitemap": "^9.0.0",
     "slugify": "^1.6.6",
     "stylelint": "^17.0.0",
-    "stylelint-config-rational-order": "^0.1.2",
     "stylelint-config-standard": "^40.0.0",
     "stylelint-config-standard-less": "^4.0.0",
     "stylelint-declaration-block-no-ignored-properties": "^3.0.0",
@@ -143,9 +142,6 @@
     "js-yaml": "^5.2.1",
     "micromatch": "^4.0.8",
     "yargs-parser": "^22.0.0",
-    "stylelint-config-rational-order": {
-      "postcss": "^8.5.16"
-    },
     "trim-newlines": "^3.0.1",
     "autoprefixer": "^10.0.0",
     "postcss-reporter": "^7.0.0",
