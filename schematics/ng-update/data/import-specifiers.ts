@@ -15,15 +15,6 @@ const resolve = (module: string): string => `ng-zorro-antd/${module}`;
 export const importSpecifiers: VersionChanges<ImportSpecifierUpgradeData> = {
   [TargetVersion.V22]: [
     {
-      pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/XXXXX',
-      changes: [
-        {
-          replace: resolve('core/time/provider'),
-          replaceWith: resolve('core/time')
-        }
-      ]
-    },
-    {
       pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/9528',
       changes: [
         {

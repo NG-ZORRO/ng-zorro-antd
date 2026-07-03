@@ -9,7 +9,6 @@ import { lastValueFrom } from 'rxjs';
 import { Tree } from '@angular-devkit/schematics';
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 
-
 import { DateAdapterMigration } from './date-adapter';
 import { createTestApp } from '../../testing/test-app';
 import { getFileContent } from '../../utils/get-file-content';
@@ -32,13 +31,11 @@ describe('date adapter migration', () => {
 
   it('should not add provideNzDateFnsAdapter twice', async () => {
     const appTree = await createTestApp(runner);
-    appTree.overwrite(
-      '/projects/ng-zorro/src/app/app.config.ts',
-      `${getFileContent(appTree, '/projects/ng-zorro/src/app/app.config.ts').replace(
-        'providers: [',
-        `providers: [provideNzDateFnsAdapter(), `
-      )  }\nimport { provideNzDateFnsAdapter } from 'ng-zorro-antd/core/time';\n`
-    );
+    const content = `${getFileContent(appTree, '/projects/ng-zorro/src/app/app.config.ts').replace(
+      'providers: [',
+      `providers: [provideNzDateFnsAdapter(), `
+    )}\nimport { provideNzDateFnsAdapter } from 'ng-zorro-antd/core/time';\n`;
+    appTree.overwrite('/projects/ng-zorro/src/app/app.config.ts', content);
 
     const tree = await runDateAdapterMigration(appTree);
     const appConfig = getFileContent(tree, '/projects/ng-zorro/src/app/app.config.ts');
@@ -48,13 +45,11 @@ describe('date adapter migration', () => {
 
   it('should not override an explicit native date adapter provider', async () => {
     const appTree = await createTestApp(runner);
-    appTree.overwrite(
-      '/projects/ng-zorro/src/app/app.config.ts',
-      `${getFileContent(appTree, '/projects/ng-zorro/src/app/app.config.ts').replace(
-        'providers: [',
-        `providers: [provideNzNativeDateAdapter(), `
-      )  }\nimport { provideNzNativeDateAdapter } from 'ng-zorro-antd/core/time';\n`
-    );
+    const content = `${getFileContent(appTree, '/projects/ng-zorro/src/app/app.config.ts').replace(
+      'providers: [',
+      `providers: [provideNzNativeDateAdapter(), `
+    )}\nimport { provideNzNativeDateAdapter } from 'ng-zorro-antd/core/time';\n`;
+    appTree.overwrite('/projects/ng-zorro/src/app/app.config.ts', content);
 
     const tree = await runDateAdapterMigration(appTree);
     const appConfig = getFileContent(tree, '/projects/ng-zorro/src/app/app.config.ts');

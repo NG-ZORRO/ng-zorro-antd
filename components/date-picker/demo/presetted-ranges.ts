@@ -1,14 +1,9 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { endOfMonth } from 'date-fns';
 
-function endOfMonth(date: Date): Date {
-  const result = new Date(date);
-  result.setMonth(result.getMonth() + 1, 0);
-  result.setHours(23, 59, 59, 999);
-  return result;
-}
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 @Component({
   selector: 'nz-demo-date-picker-presetted-ranges',
