@@ -1,22 +1,8 @@
 import { Component } from '@angular/core';
 
+import { differenceInCalendarDays, setHours } from 'date-fns';
+
 import { DisabledTimeFn, DisabledTimePartial, NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-
-function startOfDate(date: Date): Date {
-  const result = new Date(date);
-  result.setHours(0, 0, 0, 0);
-  return result;
-}
-
-function differenceInCalendarDays(first: Date, second: Date): number {
-  return Math.round((startOfDate(first).getTime() - startOfDate(second).getTime()) / 86400000);
-}
-
-function setHours(date: Date, hours: number): Date {
-  const result = new Date(date);
-  result.setHours(hours);
-  return result;
-}
 
 @Component({
   selector: 'nz-demo-date-picker-disabled-date',

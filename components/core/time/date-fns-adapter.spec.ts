@@ -194,7 +194,7 @@ describe('DateFnsDateAdapter', () => {
     });
 
     it('should throw for invalid date', () => {
-      expect(() => adapter.format(new Date('invalid'), 'yyyy-MM-dd')).toThrowError();
+      expect(() => adapter.format(new Date('invalid'), 'yyyy-MM-dd')).toThrow();
     });
   });
 

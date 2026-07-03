@@ -28,7 +28,7 @@ export class NzI18nService {
 
   constructor() {
     this.setLocale(inject(NZ_I18N, { optional: true }) || zh_CN);
-    this.setDateLocale(inject(NZ_DATE_LOCALE, { optional: true }) as DateLocale | undefined);
+    this.setDateLocale(inject<DateLocale>(NZ_DATE_LOCALE, { optional: true }));
   }
 
   // [NOTE] Performance issue: this method may called by every change detections
@@ -71,7 +71,7 @@ export class NzI18nService {
   /**
    * @deprecated Intended for internal use only. Provide {@link NZ_DATE_LOCALE} instead.
    */
-  setDateLocale(dateLocale: DateLocale | undefined): void {
+  setDateLocale(dateLocale: DateLocale | null): void {
     this.dateLocale = dateLocale!;
   }
 

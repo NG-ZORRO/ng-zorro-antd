@@ -8,6 +8,7 @@ import { TestBed } from '@angular/core/testing';
 import { NzDateAdapter } from './date-adapter';
 import { NZ_DATE_LOCALE } from './date-config';
 import { NativeDateAdapter, provideNzNativeDateAdapter } from './native-adapter';
+import { NzSafeAny } from '../types';
 
 describe('NativeDateAdapter', () => {
   let adapter: NativeDateAdapter;
@@ -160,11 +161,11 @@ describe('NativeDateAdapter', () => {
     });
 
     it('should return empty string for null-like date', () => {
-      expect(adapter.format(null as any, 'yyyy-MM-dd')).toBe(''); // eslint-disable-line @typescript-eslint/no-explicit-any
+      expect(adapter.format(null as NzSafeAny, 'yyyy-MM-dd')).toBe('');
     });
 
     it('should throw for invalid date', () => {
-      expect(() => adapter.format(new Date('invalid'), 'yyyy-MM-dd')).toThrowError();
+      expect(() => adapter.format(new Date('invalid'), 'yyyy-MM-dd')).toThrow();
     });
 
     it('should format date with string tokens', () => {

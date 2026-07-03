@@ -3,7 +3,7 @@
   "schematics": {
     "migration-v22": {
       "version": "22.0.0-0",
-      "description": "Updates NG-ZORRO to v22 - NzDateAdapter now requires explicit provider configuration",
+      "description": "Updates NG-ZORRO to v22",
       "factory": "./ng-update/index#updateToV22"
     },
     "ng-post-update": {

@@ -9,7 +9,6 @@ import { Injectable, inject } from '@angular/core';
 import {
   type WeekDayIndex,
   NZ_DATE_CONFIG,
-  NzDateAdapter,
   NzDateConfig,
   mergeDateConfig,
   ɵdateFnsFormat as fnsFormat,
@@ -51,45 +50,6 @@ export abstract class DateHelperService {
   abstract format(date: Date | null, formatStr: string): string;
   abstract parseDate(text: string, formatStr?: string): Date;
   abstract parseTime(text: string, formatStr?: string): Date | undefined;
-}
-
-/**
- * DateHelper compatibility wrapper that delegates to NzDateAdapter.
- * @deprecated Use {@link NzDateAdapter} directly instead. Will be removed in v23.
- */
-export class DateHelperByDateAdapter extends DateHelperService {
-  // Adapter is supplied by DATE_HELPER_SERVICE_FACTORY.
-
-  constructor(
-    i18n: NzI18nService,
-    private readonly adapter: NzDateAdapter<Date>
-  ) {
-    super(i18n);
-  }
-
-  getISOWeek(date: Date): number {
-    return this.adapter.getISOWeek(date);
-  }
-
-  getFirstDayOfWeek(): WeekDayIndex {
-    return this.adapter.getFirstDayOfWeek() as WeekDayIndex;
-  }
-
-  format(date: Date | null, formatStr: string): string {
-    return date ? this.adapter.format(date, formatStr) : '';
-  }
-
-  parseDate(text: string, formatStr: string = 'yyyy-MM-dd'): Date {
-    return this.adapter.parse(text, formatStr) ?? new Date();
-  }
-
-  parseTime(text: string, formatStr: string = 'HH:mm:ss'): Date | undefined {
-    try {
-      return this.adapter.parseTime(text, formatStr) ?? undefined;
-    } catch {
-      return this.adapter.parse(text, formatStr) ?? undefined;
-    }
-  }
 }
 
 /**

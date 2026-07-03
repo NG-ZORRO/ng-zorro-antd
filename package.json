@@ -80,7 +80,6 @@
     "cron-parser": "^5.5.0",
     "cross-env": "^10.0.0",
     "d3": "^6.3.1",
-    "date-fns": "^2.16.1",
     "dagre": "^0.8.5",
     "dagre-compound": "^0.0.8",
     "del": "^8.0.0",
