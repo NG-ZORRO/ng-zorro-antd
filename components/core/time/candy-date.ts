@@ -259,7 +259,7 @@ export class CandyDate implements IndexableObject {
     let fn;
     switch (grain) {
       case 'decade':
-        fn = (pre: Date, next: Date) => Math.floor(pre.getFullYear() / 10) === Math.floor(next.getFullYear() / 10);
+        fn = (pre: Date, next: Date) => Math.abs(pre.getFullYear() - next.getFullYear()) < 11;
         break;
       case 'year':
         fn = isSameYear;
