@@ -110,7 +110,7 @@
     "parse5": "^8.0.0",
     "pascalcase": "^2.0.0",
     "playwright": "^1.57.0",
-    "postcss": "^8.5.10",
+    "postcss": "^8.5.16",
     "prettier": "^3.8.0",
     "prismjs": "^1.29.0",
     "process": "^0.11.10",
@@ -133,5 +133,27 @@
     "vitest": "^4.1.9",
     "yaml-front-matter": "^4.1.1",
     "zone.js": "~0.16.0"
+  },
+  "overrides": {
+    "@babel/core": "^8.0.1",
+    "esbuild": "^0.28.1",
+    "d3-color": "^3.1.0",
+    "braces": "^3.0.3",
+    "flatted": "^3.4.2",
+    "js-yaml": "^5.2.1",
+    "micromatch": "^4.0.8",
+    "yargs-parser": "^22.0.0",
+    "stylelint-config-rational-order": {
+      "postcss": "^8.5.16",
+      "trim-newlines": "^3.0.1"
+    },
+    "autoprefixer": "^10.0.0",
+    "postcss-reporter": "^7.0.0",
+    "postcss-sass": "^0.5.0",
+    "postcss-scss": "^3.0.0",
+    "postcss-markdown": {
+      "remark": "^14.0.0",
+      "remark-parse": "^11.0.0"
+    }
   }
 }
