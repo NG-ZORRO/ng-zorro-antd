@@ -144,7 +144,7 @@ describe('month-picker', () => {
         '.ant-picker-month-panel tr td.ant-picker-cell-disabled'
       );
       const disabledCell = allDisabledCells[allDisabledCells.length - 1];
-      expect(disabledCell.textContent).toContain('10');
+      expect(disabledCell.textContent).toContain('Oct');
     });
 
     it('should support nzLocale', () => {
@@ -205,7 +205,7 @@ describe('month-picker', () => {
       fixtureInstance.nzValue.set(new Date('2018-11-22'));
       await stabilize();
       await openPickerByClickTrigger();
-      expect(getSelectedMonthCell().textContent).toContain('11');
+      expect(getSelectedMonthCell().textContent).toContain('Nov');
     });
 
     it('should support nzOnChange', async () => {
@@ -220,7 +220,8 @@ describe('month-picker', () => {
       await stabilize(500);
       expect(nzOnChange).toHaveBeenCalled();
       const result = (nzOnChange.mock.calls[0] as Date[])[0];
-      expect(result.getMonth() + 1).toBe(parseInt(cellText, 10));
+      expect(cellText).toContain('Jan');
+      expect(result.getMonth()).toBe(0);
     });
   }); // /general api testing
 
@@ -301,7 +302,7 @@ describe('month-picker', () => {
       const activeMonthElement = overlayContainerElement.querySelector(
         '.ant-picker-month-panel tr td.ant-picker-cell-selected .ant-picker-cell-inner'
       );
-      expect(activeMonthElement!.textContent).toContain('7月');
+      expect(activeMonthElement!.textContent).toContain('Jul');
     });
   }); // /specified date picker testing
 
@@ -311,14 +312,15 @@ describe('month-picker', () => {
     it('should specified date provide by "modelValue" be chosen', async () => {
       fixtureInstance.modelValue.set(new Date('2018-11'));
       await stabilize();
-      expect(getSelectedMonthCell().textContent).toContain('11');
+      expect(getSelectedMonthCell().textContent).toContain('Nov');
 
       // Click the first cell to change ngModel
       const cell = getFirstMonthCell();
       const cellText = cell.textContent!.trim();
       dispatchMouseEvent(cell, 'click');
       await stabilize(500);
-      expect(fixtureInstance.modelValue()!.getMonth() + 1).toBe(parseInt(cellText, 10));
+      expect(cellText).toContain('Jan');
+      expect(fixtureInstance.modelValue()!.getMonth()).toBe(0);
     });
   });
 

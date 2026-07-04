@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, OnChanges, ViewEncapsulation } from '@angular/core';
+import { Component, OnChanges, ViewEncapsulation } from '@angular/core';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 
@@ -14,12 +14,11 @@ const MAX_ROW = 4;
 const MAX_COL = 3;
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'decade-table',
+  imports: [NzStringTemplateOutletDirective],
   templateUrl: 'abstract-table.html',
-  imports: [NzStringTemplateOutletDirective]
+  encapsulation: ViewEncapsulation.None
 })
 export class DecadeTableComponent extends AbstractTable implements OnChanges {
   get startYear(): number {

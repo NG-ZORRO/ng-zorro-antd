@@ -3,10 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-/**
- * A collection module of standard output for all lib components
- */
-
 import { NgModule } from '@angular/core';
 
 import { DateHeaderComponent } from './date-header.component';
@@ -20,30 +16,24 @@ import { QuarterTableComponent } from './quarter-table.component';
 import { YearHeaderComponent } from './year-header.component';
 import { YearTableComponent } from './year-table.component';
 
+const components = [
+  DateHeaderComponent,
+  DateTableComponent,
+  DecadeHeaderComponent,
+  DecadeTableComponent,
+  MonthHeaderComponent,
+  MonthTableComponent,
+  YearHeaderComponent,
+  YearTableComponent,
+  QuarterHeaderComponent,
+  QuarterTableComponent
+];
+
+/**
+ * A collection module of internal date picker components
+ */
 @NgModule({
-  imports: [
-    DateHeaderComponent,
-    DateTableComponent,
-    DecadeHeaderComponent,
-    DecadeTableComponent,
-    MonthHeaderComponent,
-    MonthTableComponent,
-    YearHeaderComponent,
-    YearTableComponent,
-    QuarterHeaderComponent,
-    QuarterTableComponent
-  ],
-  exports: [
-    DateHeaderComponent,
-    DateTableComponent,
-    DecadeHeaderComponent,
-    DecadeTableComponent,
-    MonthHeaderComponent,
-    MonthTableComponent,
-    YearHeaderComponent,
-    YearTableComponent,
-    QuarterHeaderComponent,
-    QuarterTableComponent
-  ]
+  imports: [...components],
+  exports: [...components]
 })
 export class LibPackerModule {}

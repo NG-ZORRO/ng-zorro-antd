@@ -232,7 +232,7 @@ describe('NzDatePickerComponent', () => {
       expect(getPickerInput(fixture.debugElement).placeholder).toBe('Select date');
 
       openPickerByClickTrigger();
-      expect(queryFromOverlay(`.${PREFIX_CLASS}-content th`).textContent).toContain('Su');
+      expect(queryFromOverlay(`.${PREFIX_CLASS}-content th`).textContent).toContain('Mo');
     });
 
     /* Issue https://github.com/NG-ZORRO/ng-zorro-antd/issues/1539 */
@@ -455,7 +455,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
 
       const january = getFirstCell();
-      expect(january.textContent!.trim()).toContain('1');
+      expect(january.textContent!.trim()).toContain('Jan');
       expect(january.classList).not.toContain('ant-picker-cell-disabled');
     });
 
@@ -567,7 +567,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       openPickerByClickTrigger();
       expect(queryFromOverlay('.ant-picker-header-year-btn').textContent!.indexOf('2015') > -1).toBeTruthy();
-      expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('9') > -1).toBeTruthy();
+      expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('Sep') > -1).toBeTruthy();
     });
 
     it('should support custom suffixIcon', () => {
@@ -753,7 +753,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       vi.advanceTimersByTime(500);
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('10') > -1).toBeTruthy();
+      expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('Oct') > -1).toBeTruthy();
       // Click next month button * 2
       dispatchMouseEvent(getNextBtn(), 'click');
       fixture.detectChanges();
@@ -763,7 +763,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       vi.advanceTimersByTime(500);
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('12') > -1).toBeTruthy();
+      expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('Dec') > -1).toBeTruthy();
     });
 
     it('should support month panel changes', async () => {

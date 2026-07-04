@@ -3,19 +3,18 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@angular/core';
+import { Component, inject, ViewEncapsulation } from '@angular/core';
 
 import { NzDateAdapter } from 'ng-zorro-antd/core/time';
 
 import { AbstractPanelHeader } from './abstract-panel-header';
 import { PanelSelector } from './interface';
-import { getMonthShortLabel, transCompatFormat } from './util';
+import { transCompatFormat } from './util';
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'date-header', // eslint-disable-line @angular-eslint/component-selector
-  templateUrl: './abstract-panel-header.html'
+  templateUrl: './abstract-panel-header.html',
+  encapsulation: ViewEncapsulation.None
 })
 export class DateHeaderComponent extends AbstractPanelHeader {
   private readonly dateAdapter = inject(NzDateAdapter);
@@ -38,7 +37,7 @@ export class DateHeaderComponent extends AbstractPanelHeader {
           this.mode = 'month';
           this.changeMode('month');
         },
-        label: getMonthShortLabel(this.dateAdapter, this.value.nativeDate, this.locale)
+        label: this.dateAdapter.format(this.value.nativeDate, transCompatFormat(this.locale.monthFormat || 'MMM'))
       }
     ];
   }

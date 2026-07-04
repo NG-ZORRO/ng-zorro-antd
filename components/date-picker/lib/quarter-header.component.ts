@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@angular/core';
+import { Component, inject, ViewEncapsulation } from '@angular/core';
 
 import { NzDateAdapter } from 'ng-zorro-antd/core/time';
 
@@ -13,10 +13,9 @@ import { PanelSelector } from './interface';
 import { transCompatFormat } from './util';
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'quarter-header', // eslint-disable-line @angular-eslint/component-selector
-  templateUrl: './abstract-panel-header.html'
+  templateUrl: './abstract-panel-header.html',
+  encapsulation: ViewEncapsulation.None
 })
 export class QuarterHeaderComponent extends AbstractPanelHeader {
   private readonly dateAdapter = inject(NzDateAdapter);

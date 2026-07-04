@@ -45,7 +45,7 @@ import { distinctUntilChanged } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { slideAnimationEnter, slideAnimationLeave } from 'ng-zorro-antd/core/animation';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import {
   NZ_FORM_SIZE,
   NZ_FORM_VARIANT,
@@ -281,7 +281,6 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
   ]
 })
 export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor {
-  public readonly nzConfigService = inject(NzConfigService);
   public readonly datePickerService = inject(DatePickerService);
   protected readonly i18n = inject(NzI18nService);
   protected readonly cdr = inject(ChangeDetectorRef);
@@ -292,6 +291,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   private readonly nzResizeObserver = inject(NzResizeObserver);
   private readonly platform = inject(Platform);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly nzFormStatusService = inject(NzFormStatusService, { optional: true });
 
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
@@ -311,7 +311,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   private isCustomFormat: boolean = false;
   private showTime: SupportTimeOptions | boolean = false;
   private isNzDisableFirstChange: boolean = true;
-  // --- Common API
   readonly nzInline = input(false, { transform: booleanAttribute });
   @Input({ transform: booleanAttribute }) nzAllowClear: boolean = true;
   @Input({ transform: booleanAttribute }) nzAutoFocus: boolean = false;
@@ -355,9 +354,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     this.showTime = typeof value === 'object' ? value : toBoolean(value);
   }
 
-  // ------------------------------------------------------------------------
-  // Input API Start
-  // ------------------------------------------------------------------------
   @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay?: CdkConnectedOverlay;
   @ViewChild(DateRangePopupComponent, { static: false }) panel!: DateRangePopupComponent;
   @ViewChild('separatorElement', { static: false }) separatorElement?: ElementRef;
@@ -673,12 +669,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   isOpenHandledByUser(): boolean {
     return this.nzOpen !== undefined;
   }
-
-  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
-
-  // ------------------------------------------------------------------------
-  // Input API End
-  // ------------------------------------------------------------------------
 
   ngOnInit(): void {
     this.nzFormStatusService?.formStatusChanges

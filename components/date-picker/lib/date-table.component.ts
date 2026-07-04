@@ -3,17 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, inject, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
-import {
-  CandyDate,
-  DateFnsDateAdapter,
-  NZ_DATE_CONFIG,
-  NZ_DATE_LOCALE,
-  NzDateAdapter,
-  WeekDayIndex
-} from 'ng-zorro-antd/core/time';
+import { CandyDate, NzDateAdapter, WeekDayIndex } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
@@ -22,20 +15,17 @@ import { DateBodyRow, DateCell } from './interface';
 import { transCompatFormat } from './util';
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'date-table',
   templateUrl: './abstract-table.html',
-  imports: [NzStringTemplateOutletDirective]
+  imports: [NzStringTemplateOutletDirective],
+  encapsulation: ViewEncapsulation.None
 })
 export class DateTableComponent extends AbstractTable implements OnChanges, OnInit {
-  @Input() format?: string;
+  private readonly i18n = inject(NzI18nService);
+  private readonly dateAdapter = inject(NzDateAdapter);
 
-  private i18n = inject(NzI18nService);
-  private dateAdapter = inject(NzDateAdapter);
-  private dateLocale = inject(NZ_DATE_LOCALE, { optional: true });
-  private dateConfig = inject(NZ_DATE_CONFIG, { optional: true });
+  @Input() format?: string;
 
   private changeValueFromInside(value: CandyDate): void {
     // Only change date, does not change time
@@ -49,7 +39,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
 
   makeHeadRow(): DateCell[] {
     const weekDays: DateCell[] = [];
-    const start = this.activeDate.calendarStart({ weekStartsOn: this.getFirstDayOfWeek() });
+    const start = this.activeDate.calendarStart({ weekStartsOn: this.dateAdapter.getFirstDayOfWeek() as WeekDayIndex });
     for (let colIndex = 0; colIndex < this.MAX_COL; colIndex++) {
       const day = start.addDays(colIndex);
       weekDays.push({
@@ -72,7 +62,9 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
 
   makeBodyRows(): DateBodyRow[] {
     const weekRows: DateBodyRow[] = [];
-    const firstDayOfMonth = this.activeDate.calendarStart({ weekStartsOn: this.getFirstDayOfWeek() });
+    const firstDayOfMonth = this.activeDate.calendarStart({
+      weekStartsOn: this.dateAdapter.getFirstDayOfWeek() as WeekDayIndex
+    });
 
     for (let week = 0; week < this.MAX_ROW; week++) {
       const weekStart = firstDayOfMonth.addDays(week * 7);
@@ -121,13 +113,6 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
       weekRows.push(row);
     }
     return weekRows;
-  }
-
-  private getFirstDayOfWeek(): WeekDayIndex {
-    if (this.dateAdapter instanceof DateFnsDateAdapter && !this.dateLocale && this.dateConfig?.firstDayOfWeek == null) {
-      return this.i18n.getLocaleId().toLowerCase().startsWith('zh') ? 1 : 0;
-    }
-    return this.dateAdapter.getFirstDayOfWeek() as WeekDayIndex;
   }
 
   addCellProperty(cell: DateCell, date: CandyDate): void {
