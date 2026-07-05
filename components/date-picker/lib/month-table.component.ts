@@ -11,6 +11,7 @@ import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell } from './interface';
+import { transCompatFormat } from './util';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -42,7 +43,7 @@ export class MonthTableComponent extends AbstractTable implements OnChanges, OnI
       for (let colIndex = 0; colIndex < this.MAX_COL; colIndex++) {
         const month = this.activeDate.setMonth(monthValue);
         const isDisabled = this.isDisabledMonth(month);
-        const content = this.dateAdapter.format(month.nativeDate, 'MMM');
+        const content = this.dateAdapter.format(month.nativeDate, transCompatFormat(this.locale.monthFormat || 'MMM'));
         const cell: DateCell = {
           trackByIndex: colIndex,
           value: month.nativeDate,

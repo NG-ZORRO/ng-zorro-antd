@@ -16,7 +16,7 @@ import { vi } from 'vitest';
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
 import { dispatchFakeEvent, dispatchMouseEvent, testDirectionality, typeInElement } from 'ng-zorro-antd/core/testing';
-import { DateFnsDateAdapter, provideNzDateAdapter, provideNzNativeDateAdapter } from 'ng-zorro-antd/core/time';
+import { provideNzDateFnsAdapter, provideNzNativeDateAdapter } from 'ng-zorro-antd/core/time';
 import { NzPlacement, NzStatus, NzVariant, type NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker';
 import { getPickerInput, getPickerOkButton } from 'ng-zorro-antd/date-picker/testing/util';
@@ -35,7 +35,7 @@ describe('time-picker', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzNoAnimation(), provideNzDateAdapter(DateFnsDateAdapter)]
+      providers: [provideNzNoAnimation(), provideNzDateFnsAdapter()]
     });
   });
 
@@ -878,7 +878,7 @@ describe('time-picker', () => {
 });
 
 testDirectionality(() => NzTestTimePickerComponent, By.directive(NzTimePickerComponent), 'ant-picker', {
-  providers: [provideNzNoAnimation(), provideNzDateAdapter(DateFnsDateAdapter)]
+  providers: [provideNzNoAnimation(), provideNzDateFnsAdapter()]
 });
 
 describe('time-picker with native date adapter', () => {
@@ -917,6 +917,9 @@ describe('time-picker size', () => {
   beforeEach(() => {
     compactSizeSignal = signal<NzSizeLDSType>('large');
     formSizeSignal = signal<NzSizeLDSType>('default');
+    TestBed.configureTestingModule({
+      providers: [provideNzDateFnsAdapter()]
+    });
   });
   afterEach(() => {
     TestBed.resetTestingModule();
@@ -959,6 +962,9 @@ describe('finalVariant', () => {
   let formVariantSignal: WritableSignal<NzVariant>;
   beforeEach(() => {
     formVariantSignal = signal<NzVariant>('outlined');
+    TestBed.configureTestingModule({
+      providers: [provideNzDateFnsAdapter()]
+    });
   });
   afterEach(() => {
     TestBed.resetTestingModule();

@@ -6,7 +6,7 @@
 import { Component, inject, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
-import { NzDateAdapter, CandyDate } from 'ng-zorro-antd/core/time';
+import { CandyDate, NzDateAdapter } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 
 import { AbstractTable } from './abstract-table';

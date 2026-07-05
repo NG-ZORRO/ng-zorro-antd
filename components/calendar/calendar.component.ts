@@ -8,6 +8,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  DestroyRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -19,10 +20,12 @@ import {
   forwardRef,
   inject
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { CandyDate, ɵprovideNzDefaultDateAdapter } from 'ng-zorro-antd/core/time';
+import { CandyDate } from 'ng-zorro-antd/core/time';
 import { LibPackerModule } from 'ng-zorro-antd/date-picker';
+import { NzCalendarI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import {
   NzDateCellDirective as DateCell,
@@ -38,10 +41,7 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
 @Component({
   selector: 'nz-calendar',
   exportAs: 'nzCalendar',
-  providers: [
-    ...ɵprovideNzDefaultDateAdapter(),
-    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }
-  ],
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }],
   imports: [NzCalendarHeaderComponent, LibPackerModule],
   template: `
     <nz-calendar-header
@@ -63,6 +63,7 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
               [prefixCls]="prefixCls"
               [value]="activeDate"
               [activeDate]="activeDate"
+              [locale]="locale"
               [cellRender]="$any(dateCell)"
               [fullCellRender]="$any(dateFullCell)"
               [disabledDate]="nzDisabledDate"
@@ -73,6 +74,7 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
               [prefixCls]="prefixCls"
               [value]="activeDate"
               [activeDate]="activeDate"
+              [locale]="locale"
               [cellRender]="$any(monthCell)"
               [fullCellRender]="$any(monthFullCell)"
               (valueChange)="onDateSelect($event)"
@@ -92,9 +94,12 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
 })
 export class NzCalendarComponent implements ControlValueAccessor, OnChanges {
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly i18n = inject(NzI18nService);
   protected readonly dir = inject(Directionality).valueSignal;
 
   activeDate: CandyDate = new CandyDate();
+  locale!: NzCalendarI18nInterface;
   prefixCls: string = 'ant-picker-calendar';
 
   private onChangeFn: (date: Date) => void = () => {};
@@ -142,6 +147,11 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges {
   @Input({ transform: booleanAttribute })
   nzFullscreen: boolean = true;
 
+  constructor() {
+    this.setLocale();
+    this.i18n.localeChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.setLocale());
+  }
+
   onModeChange(mode: NzCalendarMode): void {
     this.nzModeChange.emit(mode);
     this.nzPanelChange.emit({ date: this.activeDate.nativeDate, mode });
@@ -185,6 +195,11 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges {
       this.nzSelectChange.emit(date.nativeDate);
       this.nzValueChange.emit(date.nativeDate);
     }
+  }
+
+  private setLocale(): void {
+    this.locale = this.i18n.getLocaleData('DatePicker', {}).lang;
+    this.cdr.markForCheck();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

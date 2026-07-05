@@ -16,11 +16,13 @@ import { vi } from 'vitest';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchFakeEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import { provideNzDateFnsAdapter } from 'ng-zorro-antd/core/time';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { NzDatePickerSizeType } from 'ng-zorro-antd/date-picker/date-picker.component';
 import { getPickerAbstract, getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/util';
 import { NzDatePickerI18nInterface, NzDatePickerLangI18nInterface } from 'ng-zorro-antd/i18n';
+import en_US from 'ng-zorro-antd/i18n/languages/en_US';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { NzDatePickerModule } from './date-picker.module';
@@ -35,7 +37,7 @@ describe('month-picker', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzNoAnimation()]
+      providers: [provideNzNoAnimation(), provideNzDateFnsAdapter()]
     });
   });
 
@@ -133,6 +135,10 @@ describe('month-picker', () => {
     });
 
     it('should support nzDisabledDate', async () => {
+      fixtureInstance.nzLocale.set({
+        ...en_US.DatePicker,
+        lang: { ...en_US.DatePicker.lang, monthFormat: 'M' }
+      });
       fixture.detectChanges();
       const compareDate = new Date('2018-11-15 00:00:00');
       fixtureInstance.nzValue.set(new Date('2018-11-11 12:12:12'));
@@ -144,7 +150,7 @@ describe('month-picker', () => {
         '.ant-picker-month-panel tr td.ant-picker-cell-disabled'
       );
       const disabledCell = allDisabledCells[allDisabledCells.length - 1];
-      expect(disabledCell.textContent).toContain('Oct');
+      expect(disabledCell.textContent).toContain('10');
     });
 
     it('should support nzLocale', () => {
@@ -202,13 +208,21 @@ describe('month-picker', () => {
     });
 
     it('should support nzValue', async () => {
+      fixtureInstance.nzLocale.set({
+        ...en_US.DatePicker,
+        lang: { ...en_US.DatePicker.lang, monthFormat: 'M' }
+      });
       fixtureInstance.nzValue.set(new Date('2018-11-22'));
       await stabilize();
       await openPickerByClickTrigger();
-      expect(getSelectedMonthCell().textContent).toContain('Nov');
+      expect(getSelectedMonthCell().textContent).toContain('11');
     });
 
     it('should support nzOnChange', async () => {
+      fixtureInstance.nzLocale.set({
+        ...en_US.DatePicker,
+        lang: { ...en_US.DatePicker.lang, monthFormat: 'M' }
+      });
       fixtureInstance.nzValue.set(new Date('2018-11'));
       const nzOnChange = vi.spyOn(fixtureInstance, 'nzOnChange');
       fixture.detectChanges();
@@ -220,8 +234,7 @@ describe('month-picker', () => {
       await stabilize(500);
       expect(nzOnChange).toHaveBeenCalled();
       const result = (nzOnChange.mock.calls[0] as Date[])[0];
-      expect(cellText).toContain('Jan');
-      expect(result.getMonth()).toBe(0);
+      expect(result.getMonth() + 1).toBe(parseInt(cellText, 10));
     });
   }); // /general api testing
 
@@ -295,6 +308,10 @@ describe('month-picker', () => {
     });
 
     it('should support selected month active', async () => {
+      fixtureInstance.nzLocale.set({
+        ...en_US.DatePicker,
+        lang: { ...en_US.DatePicker.lang, monthFormat: 'M月' }
+      });
       fixtureInstance.nzValue.set(new Date('2019-7-13 15:10:00'));
       await stabilize();
 
@@ -302,7 +319,7 @@ describe('month-picker', () => {
       const activeMonthElement = overlayContainerElement.querySelector(
         '.ant-picker-month-panel tr td.ant-picker-cell-selected .ant-picker-cell-inner'
       );
-      expect(activeMonthElement!.textContent).toContain('Jul');
+      expect(activeMonthElement!.textContent).toContain('7月');
     });
   }); // /specified date picker testing
 
@@ -310,17 +327,20 @@ describe('month-picker', () => {
     beforeEach(() => fixtureInstance.useSuite.set(3));
 
     it('should specified date provide by "modelValue" be chosen', async () => {
+      fixtureInstance.nzLocale.set({
+        ...en_US.DatePicker,
+        lang: { ...en_US.DatePicker.lang, monthFormat: 'M' }
+      });
       fixtureInstance.modelValue.set(new Date('2018-11'));
       await stabilize();
-      expect(getSelectedMonthCell().textContent).toContain('Nov');
+      expect(getSelectedMonthCell().textContent).toContain('11');
 
       // Click the first cell to change ngModel
       const cell = getFirstMonthCell();
       const cellText = cell.textContent!.trim();
       dispatchMouseEvent(cell, 'click');
       await stabilize(500);
-      expect(cellText).toContain('Jan');
-      expect(fixtureInstance.modelValue()!.getMonth()).toBe(0);
+      expect(fixtureInstance.modelValue()!.getMonth() + 1).toBe(parseInt(cellText, 10));
     });
   });
 
@@ -392,10 +412,10 @@ describe('month-picker', () => {
         <nz-date-picker nzMode="month" [nzOpen]="nzOpen()" />
       }
       @case (3) {
-        <nz-date-picker nzMode="month" nzOpen [(ngModel)]="modelValue" />
+        <nz-date-picker nzMode="month" nzOpen [nzLocale]="nzLocale()!" [(ngModel)]="modelValue" />
       }
       @case (4) {
-        <nz-month-picker nzOpen [(ngModel)]="modelValue" />
+        <nz-month-picker nzOpen [nzLocale]="nzLocale()!" [(ngModel)]="modelValue" />
       }
     }
   `

@@ -19,7 +19,7 @@ import {
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
-import { CandyDate, NzDateAdapter, ɵprovideNzDefaultDateAdapter } from 'ng-zorro-antd/core/time';
+import { CandyDate, NzDateAdapter } from 'ng-zorro-antd/core/time';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
@@ -78,7 +78,6 @@ import { PREFIX_CLASS } from './util';
       }
     </div>
   `,
-  providers: [...ɵprovideNzDefaultDateAdapter()],
   encapsulation: ViewEncapsulation.None
 })
 export class CalendarFooterComponent implements OnChanges {
@@ -106,12 +105,11 @@ export class CalendarFooterComponent implements OnChanges {
     const { disabledDate, locale } = changes;
     const now = new Date();
     if (disabledDate) {
-      this.isTodayDisabled = !!(this.disabledDate && this.disabledDate(now));
+      this.isTodayDisabled = !!this.disabledDate?.(now);
     }
     if (locale) {
       // NOTE: Compat for DatePipe formatting rules
-      const dateFormat = transCompatFormat(this.locale.dateFormat);
-      this.todayTitle = this.dateAdapter.format(now, dateFormat);
+      this.todayTitle = this.dateAdapter.format(now, transCompatFormat(this.locale.dateFormat));
     }
   }
 

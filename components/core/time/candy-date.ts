@@ -3,40 +3,41 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import {
+  addMonths,
+  addYears,
+  differenceInCalendarDays,
+  differenceInCalendarMonths,
+  differenceInCalendarQuarters,
+  differenceInCalendarYears,
+  differenceInHours,
+  differenceInMinutes,
+  differenceInSeconds,
+  getQuarter,
+  isFirstDayOfMonth,
+  isLastDayOfMonth,
+  isSameDay,
+  isSameHour,
+  isSameMinute,
+  isSameMonth,
+  isSameQuarter,
+  isSameSecond,
+  isSameYear,
+  isToday,
+  isValid,
+  setDay,
+  setMonth,
+  setQuarter,
+  setYear,
+  startOfMonth,
+  startOfWeek
+} from 'date-fns';
+
 import { warn } from 'ng-zorro-antd/core/logger';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { DateMode } from './date-adapter';
 import { WeekDayIndex } from './date-config';
-import {
-  ɵdateFnsAddMonths as addMonths,
-  ɵdateFnsAddYears as addYears,
-  ɵdateFnsDifferenceInCalendarDays as differenceInCalendarDays,
-  ɵdateFnsDifferenceInCalendarMonths as differenceInCalendarMonths,
-  ɵdateFnsDifferenceInCalendarQuarters as differenceInCalendarQuarters,
-  ɵdateFnsDifferenceInCalendarYears as differenceInCalendarYears,
-  ɵdateFnsDifferenceInHours as differenceInHours,
-  ɵdateFnsDifferenceInMinutes as differenceInMinutes,
-  ɵdateFnsDifferenceInSeconds as differenceInSeconds,
-  ɵdateFnsGetQuarter as getQuarter,
-  ɵdateFnsIsFirstDayOfMonth as isFirstDayOfMonth,
-  ɵdateFnsIsLastDayOfMonth as isLastDayOfMonth,
-  ɵdateFnsIsSameDay as isSameDay,
-  ɵdateFnsIsSameHour as isSameHour,
-  ɵdateFnsIsSameMinute as isSameMinute,
-  ɵdateFnsIsSameMonth as isSameMonth,
-  ɵdateFnsIsSameQuarter as isSameQuarter,
-  ɵdateFnsIsSameSecond as isSameSecond,
-  ɵdateFnsIsSameYear as isSameYear,
-  ɵdateFnsIsToday as isToday,
-  ɵdateFnsIsValid as isValid,
-  ɵdateFnsSetDay as setDay,
-  ɵdateFnsSetMonth as setMonth,
-  ɵdateFnsSetQuarter as setQuarter,
-  ɵdateFnsSetYear as setYear,
-  ɵdateFnsStartOfMonth as startOfMonth,
-  ɵdateFnsStartOfWeek as startOfWeek
-} from './date-fns-adapter';
 
 /**
  * @deprecated Use `DateMode` and `NzDateAdapter` directly instead. Will be removed in v23.

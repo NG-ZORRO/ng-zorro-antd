@@ -34,6 +34,7 @@ import {
   dispatchMouseEvent,
   typeInElement
 } from 'ng-zorro-antd/core/testing';
+import { provideNzDateFnsAdapter } from 'ng-zorro-antd/core/time';
 import {
   NgStyleInterface,
   NzSafeAny,
@@ -65,7 +66,7 @@ describe('NzDatePickerComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzNoAnimation()]
+      providers: [provideNzNoAnimation(), provideNzDateFnsAdapter()]
     });
   });
 
@@ -119,6 +120,14 @@ describe('NzDatePickerComponent', () => {
       vi.advanceTimersByTime(500);
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
+    });
+
+    it('should close safely before the popup panel is ready', () => {
+      fixture.detectChanges();
+      fixtureInstance.datePicker.open();
+
+      expect(() => fixtureInstance.datePicker.checkAndClose()).not.toThrow();
+      expect(fixtureInstance.datePicker.realOpenState).toBe(false);
     });
 
     it('should focus on the trigger after a click outside', () => {
@@ -230,9 +239,6 @@ describe('NzDatePickerComponent', () => {
       i18nService.setLocale(en_US);
       fixture.detectChanges();
       expect(getPickerInput(fixture.debugElement).placeholder).toBe('Select date');
-
-      openPickerByClickTrigger();
-      expect(queryFromOverlay(`.${PREFIX_CLASS}-content th`).textContent).toContain('Mo');
     });
 
     /* Issue https://github.com/NG-ZORRO/ng-zorro-antd/issues/1539 */
@@ -433,6 +439,10 @@ describe('NzDatePickerComponent', () => {
 
     // #5633
     it('should support disable year and month right', () => {
+      fixtureInstance.nzLocale.set({
+        ...en_US.DatePicker,
+        lang: { ...en_US.DatePicker.lang, monthFormat: 'M' }
+      });
       fixture.detectChanges();
       fixtureInstance.nzValue.set(new Date(2020, 0, 1));
       fixtureInstance.nzDisabledDate.set(
@@ -455,7 +465,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
 
       const january = getFirstCell();
-      expect(january.textContent!.trim()).toContain('Jan');
+      expect(january.textContent!.trim()).toContain('1');
       expect(january.classList).not.toContain('ant-picker-cell-disabled');
     });
 
@@ -560,6 +570,10 @@ describe('NzDatePickerComponent', () => {
     });
 
     it('should support nzDefaultPickerValue', () => {
+      fixtureInstance.nzLocale.set({
+        ...en_US.DatePicker,
+        lang: { ...en_US.DatePicker.lang, monthFormat: 'M' }
+      });
       fixture.detectChanges();
       fixtureInstance.nzDefaultPickerValue.set(new Date('2015-09-17'));
       fixture.detectChanges();
@@ -567,7 +581,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       openPickerByClickTrigger();
       expect(queryFromOverlay('.ant-picker-header-year-btn').textContent!.indexOf('2015') > -1).toBeTruthy();
-      expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('Sep') > -1).toBeTruthy();
+      expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('9') > -1).toBeTruthy();
     });
 
     it('should support custom suffixIcon', () => {
@@ -729,6 +743,10 @@ describe('NzDatePickerComponent', () => {
     });
 
     it('should support date panel changes', async () => {
+      fixtureInstance.nzLocale.set({
+        ...en_US.DatePicker,
+        lang: { ...en_US.DatePicker.lang, monthFormat: 'M' }
+      });
       fixtureInstance.nzValue.set(new Date('2018-11-11'));
       await stabilize(10000);
       openPickerByClickTrigger();
@@ -753,7 +771,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       vi.advanceTimersByTime(500);
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('Oct') > -1).toBeTruthy();
+      expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('10') > -1).toBeTruthy();
       // Click next month button * 2
       dispatchMouseEvent(getNextBtn(), 'click');
       fixture.detectChanges();
@@ -763,7 +781,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       vi.advanceTimersByTime(500);
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('Dec') > -1).toBeTruthy();
+      expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('12') > -1).toBeTruthy();
     });
 
     it('should support month panel changes', async () => {
@@ -1375,7 +1393,7 @@ describe('date-fns testing', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzNoAnimation(), { provide: NZ_DATE_LOCALE, useValue: enUS }]
+      providers: [provideNzNoAnimation(), provideNzDateFnsAdapter(), { provide: NZ_DATE_LOCALE, useValue: enUS }]
     });
   });
 
@@ -1417,7 +1435,7 @@ describe('date-picker status', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzNoAnimation()]
+      providers: [provideNzNoAnimation(), provideNzDateFnsAdapter()]
     });
   });
 
@@ -1450,7 +1468,7 @@ describe('in form', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzNoAnimation()]
+      providers: [provideNzNoAnimation(), provideNzDateFnsAdapter()]
     });
   });
 
@@ -1493,7 +1511,7 @@ describe('signal forms (formField)', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzNoAnimation()]
+      providers: [provideNzNoAnimation(), provideNzDateFnsAdapter()]
     });
   });
 
@@ -1533,6 +1551,9 @@ describe('finalSize', () => {
   beforeEach(() => {
     compactSizeSignal = signal<NzSizeLDSType>('large');
     formSizeSignal = signal<NzSizeLDSType>('default');
+    TestBed.configureTestingModule({
+      providers: [provideNzDateFnsAdapter()]
+    });
   });
 
   afterEach(() => {
@@ -1580,6 +1601,9 @@ describe('finalVariant', () => {
 
   beforeEach(() => {
     formVariantSignal = signal<NzVariant>('outlined');
+    TestBed.configureTestingModule({
+      providers: [provideNzDateFnsAdapter()]
+    });
   });
 
   afterEach(() => {

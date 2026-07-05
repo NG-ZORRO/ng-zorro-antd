@@ -19,7 +19,7 @@ import {
 import { FormsModule } from '@angular/forms';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
-import { CandyDate, NzDateAdapter, ɵprovideNzDefaultDateAdapter } from 'ng-zorro-antd/core/time';
+import { CandyDate, NzDateAdapter } from 'ng-zorro-antd/core/time';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
@@ -75,7 +75,6 @@ import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
     class: 'ant-fullcalendar-header',
     '[style.display]': `'block'`
   },
-  providers: [...ɵprovideNzDefaultDateAdapter()],
   imports: [NzSelectModule, FormsModule, NzRadioModule, NzStringTemplateOutletDirective]
 })
 export class NzCalendarHeaderComponent implements OnInit, OnChanges {

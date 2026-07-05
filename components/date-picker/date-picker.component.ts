@@ -54,14 +54,7 @@ import {
 } from 'ng-zorro-antd/core/form';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { DATE_PICKER_POSITION_MAP, DEFAULT_DATE_PICKER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
-import {
-  CandyDate,
-  cloneDate,
-  CompatibleValue,
-  NzDateAdapter,
-  ɵprovideNzDefaultDateAdapter,
-  wrongSortOrder
-} from 'ng-zorro-antd/core/time';
+import { CandyDate, cloneDate, CompatibleValue, NzDateAdapter, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import {
   BooleanInput,
   FunctionProp,
@@ -260,7 +253,6 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
   },
   hostDirectives: [NzSpaceCompactItemDirective],
   providers: [
-    ...ɵprovideNzDefaultDateAdapter(),
     DatePickerService,
     { provide: NZ_SPACE_COMPACT_ITEM_TYPE, useValue: 'picker' },
     {
@@ -355,7 +347,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   }
 
   @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay?: CdkConnectedOverlay;
-  @ViewChild(DateRangePopupComponent, { static: false }) panel!: DateRangePopupComponent;
+  @ViewChild(DateRangePopupComponent, { static: false }) panel?: DateRangePopupComponent;
   @ViewChild('separatorElement', { static: false }) separatorElement?: ElementRef;
   @ViewChild('pickerInput', { static: false }) pickerInput?: ElementRef<HTMLInputElement>;
   @ViewChildren('rangePickerInput') rangePickerInputs?: QueryList<ElementRef<HTMLInputElement>>;
@@ -559,6 +551,12 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
       return;
     }
 
+    if (!this.panel) {
+      this.datePickerService.setValue(this.datePickerService.initialValue!);
+      this.close();
+      return;
+    }
+
     if (this.panel.isAllowed(this.datePickerService.value!, true)) {
       if (Array.isArray(this.datePickerService.value) && wrongSortOrder(this.datePickerService.value)) {
         const index = this.datePickerService.getActiveIndex();
@@ -630,7 +628,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
 
     const date = this.checkValidDate(value);
     // Can only change date when it's open
-    if (date && this.realOpenState) {
+    if (date && this.realOpenState && this.panel) {
       this.panel.changeValueFromSelect(date, isEnter);
     }
   }

@@ -6,15 +6,13 @@
 import { formatDate } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
 
+import { format as fnsFormat, getISOWeek as fnsGetISOWeek, getQuarter, parse as fnsParse } from 'date-fns';
+
 import {
   type WeekDayIndex,
   NZ_DATE_CONFIG,
   NzDateConfig,
   mergeDateConfig,
-  ɵdateFnsFormat as fnsFormat,
-  ɵdateFnsGetISOWeek as fnsGetISOWeek,
-  ɵdateFnsGetQuarter as getQuarter,
-  ɵdateFnsParse as fnsParse,
   ɵNgTimeParser
 } from 'ng-zorro-antd/core/time';
 

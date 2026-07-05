@@ -15,6 +15,7 @@ import { vi } from 'vitest';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchFakeEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import { provideNzDateFnsAdapter } from 'ng-zorro-antd/core/time';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { NzDatePickerSizeType } from 'ng-zorro-antd/date-picker/date-picker.component';
 import { getPickerAbstract, getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
@@ -34,7 +35,7 @@ describe('year-picker', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzNoAnimation()]
+      providers: [provideNzNoAnimation(), provideNzDateFnsAdapter()]
     });
     fixture = TestBed.createComponent(NzTestYearPickerComponent);
     fixtureInstance = fixture.componentInstance;

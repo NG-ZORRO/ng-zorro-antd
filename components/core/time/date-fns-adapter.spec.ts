@@ -3,23 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, inject } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { enUS } from 'date-fns/locale';
 
 import { NzDateAdapter } from './date-adapter';
 import { NZ_DATE_LOCALE } from './date-config';
-import { DateFnsDateAdapter, provideNzDateFnsAdapter, ɵprovideNzDefaultDateAdapter } from './date-fns-adapter';
+import { DateFnsDateAdapter, provideNzDateFnsAdapter } from './date-fns-adapter';
 import { NativeDateAdapter, provideNzNativeDateAdapter } from './native-adapter';
-
-@Component({
-  template: '',
-  providers: [...ɵprovideNzDefaultDateAdapter()]
-})
-class NzTestDefaultDateAdapterComponent {
-  adapter = inject(NzDateAdapter);
-}
 
 describe('DateFnsDateAdapter', () => {
   let adapter: DateFnsDateAdapter;
@@ -33,23 +24,22 @@ describe('DateFnsDateAdapter', () => {
 
   // --- Material Core Methods ---
 
-  describe('default provider', () => {
-    it('should provide date-fns adapter as fallback', () => {
+  describe('root provider', () => {
+    it('should provide date-fns adapter at application root', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        providers: [ɵprovideNzDefaultDateAdapter()]
+        providers: [provideNzDateFnsAdapter()]
       });
       expect(TestBed.inject(NzDateAdapter)).toBeInstanceOf(DateFnsDateAdapter);
+      expect(TestBed.inject(NzDateAdapter)).toBe(TestBed.inject(DateFnsDateAdapter));
     });
 
-    it('should use parent adapter before date-fns fallback', () => {
+    it('should use the root adapter when another adapter is provided', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        imports: [NzTestDefaultDateAdapterComponent],
         providers: [provideNzNativeDateAdapter()]
       });
-      const fixture = TestBed.createComponent(NzTestDefaultDateAdapterComponent);
-      expect(fixture.componentInstance.adapter).toBeInstanceOf(NativeDateAdapter);
+      expect(TestBed.inject(NzDateAdapter)).toBeInstanceOf(NativeDateAdapter);
     });
   });
 
