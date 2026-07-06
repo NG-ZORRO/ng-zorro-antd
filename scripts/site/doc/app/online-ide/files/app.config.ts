@@ -3,6 +3,7 @@ import { ApplicationConfig } from '@angular/core';
 import { provideHttpClient, withJsonpSupport } from '@angular/common/http';
 import en from '@angular/common/locales/en';
 
+import { enUS } from 'date-fns/locale';
 import { provideNzDateFnsAdapter } from 'ng-zorro-antd/core/time';
 import { provideNzIcons } from 'ng-zorro-antd/icon';
 import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
@@ -21,7 +22,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withJsonpSupport()),
     provideNzIcons(icons),
     provideNzI18n(en_US),
-    provideNzDateFnsAdapter()
+    provideNzDateFnsAdapter({ locale: enUS })
   ]
 };
 `;

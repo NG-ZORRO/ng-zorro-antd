@@ -13,6 +13,9 @@ description: 输入或选择时间的控件。
 
 ## API
 
+TimePicker 与 DatePicker、Calendar 共用 `NzDateAdapter`。locale 配置和自定义日期库请参考
+[日期适配器](/docs/date-adapter/zh)。
+
 ### nz-time-picker
 
 | 参数                      | 说明                                                    | 类型                                                       | 默认值         | 全局配置 | 版本   |

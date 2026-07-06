@@ -12,6 +12,9 @@ By clicking the input box, you can select a time from a popup panel.
 
 ## API
 
+TimePicker uses the same `NzDateAdapter` as DatePicker and Calendar. See [Date Adapter](/docs/date-adapter/en) for
+locale configuration and custom date libraries.
+
 ### nz-time-picker
 
 | Property                  | Description                                                                            | Type                                                       | Default           | Global Config | Version |

@@ -14,7 +14,7 @@ description: 按照日历形式展示数据的容器。
 
 ## API
 
-**注意：**Calendar 的部分 locale 来自于 Angular 自身的国际化支持，需要在 `app.config.ts` 文件中 引入相应的 Angular 语言包。
+**注意：** Calendar 的部分 locale 来自于 Angular 自身的国际化支持，需要在 `app.config.ts` 文件中 引入相应的 Angular 语言包。
 
 例如：
 
@@ -23,6 +23,9 @@ import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 registerLocaleData(zh);
 ```
+
+Calendar 与 DatePicker、TimePicker 共用 `NzDateAdapter`，用于月份名称、星期名称和周规则。locale 配置和自定义日期库请参考
+[日期适配器](/docs/date-adapter/zh)。
 
 ```html
 <nz-calendar

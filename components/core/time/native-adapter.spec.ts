@@ -6,7 +6,6 @@
 import { TestBed } from '@angular/core/testing';
 
 import { NzDateAdapter } from './date-adapter';
-import { NZ_DATE_LOCALE } from './date-config';
 import { NativeDateAdapter, provideNzNativeDateAdapter } from './native-adapter';
 import { NzSafeAny } from '../types';
 
@@ -15,12 +14,23 @@ describe('NativeDateAdapter', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzNativeDateAdapter(), { provide: NZ_DATE_LOCALE, useValue: 'en-US' }]
+      providers: [provideNzNativeDateAdapter({ locale: 'en-US' })]
     });
     adapter = TestBed.inject(NzDateAdapter) as NativeDateAdapter;
   });
 
   // --- Material Core Methods ---
+
+  describe('root provider', () => {
+    it('should configure locale from provideNzNativeDateAdapter', () => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        providers: [provideNzNativeDateAdapter({ locale: 'zh-CN' })]
+      });
+      const a = TestBed.inject(NzDateAdapter) as NativeDateAdapter;
+      expect(a.format(new Date(2024, 10, 1), 'MMM')).toBe('11月');
+    });
+  });
 
   describe('material core', () => {
     it('today() should return current date', () => {
@@ -353,7 +363,7 @@ describe('NativeDateAdapter', () => {
     it('should return configured firstDayOfWeek', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        providers: [provideNzNativeDateAdapter({ firstDayOfWeek: 4 }), { provide: NZ_DATE_LOCALE, useValue: 'en-US' }]
+        providers: [provideNzNativeDateAdapter({ firstDayOfWeek: 4, locale: 'en-US' })]
       });
       const a = TestBed.inject(NzDateAdapter) as NativeDateAdapter;
       expect(a.getFirstDayOfWeek()).toBe(4);
@@ -362,7 +372,7 @@ describe('NativeDateAdapter', () => {
     it('should return 1 for zh-cn locale', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        providers: [provideNzNativeDateAdapter(), { provide: NZ_DATE_LOCALE, useValue: 'zh-cn' }]
+        providers: [provideNzNativeDateAdapter({ locale: 'zh-cn' })]
       });
       const a = TestBed.inject(NzDateAdapter) as NativeDateAdapter;
       expect(a.getFirstDayOfWeek()).toBe(1);

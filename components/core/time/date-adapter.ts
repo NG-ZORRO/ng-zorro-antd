@@ -6,6 +6,8 @@
 import { EnvironmentProviders, InjectionToken, makeEnvironmentProviders, Type } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
+import { NZ_DATE_CONFIG, NZ_DATE_CONFIG_DEFAULT, NZ_DATE_LOCALE, NzDateConfig } from './date-config';
+
 /** NG-ZORRO specific: Date granularity mode for comparison operations */
 export type DateMode = 'decade' | 'year' | 'quarter' | 'month' | 'day' | 'hour' | 'minute' | 'second';
 
@@ -19,32 +21,47 @@ export const NZ_DATE_ADAPTER = new InjectionToken<Type<NzDateAdapter<unknown>>>(
   typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-date-adapter-type' : ''
 );
 
+/** Configuration for a date adapter provider. */
+export interface NzDateAdapterConfig<L = unknown> extends NzDateConfig {
+  /** Locale value used by the configured date adapter. */
+  locale?: L;
+}
+
 /**
  * Provides a custom NzDateAdapter implementation.
  * Use this when you want to provide your own adapter implementation.
  *
  * @param adapterClass The adapter class to use (must extend NzDateAdapter)
+ * @param config Optional configuration for the adapter
  * @returns EnvironmentProviders for the adapter
  *
  * @example
  * ```typescript
  * export const appConfig: ApplicationConfig = {
- *   providers: [provideNzDateAdapter(JalaliDateAdapter)]
+ *   providers: [provideNzDateAdapter(JalaliDateAdapter, { locale: faIR, firstDayOfWeek: 6 })]
  * };
  * ```
  */
-export function provideNzDateAdapter<T extends NzDateAdapter<unknown>>(adapterClass: Type<T>): EnvironmentProviders {
-  return makeEnvironmentProviders([adapterClass, { provide: NzDateAdapter, useExisting: adapterClass }]);
+export function provideNzDateAdapter<D, L, T extends NzDateAdapter<D, L>>(
+  adapterClass: Type<T>,
+  config?: NzDateAdapterConfig<L>
+): EnvironmentProviders {
+  const { locale, ...dateConfig } = config ?? {};
+
+  return makeEnvironmentProviders([
+    adapterClass,
+    { provide: NzDateAdapter, useExisting: adapterClass },
+    { provide: NZ_DATE_CONFIG, useValue: { ...NZ_DATE_CONFIG_DEFAULT, ...dateConfig } },
+    ...(locale !== undefined ? [{ provide: NZ_DATE_LOCALE, useValue: locale }] : [])
+  ]);
 }
 
 /**
  * NzDateAdapter is the abstraction boundary between ng-zorro-antd and any date library.
- * This follows the Angular Material DateAdapter pattern exactly, with NG-ZORRO-specific
- * extensions added as optional (Tier 3) methods.
  *
  * CONTRACT FOR SUBCLASS AUTHORS:
  *
- * - You MUST implement all abstract methods (Material core + NG-ZORRO core).
+ * - You MUST implement all abstract methods.
  * - You MAY override derived methods for efficiency.
  * - You MAY override optional methods to opt into features.
  *

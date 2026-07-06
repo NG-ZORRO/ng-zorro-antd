@@ -7,8 +7,14 @@ import { EnvironmentProviders, Injectable, makeEnvironmentProviders, inject } fr
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-import { NzDateAdapter, DateMode } from './date-adapter';
-import { NZ_DATE_CONFIG, NZ_DATE_CONFIG_DEFAULT, NZ_DATE_LOCALE, NzDateConfig } from './date-config';
+import { NzDateAdapter, DateMode, NzDateAdapterConfig } from './date-adapter';
+import { NZ_DATE_CONFIG, NZ_DATE_CONFIG_DEFAULT, NZ_DATE_LOCALE } from './date-config';
+
+/** Configuration for native date adapter. */
+export interface NzNativeDateAdapterConfig extends NzDateAdapterConfig<string> {
+  /** Locale string used by Intl.DateTimeFormat. */
+  locale?: string;
+}
 
 /** Matches strings that look like ISO 8601 dates (e.g. 2024-01-15, 2024-01-15T10:30:00). */
 const ISO_8601_REGEX = /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|(?:(?:\+|-)\d{2}:\d{2}))?)?$/;
@@ -702,14 +708,17 @@ export class NativeDateAdapter extends NzDateAdapter<Date, string> {
  * @example
  * ```typescript
  * export const appConfig: ApplicationConfig = {
- *   providers: [provideNzNativeDateAdapter()]
+ *   providers: [provideNzNativeDateAdapter({ locale: 'en-US', firstDayOfWeek: 0 })]
  * };
  * ```
  */
-export function provideNzNativeDateAdapter(config?: NzDateConfig): EnvironmentProviders {
+export function provideNzNativeDateAdapter(config?: NzNativeDateAdapterConfig): EnvironmentProviders {
+  const { locale, ...dateConfig } = config ?? {};
+
   return makeEnvironmentProviders([
     NativeDateAdapter,
     { provide: NzDateAdapter, useExisting: NativeDateAdapter },
-    { provide: NZ_DATE_CONFIG, useValue: { ...NZ_DATE_CONFIG_DEFAULT, ...config } }
+    { provide: NZ_DATE_CONFIG, useValue: { ...NZ_DATE_CONFIG_DEFAULT, ...dateConfig } },
+    ...(locale !== undefined ? [{ provide: NZ_DATE_LOCALE, useValue: locale }] : [])
   ]);
 }

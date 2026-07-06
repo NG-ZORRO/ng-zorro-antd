@@ -23,6 +23,9 @@ import en from '@angular/common/locales/en';
 registerLocaleData(en);
 ```
 
+Calendar uses the same `NzDateAdapter` as DatePicker and TimePicker for month labels, week labels and week rules. See
+[Date Adapter](/docs/date-adapter/en) for locale configuration and custom date libraries.
+
 ```html
 <nz-calendar
   [nzDateCell]="dateCellTpl"

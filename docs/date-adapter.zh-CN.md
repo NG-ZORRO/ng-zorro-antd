@@ -1,6 +1,6 @@
 ---
 order: 4
-title: 自定义日期库
+title: 日期适配器
 ---
 
 NG-ZORRO 的日期类组件通过 `NzDateAdapter` 访问日期能力。默认情况下组件会使用内置的 `date-fns` 适配器；如果你希望改用 native `Date`、Day.js、Luxon、Jalali 或其他日期库，可以在应用根配置中提供自己的 adapter。
@@ -11,12 +11,12 @@ NG-ZORRO 的日期类组件通过 `NzDateAdapter` 访问日期能力。默认情
 
 ```ts
 import { ApplicationConfig } from '@angular/core';
-import { enUS } from 'date-fns/locale';
+import { zhCN } from 'date-fns/locale';
 
-import { provideNzDateFnsAdapter, NZ_DATE_LOCALE } from 'ng-zorro-antd/core/time';
+import { provideNzDateFnsAdapter } from 'ng-zorro-antd/core/time';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideNzDateFnsAdapter({ firstDayOfWeek: 1 }), { provide: NZ_DATE_LOCALE, useValue: enUS }]
+  providers: [provideNzDateFnsAdapter({ locale: zhCN, firstDayOfWeek: 1 })]
 };
 ```
 
@@ -25,12 +25,14 @@ export const appConfig: ApplicationConfig = {
 ```ts
 import { ApplicationConfig } from '@angular/core';
 
-import { provideNzNativeDateAdapter, NZ_DATE_LOCALE } from 'ng-zorro-antd/core/time';
+import { provideNzNativeDateAdapter } from 'ng-zorro-antd/core/time';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideNzNativeDateAdapter({ firstDayOfWeek: 1 }), { provide: NZ_DATE_LOCALE, useValue: 'zh-CN' }]
+  providers: [provideNzNativeDateAdapter({ locale: 'zh-CN', firstDayOfWeek: 1 })]
 };
 ```
+
+`NZ_I18N` 控制 NG-ZORRO 组件文案；adapter 的 `locale` 控制日期库的格式化和周规则，例如月份名称、星期名称和周起始日。如果运行时切换语言，也需要用当前 adapter 期望的 locale 值调用 `dateAdapter.setLocale(...)`。
 
 ## 使用自定义 Adapter
 
@@ -241,12 +243,12 @@ export class DayjsDateAdapter extends NzDateAdapter<Date, string> {
 ```ts
 import { ApplicationConfig } from '@angular/core';
 
-import { provideNzDateAdapter, NZ_DATE_LOCALE } from 'ng-zorro-antd/core/time';
+import { provideNzDateAdapter } from 'ng-zorro-antd/core/time';
 
 import { DayjsDateAdapter } from './dayjs-date-adapter';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideNzDateAdapter(DayjsDateAdapter), { provide: NZ_DATE_LOCALE, useValue: 'zh-cn' }]
+  providers: [provideNzDateAdapter(DayjsDateAdapter, { locale: 'zh-cn', firstDayOfWeek: 1 })]
 };
 ```
 
@@ -276,4 +278,4 @@ export class DemoComponent {
 - DatePicker、Calendar、TimePicker 会优先使用应用根部提供的 adapter。没有显式配置时，组件会回退到默认的 `date-fns` adapter。
 - `format` 与 `parse` 的格式字符串由当前 adapter 解释。切换日期库后，请确认 `nzFormat`、默认格式和手动解析格式都符合新日期库的 token 语法。
 - 如果使用 TimePicker 或 DatePicker 的时间选择能力，请实现 `setTime`、`getHours`、`getMinutes`、`getSeconds`、`parseTime`、`addSeconds` 等时间相关方法。
-- `NZ_DATE_LOCALE` 的值会传给当前 adapter。不同日期库的 locale 类型可能不同，自定义 adapter 需要自行解释这个值。
+- `locale` 选项会通过 `NZ_DATE_LOCALE` 传给当前 adapter。不同日期库的 locale 类型可能不同，自定义 adapter 需要自行解释这个值。

@@ -43,8 +43,14 @@ import {
   formatISO
 } from 'date-fns';
 
-import { NzDateAdapter, DateMode } from './date-adapter';
-import { NZ_DATE_CONFIG, NZ_DATE_CONFIG_DEFAULT, NZ_DATE_LOCALE, NzDateConfig } from './date-config';
+import { NzDateAdapter, DateMode, NzDateAdapterConfig } from './date-adapter';
+import { NZ_DATE_CONFIG, NZ_DATE_CONFIG_DEFAULT, NZ_DATE_LOCALE } from './date-config';
+
+/** Configuration for date-fns date adapter. */
+export interface NzDateFnsAdapterConfig extends NzDateAdapterConfig<Locale> {
+  /** Locale object from date-fns. */
+  locale?: Locale;
+}
 
 /**
  * Date adapter for date-fns.
@@ -404,16 +410,19 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
  * @example
  * ```typescript
  * export const appConfig: ApplicationConfig = {
- *   providers: [provideNzDateFnsAdapter()]
+ *   providers: [provideNzDateFnsAdapter({ locale: enUS, firstDayOfWeek: 1 })]
  * };
  * ```
  *
  * @note Requires date-fns as a peer dependency.
  */
-export function provideNzDateFnsAdapter(config?: NzDateConfig): EnvironmentProviders {
+export function provideNzDateFnsAdapter(config?: NzDateFnsAdapterConfig): EnvironmentProviders {
+  const { locale, ...dateConfig } = config ?? {};
+
   return makeEnvironmentProviders([
     DateFnsDateAdapter,
     { provide: NzDateAdapter, useExisting: DateFnsDateAdapter },
-    { provide: NZ_DATE_CONFIG, useValue: { ...NZ_DATE_CONFIG_DEFAULT, ...config } }
+    { provide: NZ_DATE_CONFIG, useValue: { ...NZ_DATE_CONFIG_DEFAULT, ...dateConfig } },
+    ...(locale !== undefined ? [{ provide: NZ_DATE_LOCALE, useValue: locale }] : [])
   ]);
 }

@@ -5,7 +5,7 @@
 
 import { TestBed } from '@angular/core/testing';
 
-import { enUS } from 'date-fns/locale';
+import { enUS, zhCN } from 'date-fns/locale';
 
 import { NzDateAdapter } from './date-adapter';
 import { NZ_DATE_LOCALE } from './date-config';
@@ -40,6 +40,15 @@ describe('DateFnsDateAdapter', () => {
         providers: [provideNzNativeDateAdapter()]
       });
       expect(TestBed.inject(NzDateAdapter)).toBeInstanceOf(NativeDateAdapter);
+    });
+
+    it('should configure locale from provideNzDateFnsAdapter', () => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        providers: [provideNzDateFnsAdapter({ locale: zhCN })]
+      });
+      const a = TestBed.inject(NzDateAdapter) as DateFnsDateAdapter;
+      expect(a.format(new Date(2024, 10, 1), 'MMM')).toBe('11月');
     });
   });
 
@@ -306,7 +315,7 @@ describe('DateFnsDateAdapter', () => {
     it('should return configured firstDayOfWeek', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        providers: [provideNzDateFnsAdapter({ firstDayOfWeek: 4 }), { provide: NZ_DATE_LOCALE, useValue: enUS }]
+        providers: [provideNzDateFnsAdapter({ firstDayOfWeek: 4, locale: enUS })]
       });
       const a = TestBed.inject(NzDateAdapter) as DateFnsDateAdapter;
       expect(a.getFirstDayOfWeek()).toBe(4);

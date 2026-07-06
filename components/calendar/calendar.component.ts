@@ -8,7 +8,6 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
-  DestroyRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -28,10 +27,10 @@ import { LibPackerModule } from 'ng-zorro-antd/date-picker';
 import { NzCalendarI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import {
-  NzDateCellDirective as DateCell,
-  NzDateFullCellDirective as DateFullCell,
-  NzMonthCellDirective as MonthCell,
-  NzMonthFullCellDirective as MonthFullCell
+  NzDateCellDirective,
+  NzDateFullCellDirective,
+  NzMonthCellDirective,
+  NzMonthFullCellDirective
 } from './calendar-cells';
 import { NzCalendarHeaderComponent } from './calendar-header.component';
 
@@ -94,13 +93,12 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
 })
 export class NzCalendarComponent implements ControlValueAccessor, OnChanges {
   private readonly cdr = inject(ChangeDetectorRef);
-  private readonly destroyRef = inject(DestroyRef);
   private readonly i18n = inject(NzI18nService);
   protected readonly dir = inject(Directionality).valueSignal;
 
-  activeDate: CandyDate = new CandyDate();
   locale!: NzCalendarI18nInterface;
-  prefixCls: string = 'ant-picker-calendar';
+  activeDate = new CandyDate();
+  prefixCls = 'ant-picker-calendar';
 
   private onChangeFn: (date: Date) => void = () => {};
   private onTouchFn: () => void = () => {};
@@ -119,37 +117,41 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges {
    * because { static: false } will make @Input property get delayed
    **/
   @Input() nzDateCell?: NzCalendarDateTemplate;
-  @ContentChild(DateCell, { static: false, read: TemplateRef }) nzDateCellChild?: NzCalendarDateTemplate;
+  @ContentChild(NzDateCellDirective, { static: false, read: TemplateRef })
+  nzDateCellChild?: NzCalendarDateTemplate;
   get dateCell(): NzCalendarDateTemplate {
     return (this.nzDateCell || this.nzDateCellChild)!;
   }
 
   @Input() nzDateFullCell?: NzCalendarDateTemplate;
-  @ContentChild(DateFullCell, { static: false, read: TemplateRef }) nzDateFullCellChild?: NzCalendarDateTemplate;
+  @ContentChild(NzDateFullCellDirective, { static: false, read: TemplateRef })
+  nzDateFullCellChild?: NzCalendarDateTemplate;
   get dateFullCell(): NzCalendarDateTemplate {
     return (this.nzDateFullCell || this.nzDateFullCellChild)!;
   }
 
   @Input() nzMonthCell?: NzCalendarDateTemplate;
-  @ContentChild(MonthCell, { static: false, read: TemplateRef }) nzMonthCellChild?: NzCalendarDateTemplate;
+  @ContentChild(NzMonthCellDirective, { static: false, read: TemplateRef })
+  nzMonthCellChild?: NzCalendarDateTemplate;
   get monthCell(): NzCalendarDateTemplate {
     return (this.nzMonthCell || this.nzMonthCellChild)!;
   }
 
   @Input() nzMonthFullCell?: NzCalendarDateTemplate;
-  @ContentChild(MonthFullCell, { static: false, read: TemplateRef }) nzMonthFullCellChild?: NzCalendarDateTemplate;
+  @ContentChild(NzMonthFullCellDirective, { static: false, read: TemplateRef })
+  nzMonthFullCellChild?: NzCalendarDateTemplate;
   get monthFullCell(): NzCalendarDateTemplate {
     return (this.nzMonthFullCell || this.nzMonthFullCellChild)!;
   }
 
   @Input() nzCustomHeader?: string | TemplateRef<void>;
-
-  @Input({ transform: booleanAttribute })
-  nzFullscreen: boolean = true;
+  @Input({ transform: booleanAttribute }) nzFullscreen = true;
 
   constructor() {
-    this.setLocale();
-    this.i18n.localeChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.setLocale());
+    this.i18n.localeChange.pipe(takeUntilDestroyed()).subscribe(() => {
+      this.locale = this.i18n.getLocaleData('Calendar', {}).lang;
+      this.cdr.markForCheck();
+    });
   }
 
   onModeChange(mode: NzCalendarMode): void {
@@ -175,7 +177,6 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges {
 
   writeValue(value: Date | null): void {
     this.updateDate(new CandyDate(value as Date), false);
-    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: (date: Date) => void): void {
@@ -195,10 +196,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges {
       this.nzSelectChange.emit(date.nativeDate);
       this.nzValueChange.emit(date.nativeDate);
     }
-  }
 
-  private setLocale(): void {
-    this.locale = this.i18n.getLocaleData('DatePicker', {}).lang;
     this.cdr.markForCheck();
   }
 

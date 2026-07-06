@@ -28,6 +28,9 @@ registerLocaleData(zh);
 所有输入输出日期对象均为 [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)
 ，你可以通过 [date-fns](https://date-fns.org/) 工具库获得你需要的数据。
 
+DatePicker、TimePicker 和 Calendar 使用 `NzDateAdapter` 进行日期计算、解析和格式化。内置 adapter、locale 配置和自定义日期库请参考
+[日期适配器](/docs/date-adapter/zh)。
+
 ### 共同的 API
 
 以下 API 为 nz-date-picker、nz-range-picker 共享的 API。
@@ -109,7 +112,7 @@ registerLocaleData(zh);
 ### 为何在设置 `nzFormat="dd/MM/yyyy"` 后手动输入不生效
 
 需要引入 `date-fns` 。日期格式化目前同时支持两种方式：`DatePipe`（默认，[语法参考](https://angular.cn/api/common/DatePipe)）
-和 `date-fns`（见[如何使用 `date-fns` 进行日期格式化](/docs/i18n/zh#如何使用Date-fns进行日期格式化)）。当你引入 `date-fns`
+和 `date-fns`（见[日期适配器](/docs/date-adapter/zh)）。当你引入 `date-fns`
 后，NG-ZORRO 会使用它提供的 API 来进行反序列化。
 
 ### Q：滚动时浮层元素没有跟随滚动位置

@@ -1,6 +1,6 @@
 ---
 order: 4
-title: Custom Date Library
+title: Date Adapter
 ---
 
 NG-ZORRO date components access date operations through `NzDateAdapter`. Components use the built-in `date-fns` adapter by default. If you want to use native `Date`, Day.js, Luxon, Jalali, or another date library, provide your own adapter at the application root.
@@ -13,10 +13,10 @@ The default adapter is based on `date-fns`. You can configure it explicitly with
 import { ApplicationConfig } from '@angular/core';
 import { enUS } from 'date-fns/locale';
 
-import { provideNzDateFnsAdapter, NZ_DATE_LOCALE } from 'ng-zorro-antd/core/time';
+import { provideNzDateFnsAdapter } from 'ng-zorro-antd/core/time';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideNzDateFnsAdapter({ firstDayOfWeek: 1 }), { provide: NZ_DATE_LOCALE, useValue: enUS }]
+  providers: [provideNzDateFnsAdapter({ locale: enUS, firstDayOfWeek: 1 })]
 };
 ```
 
@@ -25,12 +25,16 @@ If you prefer native `Date` and `Intl.DateTimeFormat` semantics for date operati
 ```ts
 import { ApplicationConfig } from '@angular/core';
 
-import { provideNzNativeDateAdapter, NZ_DATE_LOCALE } from 'ng-zorro-antd/core/time';
+import { provideNzNativeDateAdapter } from 'ng-zorro-antd/core/time';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideNzNativeDateAdapter({ firstDayOfWeek: 1 }), { provide: NZ_DATE_LOCALE, useValue: 'en-US' }]
+  providers: [provideNzNativeDateAdapter({ locale: 'en-US', firstDayOfWeek: 0 })]
 };
 ```
+
+`NZ_I18N` controls NG-ZORRO component text. The adapter `locale` controls date-library formatting and week rules, such as
+month names, weekday names and the first day of week. If the language changes at runtime, also call
+`dateAdapter.setLocale(...)` with the locale value expected by the current adapter.
 
 ## Custom Adapter
 
@@ -240,12 +244,12 @@ Register it in the application root:
 ```ts
 import { ApplicationConfig } from '@angular/core';
 
-import { provideNzDateAdapter, NZ_DATE_LOCALE } from 'ng-zorro-antd/core/time';
+import { provideNzDateAdapter } from 'ng-zorro-antd/core/time';
 
 import { DayjsDateAdapter } from './dayjs-date-adapter';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideNzDateAdapter(DayjsDateAdapter), { provide: NZ_DATE_LOCALE, useValue: 'en' }]
+  providers: [provideNzDateAdapter(DayjsDateAdapter, { locale: 'en', firstDayOfWeek: 1 })]
 };
 ```
 
@@ -275,4 +279,4 @@ export class DemoComponent {
 - DatePicker, Calendar, and TimePicker prefer the adapter provided at the application root. If no adapter is configured explicitly, components fall back to the default `date-fns` adapter.
 - `format` and `parse` formats are interpreted by the current adapter. After switching date libraries, make sure `nzFormat`, default formats, and manually parsed formats use the token syntax of that library.
 - If you use TimePicker or DatePicker time selection, implement time-related methods such as `setTime`, `getHours`, `getMinutes`, `getSeconds`, `parseTime`, and `addSeconds`.
-- `NZ_DATE_LOCALE` is passed to the current adapter. Different date libraries use different locale value types, so custom adapters should interpret this value themselves.
+- The `locale` option is passed to the current adapter through `NZ_DATE_LOCALE`. Different date libraries use different locale value types, so custom adapters should interpret this value themselves.

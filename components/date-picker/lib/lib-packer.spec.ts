@@ -8,7 +8,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { vi } from 'vitest';
 
-import { CandyDate, NativeDateAdapter, provideNzDateAdapter } from 'ng-zorro-antd/core/time';
+import { CandyDate, NativeDateAdapter, NzDateAdapter, provideNzDateAdapter } from 'ng-zorro-antd/core/time';
 import { en_US, NzI18nModule } from 'ng-zorro-antd/i18n';
 
 import { DateHeaderComponent } from './date-header.component';
@@ -58,6 +58,20 @@ describe('Coverage supplements', () => {
 
       expect(headRow[0].value.getDay()).toBe(2);
       expect(headRow[0].title).toBe('weekday-2');
+    });
+
+    it('should configure custom adapter provider', () => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [LibPackerModule, NzI18nModule],
+        providers: [provideNzDateAdapter(NativeDateAdapter, { firstDayOfWeek: 4, locale: 'zh-CN' })]
+      });
+      componentInstance = TestBed.createComponent(DateTableComponent).componentInstance;
+      componentInstance.activeDate = new CandyDate(new Date(2024, 5, 15));
+      const dateAdapter = TestBed.inject(NzDateAdapter);
+
+      expect(componentInstance.makeHeadRow()[0].value.getDay()).toBe(4);
+      expect(dateAdapter.format(new Date(2024, 10, 1), 'MMM')).toBe('11月');
     });
   });
 

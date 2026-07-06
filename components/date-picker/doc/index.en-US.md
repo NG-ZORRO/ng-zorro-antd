@@ -28,6 +28,9 @@ registerLocaleData(en);
 are [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date), you can manipulate it
 with [date-fns](https://date-fns.org/).
 
+DatePicker, TimePicker and Calendar use `NzDateAdapter` for date calculation, parsing and formatting. See
+[Date Adapter](/docs/date-adapter/en) for built-in adapters, locale configuration and custom date libraries.
+
 ### Common API
 
 The following APIs are shared by nz-date-picker, nz-range-picker.
@@ -111,7 +114,7 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 
 You need to use `date-fns`. Date formatting currently supports two methods: `DatePipe` (
 default, [syntax reference](https://angular.dev/api/common/DatePipe)) and `date-fns` (
-see [`How to format a date using date-fns`](/docs/i18n/en#How%20to%20format%20a%20date%20using%20Date-fns)).NG-ZORRO
+see [Date Adapter](/docs/date-adapter/en)). NG-ZORRO
 takes the function provided by `date-fns` to implement date deserialization after using it.
 
 ### Q: The overlay layer element does not follow the scroll position when scrolling

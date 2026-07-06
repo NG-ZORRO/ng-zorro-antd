@@ -6,6 +6,7 @@ import { provideServiceWorker } from '@angular/service-worker';
 
 import { IconDefinition } from '@ant-design/icons-angular';
 import * as AllIcons from '@ant-design/icons-angular/icons';
+import { enUS } from 'date-fns/locale';
 import { NzConfig, provideNzConfig } from 'ng-zorro-antd/core/config';
 import { provideNzDateFnsAdapter } from 'ng-zorro-antd/core/time';
 import { provideNzIcons } from 'ng-zorro-antd/icon';
@@ -32,7 +33,7 @@ export const appConfig: ApplicationConfig = {
       withInMemoryScrolling({ scrollPositionRestoration: environment.production ? 'enabled' : 'disabled' })
     ),
     provideClientHydration(),
-    provideNzDateFnsAdapter(),
+    provideNzDateFnsAdapter({ locale: enUS }),
     provideHttpClient(withJsonpSupport(), withFetch()),
     provideServiceWorker('ngsw-worker.js', { enabled: environment.production })
   ]
