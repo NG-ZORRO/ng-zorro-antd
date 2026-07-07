@@ -24,9 +24,6 @@ import zh from '@angular/common/locales/zh';
 registerLocaleData(zh);
 ```
 
-Calendar 与 DatePicker、TimePicker 共用 `NzDateAdapter`，用于月份名称、星期名称和周规则。locale 配置和自定义日期库请参考
-[日期适配器](/docs/date-adapter/zh)。
-
 ```html
 <nz-calendar
   [nzDateCell]="dateCellTpl"
@@ -57,3 +54,9 @@ Calendar 与 DatePicker、TimePicker 共用 `NzDateAdapter`，用于月份名称
 | `[nzDisabledDate]`  | 不可选择的日期                                               | `(current: Date) => boolean`                            | -         |
 | `(nzPanelChange)`   | 面板变化的回调                                               | `EventEmitter<{ date: Date, mode: 'month' \| 'year' }>` | -         |
 | `(nzSelectChange)`  | 选择日期的回调                                               | `EventEmitter<Date>`                                    | -         |
+
+## FAQ
+
+### 如何在 Calendar 中使用自定义日期库
+
+参考 [日期适配器](/docs/date-adapter/zh)。

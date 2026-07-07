@@ -3,11 +3,11 @@ order: 4
 title: Date Adapter
 ---
 
-NG-ZORRO date components access date operations through `NzDateAdapter`. Components use the built-in `date-fns` adapter by default. If you want to use native `Date`, Day.js, Luxon, Jalali, or another date library, provide your own adapter at the application root.
+NG-ZORRO date components access date operations through `NzDateAdapter`. Starting from v22, NG-ZORRO no longer provides a date engine adapter by default. Applications need to explicitly provide an adapter at the application root. If you want to keep the same behavior as previous versions, use the built-in `date-fns` adapter.
 
 ## Built-in Adapters
 
-The default adapter is based on `date-fns`. You can configure it explicitly with `provideNzDateFnsAdapter`:
+If you want to use the built-in adapter based on `date-fns`, use `provideNzDateFnsAdapter`:
 
 ```ts
 import { ApplicationConfig } from '@angular/core';
@@ -32,9 +32,8 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-`NZ_I18N` controls NG-ZORRO component text. The adapter `locale` controls date-library formatting and week rules, such as
-month names, weekday names and the first day of week. If the language changes at runtime, also call
-`dateAdapter.setLocale(...)` with the locale value expected by the current adapter.
+The adapter `locale` controls date-library formatting and week rules, such as month names, weekday names and the first day of week.
+If the language changes at runtime, also call `dateAdapter.setLocale(...)` with the locale value expected by the current adapter.
 
 ## Custom Adapter
 
@@ -243,9 +242,7 @@ Register it in the application root:
 
 ```ts
 import { ApplicationConfig } from '@angular/core';
-
 import { provideNzDateAdapter } from 'ng-zorro-antd/core/time';
-
 import { DayjsDateAdapter } from './dayjs-date-adapter';
 
 export const appConfig: ApplicationConfig = {
@@ -276,7 +273,7 @@ export class DemoComponent {
 
 ## Notes
 
-- DatePicker, Calendar, and TimePicker prefer the adapter provided at the application root. If no adapter is configured explicitly, components fall back to the default `date-fns` adapter.
+- DatePicker, Calendar, and TimePicker use the adapter provided at the application root. Starting from v22, if no adapter is configured explicitly, related components will not work because the `NzDateAdapter` provider is missing.
 - `format` and `parse` formats are interpreted by the current adapter. After switching date libraries, make sure `nzFormat`, default formats, and manually parsed formats use the token syntax of that library.
 - If you use TimePicker or DatePicker time selection, implement time-related methods such as `setTime`, `getHours`, `getMinutes`, `getSeconds`, `parseTime`, and `addSeconds`.
-- The `locale` option is passed to the current adapter through `NZ_DATE_LOCALE`. Different date libraries use different locale value types, so custom adapters should interpret this value themselves.
+- Different date libraries use different locale value types, so custom adapters should interpret this value themselves.

@@ -15,7 +15,6 @@ import { vi } from 'vitest';
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { testDirectionality } from 'ng-zorro-antd/core/testing';
 import { CandyDate, provideNzDateFnsAdapter } from 'ng-zorro-antd/core/time';
-import { NZ_DATE_CONFIG } from 'ng-zorro-antd/i18n/date-config';
 
 import { NzCalendarHeaderComponent as CalendarHeader } from './calendar-header.component';
 import { NzCalendarComponent as Calendar, NzCalendarMode } from './calendar.component';
@@ -26,11 +25,7 @@ registerLocaleData(zh);
 describe('calendar', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        provideNzNoAnimation(),
-        provideNzDateFnsAdapter(),
-        { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 0 } }
-      ]
+      providers: [provideNzNoAnimation(), provideNzDateFnsAdapter({ firstDayOfWeek: 0 })]
     });
   });
 

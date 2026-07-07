@@ -15,7 +15,6 @@ const NOT_IMPLEMENTED = 'NzDateAdapter: method not implemented. Override this me
 
 /**
  * Injection token for providing a custom NzDateAdapter implementation.
- * If not provided, DateFnsDateAdapter is used as the default.
  */
 export const NZ_DATE_ADAPTER = new InjectionToken<Type<NzDateAdapter<unknown>>>(
   typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-date-adapter-type' : ''

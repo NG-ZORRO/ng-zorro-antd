@@ -3,11 +3,11 @@ order: 4
 title: 日期适配器
 ---
 
-NG-ZORRO 的日期类组件通过 `NzDateAdapter` 访问日期能力。默认情况下组件会使用内置的 `date-fns` 适配器；如果你希望改用 native `Date`、Day.js、Luxon、Jalali 或其他日期库，可以在应用根配置中提供自己的 adapter。
+NG-ZORRO 的日期类组件通过 `NzDateAdapter` 访问日期能力。从 v22 开始，NG-ZORRO 不再默认提供日期引擎适配器，应用需要在根配置中显式提供 adapter。如果你希望与之前版本保持一致，请使用内置的 `date-fns` 适配器。
 
 ## 使用内置 Adapter
 
-默认 adapter 基于 `date-fns`。如果你想显式配置它，可以使用 `provideNzDateFnsAdapter`：
+如果你希望使用基于 `date-fns` 的内置适配器，可以使用 `provideNzDateFnsAdapter`：
 
 ```ts
 import { ApplicationConfig } from '@angular/core';
@@ -242,9 +242,7 @@ export class DayjsDateAdapter extends NzDateAdapter<Date, string> {
 
 ```ts
 import { ApplicationConfig } from '@angular/core';
-
 import { provideNzDateAdapter } from 'ng-zorro-antd/core/time';
-
 import { DayjsDateAdapter } from './dayjs-date-adapter';
 
 export const appConfig: ApplicationConfig = {
@@ -275,7 +273,7 @@ export class DemoComponent {
 
 ## 注意事项
 
-- DatePicker、Calendar、TimePicker 会优先使用应用根部提供的 adapter。没有显式配置时，组件会回退到默认的 `date-fns` adapter。
+- DatePicker、Calendar、TimePicker 使用应用根部提供的 adapter。从 v22 开始，如果没有显式配置 adapter，相关组件会因为缺少 `NzDateAdapter` provider 而无法工作。
 - `format` 与 `parse` 的格式字符串由当前 adapter 解释。切换日期库后，请确认 `nzFormat`、默认格式和手动解析格式都符合新日期库的 token 语法。
 - 如果使用 TimePicker 或 DatePicker 的时间选择能力，请实现 `setTime`、`getHours`、`getMinutes`、`getSeconds`、`parseTime`、`addSeconds` 等时间相关方法。
-- `locale` 选项会通过 `NZ_DATE_LOCALE` 传给当前 adapter。不同日期库的 locale 类型可能不同，自定义 adapter 需要自行解释这个值。
+- 不同日期库的 locale 类型可能不同，自定义 adapter 需要自行解释这个值。

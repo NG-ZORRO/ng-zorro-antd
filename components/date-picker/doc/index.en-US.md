@@ -12,8 +12,7 @@ By clicking the input box, you can select a date from a popup calendar.
 
 ## API
 
-**Note:** Some of nz-date-picker's locale are coming from [Angular i18n](https://angular.dev/guide/i18n), that should be
-provided in the file `app.config.ts`.
+**Note:** Some of date-picker's locale are coming from [Angular i18n](https://angular.dev/guide/i18n), that should be provided in the file `app.config.ts`.
 
 For example:
 
@@ -24,12 +23,7 @@ import en from '@angular/common/locales/en';
 registerLocaleData(en);
 ```
 
-**Note:** All input and output date objects
-are [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date), you can manipulate it
-with [date-fns](https://date-fns.org/).
-
-DatePicker, TimePicker and Calendar use `NzDateAdapter` for date calculation, parsing and formatting. See
-[Date Adapter](/docs/date-adapter/en) for built-in adapters, locale configuration and custom date libraries.
+**Note:** All input and output date objects are [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date), you can manipulate it with [date-fns](https://date-fns.org/).
 
 ### Common API
 
@@ -110,12 +104,9 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 
 ## FAQ
 
-### Why does manual input not take effect after setting `nzFormat="dd/MM/yyyy"`
+### How to use custom date library in Date-Picker
 
-You need to use `date-fns`. Date formatting currently supports two methods: `DatePipe` (
-default, [syntax reference](https://angular.dev/api/common/DatePipe)) and `date-fns` (
-see [Date Adapter](/docs/date-adapter/en)). NG-ZORRO
-takes the function provided by `date-fns` to implement date deserialization after using it.
+Refer to [Date Adapter](/docs/date-adapter/en).
 
 ### Q: The overlay layer element does not follow the scroll position when scrolling
 
