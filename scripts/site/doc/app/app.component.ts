@@ -372,8 +372,10 @@ export class AppComponent implements OnInit {
   }
 
   private setNgZorroLocale(language: 'en' | 'zh'): void {
-    const locale = language === 'en' ? enUS : zhCN;
-    this.nzI18nService.setLocale(locale);
-    this.dateAdapter.setLocale(locale);
+    const ngZorroLocale = language === 'en' ? en_US : zh_CN;
+    const dateFnsLocale = language === 'en' ? enUS : zhCN;
+
+    this.nzI18nService.setLocale(ngZorroLocale);
+    this.dateAdapter.setLocale(dateFnsLocale);
   }
 }
