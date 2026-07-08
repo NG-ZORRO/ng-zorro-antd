@@ -11,22 +11,8 @@ import {
   addMonths,
   addYears,
   addSeconds,
-  differenceInCalendarDays,
-  differenceInCalendarMonths,
-  differenceInCalendarQuarters,
-  differenceInCalendarYears,
-  differenceInHours,
-  differenceInMinutes,
-  differenceInSeconds,
   isFirstDayOfMonth,
   isLastDayOfMonth,
-  isSameDay,
-  isSameHour,
-  isSameMinute,
-  isSameMonth,
-  isSameQuarter,
-  isSameSecond,
-  isSameYear,
   isToday,
   isValid,
   setMonth,
@@ -43,7 +29,7 @@ import {
   formatISO
 } from 'date-fns';
 
-import { NzDateAdapter, DateMode, NzDateAdapterConfig } from './date-adapter';
+import { NzDateAdapter, NzDateAdapterConfig } from './date-adapter';
 import { NZ_DATE_CONFIG, NZ_DATE_CONFIG_DEFAULT, NZ_DATE_LOCALE } from './date-config';
 
 /** Configuration for date-fns date adapter. */
@@ -291,92 +277,6 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
 
   override getTime(date: Date): number {
     return date.getTime();
-  }
-
-  // =============================================================
-  // NG-ZORRO DERIVED: MODE-BASED COMPARISON
-  // =============================================================
-
-  override compareDateWithMode(first: Date, second: Date, mode: DateMode): number {
-    // Use date-fns functions for efficiency where available
-    if (mode === 'decade') {
-      return Math.floor(this.getYear(first) / 10) - Math.floor(this.getYear(second) / 10);
-    }
-    if (mode === 'year') {
-      return differenceInCalendarYears(first, second);
-    }
-    if (mode === 'quarter') {
-      return differenceInCalendarQuarters(first, second);
-    }
-    if (mode === 'month') {
-      return differenceInCalendarMonths(first, second);
-    }
-    if (mode === 'day') {
-      return differenceInCalendarDays(first, second);
-    }
-    if (mode === 'hour') {
-      return differenceInHours(first, second);
-    }
-    if (mode === 'minute') {
-      return differenceInMinutes(first, second);
-    }
-    if (mode === 'second') {
-      return differenceInSeconds(first, second);
-    }
-    return super.compareDateWithMode(first, second, mode);
-  }
-
-  override isSameWithMode(first: Date | null, second: Date | null, mode: DateMode): boolean {
-    if (!first || !second) {
-      return first === second;
-    }
-    if (!this.isValid(first) || !this.isValid(second)) {
-      return false;
-    }
-    switch (mode) {
-      case 'decade':
-        return Math.floor(this.getYear(first) / 10) === Math.floor(this.getYear(second) / 10);
-      case 'year':
-        return isSameYear(first, second);
-      case 'quarter':
-        return isSameQuarter(first, second);
-      case 'month':
-        return isSameMonth(first, second);
-      case 'day':
-        return isSameDay(first, second);
-      case 'hour':
-        return isSameHour(first, second);
-      case 'minute':
-        return isSameMinute(first, second);
-      case 'second':
-        return isSameSecond(first, second);
-      default:
-        return isSameDay(first, second);
-    }
-  }
-
-  override isBeforeWithMode(first: Date | null, second: Date | null, mode: DateMode): boolean {
-    if (!first || !second) {
-      return false;
-    }
-    switch (mode) {
-      case 'year':
-        return differenceInCalendarYears(first, second) < 0;
-      case 'quarter':
-        return differenceInCalendarQuarters(first, second) < 0;
-      case 'month':
-        return differenceInCalendarMonths(first, second) < 0;
-      case 'day':
-        return differenceInCalendarDays(first, second) < 0;
-      case 'hour':
-        return differenceInHours(first, second) < 0;
-      case 'minute':
-        return differenceInMinutes(first, second) < 0;
-      case 'second':
-        return differenceInSeconds(first, second) < 0;
-      default:
-        return differenceInCalendarDays(first, second) < 0;
-    }
   }
 
   override isFirstDayOfMonth(date: Date): boolean {

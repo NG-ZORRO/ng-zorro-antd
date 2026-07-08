@@ -36,13 +36,12 @@ import {
 import { warn } from 'ng-zorro-antd/core/logger';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 
-import { DateMode } from './date-adapter';
 import { WeekDayIndex } from './date-config';
 
 /**
- * @deprecated Use `DateMode` and `NzDateAdapter` directly instead. Will be removed in v23.
+ * @deprecated Will be removed in v23.
  */
-export type CandyDateMode = DateMode;
+export type CandyDateMode = 'decade' | 'year' | 'quarter' | 'month' | 'day' | 'hour' | 'minute' | 'second';
 
 /**
  * @deprecated Use `NzDateAdapter` directly instead. Will be removed in v23.
@@ -65,7 +64,7 @@ export type SingleValue = CandyDate | null;
 export type CompatibleValue = SingleValue | SingleValue[];
 
 /**
- * @deprecated Use `NzDateAdapter.isBeforeWithMode` directly instead. Will be removed in v23.
+ * @deprecated Will be removed in v23.
  */
 export function wrongSortOrder(rangeValue: SingleValue[]): boolean {
   const [start, end] = rangeValue;

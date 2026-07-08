@@ -250,28 +250,8 @@ describe('DateFnsDateAdapter', () => {
     });
   });
 
-  // --- NG-ZORRO Derived: Mode-based Comparison ---
-
   describe('ng-zorro derived', () => {
     const date1 = new Date(2024, 5, 15);
-    const date2 = new Date(2024, 5, 20);
-    const date3 = new Date(2025, 5, 15);
-
-    it('compareDateWithMode', () => {
-      expect(adapter.compareDateWithMode(date1, date2, 'day')).toBeLessThan(0);
-      expect(adapter.compareDateWithMode(date1, date3, 'year')).toBeLessThan(0);
-    });
-
-    it('isSameWithMode', () => {
-      expect(adapter.isSameWithMode(date1, new Date(2024, 5, 15), 'day')).toBeTruthy();
-      expect(adapter.isSameWithMode(date1, date2, 'day')).toBeFalsy();
-      expect(adapter.isSameWithMode(date1, date3, 'year')).toBeFalsy();
-    });
-
-    it('isBeforeWithMode', () => {
-      expect(adapter.isBeforeWithMode(date1, date2, 'day')).toBeTruthy();
-      expect(adapter.isBeforeWithMode(date2, date1, 'day')).toBeFalsy();
-    });
 
     it('isFirstDayOfMonth', () => {
       expect(adapter.isFirstDayOfMonth(new Date(2024, 5, 1))).toBeTruthy();

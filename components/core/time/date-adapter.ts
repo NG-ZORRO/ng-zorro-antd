@@ -8,9 +8,6 @@ import { Observable, Subject } from 'rxjs';
 
 import { NZ_DATE_CONFIG, NZ_DATE_CONFIG_DEFAULT, NZ_DATE_LOCALE, NzDateConfig } from './date-config';
 
-/** NG-ZORRO specific: Date granularity mode for comparison operations */
-export type DateMode = 'decade' | 'year' | 'quarter' | 'month' | 'day' | 'hour' | 'minute' | 'second';
-
 const NOT_IMPLEMENTED = 'NzDateAdapter: method not implemented. Override this method in your adapter to opt in.';
 
 /**
@@ -246,69 +243,6 @@ export abstract class NzDateAdapter<D, L = unknown> {
       return this.clone(max);
     }
     return date;
-  }
-
-  // =============================================================
-  // NG-ZORRO DERIVED: IMPLEMENTED METHODS (MAY OVERRIDE)
-  // =============================================================
-
-  /**
-   * Compares two dates with a given granularity mode.
-   * NG-ZORRO specific: supports quarter, decade, and time-based comparison.
-   */
-  compareDateWithMode(first: D, second: D, mode: DateMode): number {
-    if (mode === 'decade') {
-      return Math.floor(this.getYear(first) / 10) - Math.floor(this.getYear(second) / 10);
-    }
-    if (mode === 'year') {
-      return this.getYear(first) - this.getYear(second);
-    }
-    if (mode === 'quarter') {
-      return this.getYear(first) - this.getYear(second) || this.getQuarter(first) - this.getQuarter(second);
-    }
-    if (mode === 'month') {
-      return this.getYear(first) - this.getYear(second) || this.getMonth(first) - this.getMonth(second);
-    }
-    if (mode === 'day') {
-      return this.compareDate(first, second);
-    }
-    const dayDiff = this.compareDate(first, second);
-    if (dayDiff !== 0) {
-      return dayDiff;
-    }
-    if (mode === 'hour') {
-      return this.getHours(first) - this.getHours(second);
-    }
-    if (mode === 'minute') {
-      return this.getHours(first) - this.getHours(second) || this.getMinutes(first) - this.getMinutes(second);
-    }
-    if (mode === 'second') {
-      return (
-        this.getHours(first) - this.getHours(second) ||
-        this.getMinutes(first) - this.getMinutes(second) ||
-        this.getSeconds(first) - this.getSeconds(second)
-      );
-    }
-    return 0;
-  }
-
-  /** Checks whether two dates are the same with the given mode. */
-  isSameWithMode(first: D | null, second: D | null, mode: DateMode): boolean {
-    if (!first || !second) {
-      return first === second;
-    }
-    if (!this.isValid(first) || !this.isValid(second)) {
-      return false;
-    }
-    return this.compareDateWithMode(first, second, mode) === 0;
-  }
-
-  /** Checks whether the first date is before the second with the given mode. */
-  isBeforeWithMode(first: D | null, second: D | null, mode: DateMode): boolean {
-    if (!first || !second) {
-      return false;
-    }
-    return this.compareDateWithMode(first, second, mode) < 0;
   }
 
   /** Gets the calendar's start of month (first day at midnight). */
