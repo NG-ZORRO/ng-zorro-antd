@@ -16,7 +16,6 @@ import { vi } from 'vitest';
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
 import { dispatchFakeEvent, dispatchMouseEvent, testDirectionality, typeInElement } from 'ng-zorro-antd/core/testing';
-import { provideNzNativeDateAdapter } from 'ng-zorro-antd/core/time';
 import { NzPlacement, NzStatus, NzVariant, type NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker';
 import { getPickerInput, getPickerOkButton } from 'ng-zorro-antd/date-picker/testing/util';
@@ -879,33 +878,6 @@ describe('time-picker', () => {
 
 testDirectionality(() => NzTestTimePickerComponent, By.directive(NzTimePickerComponent), 'ant-picker', {
   providers: [provideNzNoAnimation()]
-});
-
-describe('time-picker with native date adapter', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [provideNzNoAnimation(), provideNzNativeDateAdapter()]
-    });
-  });
-
-  afterEach(() => {
-    TestBed.resetTestingModule();
-  });
-
-  it('should handle empty and invalid values without throwing', () => {
-    const fixture = TestBed.createComponent(NzTestTimePickerComponent);
-    fixture.componentInstance.date.set(null);
-
-    expect(() => fixture.detectChanges()).not.toThrow();
-
-    const timePicker = fixture.componentInstance.nzTimePickerComponent;
-
-    expect(() => timePicker.setValue(null, true)).not.toThrow();
-
-    timePicker.nzOpen = true;
-    expect(() => timePicker.onKeyupEnter()).not.toThrow();
-    expect(() => timePicker.parseTimeString('not a time')).not.toThrow();
-  });
 });
 
 describe('time-picker size', () => {

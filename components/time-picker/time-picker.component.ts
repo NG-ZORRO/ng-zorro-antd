@@ -290,7 +290,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
       this.preValue = valid ? new Date(value!) : null;
     }
     this.value = valid ? new Date(value!) : null;
-    this.inputValue = this.dateAdapter.format(value!, this.nzFormat);
+    this.inputValue = valid ? this.dateAdapter.format(value!, this.nzFormat) : '';
     this.cdr.markForCheck();
   }
 
