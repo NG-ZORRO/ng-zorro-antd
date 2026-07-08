@@ -10,7 +10,6 @@ import { FormsModule } from '@angular/forms';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
-import { provideNzDateFnsAdapter } from 'ng-zorro-antd/core/time';
 import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
 
 import { NzDatePickerModule } from './date-picker.module';
@@ -23,7 +22,7 @@ describe('week-picker', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzNoAnimation(), provideNzDateFnsAdapter()]
+      providers: [provideNzNoAnimation()]
     });
 
     fixture = TestBed.createComponent(NzTestWeekPickerComponent);

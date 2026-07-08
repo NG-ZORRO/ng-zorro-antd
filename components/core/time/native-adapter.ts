@@ -204,10 +204,6 @@ export class NativeDateAdapter extends NzDateAdapter<Date, string> {
     return this._createDateWithOverflow(this.getYear(date), this.getMonth(date), this.getDate(date) + days);
   }
 
-  toIso8601(date: Date): string {
-    return [date.getUTCFullYear(), this._2digit(date.getUTCMonth() + 1), this._2digit(date.getUTCDate())].join('-');
-  }
-
   override deserialize(value: unknown): Date | null {
     if (typeof value === 'string') {
       if (!value) {

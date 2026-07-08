@@ -150,11 +150,6 @@ export abstract class NzDateAdapter<D, L = unknown> {
   /** Gets a date instance representing an invalid date. */
   abstract invalid(): D;
 
-  // --- Serialization ---
-
-  /** Formats a date as an ISO 8601 string. */
-  abstract toIso8601(date: D): string;
-
   // =============================================================
   // NG-ZORRO CORE: ABSTRACT METHODS (MUST IMPLEMENT)
   // =============================================================

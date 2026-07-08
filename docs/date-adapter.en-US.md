@@ -172,10 +172,6 @@ export class DayjsDateAdapter extends NzDateAdapter<Date, string> {
     return new Date(NaN);
   }
 
-  toIso8601(date: Date): string {
-    return dayjs(date).format('YYYY-MM-DD');
-  }
-
   getQuarter(date: Date): number {
     return dayjs(date).quarter();
   }

@@ -15,7 +15,7 @@ import { vi } from 'vitest';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
-import { CandyDate, provideNzDateFnsAdapter } from 'ng-zorro-antd/core/time';
+import { CandyDate } from 'ng-zorro-antd/core/time';
 import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/util';
 
@@ -31,7 +31,7 @@ describe('quater-picker', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzNoAnimation(), provideNzDateFnsAdapter()]
+      providers: [provideNzNoAnimation()]
     });
   });
 

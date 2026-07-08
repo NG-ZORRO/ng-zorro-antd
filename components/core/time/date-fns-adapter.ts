@@ -25,8 +25,7 @@ import {
   getISOWeek,
   getDaysInMonth,
   format as fnsFormat,
-  parse as fnsParse,
-  formatISO
+  parse as fnsParse
 } from 'date-fns';
 
 import { NzDateAdapter, NzDateAdapterConfig } from './date-adapter';
@@ -193,12 +192,6 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
 
   override invalid(): Date {
     return new Date(NaN);
-  }
-
-  // --- Serialization ---
-
-  override toIso8601(date: Date): string {
-    return formatISO(date);
   }
 
   // =============================================================

@@ -12,7 +12,7 @@ import { By } from '@angular/platform-browser';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
-import { CandyDate, provideNzDateFnsAdapter } from 'ng-zorro-antd/core/time';
+import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzCalendarHeaderComponent, NzCalendarHeaderComponent as CalendarHeader } from './calendar-header.component';
@@ -24,7 +24,7 @@ registerLocaleData(zh);
 describe('calendar Header', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzNoAnimation(), provideNzDateFnsAdapter()]
+      providers: [provideNzNoAnimation()]
     });
   });
 

@@ -23,7 +23,7 @@ import {
   dispatchMouseEvent,
   typeInElement
 } from 'ng-zorro-antd/core/testing';
-import { CandyDate, provideNzDateFnsAdapter } from 'ng-zorro-antd/core/time';
+import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NgStyleInterface, NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
 import { NzDatePickerSizeType } from 'ng-zorro-antd/date-picker/date-picker.component';
 import { NzRangePickerComponent } from 'ng-zorro-antd/date-picker/range-picker.component';
@@ -50,7 +50,7 @@ describe('range-picker', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzNoAnimation(), provideNzDateFnsAdapter()]
+      providers: [provideNzNoAnimation()]
     });
   });
 

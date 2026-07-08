@@ -34,7 +34,6 @@ import {
   dispatchMouseEvent,
   typeInElement
 } from 'ng-zorro-antd/core/testing';
-import { provideNzDateFnsAdapter } from 'ng-zorro-antd/core/time';
 import {
   NgStyleInterface,
   NzSafeAny,
@@ -66,7 +65,7 @@ describe('NzDatePickerComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzNoAnimation(), provideNzDateFnsAdapter()]
+      providers: [provideNzNoAnimation()]
     });
   });
 
@@ -1393,7 +1392,7 @@ describe('date-fns testing', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzNoAnimation(), provideNzDateFnsAdapter(), { provide: NZ_DATE_LOCALE, useValue: enUS }]
+      providers: [provideNzNoAnimation(), { provide: NZ_DATE_LOCALE, useValue: enUS }]
     });
   });
 
@@ -1435,7 +1434,7 @@ describe('date-picker status', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzNoAnimation(), provideNzDateFnsAdapter()]
+      providers: [provideNzNoAnimation()]
     });
   });
 
@@ -1468,7 +1467,7 @@ describe('in form', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzNoAnimation(), provideNzDateFnsAdapter()]
+      providers: [provideNzNoAnimation()]
     });
   });
 
@@ -1511,7 +1510,7 @@ describe('signal forms (formField)', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideNzNoAnimation(), provideNzDateFnsAdapter()]
+      providers: [provideNzNoAnimation()]
     });
   });
 
@@ -1551,9 +1550,6 @@ describe('finalSize', () => {
   beforeEach(() => {
     compactSizeSignal = signal<NzSizeLDSType>('large');
     formSizeSignal = signal<NzSizeLDSType>('default');
-    TestBed.configureTestingModule({
-      providers: [provideNzDateFnsAdapter()]
-    });
   });
 
   afterEach(() => {
@@ -1601,9 +1597,6 @@ describe('finalVariant', () => {
 
   beforeEach(() => {
     formVariantSignal = signal<NzVariant>('outlined');
-    TestBed.configureTestingModule({
-      providers: [provideNzDateFnsAdapter()]
-    });
   });
 
   afterEach(() => {

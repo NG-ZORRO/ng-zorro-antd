@@ -114,11 +114,6 @@ describe('DateFnsDateAdapter', () => {
       const invalidDate = adapter.invalid();
       expect(adapter.isValid(invalidDate)).toBeFalsy();
     });
-
-    it('toIso8601', () => {
-      const date = new Date(2024, 5, 15);
-      expect(adapter.toIso8601(date)).toContain('2024');
-    });
   });
 
   // --- NG-ZORRO Core Methods ---

@@ -28,9 +28,6 @@ registerLocaleData(zh);
 所有输入输出日期对象均为 [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)
 ，你可以通过 [date-fns](https://date-fns.org/) 工具库获得你需要的数据。
 
-DatePicker、TimePicker 和 Calendar 使用 `NzDateAdapter` 进行日期计算、解析和格式化。内置 adapter、locale 配置和自定义日期库请参考
-[日期适配器](/docs/date-adapter/zh)。
-
 ### 共同的 API
 
 以下 API 为 nz-date-picker、nz-range-picker 共享的 API。
