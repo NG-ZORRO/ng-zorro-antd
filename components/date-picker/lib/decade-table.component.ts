@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, OnChanges, ViewEncapsulation } from '@angular/core';
+import { Component, OnChanges, ViewEncapsulation } from '@angular/core';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 
@@ -18,7 +18,6 @@ const MAX_COL = 3;
   selector: 'decade-table',
   imports: [NzStringTemplateOutletDirective],
   templateUrl: 'abstract-table.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class DecadeTableComponent extends AbstractTable implements OnChanges {

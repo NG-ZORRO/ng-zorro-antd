@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, inject, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, inject, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { CandyDate, NzDateAdapter } from 'ng-zorro-antd/core/time';
@@ -18,7 +18,6 @@ import { transCompatFormat } from './util';
   selector: 'month-table',
   templateUrl: 'abstract-table.html',
   imports: [NzStringTemplateOutletDirective],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class MonthTableComponent extends AbstractTable implements OnChanges, OnInit {

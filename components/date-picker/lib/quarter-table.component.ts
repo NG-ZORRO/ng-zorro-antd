@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, inject, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, inject, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { CandyDate, NzDateAdapter } from 'ng-zorro-antd/core/time';
@@ -17,7 +17,6 @@ import { DateBodyRow, DateCell } from './interface';
   selector: 'quarter-table',
   imports: [NzStringTemplateOutletDirective],
   templateUrl: 'abstract-table.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class QuarterTableComponent extends AbstractTable implements OnChanges, OnInit {

@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, inject, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { CandyDate, NzDateAdapter, WeekDayIndex } from 'ng-zorro-antd/core/time';
@@ -19,7 +19,6 @@ import { transCompatFormat } from './util';
   selector: 'date-table',
   templateUrl: './abstract-table.html',
   imports: [NzStringTemplateOutletDirective],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class DateTableComponent extends AbstractTable implements OnChanges, OnInit {
