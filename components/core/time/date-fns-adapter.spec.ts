@@ -11,6 +11,7 @@ import { NzDateAdapter } from './date-adapter';
 import { NZ_DATE_LOCALE } from './date-config';
 import { DateFnsDateAdapter, provideNzDateFnsAdapter } from './date-fns-adapter';
 import { NativeDateAdapter, provideNzNativeDateAdapter } from './native-adapter';
+import { NzSafeAny } from '../types';
 
 describe('DateFnsDateAdapter', () => {
   let adapter: DateFnsDateAdapter;
@@ -184,7 +185,7 @@ describe('DateFnsDateAdapter', () => {
     });
 
     it('should return empty string for null-like date', () => {
-      expect(adapter.format(null as any, 'yyyy-MM-dd')).toBe(''); // eslint-disable-line @typescript-eslint/no-explicit-any
+      expect(adapter.format(null as NzSafeAny, 'yyyy-MM-dd')).toBe('');
     });
 
     it('should throw for invalid date', () => {

@@ -25,8 +25,8 @@ export default function (options: Schema): Rule {
       // The CLI inserts `ng-zorro-antd` into the `package.json` before this schematic runs.
       // This means that we do not need to insert Angular Material into `package.json` files again.
       // In some cases though, it could happen that this schematic runs outside of the CLI `ng add`
-      // command, or Material is only listed a dev dependency. If that is the case, we insert aÏ
-      // version based on the current build version (substituted version placeholder).
+      // command, or Material is only listed as a dev dependency. If that is the case, we insert a
+      // dependency based on the current build version (substituted version placeholder).
       if (!options.skipPackageJson) {
         addPackageJsonDependency(host, {
           name: 'ng-zorro-antd',

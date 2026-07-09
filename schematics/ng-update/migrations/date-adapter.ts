@@ -17,9 +17,9 @@ import * as ts from 'typescript';
 /**
  * Migration that adds `provideNzDateFnsAdapter()` to root providers.
  *
- * Components still have a date-fns fallback for backwards compatibility; this
- * migration makes the default adapter explicit in projects where it can do so
- * safely. Projects that already configure a date adapter are left unchanged.
+ * Starting from v22, date components require an explicit `NzDateAdapter` provider.
+ * This migration makes the previous default (date-fns) explicit in projects where it can do so safely.
+ * Projects that already configure a date adapter are left unchanged.
  */
 export class DateAdapterMigration extends DevkitMigration<null> {
   /** Provider APIs that indicate the project already has an explicit date adapter choice. */

@@ -62,63 +62,63 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
   // MATERIAL CORE: ABSTRACT METHODS
   // =============================================================
 
-  override today(): Date {
+  today(): Date {
     return new Date();
   }
 
-  override createDate(year: number, month: number, date: number): Date {
+  createDate(year: number, month: number, date: number): Date {
     return new Date(year, month, date);
   }
 
-  override clone(date: Date): Date {
+  clone(date: Date): Date {
     return new Date(date);
   }
 
   // --- Date Getters ---
 
-  override getYear(date: Date): number {
+  getYear(date: Date): number {
     return date.getFullYear();
   }
 
-  override getMonth(date: Date): number {
+  getMonth(date: Date): number {
     return date.getMonth();
   }
 
-  override getDate(date: Date): number {
+  getDate(date: Date): number {
     return date.getDate();
   }
 
-  override getDayOfWeek(date: Date): number {
+  getDayOfWeek(date: Date): number {
     return date.getDay();
   }
 
-  override getNumDaysInMonth(date: Date): number {
+  getNumDaysInMonth(date: Date): number {
     return getDaysInMonth(date);
   }
 
   // --- Date Names ---
 
-  override getYearName(date: Date): string {
+  getYearName(date: Date): string {
     return fnsFormat(date, 'yyyy', { locale: this.locale });
   }
 
-  override getMonthNames(style: 'long' | 'short' | 'narrow'): string[] {
+  getMonthNames(style: 'long' | 'short' | 'narrow'): string[] {
     const format: 'MMMMM' | 'MMM' | 'MMMM' = style === 'narrow' ? 'MMMMM' : style === 'short' ? 'MMM' : 'MMMM';
     return Array.from({ length: 12 }, (_, i) => fnsFormat(new Date(2024, i, 1), format, { locale: this.locale }));
   }
 
-  override getDateNames(): string[] {
+  getDateNames(): string[] {
     return Array.from({ length: 31 }, (_, i) => String(i + 1));
   }
 
-  override getDayOfWeekNames(style: 'long' | 'short' | 'narrow'): string[] {
+  getDayOfWeekNames(style: 'long' | 'short' | 'narrow'): string[] {
     const format: 'EEEEEE' | 'EEE' | 'EEEE' = style === 'narrow' ? 'EEEEEE' : style === 'short' ? 'EEE' : 'EEEE';
     return Array.from({ length: 7 }, (_, i) => fnsFormat(new Date(2024, 0, i + 1), format, { locale: this.locale }));
   }
 
   // --- Week ---
 
-  override getFirstDayOfWeek(): number {
+  getFirstDayOfWeek(): number {
     if (this.dateConfig?.firstDayOfWeek != null) {
       return this.dateConfig.firstDayOfWeek;
     } else {
@@ -128,21 +128,21 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
 
   // --- Date Math ---
 
-  override addCalendarYears(date: Date, years: number): Date {
+  addCalendarYears(date: Date, years: number): Date {
     return addYears(date, years);
   }
 
-  override addCalendarMonths(date: Date, months: number): Date {
+  addCalendarMonths(date: Date, months: number): Date {
     return addMonths(date, months);
   }
 
-  override addCalendarDays(date: Date, days: number): Date {
+  addCalendarDays(date: Date, days: number): Date {
     return addDays(date, days);
   }
 
   // --- Format / Parse ---
 
-  override format(date: Date, displayFormat: NzSafeAny): string {
+  format(date: Date, displayFormat: NzSafeAny): string {
     if (!date) {
       return '';
     }
@@ -159,7 +159,7 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
     });
   }
 
-  override parse(value: NzSafeAny, parseFormat: NzSafeAny): Date | null {
+  parse(value: NzSafeAny, parseFormat: NzSafeAny): Date | null {
     if (typeof value === 'string' && value.length > 0) {
       const formats = Array.isArray(parseFormat) ? parseFormat : [parseFormat as string];
 
@@ -194,15 +194,15 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
 
   // --- Validation ---
 
-  override isDateInstance(obj: NzSafeAny): boolean {
+  isDateInstance(obj: NzSafeAny): boolean {
     return obj instanceof Date;
   }
 
-  override isValid(date: Date): boolean {
+  isValid(date: Date): boolean {
     return isValid(date);
   }
 
-  override invalid(): Date {
+  invalid(): Date {
     return new Date(NaN);
   }
 
@@ -210,33 +210,33 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
   // NG-ZORRO CORE: ABSTRACT METHODS
   // =============================================================
 
-  override getQuarter(date: Date): number {
+  getQuarter(date: Date): number {
     return getQuarter(date);
   }
 
-  override setQuarter(date: Date, quarter: number): Date {
+  setQuarter(date: Date, quarter: number): Date {
     return setQuarter(date, quarter);
   }
 
-  override startOfQuarter(date: Date): Date {
+  startOfQuarter(date: Date): Date {
     return startOfQuarter(date);
   }
 
-  override getISOWeek(date: Date): number {
+  getISOWeek(date: Date): number {
     return getISOWeek(date);
   }
 
   // --- NG-ZORRO Date Setters ---
 
-  override setYear(date: Date, year: number): Date {
+  setYear(date: Date, year: number): Date {
     return setYear(date, year);
   }
 
-  override setMonth(date: Date, month: number): Date {
+  setMonth(date: Date, month: number): Date {
     return setMonth(date, month);
   }
 
-  override setDate(date: Date, day: number): Date {
+  setDate(date: Date, day: number): Date {
     const result = new Date(date);
     result.setDate(day);
     return result;
