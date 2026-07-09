@@ -37,7 +37,7 @@ export const appConfig: ApplicationConfig = {
 
 ## 使用自定义 Adapter
 
-自定义 adapter 需要继承 `NzDateAdapter<D, L>`，其中 `D` 是组件使用的日期值类型，`L` 是 locale 类型。为了保持现有组件 API 与表单值兼容，推荐让 `D` 继续使用 `Date`，只把格式化、解析和日期计算委托给第三方日期库。
+自定义 adapter 需要继承 `NzDateAdapter<TDate, TLocale>`，其中 `TDate` 是组件使用的日期值类型，`TLocale` 是 locale 类型。为了保持现有组件 API 与表单值兼容，推荐让 `TDate` 继续使用 `Date`，只把格式化、解析和日期计算委托给第三方日期库。
 
 先在你的应用中安装需要的日期库：
 

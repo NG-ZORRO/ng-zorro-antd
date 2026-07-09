@@ -38,7 +38,7 @@ If the language changes at runtime, also call `dateAdapter.setLocale(...)` with 
 
 ## Custom Adapter
 
-A custom adapter extends `NzDateAdapter<D, L>`, where `D` is the date value type used by components and `L` is the locale type. To stay compatible with existing component APIs and form values, prefer keeping `D` as `Date` and delegating formatting, parsing, and date math to your chosen date library.
+A custom adapter extends `NzDateAdapter<TDate, TLocale>`, where `TDate` is the date value type used by components and `TLocale` is the locale type. To stay compatible with existing component APIs and form values, prefer keeping `TDate` as `Date` and delegating formatting, parsing, and date math to your chosen date library.
 
 Install the date library in your application first:
 

@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { EnvironmentProviders, Injectable, makeEnvironmentProviders, inject } from '@angular/core';
+import { EnvironmentProviders, Injectable, inject } from '@angular/core';
 
 import {
   type Locale,
@@ -30,8 +30,8 @@ import {
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-import { NzDateAdapter, NzDateAdapterConfig } from './date-adapter';
-import { NZ_DATE_CONFIG, NZ_DATE_CONFIG_DEFAULT, NZ_DATE_LOCALE } from './date-config';
+import { NzDateAdapter, NzDateAdapterConfig, provideNzDateAdapter } from './date-adapter';
+import { NZ_DATE_CONFIG, NZ_DATE_LOCALE } from './date-config';
 
 /** Configuration for date-fns date adapter. */
 export interface NzDateFnsAdapterConfig extends NzDateAdapterConfig<Locale> {
@@ -322,12 +322,5 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
  * @note Requires date-fns as a peer dependency.
  */
 export function provideNzDateFnsAdapter(config?: NzDateFnsAdapterConfig): EnvironmentProviders {
-  const { locale, ...dateConfig } = config ?? {};
-
-  return makeEnvironmentProviders([
-    DateFnsDateAdapter,
-    { provide: NzDateAdapter, useExisting: DateFnsDateAdapter },
-    { provide: NZ_DATE_CONFIG, useValue: { ...NZ_DATE_CONFIG_DEFAULT, ...dateConfig } },
-    ...(locale !== undefined ? [{ provide: NZ_DATE_LOCALE, useValue: locale }] : [])
-  ]);
+  return provideNzDateAdapter(DateFnsDateAdapter, config);
 }

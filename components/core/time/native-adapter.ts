@@ -3,12 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { EnvironmentProviders, Injectable, makeEnvironmentProviders, inject } from '@angular/core';
+import { EnvironmentProviders, Injectable, inject } from '@angular/core';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-import { NzDateAdapter, NzDateAdapterConfig } from './date-adapter';
-import { NZ_DATE_CONFIG, NZ_DATE_CONFIG_DEFAULT, NZ_DATE_LOCALE } from './date-config';
+import { NzDateAdapter, NzDateAdapterConfig, provideNzDateAdapter } from './date-adapter';
+import { NZ_DATE_CONFIG, NZ_DATE_LOCALE } from './date-config';
 
 /** Configuration for native date adapter. */
 export interface NzNativeDateAdapterConfig extends NzDateAdapterConfig<string> {
@@ -638,12 +638,5 @@ export class NativeDateAdapter extends NzDateAdapter<Date, string> {
  * ```
  */
 export function provideNzNativeDateAdapter(config?: NzNativeDateAdapterConfig): EnvironmentProviders {
-  const { locale, ...dateConfig } = config ?? {};
-
-  return makeEnvironmentProviders([
-    NativeDateAdapter,
-    { provide: NzDateAdapter, useExisting: NativeDateAdapter },
-    { provide: NZ_DATE_CONFIG, useValue: { ...NZ_DATE_CONFIG_DEFAULT, ...dateConfig } },
-    ...(locale !== undefined ? [{ provide: NZ_DATE_LOCALE, useValue: locale }] : [])
-  ]);
+  return provideNzDateAdapter(NativeDateAdapter, config);
 }

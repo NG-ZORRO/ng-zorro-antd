@@ -19,9 +19,9 @@ export const NZ_DATE_ADAPTER = new InjectionToken<Type<NzDateAdapter<unknown>>>(
 );
 
 /** Configuration for a date adapter provider. */
-export interface NzDateAdapterConfig<L = unknown> extends NzDateConfig {
+export interface NzDateAdapterConfig<TLocale = unknown> extends NzDateConfig {
   /** Locale value used by the configured date adapter. */
-  locale?: L;
+  locale?: TLocale;
 }
 
 /**
@@ -39,9 +39,9 @@ export interface NzDateAdapterConfig<L = unknown> extends NzDateConfig {
  * };
  * ```
  */
-export function provideNzDateAdapter<D, L, T extends NzDateAdapter<D, L>>(
-  adapterClass: Type<T>,
-  config?: NzDateAdapterConfig<L>
+export function provideNzDateAdapter<TDate, TLocale, TAdapter extends NzDateAdapter<TDate, TLocale>>(
+  adapterClass: Type<TAdapter>,
+  config?: NzDateAdapterConfig<TLocale>
 ): EnvironmentProviders {
   const { locale, ...dateConfig } = config ?? {};
 
@@ -64,9 +64,9 @@ export function provideNzDateAdapter<D, L, T extends NzDateAdapter<D, L>>(
  *
  * @see https://github.com/angular/components/blob/main/src/material/core/datetime/date-adapter.ts
  */
-export abstract class NzDateAdapter<D, L = unknown> {
+export abstract class NzDateAdapter<TDate, TLocale = unknown> {
   /** The current locale. */
-  protected locale!: L;
+  protected locale!: TLocale;
   protected readonly _localeChanges = new Subject<void>();
 
   /** Stream that emits when the locale changes. */
@@ -77,35 +77,35 @@ export abstract class NzDateAdapter<D, L = unknown> {
   // =============================================================
 
   /** Gets today's date. */
-  abstract today(): D;
+  abstract today(): TDate;
 
   /** Gets a date instance representing the given year, month, and day. */
-  abstract createDate(year: number, month: number, date: number): D;
+  abstract createDate(year: number, month: number, date: number): TDate;
 
   /** Clones the given date. */
-  abstract clone(date: D): D;
+  abstract clone(date: TDate): TDate;
 
   // --- Date Getters (Material naming) ---
 
   /** Gets the year component of the given date. */
-  abstract getYear(date: D): number;
+  abstract getYear(date: TDate): number;
 
   /** Gets the month component of the given date (0-indexed, 0 = January). */
-  abstract getMonth(date: D): number;
+  abstract getMonth(date: TDate): number;
 
   /** Gets the date of the month component of the given date (1-indexed). */
-  abstract getDate(date: D): number;
+  abstract getDate(date: TDate): number;
 
   /** Gets the day of the week component of the given date (0-indexed, 0 = Sunday). */
-  abstract getDayOfWeek(date: D): number;
+  abstract getDayOfWeek(date: TDate): number;
 
   /** Gets the number of days in the month of the given date. */
-  abstract getNumDaysInMonth(date: D): number;
+  abstract getNumDaysInMonth(date: TDate): number;
 
   // --- Date Names (Material naming) ---
 
   /** Gets the name of the month for the given date. */
-  abstract getYearName(date: D): string;
+  abstract getYearName(date: TDate): string;
 
   /** Gets a list of month names for the given style. */
   abstract getMonthNames(style: 'long' | 'short' | 'narrow'): string[];
@@ -124,21 +124,21 @@ export abstract class NzDateAdapter<D, L = unknown> {
   // --- Date Math (Material naming) ---
 
   /** Adds the specified number of years to the given date. */
-  abstract addCalendarYears(date: D, years: number): D;
+  abstract addCalendarYears(date: TDate, years: number): TDate;
 
   /** Adds the specified number of months to the given date. */
-  abstract addCalendarMonths(date: D, months: number): D;
+  abstract addCalendarMonths(date: TDate, months: number): TDate;
 
   /** Adds the specified number of days to the given date. */
-  abstract addCalendarDays(date: D, days: number): D;
+  abstract addCalendarDays(date: TDate, days: number): TDate;
 
   // --- Format / Parse ---
 
   /** Formats a date as a string according to the given display format. */
-  abstract format(date: D, displayFormat: NzSafeAny): string;
+  abstract format(date: TDate, displayFormat: NzSafeAny): string;
 
   /** Parses a value into a date. */
-  abstract parse(value: NzSafeAny, parseFormat: NzSafeAny): D | null;
+  abstract parse(value: NzSafeAny, parseFormat: NzSafeAny): TDate | null;
 
   // --- Validation ---
 
@@ -146,44 +146,44 @@ export abstract class NzDateAdapter<D, L = unknown> {
   abstract isDateInstance(obj: NzSafeAny): boolean;
 
   /** Checks whether the given date is valid. */
-  abstract isValid(date: D): boolean;
+  abstract isValid(date: TDate): boolean;
 
   /** Gets a date instance representing an invalid date. */
-  abstract invalid(): D;
+  abstract invalid(): TDate;
 
   // =============================================================
   // NG-ZORRO CORE: ABSTRACT METHODS (MUST IMPLEMENT)
   // =============================================================
 
   /** Gets the quarter component of the given date (1-4). */
-  abstract getQuarter(date: D): number;
+  abstract getQuarter(date: TDate): number;
 
   /** Sets the quarter of the given date. */
-  abstract setQuarter(date: D, quarter: number): D;
+  abstract setQuarter(date: TDate, quarter: number): TDate;
 
   /** Gets the start of the quarter for the given date. */
-  abstract startOfQuarter(date: D): D;
+  abstract startOfQuarter(date: TDate): TDate;
 
   /** Gets the ISO week number for the given date. */
-  abstract getISOWeek(date: D): number;
+  abstract getISOWeek(date: TDate): number;
 
   // --- NG-ZORRO Date Setters (not in Material) ---
 
   /** Sets the year of the given date. */
-  abstract setYear(date: D, year: number): D;
+  abstract setYear(date: TDate, year: number): TDate;
 
   /** Sets the month of the given date (0-indexed). */
-  abstract setMonth(date: D, month: number): D;
+  abstract setMonth(date: TDate, month: number): TDate;
 
   /** Sets the day of the month of the given date (1-indexed). */
-  abstract setDate(date: D, day: number): D;
+  abstract setDate(date: TDate, day: number): TDate;
 
   // =============================================================
   // MATERIAL DERIVED: IMPLEMENTED METHODS (MAY OVERRIDE)
   // =============================================================
 
   /** Sets the locale used for formatting and parsing. */
-  setLocale(locale: L): void {
+  setLocale(locale: TLocale): void {
     this.locale = locale;
     this._localeChanges.next();
   }
@@ -192,24 +192,24 @@ export abstract class NzDateAdapter<D, L = unknown> {
    * Attempts to deserialize a value to a valid date object.
    * Accepts ISO 8601 strings, Date objects, or null/undefined.
    */
-  deserialize(value: NzSafeAny): D | null {
+  deserialize(value: NzSafeAny): TDate | null {
     if (value == null || this.isDateInstance(value)) {
-      return value as D | null;
+      return value as TDate | null;
     }
     return this.invalid();
   }
 
   /** Gets a valid date object if possible, otherwise returns null. */
-  getValidDateOrNull(obj: unknown): D | null {
+  getValidDateOrNull(obj: unknown): TDate | null {
     if (this.isDateInstance(obj)) {
-      const date = obj as D;
+      const date = obj as TDate;
       return this.isValid(date) ? date : null;
     }
     return null;
   }
 
   /** Compares two dates, returning a number indicating their relative order. */
-  compareDate(first: D, second: D): number {
+  compareDate(first: TDate, second: TDate): number {
     return (
       this.getYear(first) - this.getYear(second) ||
       this.getMonth(first) - this.getMonth(second) ||
@@ -218,7 +218,7 @@ export abstract class NzDateAdapter<D, L = unknown> {
   }
 
   /** Checks whether two dates represent the same calendar day. */
-  sameDate(first: D | null, second: D | null): boolean {
+  sameDate(first: TDate | null, second: TDate | null): boolean {
     if (first && second) {
       const firstValid = this.isValid(first);
       const secondValid = this.isValid(second);
@@ -231,7 +231,7 @@ export abstract class NzDateAdapter<D, L = unknown> {
   }
 
   /** Clamps a date between min and max bounds. */
-  clampDate(date: D, min?: D | null, max?: D | null): D {
+  clampDate(date: TDate, min?: TDate | null, max?: TDate | null): TDate {
     if (min && this.compareDate(min, date) > 0) {
       return this.clone(min);
     }
@@ -242,12 +242,12 @@ export abstract class NzDateAdapter<D, L = unknown> {
   }
 
   /** Gets the calendar's start of month (first day at midnight). */
-  calendarStartOfMonth(date: D): D {
+  calendarStartOfMonth(date: TDate): TDate {
     return this.createDate(this.getYear(date), this.getMonth(date), 1);
   }
 
   /** Gets the calendar's start of week. */
-  calendarStartOfWeek(date: D): D {
+  calendarStartOfWeek(date: TDate): TDate {
     const dayOfWeek = this.getDayOfWeek(date);
     const firstDayOfWeek = this.getFirstDayOfWeek();
     const diff = (dayOfWeek - firstDayOfWeek + 7) % 7;
@@ -255,17 +255,17 @@ export abstract class NzDateAdapter<D, L = unknown> {
   }
 
   /** Checks whether the given date is the first day of its month. */
-  isFirstDayOfMonth(date: D): boolean {
+  isFirstDayOfMonth(date: TDate): boolean {
     return this.getDate(date) === 1;
   }
 
   /** Checks whether the given date is the last day of its month. */
-  isLastDayOfMonth(date: D): boolean {
+  isLastDayOfMonth(date: TDate): boolean {
     return this.getDate(date) === this.getNumDaysInMonth(date);
   }
 
   /** Checks whether the given date is today. */
-  isToday(date: D): boolean {
+  isToday(date: TDate): boolean {
     return this.sameDate(date, this.today());
   }
 
@@ -274,37 +274,37 @@ export abstract class NzDateAdapter<D, L = unknown> {
   // =============================================================
 
   /** Sets the time on the given date. */
-  setTime(_date: D, _hours: number, _minutes: number, _seconds: number): D {
+  setTime(_date: TDate, _hours: number, _minutes: number, _seconds: number): TDate {
     throw new Error(NOT_IMPLEMENTED);
   }
 
   /** Gets the hours component of the given date. */
-  getHours(_date: D): number {
+  getHours(_date: TDate): number {
     throw new Error(NOT_IMPLEMENTED);
   }
 
   /** Gets the minutes component of the given date. */
-  getMinutes(_date: D): number {
+  getMinutes(_date: TDate): number {
     throw new Error(NOT_IMPLEMENTED);
   }
 
   /** Gets the seconds component of the given date. */
-  getSeconds(_date: D): number {
+  getSeconds(_date: TDate): number {
     throw new Error(NOT_IMPLEMENTED);
   }
 
   /** Parses a time value into a date. */
-  parseTime(_value: NzSafeAny, _parseFormat?: NzSafeAny): D | null {
+  parseTime(_value: NzSafeAny, _parseFormat?: NzSafeAny): TDate | null {
     throw new Error(NOT_IMPLEMENTED);
   }
 
   /** Adds the specified number of seconds to the given date. */
-  addSeconds(_date: D, _amount: number): D {
+  addSeconds(_date: TDate, _amount: number): TDate {
     throw new Error(NOT_IMPLEMENTED);
   }
 
   /** Compares two times, returning a number indicating their relative order. */
-  compareTime(first: D, second: D): number {
+  compareTime(first: TDate, second: TDate): number {
     return (
       this.getHours(first) - this.getHours(second) ||
       this.getMinutes(first) - this.getMinutes(second) ||
@@ -313,7 +313,7 @@ export abstract class NzDateAdapter<D, L = unknown> {
   }
 
   /** Checks whether two dates represent the same time (same hour, minute, second). */
-  sameTime(first: D | null, second: D | null): boolean {
+  sameTime(first: TDate | null, second: TDate | null): boolean {
     if (first && second) {
       return (!this.isValid(first) && !this.isValid(second)) || this.compareTime(first, second) === 0;
     }
@@ -325,22 +325,22 @@ export abstract class NzDateAdapter<D, L = unknown> {
   // =============================================================
 
   /** Gets the milliseconds component of the given date. */
-  getMilliseconds(_date: D): number {
+  getMilliseconds(_date: TDate): number {
     throw new Error(NOT_IMPLEMENTED);
   }
 
   /** Gets the timestamp (milliseconds since epoch) of the given date. */
-  getTime(_date: D): number {
+  getTime(_date: TDate): number {
     throw new Error(NOT_IMPLEMENTED);
   }
 
   /** Gets the calendar system identifier for the given date. */
-  getCalendarId(_date: D): string {
+  getCalendarId(_date: TDate): string {
     throw new Error(NOT_IMPLEMENTED);
   }
 
   /** Gets the timezone offset for the given date. */
-  getTimezoneOffset(_date: D): number {
+  getTimezoneOffset(_date: TDate): number {
     throw new Error(NOT_IMPLEMENTED);
   }
 
@@ -349,35 +349,35 @@ export abstract class NzDateAdapter<D, L = unknown> {
   /**
    * @deprecated Use `addCalendarYears` instead. Will be removed in v23.
    */
-  addYears(date: D, amount: number): D {
+  addYears(date: TDate, amount: number): TDate {
     return this.addCalendarYears(date, amount);
   }
 
   /**
    * @deprecated Use `addCalendarMonths` instead. Will be removed in v23.
    */
-  addMonths(date: D, amount: number): D {
+  addMonths(date: TDate, amount: number): TDate {
     return this.addCalendarMonths(date, amount);
   }
 
   /**
    * @deprecated Use `addCalendarDays` instead. Will be removed in v23.
    */
-  addDays(date: D, amount: number): D {
+  addDays(date: TDate, amount: number): TDate {
     return this.addCalendarDays(date, amount);
   }
 
   /**
    * @deprecated Use `getNumDaysInMonth` instead. Will be removed in v23.
    */
-  getDaysInMonth(date: D): number {
+  getDaysInMonth(date: TDate): number {
     return this.getNumDaysInMonth(date);
   }
 
   /**
    * @deprecated Use `getDayOfWeek` instead. Will be removed in v23.
    */
-  getDay(date: D): number {
+  getDay(date: TDate): number {
     return this.getDayOfWeek(date);
   }
 }

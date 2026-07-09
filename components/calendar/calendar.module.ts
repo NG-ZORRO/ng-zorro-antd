@@ -14,10 +14,10 @@ import {
 import { NzCalendarHeaderComponent } from './calendar-header.component';
 import { NzCalendarComponent } from './calendar.component';
 
-const cells = [NzDateCellDirective, NzDateFullCellDirective, NzMonthCellDirective, NzMonthFullCellDirective];
+const CELL_DIRECTIVES = [NzDateCellDirective, NzDateFullCellDirective, NzMonthCellDirective, NzMonthFullCellDirective];
 
 @NgModule({
-  imports: [NzCalendarHeaderComponent, NzCalendarComponent, ...cells],
-  exports: [NzCalendarComponent, ...cells]
+  imports: [NzCalendarHeaderComponent, NzCalendarComponent, ...CELL_DIRECTIVES],
+  exports: [NzCalendarComponent, ...CELL_DIRECTIVES]
 })
 export class NzCalendarModule {}
