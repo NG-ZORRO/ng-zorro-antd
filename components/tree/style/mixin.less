@@ -3,7 +3,7 @@
 @tree-prefix-cls: ~'@{ant-prefix}-tree';
 @select-tree-prefix-cls: ~'@{ant-prefix}-select-tree';
 @tree-motion: ~'@{ant-prefix}-motion-collapse';
-@tree-node-padding: (@padding-xs / 2);
+@tree-node-padding: @padding-xs-half;
 // @deprecated: kept for customization usages, recommend using @tree-node-highlight-color instead.
 @tree-node-hightlight-color: inherit;
 @tree-node-highlight-color: @tree-node-hightlight-color;
@@ -200,7 +200,7 @@
         position: absolute;
         top: 0;
         right: 12px;
-        bottom: -@tree-node-padding;
+        bottom: @tree-node-padding-negative;
         margin-left: -1px;
         border-right: 1px solid @normal-color;
         content: ' ';
@@ -290,7 +290,7 @@
           position: absolute;
           top: 0;
           right: (@tree-title-height / 2);
-          bottom: -@tree-node-padding;
+          bottom: @tree-node-padding-negative;
           border-right: 1px solid @border-color-base;
           content: '';
         }

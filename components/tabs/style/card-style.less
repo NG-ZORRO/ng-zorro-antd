@@ -78,7 +78,7 @@
 
   &-extra-content {
     // stylelint-disable-next-line
-    line-height: @tabs-title-font-size * @line-height-base + extract(@tabs-horizontal-padding, 1) * 2;
+    line-height: @tabs-card-tab-line-height;
 
     .@{tab-prefix-cls}-new-tab {
       position: relative;
@@ -112,13 +112,13 @@
   // https://github.com/ant-design/ant-design/issues/17865
   &&-large &-extra-content {
     // stylelint-disable-next-line
-    line-height: @tabs-title-font-size-lg * @line-height-base + extract(@tabs-horizontal-padding-lg, 1) * 2;
+    line-height: @tabs-card-tab-line-height-lg;
   }
 
   // https://github.com/ant-design/ant-design/issues/17865
   &&-small &-extra-content {
     // stylelint-disable-next-line
-    line-height: @tabs-title-font-size-sm * @line-height-base + extract(@tabs-horizontal-padding-sm, 1) * 2;
+    line-height: @tabs-card-tab-line-height-sm;
   }
 
   // https://github.com/ant-design/ant-design/issues/17865
@@ -160,7 +160,7 @@
 
       &-active {
         margin-right: -1px;
-        padding-right: @padding-md + 2px;
+        padding-right: @tabs-editable-card-padding-right;
       }
     }
   }
@@ -176,7 +176,7 @@
 
       &-active {
         margin-left: -1px;
-        padding-left: @padding-md + 2px;
+        padding-left: @tabs-editable-card-padding-right;
       }
     }
   }

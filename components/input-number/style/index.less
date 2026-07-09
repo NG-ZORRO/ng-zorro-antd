@@ -98,8 +98,8 @@
 
   &-input {
     width: 100%;
-    height: @input-height-base - 2px;
-    padding: 0 @control-padding-horizontal - 1px;
+    height: @input-number-inner-height-base;
+    padding: 0 @input-derived-padding-horizontal;
     text-align: left;
     background-color: transparent;
     border: 0;
@@ -123,7 +123,7 @@
     font-size: @font-size-lg;
 
     input {
-      height: @input-height-lg - 2px;
+      height: @input-number-inner-height-lg;
     }
   }
 
@@ -131,8 +131,8 @@
     padding: 0;
 
     input {
-      height: @input-height-sm - 2px;
-      padding: 0 @control-padding-horizontal-sm - 1px;
+      height: @input-number-inner-height-sm;
+      padding: 0 @input-derived-padding-horizontal-sm;
     }
   }
 

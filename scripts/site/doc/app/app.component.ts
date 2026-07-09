@@ -17,14 +17,12 @@ import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzMessageRef, NzMessageService } from 'ng-zorro-antd/message';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 
-import { AppService, SiteTheme } from './app.service';
+import { AppService } from './app.service';
 import { APP_LANGUAGE, APP_PAGE } from './app.token';
 import { ContributorsListComponent } from './contributors-list/contributors-list.component';
-import { FixedWidgetsComponent } from './fixed-widgets/fixed-widgets.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { NavBottomComponent } from './nav-bottom/nav-bottom.component';
@@ -63,7 +61,6 @@ const defaultKeywords =
     HeaderComponent,
     FooterComponent,
     SideComponent,
-    FixedWidgetsComponent,
     NavProgressBar
   ],
   templateUrl: './app.component.html',
@@ -78,7 +75,6 @@ export class AppComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly title = inject(Title);
   private readonly nzI18nService = inject(NzI18nService);
-  private readonly nzMessageService = inject(NzMessageService);
   private readonly nzConfigService = inject(NzConfigService);
   private readonly platform = inject(Platform);
   private readonly meta = inject(Meta);
@@ -110,60 +106,6 @@ export class AppComponent implements OnInit {
     this.router.navigateByUrl(`${url.join('/')}/${language}`).then();
   }
 
-  initTheme(): void {
-    const theme = (localStorage.getItem('site-theme') as SiteTheme) || 'default';
-    this.onThemeChange(theme, false);
-  }
-
-  onThemeChange(theme: SiteTheme, notification: boolean = true): void {
-    if (!this.platform.isBrowser) {
-      return;
-    }
-    let loading: NzMessageRef | null = null;
-    if (notification) {
-      loading = this.nzMessageService.loading(this.isEn() ? `Switching theme...` : `切换主题中...`, {
-        nzDuration: 0
-      });
-    }
-    this.renderer.addClass(this.document.activeElement, 'preload');
-    const successLoaded = () => {
-      this.app.theme.set(theme);
-      localStorage.setItem('site-theme', theme);
-      this.renderer.setAttribute(document.body, 'data-theme', theme);
-      // remove previous theme
-      ['dark', 'compact', 'aliyun']
-        .filter(item => item !== theme)
-        .forEach(item => {
-          const dom = document.getElementById(`site-theme-${item}`);
-          dom?.remove();
-        });
-      setTimeout(() => this.renderer.removeClass(this.document.activeElement, 'preload'));
-      if (notification) {
-        this.nzMessageService.remove(loading?.messageId);
-        this.nzMessageService.success(this.isEn() ? `Switching theme successfully` : `切换主题成功`);
-      }
-    };
-    if (theme !== 'default') {
-      const style = document.createElement('link');
-      style.type = 'text/css';
-      style.rel = 'stylesheet';
-      style.id = `site-theme-${theme}`;
-      style.href = `assets/${theme}.css`;
-      document.head.append(style);
-
-      style.onload = () => {
-        successLoaded();
-      };
-      style.onerror = () => {
-        this.nzMessageService.remove(loading?.messageId);
-        this.nzMessageService.error(this.isEn() ? `Switching theme failed` : `切换主题失败`);
-        document.getElementById(style.id)?.remove();
-      };
-    } else {
-      successLoaded();
-    }
-  }
-
   setPage(url: string): void {
     const match = url.match(/\/(\w+)/);
     if (match && match[1]) {
@@ -183,7 +125,7 @@ export class AppComponent implements OnInit {
     if (this.platform.isBrowser) {
       this.renderer.removeClass(this.document.activeElement, 'preload');
       this.addWindowWidthListener();
-      this.initTheme();
+      this.app.initTheme();
       this.detectLanguage();
     }
 

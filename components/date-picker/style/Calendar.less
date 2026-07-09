@@ -159,7 +159,7 @@
 
   &-input-wrap {
     height: 34px;
-    padding: 6px @control-padding-horizontal - 2px;
+    padding: 6px @calendar-input-padding-horizontal;
     border-bottom: @border-width-base @border-style-base @border-color-split;
   }
 
@@ -399,9 +399,11 @@
   .@{calendar-prefix-cls}-ok-btn {
     .btn;
     .btn-primary;
-    .button-size(@btn-height-sm; @btn-padding-sm; @font-size-base; @border-radius-base);
+    .button-size(
+      @btn-height-sm; @btn-padding-sm; @font-size-base; @border-radius-base; @btn-padding-vertical-sm
+    );
 
-    line-height: @btn-height-sm - 2px;
+    line-height: @btn-anchor-line-height-sm;
 
     .button-disabled();
   }

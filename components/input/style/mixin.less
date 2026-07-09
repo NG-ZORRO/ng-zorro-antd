@@ -234,7 +234,7 @@
 
     // Reset Select's style in addon
     .@{ant-prefix}-select {
-      margin: -(@input-padding-vertical-base + 1px) (-@input-padding-horizontal-base);
+      margin: @input-addon-select-margin-vertical @input-addon-select-margin-horizontal;
 
       &.@{ant-prefix}-select-single:not(.@{ant-prefix}-select-customize-input)
         .@{ant-prefix}-select-selector {
@@ -253,7 +253,7 @@
 
     // https://github.com/ant-design/ant-design/issues/31333
     .@{ant-prefix}-cascader-picker {
-      margin: -9px (-@control-padding-horizontal);
+      margin: -9px @input-suffix-margin-horizontal;
       background-color: transparent;
       .@{ant-prefix}-cascader-input {
         text-align: left;

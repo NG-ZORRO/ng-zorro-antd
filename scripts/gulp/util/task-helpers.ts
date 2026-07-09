@@ -24,11 +24,13 @@ export function execTask(binPath: string, args: string[], env = {}): TaskFunctio
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (process.stderr as any)._handle.setBlocking(true);
 
-    const bin = platform() === 'win32' && binPath === 'ng' ? `${binPath}.cmd` : binPath;
-    const childProcess = spawn(bin, args, {
+    // Windows can only run `ng` (a .cmd shim) through a shell; spawning it
+    // directly throws EINVAL since Node's CVE-2024-27980 fix.
+    const childProcess = spawn(binPath, args, {
       env: { ...process.env, ...env },
       cwd: process.cwd(),
-      stdio: 'inherit'
+      stdio: 'inherit',
+      shell: platform() === 'win32'
     });
 
     childProcess.on('close', (code: number) => {

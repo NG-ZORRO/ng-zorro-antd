@@ -151,14 +151,19 @@
 @font-variant-base: tabular-nums;
 @font-feature-settings-base: 'tnum';
 @font-size-base: 14px;
-@font-size-lg: @font-size-base + 2px;
+// Derived typography (guarded: the token theme supplies these as CSS
+// custom properties and turns the flag off).
+.typography-derived-theme-variables() when (@compute-derived-theme-variables = true) {
+  @font-size-lg: @font-size-base + 2px;
+  @heading-1-size: ceil(@font-size-base * 2.71);
+  @heading-2-size: ceil(@font-size-base * 2.14);
+  @heading-3-size: ceil(@font-size-base * 1.71);
+  @heading-4-size: ceil(@font-size-base * 1.42);
+  @heading-5-size: ceil(@font-size-base * 1.14);
+}
+.typography-derived-theme-variables();
 @font-size-sm: 12px;
 @font-size-icon: @font-size-sm;
-@heading-1-size: ceil(@font-size-base * 2.71);
-@heading-2-size: ceil(@font-size-base * 2.14);
-@heading-3-size: ceil(@font-size-base * 1.71);
-@heading-4-size: ceil(@font-size-base * 1.42);
-@heading-5-size: ceil(@font-size-base * 1.14);
 // https://github.com/ant-design/ant-design/issues/20210
 @line-height-base: 1.5715;
 @line-height-lg: 1.5;
@@ -301,9 +306,7 @@
 
 @btn-font-size-lg: @font-size-lg;
 @btn-font-size-sm: @font-size-base;
-@btn-padding-horizontal-base: @padding-md - 1px;
 @btn-padding-horizontal-lg: @btn-padding-horizontal-base;
-@btn-padding-horizontal-sm: @padding-xs - 1px;
 
 @btn-height-base: @height-base;
 @btn-height-lg: @height-lg;
@@ -318,14 +321,80 @@
 @btn-square-size: @btn-height-base;
 @btn-square-size-lg: @btn-height-lg;
 @btn-square-size-sm: @btn-height-sm;
-@btn-square-only-icon-size: @font-size-base + 2px;
 @btn-square-only-icon-size-sm: @font-size-base;
-@btn-square-only-icon-size-lg: @btn-font-size-lg + 2px;
 
 @btn-group-border: @primary-5;
 
 @btn-link-hover-bg: transparent;
 @btn-text-hover-bg: rgba(0, 0, 0, 0.018);
+
+@btn-font-size-base: @font-size-base;
+
+// Derived button values, hoisted out of `.button-size()` (see
+// button/style/mixin.less) so themes can supply them independently. They are
+// wrapped in a guarded mixin because Less evaluates every declaration: the
+// token theme remaps the referenced variables to CSS `var()` strings, turns
+// the flag off to skip the Less math, and provides these values as CSS custom
+// properties instead. The formulas are byte-identical to the previous inline
+// math for all other themes.
+@compute-derived-theme-variables: true;
+// First-order derived values are computed in a separate mixin invoked first,
+// so that second-order formulas below resolve them through the root scope —
+// where theme overrides (compact/aliyun/user modifyVars) take precedence over
+// the values computed here.
+.btn-base-derived-theme-variables() when (@compute-derived-theme-variables = true) {
+  @btn-square-only-icon-size: @font-size-base + 2px;
+  @btn-square-only-icon-size-lg: @btn-font-size-lg + 2px;
+  @btn-padding-horizontal-base: @padding-md - 1px;
+  @btn-padding-horizontal-sm: @padding-xs - 1px;
+}
+.btn-base-derived-theme-variables();
+.btn-derived-theme-variables() when (@compute-derived-theme-variables = true) {
+  @btn-text-active-bg: fadein(@btn-text-hover-bg, 1%);
+  @btn-padding-vertical-base: max(
+    (round(((@btn-height-base - @btn-font-size-base * @line-height-base) / 2) * 10) / 10) - @border-width-base,
+    0
+  );
+  @btn-padding-vertical-lg: max(
+    (round(((@btn-height-lg - @btn-font-size-lg * @line-height-base) / 2) * 10) / 10) - @border-width-base,
+    0
+  );
+  @btn-padding-vertical-sm: max(
+    (round(((@btn-height-sm - @btn-font-size-sm * @line-height-base) / 2) * 10) / 10) - @border-width-base,
+    0
+  );
+  @btn-circle-padding-horizontal-base: (@btn-circle-size / 2);
+  @btn-circle-padding-horizontal-lg: (@btn-circle-size-lg / 2);
+  @btn-circle-padding-horizontal-sm: (@btn-circle-size-sm / 2);
+  @btn-circle-padding-vertical-base: max(
+    (round(((@btn-circle-size - @btn-font-size-base * @line-height-base) / 2) * 10) / 10) - @border-width-base,
+    0
+  );
+  @btn-circle-padding-vertical-lg: max(
+    (round(((@btn-circle-size-lg - @btn-font-size-lg * @line-height-base) / 2) * 10) / 10) - @border-width-base,
+    0
+  );
+  @btn-circle-padding-vertical-sm: max(
+    (round(((@btn-circle-size-sm - @btn-font-size-base * @line-height-base) / 2) * 10) / 10) - @border-width-base,
+    0
+  );
+  @btn-square-padding-vertical-base: max(
+    (round(((@btn-square-size - @btn-square-only-icon-size * @line-height-base) / 2) * 10) / 10) - @border-width-base,
+    0
+  );
+  @btn-square-padding-vertical-lg: max(
+    (round(((@btn-square-size-lg - @btn-square-only-icon-size-lg * @line-height-base) / 2) * 10) / 10) - @border-width-base,
+    0
+  );
+  @btn-square-padding-vertical-sm: max(
+    (round(((@btn-square-size-sm - @btn-square-only-icon-size-sm * @line-height-base) / 2) * 10) / 10) - @border-width-base,
+    0
+  );
+  @btn-anchor-line-height-base: @btn-height-base - 2px;
+  @btn-anchor-line-height-lg: @btn-height-lg - 2px;
+  @btn-anchor-line-height-sm: @btn-height-sm - 2px;
+}
+.btn-derived-theme-variables();
 
 // Checkbox
 @checkbox-size: 16px;
@@ -377,7 +446,6 @@
 @radio-button-color: @btn-default-color;
 @radio-button-hover-color: @primary-5;
 @radio-button-active-color: @primary-7;
-@radio-button-padding-horizontal: @padding-md - 1px;
 @radio-disabled-button-checked-bg: @disabled-active-bg;
 @radio-disabled-button-checked-color: @disabled-color;
 @radio-wrapper-margin-right: 8px;
@@ -495,23 +563,16 @@
 @input-height-base: @height-base;
 @input-height-lg: @height-lg;
 @input-height-sm: @height-sm;
-@input-padding-horizontal: @control-padding-horizontal - @line-width;
+// Aliases of the derived values computed in `.input-base-derived-theme-variables()`
+// below. The indirection keeps the historical "last declaration wins" behavior
+// for themes that are loaded before this file (aliyun).
+@input-padding-horizontal: @input-derived-padding-horizontal;
 @input-padding-horizontal-base: @input-padding-horizontal;
-@input-padding-horizontal-sm: @control-padding-horizontal-sm - @line-width;
+@input-padding-horizontal-sm: @input-derived-padding-horizontal-sm;
 @input-padding-horizontal-lg: @input-padding-horizontal;
-@input-padding-vertical-base: max(
-  (round(((@input-height-base - @font-size-base * @line-height-base) / 2) * 10) / 10) -
-    @border-width-base,
-  3px
-);
-@input-padding-vertical-sm: max(
-  (round(((@input-height-sm - @font-size-base * @line-height-base) / 2) * 10) / 10) -
-    @border-width-base,
-  0
-);
-@input-padding-vertical-lg: (
-    ceil(((@input-height-lg - @font-size-lg * @line-height-base) / 2) * 10) / 10
-  ) - @border-width-base;
+@input-padding-vertical-base: @input-derived-padding-vertical-base;
+@input-padding-vertical-sm: @input-derived-padding-vertical-sm;
+@input-padding-vertical-lg: @input-derived-padding-vertical-lg;
 @input-placeholder-color: hsv(0, 0, 75%);
 @input-color: @text-color;
 @input-icon-color: @input-color;
@@ -554,14 +615,181 @@
 @select-selection-item-bg: @background-color-base;
 @select-selection-item-border-color: @border-color-split;
 @select-single-item-height-lg: 40px;
-@select-multiple-item-height: @input-height-base - @input-padding-vertical-base * 2; // Normal 24px
-@select-multiple-item-height-sm: @input-height-sm - @input-padding-vertical-base * 2;
 @select-multiple-item-height-lg: 32px;
-@select-multiple-item-spacing-half: ceil((@input-padding-vertical-base / 2));
 @select-multiple-disabled-background: @input-disabled-bg;
 @select-multiple-item-disabled-color: #bfbfbf;
 @select-multiple-item-disabled-border-color: @select-border-color;
 @select-select-affix-padding: 4px;
+
+// Segmented (container)
+// ---
+@segmented-container-padding: 2px;
+
+// Statics referenced by derived control values below (hoisted from the
+// component styles so the guarded mixins can evaluate in every theme).
+@picker-year-month-cell-width: 60px;
+@float-button-size: 40px;
+
+// Derived control values (input metrics and values other components derive
+// from them), hoisted out of the component styles. They are wrapped in a
+// guarded mixin because Less evaluates every declaration: the token theme
+// remaps the referenced variables to CSS `var()` strings, turns the flag off
+// to skip the Less math, and provides these values as CSS custom properties
+// instead. The formulas are byte-identical to the previous inline math for
+// all other themes.
+// First-order input metrics: computed before the mixin below so that the
+// second-order formulas resolve them through the root scope, where theme
+// overrides (compact/aliyun/user modifyVars) take precedence.
+.input-base-derived-theme-variables() when (@compute-derived-theme-variables = true) {
+  @input-derived-padding-horizontal: @control-padding-horizontal - @line-width;
+  @input-derived-padding-horizontal-sm: @control-padding-horizontal-sm - @line-width;
+  @input-derived-padding-vertical-base: max(
+    (round(((@input-height-base - @font-size-base * @line-height-base) / 2) * 10) / 10) -
+      @border-width-base,
+    3px
+  );
+  @input-derived-padding-vertical-sm: max(
+    (round(((@input-height-sm - @font-size-base * @line-height-base) / 2) * 10) / 10) -
+      @border-width-base,
+    0
+  );
+  @input-derived-padding-vertical-lg: (
+      ceil(((@input-height-lg - @font-size-lg * @line-height-base) / 2) * 10) / 10
+    ) - @border-width-base;
+}
+.input-base-derived-theme-variables();
+.input-derived-theme-variables() when (@compute-derived-theme-variables = true) {
+  @input-addon-select-margin-vertical: -(@input-padding-vertical-base + 1px);
+  @input-addon-select-margin-horizontal: (-@input-padding-horizontal-base);
+  @input-number-inner-height-base: @input-height-base - 2px;
+  @input-number-inner-height-lg: @input-height-lg - 2px;
+  @input-number-inner-height-sm: @input-height-sm - 2px;
+  @mention-editor-min-height: @input-height-base - 2px;
+  @radio-button-line-height-lg: @input-height-lg - 2px;
+  @radio-button-line-height-sm: @input-height-sm - 2px;
+  @segmented-item-min-height-base: @input-height-base - @segmented-container-padding * 2;
+  @segmented-item-min-height-lg: @input-height-lg - @segmented-container-padding * 2;
+  @segmented-item-min-height-sm: @input-height-sm - @segmented-container-padding * 2;
+  @typography-edit-content-inset: (-@input-padding-horizontal - 1px);
+  @typography-edit-content-margin-top: (-@input-padding-vertical-base - 1px);
+  @form-rtl-feedback-padding-left-base: @input-padding-horizontal-base + @font-size-base * 1.3;
+  @form-rtl-feedback-padding-left-lg: @input-padding-horizontal-lg + @font-size-base * 1.3;
+  @form-rtl-feedback-padding-left-sm: @input-padding-horizontal-sm + @font-size-base * 1.3;
+  @picker-font-height-base: floor(@font-size-base * @line-height-base) + 2;
+  @picker-font-height-lg: floor(@font-size-lg * @line-height-base) + 2;
+  @picker-padding-vertical-top-base: max(((@input-height-base - @picker-font-height-base) / 2), 0);
+  @picker-padding-vertical-bottom-base: max(
+    @input-height-base - @picker-font-height-base - @picker-padding-vertical-top-base,
+    0
+  );
+  @picker-padding-vertical-top-lg: max(((@input-height-lg - @picker-font-height-lg) / 2), 0);
+  @picker-padding-vertical-bottom-lg: max(
+    @input-height-lg - @picker-font-height-lg - @picker-padding-vertical-top-lg,
+    0
+  );
+  @picker-padding-vertical-top-sm: max(((@input-height-sm - @picker-font-height-base) / 2), 0);
+  @picker-padding-vertical-bottom-sm: max(
+    @input-height-sm - @picker-font-height-base - @picker-padding-vertical-top-sm,
+    0
+  );
+  @picker-preset-offset: @input-padding-horizontal-base * 1.5;
+  @select-single-height-without-border-base: @input-height-base - 2 * @line-width;
+  @select-single-height-without-border-sm: @input-height-sm - 2 * @line-width;
+  @select-sm-show-arrow-padding-inline-end: @input-padding-horizontal-sm + @font-size-base * 1.5;
+  @select-multiple-item-height: @input-height-base - @input-padding-vertical-base * 2; // Normal 24px
+  @select-multiple-item-height-sm: @input-height-sm - @input-padding-vertical-base * 2;
+  @select-multiple-item-spacing-half: ceil((@input-padding-vertical-base / 2));
+}
+.input-derived-theme-variables();
+// Derived values hoisted out of the component styles for the token theme
+// (same guarded-mixin pattern as above; formulas byte-identical to the
+// previous inline math). This copy additionally holds theme declarations
+// relocated from the root of this file because their formulas reference the
+// virtualized size primitives.
+.control-derived-theme-variables() when (@compute-derived-theme-variables = true) {
+  @padding-xs-half: (@padding-xs / 2);
+  @margin-xs-half: (@margin-xs / 2);
+  @margin-sm-half: (@margin-sm / 2);
+  @font-height-base: floor(@font-size-base * @line-height-base);
+  @alert-description-line-height: @font-size-base + 8px;
+  @calendar-input-padding-horizontal: @control-padding-horizontal - 2px;
+  @dropdown-selected-padding-right: @control-padding-horizontal + @font-size-sm;
+  @float-button-badge-offset: @padding-xss * 1.5;
+  @float-button-body-size: @float-button-size - (@padding-xss * 2);
+  @float-button-icon-size: @font-size-sm * 1.5;
+  @float-button-badge-inset: (-@padding-xss * 1.5);
+  // @float-button-body-padding is @padding-xss
+  @float-button-group-badge-inset: -(@padding-xss + @padding-xss * 1.5);
+  @select-single-arrow-padding: ceil(@font-size-base * 1.25);
+  @select-single-arrow-padding-lg: ceil(@font-size-lg * 1.25);
+  @spin-text-padding-top: ((@spin-dot-size - @font-size-base) / 2) + 2px;
+  @spin-text-padding-top-sm: ((@spin-dot-size-sm - @font-size-base) / 2) + 2px;
+  @spin-text-padding-top-lg: ((@spin-dot-size-lg - @font-size-base) / 2) + 2px;
+  @tree-node-padding-negative: (-(@padding-xs / 2));
+  @form-font-height: ceil(@font-size-base * @line-height-base);
+  // No outer parens: under `math: parens-division` the `/ 2` must stay
+  // unevaluated so the sign guards on .explainAndExtraDistance() never match
+  // (upstream emits nothing from it in any theme).
+  @form-explain-and-extra-distance: (@form-item-margin-bottom - @form-font-height) / 2;
+  @form-label-wrap-line-height: (@line-height-base - 0.25em);
+  @input-feedback-padding-right: @padding-lg + @padding-xss;
+  @input-search-line-height: @line-height-base - 0.0002;
+  @picker-panel-width: @picker-panel-cell-width * 7 + @padding-sm * 2 + 4;
+  @picker-year-month-cell-margin: (
+    (((@picker-panel-width - @padding-xs * 2) / 3) - @picker-year-month-cell-width) / 2
+  );
+  @picker-footer-extra-line-height: @picker-text-height - 2 * @border-width-base - (@padding-xs / 2);
+  @select-icon-margin-top: (-@font-size-icon / 2);
+  @select-grouped-padding-left: @control-padding-horizontal * 2;
+  @select-show-arrow-item-padding-right: @font-size-base * 1.5;
+  @skeleton-button-width-base: @height-base * 2;
+  @skeleton-button-width-lg: @height-lg * 2;
+  @skeleton-button-width-sm: @height-sm * 2;
+  @skeleton-input-width-base: @height-base * 5;
+  @skeleton-input-width-lg: @height-lg * 5;
+  @skeleton-input-width-sm: @height-sm * 5;
+  @table-expand-icon-size: ceil(((@font-size-sm * 1.4 - @border-width-base * 3) / 2)) * 2 +
+    @border-width-base * 3;
+  @table-expand-icon-offset: ceil(((@font-size-sm * 1.4 - @border-width-base * 3) / 2));
+  @table-expand-icon-scale: (unit(@checkbox-size) / unit(@table-expand-icon-size));
+  @table-expand-icon-margin-top: ((@font-size-base * @line-height-base - @border-width-base * 3) / 2) -
+    ceil(((@font-size-sm * 1.4 - @border-width-base * 3) / 2));
+  @table-rtl-expand-icon-margin-right: (@table-padding-horizontal + ceil(@font-size-sm * 1.4));
+  @tabs-card-tab-line-height: @tabs-title-font-size * @line-height-base +
+    extract(@tabs-horizontal-padding, 1) * 2;
+  @tabs-card-tab-line-height-lg: @tabs-title-font-size-lg * @line-height-base +
+    extract(@tabs-horizontal-padding-lg, 1) * 2;
+  @tabs-card-tab-line-height-sm: @tabs-title-font-size-sm * @line-height-base +
+    extract(@tabs-horizontal-padding-sm, 1) * 2;
+  @tabs-editable-card-padding-right: @padding-md + 2px;
+  @timeline-custom-head-top: -(@font-size-base * @line-height-base - @font-size-base) + 1px;
+  @timeline-content-margin-left: @margin-lg + 2px;
+  @transfer-header-vertical-padding: ceil(
+    ((@transfer-header-height - 1px - @font-size-base * @line-height-base) / 2)
+  );
+  @transfer-header-padding-top: (@transfer-header-vertical-padding - 1px);
+  @upload-list-item-height: @line-height-base * @font-size-base;
+  @upload-list-item-padding-left: @font-size-base + 8px;
+  @upload-picture-item-padding-left: @font-size-base + 12px;
+  @upload-action-icon-top: (@font-size-base / 2) - 2px;
+  @float-button-group-margin-offset: (-@margin-md);
+  @input-suffix-margin-horizontal: (-@control-padding-horizontal);
+  @pagination-item-line-height: @pagination-item-size - 2px;
+  @steps-progress-icon-top: (@steps-title-line-height / 2);
+  @tabs-remove-margin-right: (-@margin-xss);
+  @transfer-item-line-height: @transfer-item-height - 2 * @transfer-item-padding-vertical;
+  // Relocated theme declarations (see comment above):
+  @modal-header-close-size: @modal-header-title-line-height + 2 * @modal-header-padding-vertical;
+  @alert-padding-horizontal: @padding-md - 1px;
+  @alert-with-description-no-icon-padding-vertical: @padding-md - 1px;
+  @alert-with-description-padding-vertical: @padding-md - 1px;
+  @alert-icon-top: 8px + @font-size-base * (@line-height-base / 2) - (@font-size-base / 2);
+  @radio-button-padding-horizontal: @padding-md - 1px;
+  @tabs-card-horizontal-padding: (
+      (@tabs-card-height - floor(@font-size-base * @line-height-base)) / 2
+    ) - @border-width-base @padding-md;
+        }
+.control-derived-theme-variables();
 
 // Cascader
 // ---
@@ -634,7 +862,6 @@
 @modal-header-title-line-height: 22px;
 @modal-header-title-font-size: @font-size-lg;
 @modal-header-border-color-split: @border-color-split;
-@modal-header-close-size: @modal-header-title-line-height + 2 * @modal-header-padding-vertical;
 @modal-content-bg: @component-background;
 @modal-heading-color: @heading-color;
 @modal-close-color: @text-color-secondary;
@@ -862,9 +1089,6 @@
 @tabs-card-head-background: @background-color-light;
 @tabs-card-height: 40px;
 @tabs-card-active-color: @primary-color;
-@tabs-card-horizontal-padding: (
-    (@tabs-card-height - floor(@font-size-base * @line-height-base)) / 2
-  ) - @border-width-base @padding-md;
 @tabs-card-horizontal-padding-sm: 6px @padding-md;
 @tabs-card-horizontal-padding-lg: 7px @padding-md 6px;
 @tabs-title-font-size: @font-size-base;
@@ -1045,13 +1269,9 @@
 @alert-close-color: @text-color-secondary;
 @alert-close-hover-color: @icon-color-hover;
 @alert-padding-vertical: @padding-xs;
-@alert-padding-horizontal: @padding-md - 1px;
 @alert-no-icon-padding-vertical: @padding-xs;
-@alert-with-description-no-icon-padding-vertical: @padding-md - 1px;
-@alert-with-description-padding-vertical: @padding-md - 1px;
 @alert-with-description-padding: @alert-with-description-padding-vertical 15px
   @alert-with-description-no-icon-padding-vertical @alert-with-description-icon-size;
-@alert-icon-top: 8px + @font-size-base * (@line-height-base / 2) - (@font-size-base / 2);
 @alert-with-description-icon-size: 24px;
 
 // List

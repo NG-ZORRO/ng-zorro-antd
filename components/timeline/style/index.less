@@ -80,8 +80,8 @@
 
     &-content {
       position: relative;
-      top: -(@font-size-base * @line-height-base - @font-size-base) + 1px;
-      margin: 0 0 0 @margin-lg + 2px;
+      top: @timeline-custom-head-top;
+      margin: 0 0 0 @timeline-content-margin-left;
       word-break: break-word;
     }
 
@@ -168,7 +168,7 @@
   &.@{timeline-prefix-cls}-label {
     .@{timeline-prefix-cls}-item-label {
       position: absolute;
-      top: -(@font-size-base * @line-height-base - @font-size-base) + 1px;
+      top: @timeline-custom-head-top;
       width: calc(50% - 12px);
       text-align: right;
     }

@@ -51,6 +51,7 @@
     "selector-not-notation": null,
     "declaration-block-no-redundant-longhand-properties": null,
     "declaration-property-value-no-unknown": null,
+    "declaration-property-value-keyword-no-deprecated": null,
     "at-rule-no-unknown": [
       true,
       {

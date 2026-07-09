@@ -6,7 +6,6 @@
 .@{collapse-prefix-cls} {
   .reset-component();
 
-  @font-height: floor(@font-size-base * @line-height-base);
 
   background-color: @collapse-header-bg;
   border: @border-width-base @border-style-base @border-color-base;
@@ -52,7 +51,7 @@
       .@{collapse-prefix-cls}-expand-icon {
         display: flex;
         align-items: center;
-        height: @font-height;
+        height: @font-height-base;
         margin-inline-end: @margin-sm;
       }
 

@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
   padding: @alert-padding-vertical @alert-padding-horizontal;
-  word-wrap: break-word;
+  overflow-wrap: break-word;
   border-radius: @border-radius-base;
 
   &-content {
@@ -25,7 +25,7 @@
   &-description {
     display: none;
     font-size: @font-size-base;
-    line-height: @font-size-base + 8px;
+    line-height: @alert-description-line-height;
   }
 
   &-success {

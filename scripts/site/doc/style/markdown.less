@@ -120,7 +120,7 @@
   padding: 12px 20px;
   overflow: auto;
   color: @site-text-color;
-  font-size: @font-size-base - 1px;
+  font-size: calc(@font-size-base - 1px);
   background: #f5f5f5;
   border: none;
 }
@@ -213,7 +213,7 @@
   table {
     min-width: 720px;
     margin: 2em 0;
-    font-size: @font-size-base - 1px;
+    font-size: calc(@font-size-base - 1px);
     font-family: @code-family;
     line-height: @line-height-base;
     border: 1px solid @border-color-split;
@@ -248,13 +248,13 @@
       &:nth-child(3) {
         width: 22%;
         color: @magenta-7;
-        font-size: @font-size-base - 1px;
+        font-size: calc(@font-size-base - 1px);
         word-break: break-all;
       }
 
       &:nth-child(4) {
         width: 16%;
-        font-size: @font-size-base - 1px;
+        font-size: calc(@font-size-base - 1px);
       }
     }
   }
