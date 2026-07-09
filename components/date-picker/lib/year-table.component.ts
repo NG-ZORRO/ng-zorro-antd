@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, inject, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@angular/core';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { CandyDate, NzDateAdapter } from 'ng-zorro-antd/core/time';
@@ -17,6 +17,7 @@ import { DateBodyRow, DateCell, YearCell } from './interface';
   selector: 'year-table',
   templateUrl: 'abstract-table.html',
   imports: [NzStringTemplateOutletDirective],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class YearTableComponent extends AbstractTable {
