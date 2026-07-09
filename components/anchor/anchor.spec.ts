@@ -290,6 +290,12 @@ describe('anchor', () => {
     scrollTo(href: string = '#basic'): this {
       const toNode = dl.query(By.css(href));
       (toNode.nativeElement as HTMLElement).scrollIntoView();
+      // `scrollIntoView()` only emits a native `scroll` event when it actually
+      // changes the scroll position. Since the window scroll offset is shared
+      // between tests in the same file, the target may already be in view, making
+      // the call a no-op and the component's scroll handler never run. Dispatch
+      // the event explicitly so the handler fires deterministically.
+      window.dispatchEvent(new Event('scroll'));
       fixture.detectChanges();
       return this;
     }
