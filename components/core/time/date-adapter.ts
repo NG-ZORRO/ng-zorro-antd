@@ -7,6 +7,7 @@ import { EnvironmentProviders, InjectionToken, makeEnvironmentProviders, Type } 
 import { Observable, Subject } from 'rxjs';
 
 import { NZ_DATE_CONFIG, NZ_DATE_CONFIG_DEFAULT, NZ_DATE_LOCALE, NzDateConfig } from './date-config';
+import { NzSafeAny } from '../types';
 
 const NOT_IMPLEMENTED = 'NzDateAdapter: method not implemented. Override this method in your adapter to opt in.';
 
@@ -134,15 +135,15 @@ export abstract class NzDateAdapter<D, L = unknown> {
   // --- Format / Parse ---
 
   /** Formats a date as a string according to the given display format. */
-  abstract format(date: D, displayFormat: unknown): string;
+  abstract format(date: D, displayFormat: NzSafeAny): string;
 
   /** Parses a value into a date. */
-  abstract parse(value: unknown, parseFormat: unknown): D | null;
+  abstract parse(value: NzSafeAny, parseFormat: NzSafeAny): D | null;
 
   // --- Validation ---
 
   /** Checks whether the given object is a date instance. */
-  abstract isDateInstance(obj: unknown): boolean;
+  abstract isDateInstance(obj: NzSafeAny): boolean;
 
   /** Checks whether the given date is valid. */
   abstract isValid(date: D): boolean;
@@ -191,7 +192,7 @@ export abstract class NzDateAdapter<D, L = unknown> {
    * Attempts to deserialize a value to a valid date object.
    * Accepts ISO 8601 strings, Date objects, or null/undefined.
    */
-  deserialize(value: unknown): D | null {
+  deserialize(value: NzSafeAny): D | null {
     if (value == null || this.isDateInstance(value)) {
       return value as D | null;
     }
@@ -293,7 +294,7 @@ export abstract class NzDateAdapter<D, L = unknown> {
   }
 
   /** Parses a time value into a date. */
-  parseTime(_value: unknown, _parseFormat?: unknown): D | null {
+  parseTime(_value: NzSafeAny, _parseFormat?: NzSafeAny): D | null {
     throw new Error(NOT_IMPLEMENTED);
   }
 

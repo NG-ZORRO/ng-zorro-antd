@@ -208,6 +208,7 @@ describe('DateFnsDateAdapter', () => {
       const result = adapter.parse(date, 'yyyy-MM-dd');
       expect(result).toBeTruthy();
       expect(result!.getTime()).toBe(date.getTime());
+      expect(result).not.toBe(date);
     });
 
     it('should handle number input', () => {
@@ -215,6 +216,30 @@ describe('DateFnsDateAdapter', () => {
       const result = adapter.parse(timestamp, 'yyyy-MM-dd');
       expect(result).toBeTruthy();
       expect(result!.getTime()).toBe(timestamp);
+    });
+
+    it('should handle zero timestamp', () => {
+      const result = adapter.parse(0, 'yyyy-MM-dd');
+      expect(result).toBeTruthy();
+      expect(result!.getTime()).toBe(0);
+    });
+
+    it('should parse date string with the first matching format', () => {
+      const result = adapter.parse('15/06/2024', ['yyyy-MM-dd', 'dd/MM/yyyy']);
+      expect(result).toBeTruthy();
+      expect(result!.getFullYear()).toBe(2024);
+      expect(result!.getMonth()).toBe(5);
+      expect(result!.getDate()).toBe(15);
+    });
+
+    it('should return invalid date when no format matches', () => {
+      const result = adapter.parse('not a date', 'yyyy-MM-dd');
+      expect(result).toBeInstanceOf(Date);
+      expect(adapter.isValid(result!)).toBeFalsy();
+    });
+
+    it('should throw when parse formats array is empty', () => {
+      expect(() => adapter.parse('2024-06-15', [])).toThrow('Formats array must not be empty.');
     });
   });
 

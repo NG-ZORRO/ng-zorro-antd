@@ -49,7 +49,7 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
   template: `
     @if (nzInDatePicker) {
       <div class="ant-picker-header">
-        <div class="ant-picker-header-view">{{ dateAdapter.format($any(time?.value), format) || '&nbsp;' }}</div>
+        <div class="ant-picker-header-view">{{ formatTimeValue() || '&nbsp;' }}</div>
       </div>
     }
     <div class="ant-picker-content">
@@ -535,6 +535,11 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   isSelected12Hours(value: { index: number; value: string }): boolean {
     return value.value.toUpperCase() === this.time.selected12Hours;
+  }
+
+  formatTimeValue(): string {
+    const value = this.time.value;
+    return value && this.dateAdapter.isValid(value) ? this.dateAdapter.format(value, this.format) : '';
   }
 
   ngOnInit(): void {

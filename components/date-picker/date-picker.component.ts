@@ -608,8 +608,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     this.cdr.markForCheck();
   }
 
-  formatValue(value: CandyDate): string {
-    return this.dateAdapter.format(value && (value as CandyDate).nativeDate, this.nzFormat);
+  formatValue(value: CandyDate | null): string {
+    return value ? this.dateAdapter.format(value.nativeDate, this.nzFormat) : '';
   }
 
   onInputChange(value: string, isEnter: boolean = false): void {

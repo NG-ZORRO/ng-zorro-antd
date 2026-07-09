@@ -1,6 +1,7 @@
 ---
 order: 4
 title: Date Adapter
+tag: new
 ---
 
 NG-ZORRO date components access date operations through `NzDateAdapter`. Starting from v22, NG-ZORRO no longer provides a date engine adapter by default. Applications need to explicitly provide an adapter at the application root. If you want to keep the same behavior as previous versions, use the built-in `date-fns` adapter.

@@ -140,12 +140,12 @@ export class NativeDateAdapter extends NzDateAdapter<Date, string> {
     return new Date();
   }
 
-  parse(value: unknown, parseFormat: unknown): Date | null {
+  parse(value: NzSafeAny, parseFormat: NzSafeAny): Date | null {
     if (typeof value === 'number') {
       return new Date(value);
     }
     if (value instanceof Date) {
-      return new Date(value.getTime());
+      return this.clone(value);
     }
     if (typeof value !== 'string') {
       return null;
@@ -168,7 +168,7 @@ export class NativeDateAdapter extends NzDateAdapter<Date, string> {
     return isNaN(timestamp) ? this.invalid() : new Date(timestamp);
   }
 
-  format(date: Date, displayFormat: unknown): string {
+  format(date: Date, displayFormat: NzSafeAny): string {
     // NG-ZORRO extension: return empty string for null (Material throws error)
     if (!date) {
       return '';
@@ -204,7 +204,7 @@ export class NativeDateAdapter extends NzDateAdapter<Date, string> {
     return this._createDateWithOverflow(this.getYear(date), this.getMonth(date), this.getDate(date) + days);
   }
 
-  override deserialize(value: unknown): Date | null {
+  override deserialize(value: NzSafeAny): Date | null {
     if (typeof value === 'string') {
       if (!value) {
         return null;
@@ -220,7 +220,7 @@ export class NativeDateAdapter extends NzDateAdapter<Date, string> {
     return super.deserialize(value);
   }
 
-  isDateInstance(obj: unknown): boolean {
+  isDateInstance(obj: NzSafeAny): boolean {
     return obj instanceof Date;
   }
 
@@ -316,22 +316,31 @@ export class NativeDateAdapter extends NzDateAdapter<Date, string> {
     return date.getSeconds();
   }
 
-  override parseTime(userValue: unknown, parseFormat?: unknown): Date | null {
+  override parseTime(userValue: NzSafeAny, parseFormat?: NzSafeAny): Date | null {
     if (typeof userValue !== 'string') {
       return userValue instanceof Date ? new Date(userValue.getTime()) : null;
     }
+
     const value = userValue.trim();
+
     if (value.length === 0) {
       return null;
     }
+
+    // Attempt to parse the value directly.
     let result = this._parseTimeString(value);
+
+    // Some locales add extra characters around the time, but are otherwise parseable
+    // (e.g. `00:05 ч.` in bg-BG). Try replacing all non-number and non-colon characters.
     if (result === null) {
       // Try stripping non-essential characters
       const withoutExtras = value.replace(/[^0-9:(AM|PM)]/gi, '').trim();
+
       if (withoutExtras.length > 0) {
         result = this._parseTimeString(withoutExtras);
       }
     }
+
     return result || this.invalid();
   }
 

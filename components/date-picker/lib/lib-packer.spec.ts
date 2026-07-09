@@ -9,6 +9,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 
 import { CandyDate, NativeDateAdapter, NzDateAdapter, provideNzDateAdapter } from 'ng-zorro-antd/core/time';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { en_US, NzI18nModule } from 'ng-zorro-antd/i18n';
 
 import { DateHeaderComponent } from './date-header.component';
@@ -21,7 +22,7 @@ class TuesdayStartDateAdapter extends NativeDateAdapter {
     return 2;
   }
 
-  override format(date: Date, displayFormat: unknown): string {
+  override format(date: Date, displayFormat: NzSafeAny): string {
     if (displayFormat === 'E') {
       return `weekday-${date.getDay()}`;
     }

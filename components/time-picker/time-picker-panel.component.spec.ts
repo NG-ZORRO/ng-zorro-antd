@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { vi } from 'vitest';
 
 import { dispatchFakeEvent, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
+import { NzDateAdapter } from 'ng-zorro-antd/core/time';
 
 import { NzTimePickerPanelComponent } from './time-picker-panel.component';
 
@@ -186,6 +187,20 @@ describe('time-picker-panel', () => {
         listOfSelectContainer[2].querySelector('.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner')
           .textContent
       ).toBe('00');
+    });
+
+    it('should not format invalid header value when used in date picker', () => {
+      const adapter = TestBed.inject(NzDateAdapter);
+      vi.spyOn(adapter, 'format').mockImplementation(() => {
+        throw new Error('format should not be called');
+      });
+      const timePickerPanel = testComponent.nzTimePickerPanelComponent;
+
+      timePickerPanel.time.setValue(undefined);
+      timePickerPanel.time.setDefaultOpenValue(new Date(NaN));
+
+      expect(timePickerPanel.formatTimeValue()).toBe('');
+      expect(adapter.format).not.toHaveBeenCalled();
     });
   });
 
@@ -366,7 +381,7 @@ export class NzTestTimePanelDisabledComponent {
   readonly hideDisabledOptions = signal(false);
   readonly openValue = signal(new Date(0, 0, 0, 10, 11, 12));
   readonly format = signal('HH:mm:ss');
-  readonly value = signal(new Date(0, 0, 0, 0, 0, 0));
+  readonly value = signal<Date | undefined>(new Date(0, 0, 0, 0, 0, 0));
   readonly disabledHours = signal<() => number[]>(() => [1, 2, 3]);
 
   disabledMinutes(hour: number): number[] {

@@ -8,7 +8,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -16,6 +15,7 @@ import {
   booleanAttribute,
   inject
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
@@ -77,7 +77,7 @@ import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
     '[style.display]': `'block'`
   }
 })
-export class NzCalendarHeaderComponent implements OnInit, OnChanges {
+export class NzCalendarHeaderComponent implements OnChanges {
   private readonly dateAdapter = inject(NzDateAdapter);
 
   @Input() mode: 'month' | 'year' = 'month';
@@ -106,17 +106,17 @@ export class NzCalendarHeaderComponent implements OnInit, OnChanges {
     return this.fullscreen ? 'default' : 'small';
   }
 
-  ngOnInit(): void {
-    this.setUpYears();
-    this.setUpMonths();
+  constructor() {
+    this.dateAdapter.localeChanges.pipe(takeUntilDestroyed()).subscribe(() => {
+      this.setUpYears();
+      this.setUpMonths();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { activeDate } = changes;
     if (activeDate) {
-      const previousActiveDate = activeDate.previousValue as CandyDate;
-      const currentActiveDate = activeDate.currentValue as CandyDate;
-      if (previousActiveDate?.getYear() !== currentActiveDate?.getYear()) {
+      if (activeDate.previousValue?.getYear() !== activeDate.currentValue?.getYear()) {
         this.setUpYears();
       }
     }

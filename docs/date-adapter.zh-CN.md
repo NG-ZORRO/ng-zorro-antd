@@ -1,6 +1,7 @@
 ---
 order: 4
 title: 日期适配器
+tag: new
 ---
 
 NG-ZORRO 的日期类组件通过 `NzDateAdapter` 访问日期能力。从 v22 开始，NG-ZORRO 不再默认提供日期引擎适配器，应用需要在根配置中显式提供 adapter。如果你希望与之前版本保持一致，请使用内置的 `date-fns` 适配器。

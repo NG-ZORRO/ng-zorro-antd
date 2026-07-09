@@ -28,6 +28,8 @@ import {
   parse as fnsParse
 } from 'date-fns';
 
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NzDateAdapter, NzDateAdapterConfig } from './date-adapter';
 import { NZ_DATE_CONFIG, NZ_DATE_CONFIG_DEFAULT, NZ_DATE_LOCALE } from './date-config';
 
@@ -140,7 +142,7 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
 
   // --- Format / Parse ---
 
-  override format(date: Date, displayFormat: unknown): string {
+  override format(date: Date, displayFormat: NzSafeAny): string {
     if (!date) {
       return '';
     }
@@ -157,32 +159,42 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
     });
   }
 
-  override parse(value: unknown, parseFormat: unknown): Date | null {
-    if (!value) {
-      return null;
-    }
-    if (value instanceof Date) {
+  override parse(value: NzSafeAny, parseFormat: NzSafeAny): Date | null {
+    if (typeof value === 'string' && value.length > 0) {
+      const formats = Array.isArray(parseFormat) ? parseFormat : [parseFormat as string];
+
+      if (!formats.length) {
+        throw new Error('Formats array must not be empty.');
+      }
+
+      for (const currentFormat of formats) {
+        // Convert Angular-style bracket literals to date-fns single-quote literals
+        const formatString = currentFormat.replace(/\[(.*?)\]/g, "'$1'");
+        const fromFormat = fnsParse(value, formatString, new Date(), {
+          locale: this.locale,
+          weekStartsOn: this.getFirstDayOfWeek() as 0 | 1 | 2 | 3 | 4 | 5 | 6,
+          useAdditionalWeekYearTokens: true,
+          useAdditionalDayOfYearTokens: true
+        });
+
+        if (this.isValid(fromFormat)) {
+          return fromFormat;
+        }
+      }
+
+      return this.invalid();
+    } else if (typeof value === 'number') {
       return new Date(value);
+    } else if (value instanceof Date) {
+      return this.clone(value);
     }
-    if (typeof value === 'number') {
-      return new Date(value);
-    }
-    if (typeof value === 'string') {
-      // Convert Angular-style bracket literals to date-fns single-quote literals
-      const formatString = (parseFormat as string).replace(/\[(.*?)\]/g, "'$1'");
-      return fnsParse(value, formatString, new Date(), {
-        locale: this.locale,
-        weekStartsOn: this.getFirstDayOfWeek() as 0 | 1 | 2 | 3 | 4 | 5 | 6,
-        useAdditionalWeekYearTokens: true,
-        useAdditionalDayOfYearTokens: true
-      });
-    }
+
     return null;
   }
 
   // --- Validation ---
 
-  override isDateInstance(obj: unknown): boolean {
+  override isDateInstance(obj: NzSafeAny): boolean {
     return obj instanceof Date;
   }
 
@@ -252,7 +264,7 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
     return date.getSeconds();
   }
 
-  override parseTime(value: unknown, parseFormat?: unknown): Date | null {
+  override parseTime(value: NzSafeAny, parseFormat?: NzSafeAny): Date | null {
     return this.parse(value, parseFormat);
   }
 
