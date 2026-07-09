@@ -6,8 +6,9 @@
 import { EnvironmentProviders, InjectionToken, makeEnvironmentProviders, Type } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
 import { NZ_DATE_CONFIG, NZ_DATE_CONFIG_DEFAULT, NZ_DATE_LOCALE, NzDateConfig } from './date-config';
-import { NzSafeAny } from '../types';
 
 const NOT_IMPLEMENTED = 'NzDateAdapter: method not implemented. Override this method in your adapter to opt in.';
 

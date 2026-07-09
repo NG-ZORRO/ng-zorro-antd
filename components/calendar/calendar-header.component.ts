@@ -8,6 +8,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -77,7 +78,7 @@ import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
     '[style.display]': `'block'`
   }
 })
-export class NzCalendarHeaderComponent implements OnChanges {
+export class NzCalendarHeaderComponent implements OnInit, OnChanges {
   private readonly dateAdapter = inject(NzDateAdapter);
 
   @Input() mode: 'month' | 'year' = 'month';
@@ -111,6 +112,11 @@ export class NzCalendarHeaderComponent implements OnChanges {
       this.setUpYears();
       this.setUpMonths();
     });
+  }
+
+  ngOnInit(): void {
+    this.setUpYears();
+    this.setUpMonths();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
