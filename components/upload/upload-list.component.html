@@ -117,7 +117,9 @@
 
       <ng-template #extra>
         @if (icons.extra) {
-          <ng-template [ngTemplateOutlet]="icons.extra" [ngTemplateOutletContext]="{ $implicit: file }" />
+          <span class="ant-upload-list-item-extra">
+            <ng-template [ngTemplateOutlet]="icons.extra" [ngTemplateOutletContext]="{ $implicit: file }" />
+          </span>
         }
       </ng-template>
 
