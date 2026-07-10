@@ -1,0 +1,678 @@
+/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
+
+// The design-token theme (experimental).
+//
+// It extends the CSS-variable theme: status colors stay on the legacy
+// `--ant-*` custom properties (which `provideNzTheme` from
+// `ng-zorro-antd/core/theme` also emits), while migrated components
+// additionally read sizing/typography/color tokens from namespaced
+// `--ant-<component>-*` custom properties.
+//
+// The custom-property defaults below reproduce the default theme exactly, so
+// this stylesheet renders identically to `ng-zorro-antd.css` until a theme is
+// provided at runtime. Theming in token mode is done via `provideNzTheme`,
+// not via Less variable overrides.
+@import './variable.less';
+
+// The derived values are supplied as CSS custom properties below, so the Less
+// formulas (which cannot operate on `var()` strings) are disabled.
+@compute-derived-theme-variables: false;
+
+// Frozen v4 size constants used by the default-value formulas in this file.
+// The named globals (`@height-base`, `@font-size-base`, ...) are remapped to
+// `var()` strings below, and Less resolves variables "last declaration wins"
+// regardless of position — so the formulas here must not reference them.
+// `verify-css-parity.ts` guards these against drifting from
+// `themes/variable.less`.
+@token-v4-font-size-base: 14px;
+@token-v4-font-size-lg: 16px;
+@token-v4-font-size-sm: 12px;
+@token-v4-height-base: 32px;
+@token-v4-height-lg: 40px;
+@token-v4-height-sm: 24px;
+@token-v4-line-height-base: 1.5715;
+@token-v4-line-height-lg: 1.5;
+@token-v4-border-radius-base: 2px;
+@token-v4-border-radius-sm: 2px;
+@token-v4-border-radius-lg: 4px;
+@token-v4-padding-lg: 24px;
+@token-v4-padding-md: 16px;
+@token-v4-padding-sm: 12px;
+@token-v4-padding-xs: 8px;
+@token-v4-padding-xss: 4px;
+@token-v4-control-padding-horizontal: 12px;
+@token-v4-control-padding-horizontal-sm: 8px;
+
+// ============================================================
+// Global size primitives
+// ============================================================
+@token-heading-1-size: ceil(@token-v4-font-size-base * 2.71);
+@token-heading-2-size: ceil(@token-v4-font-size-base * 2.14);
+@token-heading-3-size: ceil(@token-v4-font-size-base * 1.71);
+@token-heading-4-size: ceil(@token-v4-font-size-base * 1.42);
+@token-heading-5-size: ceil(@token-v4-font-size-base * 1.14);
+@token-padding-xs-half: (@token-v4-padding-xs / 2);
+@token-margin-xs-half: (@token-v4-padding-xs / 2);
+@token-margin-sm-half: (@token-v4-padding-sm / 2);
+@token-font-height: floor(@token-v4-font-size-base * @token-v4-line-height-base);
+@token-radio-button-padding-horizontal: @token-v4-padding-md - 1px;
+@token-tabs-card-horizontal-padding: (
+    (@tabs-card-height - floor(@token-v4-font-size-base * @token-v4-line-height-base)) / 2
+  ) - @border-width-base @token-v4-padding-md;
+@token-alert-padding-horizontal: @token-v4-padding-md - 1px;
+@token-alert-icon-top: 8px + @token-v4-font-size-base * (@token-v4-line-height-base / 2) -
+  (@token-v4-font-size-base / 2);
+@token-modal-header-close-size: @modal-header-title-line-height + 2 * @token-v4-padding-md;
+@token-float-button-group-margin-offset: (-@token-v4-padding-md);
+@token-input-suffix-margin-horizontal: (-@token-v4-control-padding-horizontal);
+@token-pagination-item-line-height: @token-v4-height-base - 2px;
+@token-steps-progress-icon-top: (@token-v4-height-base / 2);
+@token-tabs-remove-margin-right: (-@token-v4-padding-xss);
+@token-transfer-item-line-height: @token-v4-height-base - 2 * @transfer-item-padding-vertical;
+@token-alert-description-line-height: @token-v4-font-size-base + 8px;
+@token-calendar-input-padding-horizontal: @token-v4-control-padding-horizontal - 2px;
+@token-dropdown-selected-padding-right: @token-v4-control-padding-horizontal + @token-v4-font-size-sm;
+@token-float-button-badge-offset: @token-v4-padding-xss * 1.5;
+@token-float-button-body-size: @float-button-size - (@token-v4-padding-xss * 2);
+@token-float-button-icon-size: @token-v4-font-size-sm * 1.5;
+@token-form-font-height: ceil(@token-v4-font-size-base * @token-v4-line-height-base);
+@token-form-label-wrap-line-height: (@token-v4-line-height-base - 0.25em);
+@token-input-feedback-padding-right: @token-v4-padding-lg + @token-v4-padding-xss;
+@token-input-search-line-height: @token-v4-line-height-base - 0.0002;
+@token-picker-panel-width: @picker-panel-cell-width * 7 + @token-v4-padding-sm * 2 + 4;
+@token-picker-year-month-cell-margin: (
+    (((@token-picker-panel-width - @token-v4-padding-xs * 2) / 3) - @picker-year-month-cell-width) / 2
+  );
+@token-picker-footer-extra-line-height: @picker-text-height - 2 * @border-width-base -
+  (@token-v4-padding-xs / 2);
+@token-select-icon-margin-top: (-@token-v4-font-size-sm / 2);
+@token-select-grouped-padding-left: @token-v4-control-padding-horizontal * 2;
+@token-select-show-arrow-item-padding-right: @token-v4-font-size-base * 1.5;
+@token-skeleton-button-width-base: @token-v4-height-base * 2;
+@token-skeleton-button-width-lg: @token-v4-height-lg * 2;
+@token-skeleton-button-width-sm: @token-v4-height-sm * 2;
+@token-skeleton-input-width-base: @token-v4-height-base * 5;
+@token-skeleton-input-width-lg: @token-v4-height-lg * 5;
+@token-skeleton-input-width-sm: @token-v4-height-sm * 5;
+@token-table-expand-icon-size: ceil(((@token-v4-font-size-sm * 1.4 - @border-width-base * 3) / 2)) * 2 +
+  @border-width-base * 3;
+@token-table-expand-icon-offset: ceil(((@token-v4-font-size-sm * 1.4 - @border-width-base * 3) / 2));
+@token-table-expand-icon-scale: (unit(@checkbox-size) / unit(@token-table-expand-icon-size));
+@token-table-expand-icon-margin-top: (
+    (@token-v4-font-size-base * @token-v4-line-height-base - @border-width-base * 3) / 2
+  ) - ceil(((@token-v4-font-size-sm * 1.4 - @border-width-base * 3) / 2));
+@token-table-rtl-expand-icon-margin-right: (@table-padding-horizontal + ceil(@token-v4-font-size-sm * 1.4));
+@token-tabs-card-tab-line-height: @token-v4-font-size-base * @token-v4-line-height-base +
+  @token-v4-padding-sm * 2;
+@token-tabs-card-tab-line-height-lg: @token-v4-font-size-lg * @token-v4-line-height-base +
+  @token-v4-padding-md * 2;
+@token-tabs-card-tab-line-height-sm: @token-v4-font-size-base * @token-v4-line-height-base +
+  @token-v4-padding-xs * 2;
+@token-tabs-editable-card-padding-right: @token-v4-padding-md + 2px;
+@token-timeline-custom-head-top: -(@token-v4-font-size-base * @token-v4-line-height-base -
+  @token-v4-font-size-base) + 1px;
+@token-timeline-content-margin-left: @token-v4-padding-lg + 2px;
+@token-transfer-header-vertical-padding: ceil(
+  ((@transfer-header-height - 1px - @token-v4-font-size-base * @token-v4-line-height-base) / 2)
+);
+@token-transfer-header-padding-top: (@token-transfer-header-vertical-padding - 1px);
+@token-upload-list-item-height: @token-v4-line-height-base * @token-v4-font-size-base;
+@token-upload-list-item-padding-left: @token-v4-font-size-base + 8px;
+@token-upload-picture-item-padding-left: @token-v4-font-size-base + 12px;
+@token-upload-action-icon-top: (@token-v4-font-size-base / 2) - 2px;
+@token-float-button-badge-inset: (-@token-v4-padding-xss * 1.5);
+@token-float-button-group-badge-inset: -(@token-v4-padding-xss + @token-v4-padding-xss * 1.5);
+@token-select-single-arrow-padding: ceil(@token-v4-font-size-base * 1.25);
+@token-select-single-arrow-padding-lg: ceil(@token-v4-font-size-lg * 1.25);
+@token-spin-text-padding-top: ((@spin-dot-size - @token-v4-font-size-base) / 2) + 2px;
+@token-spin-text-padding-top-sm: ((@spin-dot-size-sm - @token-v4-font-size-base) / 2) + 2px;
+@token-spin-text-padding-top-lg: ((@spin-dot-size-lg - @token-v4-font-size-base) / 2) + 2px;
+@token-switch-loading-icon-top: (((@switch-height - 4px) - @token-v4-font-size-base) / 2);
+@token-tree-node-padding-negative: (-(@token-v4-padding-xs / 2));
+// Menu metrics; the formulas reproduce both the default and the compact.less
+// values (e.g. item height = @height-lg: 40px default, 32px compact).
+@token-menu-item-height: @token-v4-height-lg;
+@token-menu-horizontal-line-height: @token-v4-height-lg + 6px;
+@token-menu-item-padding-horizontal: @token-v4-control-padding-horizontal + @token-v4-padding-xs;
+@token-menu-item-vertical-margin: @token-v4-padding-xss;
+@token-menu-item-boundary-margin: @token-v4-padding-xss * 2;
+@token-menu-icon-margin-right: @token-v4-font-size-base - 4px;
+
+@{html-selector} {
+  // ======== Global size primitives ========
+  --@{ant-prefix}-font-size: @token-v4-font-size-base;
+  --@{ant-prefix}-font-size-lg: @token-v4-font-size-lg;
+  --@{ant-prefix}-font-size-sm: @token-v4-font-size-sm;
+  --@{ant-prefix}-font-size-heading1: @token-heading-1-size;
+  --@{ant-prefix}-font-size-heading2: @token-heading-2-size;
+  --@{ant-prefix}-font-size-heading3: @token-heading-3-size;
+  --@{ant-prefix}-font-size-heading4: @token-heading-4-size;
+  --@{ant-prefix}-font-size-heading5: @token-heading-5-size;
+  --@{ant-prefix}-line-height: @token-v4-line-height-base;
+  --@{ant-prefix}-line-height-lg: @token-v4-line-height-lg;
+  --@{ant-prefix}-control-height: @token-v4-height-base;
+  --@{ant-prefix}-control-height-lg: @token-v4-height-lg;
+  --@{ant-prefix}-control-height-sm: @token-v4-height-sm;
+  --@{ant-prefix}-border-radius: @token-v4-border-radius-base;
+  --@{ant-prefix}-border-radius-sm: @token-v4-border-radius-sm;
+  --@{ant-prefix}-border-radius-lg: @token-v4-border-radius-lg;
+  --@{ant-prefix}-padding-lg: @token-v4-padding-lg;
+  --@{ant-prefix}-padding: @token-v4-padding-md;
+  --@{ant-prefix}-padding-sm: @token-v4-padding-sm;
+  --@{ant-prefix}-padding-xs: @token-v4-padding-xs;
+  --@{ant-prefix}-padding-xxs: @token-v4-padding-xss;
+  --@{ant-prefix}-margin-lg: @token-v4-padding-lg;
+  --@{ant-prefix}-margin: @token-v4-padding-md;
+  --@{ant-prefix}-margin-sm: @token-v4-padding-sm;
+  --@{ant-prefix}-margin-xs: @token-v4-padding-xs;
+  --@{ant-prefix}-margin-xxs: @token-v4-padding-xss;
+  --@{ant-prefix}-control-padding-horizontal: @token-v4-control-padding-horizontal;
+  --@{ant-prefix}-control-padding-horizontal-sm: @token-v4-control-padding-horizontal-sm;
+
+// ======== Derived global values ========
+  --@{ant-prefix}-padding-xs-half: @token-padding-xs-half;
+  --@{ant-prefix}-margin-xs-half: @token-margin-xs-half;
+  --@{ant-prefix}-margin-sm-half: @token-margin-sm-half;
+  --@{ant-prefix}-font-height: @token-font-height;
+
+  // ======== Derived control values ========
+  --@{ant-prefix}-radio-button-padding-inline: @token-radio-button-padding-horizontal;
+  --@{ant-prefix}-tabs-card-horizontal-padding: @token-tabs-card-horizontal-padding;
+  --@{ant-prefix}-alert-padding-inline: @token-alert-padding-horizontal;
+  --@{ant-prefix}-alert-with-description-padding-block: @token-alert-padding-horizontal;
+  --@{ant-prefix}-alert-icon-top: @token-alert-icon-top;
+  --@{ant-prefix}-alert-description-line-height: @token-alert-description-line-height;
+  --@{ant-prefix}-modal-header-close-size: @token-modal-header-close-size;
+  --@{ant-prefix}-float-button-group-margin-offset: @token-float-button-group-margin-offset;
+  --@{ant-prefix}-float-button-badge-offset: @token-float-button-badge-offset;
+  --@{ant-prefix}-float-button-body-size: @token-float-button-body-size;
+  --@{ant-prefix}-float-button-icon-size: @token-float-button-icon-size;
+  --@{ant-prefix}-input-suffix-margin-inline: @token-input-suffix-margin-horizontal;
+  --@{ant-prefix}-input-feedback-padding-inline-end: @token-input-feedback-padding-right;
+  --@{ant-prefix}-input-search-line-height: @token-input-search-line-height;
+  --@{ant-prefix}-pagination-item-line-height: @token-pagination-item-line-height;
+  --@{ant-prefix}-steps-progress-icon-top: @token-steps-progress-icon-top;
+  --@{ant-prefix}-tabs-remove-margin-inline-end: @token-tabs-remove-margin-right;
+  --@{ant-prefix}-tabs-card-tab-line-height: @token-tabs-card-tab-line-height;
+  --@{ant-prefix}-tabs-card-tab-line-height-lg: @token-tabs-card-tab-line-height-lg;
+  --@{ant-prefix}-tabs-card-tab-line-height-sm: @token-tabs-card-tab-line-height-sm;
+  --@{ant-prefix}-tabs-editable-card-padding-inline-end: @token-tabs-editable-card-padding-right;
+  --@{ant-prefix}-transfer-item-line-height: @token-transfer-item-line-height;
+  --@{ant-prefix}-transfer-header-padding-block-start: @token-transfer-header-padding-top;
+  --@{ant-prefix}-transfer-header-padding-block: @token-transfer-header-vertical-padding;
+  --@{ant-prefix}-calendar-input-padding-inline: @token-calendar-input-padding-horizontal;
+  --@{ant-prefix}-dropdown-selected-padding-inline-end: @token-dropdown-selected-padding-right;
+  --@{ant-prefix}-form-label-wrap-line-height: @token-form-label-wrap-line-height;
+  --@{ant-prefix}-date-picker-panel-width: @token-picker-panel-width;
+  --@{ant-prefix}-date-picker-year-month-cell-margin: @token-picker-year-month-cell-margin;
+  --@{ant-prefix}-date-picker-footer-extra-line-height: @token-picker-footer-extra-line-height;
+  --@{ant-prefix}-select-icon-margin-top: @token-select-icon-margin-top;
+  --@{ant-prefix}-select-grouped-padding-inline-start: @token-select-grouped-padding-left;
+  --@{ant-prefix}-select-show-arrow-item-padding-inline-end: @token-select-show-arrow-item-padding-right;
+  --@{ant-prefix}-skeleton-button-width: @token-skeleton-button-width-base;
+  --@{ant-prefix}-skeleton-button-width-lg: @token-skeleton-button-width-lg;
+  --@{ant-prefix}-skeleton-button-width-sm: @token-skeleton-button-width-sm;
+  --@{ant-prefix}-skeleton-input-width: @token-skeleton-input-width-base;
+  --@{ant-prefix}-skeleton-input-width-lg: @token-skeleton-input-width-lg;
+  --@{ant-prefix}-skeleton-input-width-sm: @token-skeleton-input-width-sm;
+  --@{ant-prefix}-table-expand-icon-size: @token-table-expand-icon-size;
+  --@{ant-prefix}-table-expand-icon-offset: @token-table-expand-icon-offset;
+  --@{ant-prefix}-table-expand-icon-scale: @token-table-expand-icon-scale;
+  --@{ant-prefix}-table-expand-icon-margin-top: @token-table-expand-icon-margin-top;
+  --@{ant-prefix}-table-rtl-expand-icon-margin-inline-end: @token-table-rtl-expand-icon-margin-right;
+  --@{ant-prefix}-timeline-custom-head-top: @token-timeline-custom-head-top;
+  --@{ant-prefix}-timeline-content-margin-inline-start: @token-timeline-content-margin-left;
+  --@{ant-prefix}-upload-list-item-height: @token-upload-list-item-height;
+  --@{ant-prefix}-upload-list-item-padding-inline-start: @token-upload-list-item-padding-left;
+  --@{ant-prefix}-upload-picture-item-padding-inline-start: @token-upload-picture-item-padding-left;
+  --@{ant-prefix}-upload-action-icon-top: @token-upload-action-icon-top;
+  --@{ant-prefix}-float-button-badge-inset: @token-float-button-badge-inset;
+  --@{ant-prefix}-float-button-group-badge-inset: @token-float-button-group-badge-inset;
+  --@{ant-prefix}-select-single-arrow-padding: @token-select-single-arrow-padding;
+  --@{ant-prefix}-select-single-arrow-padding-lg: @token-select-single-arrow-padding-lg;
+  --@{ant-prefix}-spin-text-padding-top: @token-spin-text-padding-top;
+  --@{ant-prefix}-spin-text-padding-top-sm: @token-spin-text-padding-top-sm;
+  --@{ant-prefix}-spin-text-padding-top-lg: @token-spin-text-padding-top-lg;
+  --@{ant-prefix}-switch-loading-icon-top: @token-switch-loading-icon-top;
+  --@{ant-prefix}-tree-node-padding-negative: @token-tree-node-padding-negative;
+  --@{ant-prefix}-menu-item-height: @token-menu-item-height;
+  --@{ant-prefix}-menu-inline-toplevel-item-height: @token-menu-item-height;
+  --@{ant-prefix}-menu-horizontal-line-height: @token-menu-horizontal-line-height;
+  --@{ant-prefix}-menu-item-padding-inline: @token-menu-item-padding-horizontal;
+  --@{ant-prefix}-menu-item-vertical-margin: @token-menu-item-vertical-margin;
+  --@{ant-prefix}-menu-item-boundary-margin: @token-menu-item-boundary-margin;
+  --@{ant-prefix}-menu-icon-margin-inline-end: @token-menu-icon-margin-right;
+}
+
+// Arrow geometry is computed with unit()/sqrt() math in
+// mixins/rounded-arrow.less and cannot operate on var() strings; the arrow
+// radius stays static in token mode (same resolved value as today).
+@arrow-border-radius: @token-v4-border-radius-sm;
+
+// The form explain/extra offset feeds sign guards and floor()/ceil(), which
+// cannot operate on var() strings, so it stays static in token mode. No outer
+// parens: under `math: parens-division` the `/ 2` must stay unevaluated so the
+// guards never match (upstream emits nothing from it in any theme).
+@form-explain-and-extra-distance: (@form-item-margin-bottom - @token-form-font-height) / 2;
+
+@font-size-base: ~'var(--@{ant-prefix}-font-size)';
+@font-size-lg: ~'var(--@{ant-prefix}-font-size-lg)';
+@font-size-sm: ~'var(--@{ant-prefix}-font-size-sm)';
+@heading-1-size: ~'var(--@{ant-prefix}-font-size-heading1)';
+@heading-2-size: ~'var(--@{ant-prefix}-font-size-heading2)';
+@heading-3-size: ~'var(--@{ant-prefix}-font-size-heading3)';
+@heading-4-size: ~'var(--@{ant-prefix}-font-size-heading4)';
+@heading-5-size: ~'var(--@{ant-prefix}-font-size-heading5)';
+@line-height-base: ~'var(--@{ant-prefix}-line-height)';
+@line-height-lg: ~'var(--@{ant-prefix}-line-height-lg)';
+@height-base: ~'var(--@{ant-prefix}-control-height)';
+@height-lg: ~'var(--@{ant-prefix}-control-height-lg)';
+@height-sm: ~'var(--@{ant-prefix}-control-height-sm)';
+@border-radius-base: ~'var(--@{ant-prefix}-border-radius)';
+@border-radius-sm: ~'var(--@{ant-prefix}-border-radius-sm)';
+@border-radius-lg: ~'var(--@{ant-prefix}-border-radius-lg)';
+@padding-lg: ~'var(--@{ant-prefix}-padding-lg)';
+@padding-md: ~'var(--@{ant-prefix}-padding)';
+@padding-sm: ~'var(--@{ant-prefix}-padding-sm)';
+@padding-xs: ~'var(--@{ant-prefix}-padding-xs)';
+@padding-xss: ~'var(--@{ant-prefix}-padding-xxs)';
+@margin-lg: ~'var(--@{ant-prefix}-margin-lg)';
+@margin-md: ~'var(--@{ant-prefix}-margin)';
+@margin-sm: ~'var(--@{ant-prefix}-margin-sm)';
+@margin-xs: ~'var(--@{ant-prefix}-margin-xs)';
+@margin-xss: ~'var(--@{ant-prefix}-margin-xxs)';
+@control-padding-horizontal: ~'var(--@{ant-prefix}-control-padding-horizontal)';
+@control-padding-horizontal-sm: ~'var(--@{ant-prefix}-control-padding-horizontal-sm)';
+
+// ======== Derived global values ========
+@padding-xs-half: ~'var(--@{ant-prefix}-padding-xs-half)';
+@margin-xs-half: ~'var(--@{ant-prefix}-margin-xs-half)';
+@margin-sm-half: ~'var(--@{ant-prefix}-margin-sm-half)';
+@font-height-base: ~'var(--@{ant-prefix}-font-height)';
+
+// ======== Derived control values ========
+@radio-button-padding-horizontal: ~'var(--@{ant-prefix}-radio-button-padding-inline)';
+@tabs-card-horizontal-padding: ~'var(--@{ant-prefix}-tabs-card-horizontal-padding)';
+@alert-padding-horizontal: ~'var(--@{ant-prefix}-alert-padding-inline)';
+@alert-with-description-no-icon-padding-vertical: ~'var(--@{ant-prefix}-alert-with-description-padding-block)';
+@alert-with-description-padding-vertical: ~'var(--@{ant-prefix}-alert-with-description-padding-block)';
+@alert-icon-top: ~'var(--@{ant-prefix}-alert-icon-top)';
+@alert-description-line-height: ~'var(--@{ant-prefix}-alert-description-line-height)';
+@modal-header-close-size: ~'var(--@{ant-prefix}-modal-header-close-size)';
+@float-button-group-margin-offset: ~'var(--@{ant-prefix}-float-button-group-margin-offset)';
+@float-button-badge-offset: ~'var(--@{ant-prefix}-float-button-badge-offset)';
+@float-button-body-size: ~'var(--@{ant-prefix}-float-button-body-size)';
+@float-button-icon-size: ~'var(--@{ant-prefix}-float-button-icon-size)';
+@input-suffix-margin-horizontal: ~'var(--@{ant-prefix}-input-suffix-margin-inline)';
+@input-feedback-padding-right: ~'var(--@{ant-prefix}-input-feedback-padding-inline-end)';
+@input-search-line-height: ~'var(--@{ant-prefix}-input-search-line-height)';
+@pagination-item-line-height: ~'var(--@{ant-prefix}-pagination-item-line-height)';
+@steps-progress-icon-top: ~'var(--@{ant-prefix}-steps-progress-icon-top)';
+@tabs-remove-margin-right: ~'var(--@{ant-prefix}-tabs-remove-margin-inline-end)';
+@tabs-card-tab-line-height: ~'var(--@{ant-prefix}-tabs-card-tab-line-height)';
+@tabs-card-tab-line-height-lg: ~'var(--@{ant-prefix}-tabs-card-tab-line-height-lg)';
+@tabs-card-tab-line-height-sm: ~'var(--@{ant-prefix}-tabs-card-tab-line-height-sm)';
+@tabs-editable-card-padding-right: ~'var(--@{ant-prefix}-tabs-editable-card-padding-inline-end)';
+@transfer-item-line-height: ~'var(--@{ant-prefix}-transfer-item-line-height)';
+@transfer-header-padding-top: ~'var(--@{ant-prefix}-transfer-header-padding-block-start)';
+@transfer-header-vertical-padding: ~'var(--@{ant-prefix}-transfer-header-padding-block)';
+@calendar-input-padding-horizontal: ~'var(--@{ant-prefix}-calendar-input-padding-inline)';
+@dropdown-selected-padding-right: ~'var(--@{ant-prefix}-dropdown-selected-padding-inline-end)';
+@form-label-wrap-line-height: ~'var(--@{ant-prefix}-form-label-wrap-line-height)';
+@picker-panel-width: ~'var(--@{ant-prefix}-date-picker-panel-width)';
+@picker-year-month-cell-margin: ~'var(--@{ant-prefix}-date-picker-year-month-cell-margin)';
+@picker-footer-extra-line-height: ~'var(--@{ant-prefix}-date-picker-footer-extra-line-height)';
+@select-icon-margin-top: ~'var(--@{ant-prefix}-select-icon-margin-top)';
+@select-grouped-padding-left: ~'var(--@{ant-prefix}-select-grouped-padding-inline-start)';
+@select-show-arrow-item-padding-right: ~'var(--@{ant-prefix}-select-show-arrow-item-padding-inline-end)';
+@skeleton-button-width-base: ~'var(--@{ant-prefix}-skeleton-button-width)';
+@skeleton-button-width-lg: ~'var(--@{ant-prefix}-skeleton-button-width-lg)';
+@skeleton-button-width-sm: ~'var(--@{ant-prefix}-skeleton-button-width-sm)';
+@skeleton-input-width-base: ~'var(--@{ant-prefix}-skeleton-input-width)';
+@skeleton-input-width-lg: ~'var(--@{ant-prefix}-skeleton-input-width-lg)';
+@skeleton-input-width-sm: ~'var(--@{ant-prefix}-skeleton-input-width-sm)';
+@table-expand-icon-size: ~'var(--@{ant-prefix}-table-expand-icon-size)';
+@table-expand-icon-offset: ~'var(--@{ant-prefix}-table-expand-icon-offset)';
+@table-expand-icon-scale: ~'var(--@{ant-prefix}-table-expand-icon-scale)';
+@table-expand-icon-margin-top: ~'var(--@{ant-prefix}-table-expand-icon-margin-top)';
+@table-rtl-expand-icon-margin-right: ~'var(--@{ant-prefix}-table-rtl-expand-icon-margin-inline-end)';
+@timeline-custom-head-top: ~'var(--@{ant-prefix}-timeline-custom-head-top)';
+@timeline-content-margin-left: ~'var(--@{ant-prefix}-timeline-content-margin-inline-start)';
+@upload-list-item-height: ~'var(--@{ant-prefix}-upload-list-item-height)';
+@upload-list-item-padding-left: ~'var(--@{ant-prefix}-upload-list-item-padding-inline-start)';
+@upload-picture-item-padding-left: ~'var(--@{ant-prefix}-upload-picture-item-padding-inline-start)';
+@upload-action-icon-top: ~'var(--@{ant-prefix}-upload-action-icon-top)';
+@float-button-badge-inset: ~'var(--@{ant-prefix}-float-button-badge-inset)';
+@float-button-group-badge-inset: ~'var(--@{ant-prefix}-float-button-group-badge-inset)';
+@select-single-arrow-padding: ~'var(--@{ant-prefix}-select-single-arrow-padding)';
+@select-single-arrow-padding-lg: ~'var(--@{ant-prefix}-select-single-arrow-padding-lg)';
+@spin-text-padding-top: ~'var(--@{ant-prefix}-spin-text-padding-top)';
+@spin-text-padding-top-sm: ~'var(--@{ant-prefix}-spin-text-padding-top-sm)';
+@spin-text-padding-top-lg: ~'var(--@{ant-prefix}-spin-text-padding-top-lg)';
+@switch-loading-icon-top: ~'var(--@{ant-prefix}-switch-loading-icon-top)';
+@tree-node-padding-negative: ~'var(--@{ant-prefix}-tree-node-padding-negative)';
+@menu-item-height: ~'var(--@{ant-prefix}-menu-item-height)';
+@menu-inline-toplevel-item-height: ~'var(--@{ant-prefix}-menu-inline-toplevel-item-height)';
+@menu-horizontal-line-height: ~'var(--@{ant-prefix}-menu-horizontal-line-height)';
+@menu-item-padding-horizontal: ~'var(--@{ant-prefix}-menu-item-padding-inline)';
+@menu-item-vertical-margin: ~'var(--@{ant-prefix}-menu-item-vertical-margin)';
+@menu-item-boundary-margin: ~'var(--@{ant-prefix}-menu-item-boundary-margin)';
+@menu-icon-margin-right: ~'var(--@{ant-prefix}-menu-icon-margin-inline-end)';
+
+// ============================================================
+// Button
+// ============================================================
+@token-btn-text-hover-bg: rgba(0, 0, 0, 0.018);
+@token-btn-only-icon-size: @token-v4-font-size-base + 2px;
+@token-btn-only-icon-size-lg: @token-v4-font-size-lg + 2px;
+@token-btn-padding-horizontal: @token-v4-padding-md - 1px;
+@token-btn-padding-horizontal-sm: @token-v4-padding-xs - 1px;
+@token-btn-circle-padding-horizontal: (@token-v4-height-base / 2);
+@token-btn-circle-padding-horizontal-lg: (@token-v4-height-lg / 2);
+@token-btn-circle-padding-horizontal-sm: (@token-v4-height-sm / 2);
+@token-btn-anchor-line-height: @token-v4-height-base - 2px;
+@token-btn-anchor-line-height-lg: @token-v4-height-lg - 2px;
+@token-btn-anchor-line-height-sm: @token-v4-height-sm - 2px;
+@token-btn-padding-vertical-base: max(
+  (round(((@token-v4-height-base - @token-v4-font-size-base * @token-v4-line-height-base) / 2) * 10) / 10) -
+    @border-width-base,
+  0
+);
+@token-btn-padding-vertical-lg: max(
+  (round(((@token-v4-height-lg - @token-v4-font-size-lg * @token-v4-line-height-base) / 2) * 10) / 10) -
+    @border-width-base,
+  0
+);
+@token-btn-padding-vertical-sm: max(
+  (round(((@token-v4-height-sm - @token-v4-font-size-base * @token-v4-line-height-base) / 2) * 10) / 10) -
+    @border-width-base,
+  0
+);
+@token-btn-only-icon-padding-vertical-base: max(
+  (round(((@token-v4-height-base - (@token-v4-font-size-base + 2px) * @token-v4-line-height-base) / 2) * 10) / 10) -
+    @border-width-base,
+  0
+);
+@token-btn-only-icon-padding-vertical-lg: max(
+  (round(((@token-v4-height-lg - (@token-v4-font-size-lg + 2px) * @token-v4-line-height-base) / 2) * 10) / 10) -
+    @border-width-base,
+  0
+);
+@token-btn-only-icon-padding-vertical-sm: max(
+  (round(((@token-v4-height-sm - @token-v4-font-size-base * @token-v4-line-height-base) / 2) * 10) / 10) -
+    @border-width-base,
+  0
+);
+
+@{html-selector} {
+  // ======== Button component tokens ========
+  --@{ant-prefix}-button-font-weight: 400;
+  --@{ant-prefix}-button-border-radius: @token-v4-border-radius-base;
+  --@{ant-prefix}-button-border-radius-sm: @token-v4-border-radius-base;
+  --@{ant-prefix}-button-default-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+  --@{ant-prefix}-button-primary-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+  --@{ant-prefix}-button-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+  --@{ant-prefix}-button-primary-color: #fff;
+  --@{ant-prefix}-button-default-color: @text-color;
+  --@{ant-prefix}-button-default-bg: @component-background;
+  --@{ant-prefix}-button-default-border-color: @border-color-base;
+  --@{ant-prefix}-button-danger-color: #fff;
+  --@{ant-prefix}-button-disabled-color: @disabled-color;
+  --@{ant-prefix}-button-disabled-bg: @disabled-bg;
+  --@{ant-prefix}-button-disabled-border-color: @border-color-base;
+  --@{ant-prefix}-button-ghost-color: @component-background;
+  --@{ant-prefix}-button-ghost-bg: transparent;
+  --@{ant-prefix}-button-ghost-border-color: @component-background;
+  --@{ant-prefix}-button-content-font-size: @token-v4-font-size-base;
+  --@{ant-prefix}-button-content-font-size-lg: @token-v4-font-size-lg;
+  --@{ant-prefix}-button-content-font-size-sm: @token-v4-font-size-base;
+  --@{ant-prefix}-button-only-icon-size: @token-btn-only-icon-size;
+  --@{ant-prefix}-button-only-icon-size-lg: @token-btn-only-icon-size-lg;
+  --@{ant-prefix}-button-only-icon-size-sm: @token-v4-font-size-base;
+  --@{ant-prefix}-button-control-height: @token-v4-height-base;
+  --@{ant-prefix}-button-control-height-lg: @token-v4-height-lg;
+  --@{ant-prefix}-button-control-height-sm: @token-v4-height-sm;
+  --@{ant-prefix}-button-padding-inline: @token-btn-padding-horizontal;
+  --@{ant-prefix}-button-padding-inline-lg: @token-btn-padding-horizontal;
+  --@{ant-prefix}-button-padding-inline-sm: @token-btn-padding-horizontal-sm;
+  --@{ant-prefix}-button-padding-block: @token-btn-padding-vertical-base;
+  --@{ant-prefix}-button-padding-block-lg: @token-btn-padding-vertical-lg;
+  --@{ant-prefix}-button-padding-block-sm: @token-btn-padding-vertical-sm;
+  --@{ant-prefix}-button-only-icon-padding-block: @token-btn-only-icon-padding-vertical-base;
+  --@{ant-prefix}-button-only-icon-padding-block-lg: @token-btn-only-icon-padding-vertical-lg;
+  --@{ant-prefix}-button-only-icon-padding-block-sm: @token-btn-only-icon-padding-vertical-sm;
+  --@{ant-prefix}-button-circle-padding-inline: @token-btn-circle-padding-horizontal;
+  --@{ant-prefix}-button-circle-padding-inline-lg: @token-btn-circle-padding-horizontal-lg;
+  --@{ant-prefix}-button-circle-padding-inline-sm: @token-btn-circle-padding-horizontal-sm;
+  --@{ant-prefix}-button-text-hover-bg: @token-btn-text-hover-bg;
+  --@{ant-prefix}-button-text-active-bg: fadein(@token-btn-text-hover-bg, 1%);
+  --@{ant-prefix}-button-link-hover-bg: transparent;
+  --@{ant-prefix}-button-group-border-color: var(--@{ant-prefix}-primary-5);
+  --@{ant-prefix}-button-line-height: @token-v4-line-height-base;
+  --@{ant-prefix}-button-anchor-line-height: @token-btn-anchor-line-height;
+  --@{ant-prefix}-button-anchor-line-height-lg: @token-btn-anchor-line-height-lg;
+  --@{ant-prefix}-button-anchor-line-height-sm: @token-btn-anchor-line-height-sm;
+}
+
+@btn-font-weight: ~'var(--@{ant-prefix}-button-font-weight)';
+@btn-border-radius-base: ~'var(--@{ant-prefix}-button-border-radius)';
+@btn-border-radius-sm: ~'var(--@{ant-prefix}-button-border-radius-sm)';
+@btn-shadow: ~'var(--@{ant-prefix}-button-default-shadow)';
+@btn-primary-shadow: ~'var(--@{ant-prefix}-button-primary-shadow)';
+@btn-text-shadow: ~'var(--@{ant-prefix}-button-text-shadow)';
+
+@btn-primary-color: ~'var(--@{ant-prefix}-button-primary-color)';
+@btn-default-color: ~'var(--@{ant-prefix}-button-default-color)';
+@btn-default-bg: ~'var(--@{ant-prefix}-button-default-bg)';
+@btn-default-border: ~'var(--@{ant-prefix}-button-default-border-color)';
+@btn-danger-color: ~'var(--@{ant-prefix}-button-danger-color)';
+
+@btn-disable-color: ~'var(--@{ant-prefix}-button-disabled-color)';
+@btn-disable-bg: ~'var(--@{ant-prefix}-button-disabled-bg)';
+@btn-disable-border: ~'var(--@{ant-prefix}-button-disabled-border-color)';
+
+@btn-default-ghost-color: ~'var(--@{ant-prefix}-button-ghost-color)';
+@btn-default-ghost-bg: ~'var(--@{ant-prefix}-button-ghost-bg)';
+@btn-default-ghost-border: ~'var(--@{ant-prefix}-button-ghost-border-color)';
+
+@btn-font-size-base: ~'var(--@{ant-prefix}-button-content-font-size)';
+@btn-font-size-lg: ~'var(--@{ant-prefix}-button-content-font-size-lg)';
+@btn-font-size-sm: ~'var(--@{ant-prefix}-button-content-font-size-sm)';
+@btn-padding-horizontal-base: ~'var(--@{ant-prefix}-button-padding-inline)';
+@btn-padding-horizontal-lg: ~'var(--@{ant-prefix}-button-padding-inline-lg)';
+@btn-padding-horizontal-sm: ~'var(--@{ant-prefix}-button-padding-inline-sm)';
+@btn-padding-vertical-base: ~'var(--@{ant-prefix}-button-padding-block)';
+@btn-padding-vertical-lg: ~'var(--@{ant-prefix}-button-padding-block-lg)';
+@btn-padding-vertical-sm: ~'var(--@{ant-prefix}-button-padding-block-sm)';
+
+@btn-height-base: ~'var(--@{ant-prefix}-button-control-height)';
+@btn-height-lg: ~'var(--@{ant-prefix}-button-control-height-lg)';
+@btn-height-sm: ~'var(--@{ant-prefix}-button-control-height-sm)';
+@btn-line-height: ~'var(--@{ant-prefix}-button-line-height)';
+@btn-anchor-line-height-base: ~'var(--@{ant-prefix}-button-anchor-line-height)';
+@btn-anchor-line-height-lg: ~'var(--@{ant-prefix}-button-anchor-line-height-lg)';
+@btn-anchor-line-height-sm: ~'var(--@{ant-prefix}-button-anchor-line-height-sm)';
+
+@btn-circle-size: ~'var(--@{ant-prefix}-button-control-height)';
+@btn-circle-size-lg: ~'var(--@{ant-prefix}-button-control-height-lg)';
+@btn-circle-size-sm: ~'var(--@{ant-prefix}-button-control-height-sm)';
+@btn-circle-padding-horizontal-base: ~'var(--@{ant-prefix}-button-circle-padding-inline)';
+@btn-circle-padding-horizontal-lg: ~'var(--@{ant-prefix}-button-circle-padding-inline-lg)';
+@btn-circle-padding-horizontal-sm: ~'var(--@{ant-prefix}-button-circle-padding-inline-sm)';
+@btn-circle-padding-vertical-base: ~'var(--@{ant-prefix}-button-padding-block)';
+@btn-circle-padding-vertical-lg: ~'var(--@{ant-prefix}-button-padding-block-lg)';
+@btn-circle-padding-vertical-sm: ~'var(--@{ant-prefix}-button-padding-block-sm)';
+
+@btn-square-size: ~'var(--@{ant-prefix}-button-control-height)';
+@btn-square-size-lg: ~'var(--@{ant-prefix}-button-control-height-lg)';
+@btn-square-size-sm: ~'var(--@{ant-prefix}-button-control-height-sm)';
+@btn-square-only-icon-size: ~'var(--@{ant-prefix}-button-only-icon-size)';
+@btn-square-only-icon-size-lg: ~'var(--@{ant-prefix}-button-only-icon-size-lg)';
+@btn-square-only-icon-size-sm: ~'var(--@{ant-prefix}-button-only-icon-size-sm)';
+@btn-square-padding-vertical-base: ~'var(--@{ant-prefix}-button-only-icon-padding-block)';
+@btn-square-padding-vertical-lg: ~'var(--@{ant-prefix}-button-only-icon-padding-block-lg)';
+@btn-square-padding-vertical-sm: ~'var(--@{ant-prefix}-button-only-icon-padding-block-sm)';
+
+@btn-group-border: ~'var(--@{ant-prefix}-button-group-border-color)';
+@btn-link-hover-bg: ~'var(--@{ant-prefix}-button-link-hover-bg)';
+@btn-text-hover-bg: ~'var(--@{ant-prefix}-button-text-hover-bg)';
+@btn-text-active-bg: ~'var(--@{ant-prefix}-button-text-active-bg)';
+
+// ============================================================
+// Input & controls deriving from the input metrics
+// ============================================================
+@token-input-padding-horizontal: @token-v4-control-padding-horizontal - @line-width;
+@token-input-padding-horizontal-sm: @token-v4-control-padding-horizontal-sm - @line-width;
+@token-input-padding-vertical-base: max(
+  (round(((@token-v4-height-base - @token-v4-font-size-base * @token-v4-line-height-base) / 2) * 10) / 10) -
+    @border-width-base,
+  3px
+);
+@token-input-padding-vertical-sm: max(
+  (round(((@token-v4-height-sm - @token-v4-font-size-base * @token-v4-line-height-base) / 2) * 10) / 10) -
+    @border-width-base,
+  0
+);
+@token-input-padding-vertical-lg: (
+    ceil(((@token-v4-height-lg - @token-v4-font-size-lg * @token-v4-line-height-base) / 2) * 10) / 10
+  ) - @border-width-base;
+@token-input-addon-select-margin-vertical: -(@token-input-padding-vertical-base + 1px);
+@token-input-addon-select-margin-horizontal: (-@token-input-padding-horizontal);
+@token-control-inner-height-base: @token-v4-height-base - 2px;
+@token-control-inner-height-lg: @token-v4-height-lg - 2px;
+@token-control-inner-height-sm: @token-v4-height-sm - 2px;
+@token-segmented-item-min-height-base: @token-v4-height-base - @segmented-container-padding * 2;
+@token-segmented-item-min-height-lg: @token-v4-height-lg - @segmented-container-padding * 2;
+@token-segmented-item-min-height-sm: @token-v4-height-sm - @segmented-container-padding * 2;
+@token-typography-edit-content-inset: (-@token-input-padding-horizontal - 1px);
+@token-typography-edit-content-margin-top: (-@token-input-padding-vertical-base - 1px);
+@token-form-rtl-feedback-padding-left: @token-input-padding-horizontal + @token-v4-font-size-base * 1.3;
+@token-form-rtl-feedback-padding-left-sm: @token-input-padding-horizontal-sm + @token-v4-font-size-base * 1.3;
+@token-picker-font-height-base: floor(@token-v4-font-size-base * @token-v4-line-height-base) + 2;
+@token-picker-font-height-lg: floor(@token-v4-font-size-lg * @token-v4-line-height-base) + 2;
+@token-picker-padding-top-base: max(((@token-v4-height-base - @token-picker-font-height-base) / 2), 0);
+@token-picker-padding-bottom-base: max(
+  @token-v4-height-base - @token-picker-font-height-base - @token-picker-padding-top-base,
+  0
+);
+@token-picker-padding-top-lg: max(((@token-v4-height-lg - @token-picker-font-height-lg) / 2), 0);
+@token-picker-padding-bottom-lg: max(
+  @token-v4-height-lg - @token-picker-font-height-lg - @token-picker-padding-top-lg,
+  0
+);
+@token-picker-padding-top-sm: max(((@token-v4-height-sm - @token-picker-font-height-base) / 2), 0);
+@token-picker-padding-bottom-sm: max(
+  @token-v4-height-sm - @token-picker-font-height-base - @token-picker-padding-top-sm,
+  0
+);
+@token-picker-preset-offset: @token-input-padding-horizontal * 1.5;
+@token-select-single-content-height: @token-v4-height-base - 2 * @line-width;
+@token-select-single-content-height-sm: @token-v4-height-sm - 2 * @line-width;
+@token-select-small-arrow-padding-inline-end: @token-input-padding-horizontal-sm + @token-v4-font-size-base * 1.5;
+@token-select-multiple-item-height: @token-v4-height-base - @token-input-padding-vertical-base * 2;
+@token-select-multiple-item-height-sm: @token-v4-height-sm - @token-input-padding-vertical-base * 2;
+@token-select-multiple-item-spacing-half: ceil((@token-input-padding-vertical-base / 2));
+
+@{html-selector} {
+  // ======== Input component tokens ========
+  --@{ant-prefix}-input-control-height: @token-v4-height-base;
+  --@{ant-prefix}-input-control-height-lg: @token-v4-height-lg;
+  --@{ant-prefix}-input-control-height-sm: @token-v4-height-sm;
+  --@{ant-prefix}-input-padding-inline: @token-input-padding-horizontal;
+  --@{ant-prefix}-input-padding-inline-sm: @token-input-padding-horizontal-sm;
+  --@{ant-prefix}-input-padding-block: @token-input-padding-vertical-base;
+  --@{ant-prefix}-input-padding-block-lg: @token-input-padding-vertical-lg;
+  --@{ant-prefix}-input-padding-block-sm: @token-input-padding-vertical-sm;
+  --@{ant-prefix}-input-addon-select-margin-block: @token-input-addon-select-margin-vertical;
+  --@{ant-prefix}-input-addon-select-margin-inline: @token-input-addon-select-margin-horizontal;
+  --@{ant-prefix}-input-color: @text-color;
+  --@{ant-prefix}-input-bg: @component-background;
+  --@{ant-prefix}-input-border-color: @border-color-base;
+  --@{ant-prefix}-input-hover-border-color: var(--@{ant-prefix}-primary-5);
+  --@{ant-prefix}-input-placeholder-color: #bfbfbf; // hsv(0, 0, 75%)
+  --@{ant-prefix}-input-icon-color: @text-color;
+  --@{ant-prefix}-input-icon-hover-color: fade(@black, 85%);
+  --@{ant-prefix}-input-disabled-color: @disabled-color;
+  --@{ant-prefix}-input-disabled-bg: @disabled-bg;
+  --@{ant-prefix}-input-addon-bg: @background-color-light;
+
+  // ======== Tokens other controls derive from the input metrics ========
+  --@{ant-prefix}-input-number-inner-height: @token-control-inner-height-base;
+  --@{ant-prefix}-input-number-inner-height-lg: @token-control-inner-height-lg;
+  --@{ant-prefix}-input-number-inner-height-sm: @token-control-inner-height-sm;
+  --@{ant-prefix}-mention-editor-min-height: @token-control-inner-height-base;
+  --@{ant-prefix}-radio-button-line-height-lg: @token-control-inner-height-lg;
+  --@{ant-prefix}-radio-button-line-height-sm: @token-control-inner-height-sm;
+  --@{ant-prefix}-segmented-item-min-height: @token-segmented-item-min-height-base;
+  --@{ant-prefix}-segmented-item-min-height-lg: @token-segmented-item-min-height-lg;
+  --@{ant-prefix}-segmented-item-min-height-sm: @token-segmented-item-min-height-sm;
+  --@{ant-prefix}-typography-edit-content-inset: @token-typography-edit-content-inset;
+  --@{ant-prefix}-typography-edit-content-margin-block-start: @token-typography-edit-content-margin-top;
+  --@{ant-prefix}-form-rtl-feedback-padding-left: @token-form-rtl-feedback-padding-left;
+  --@{ant-prefix}-form-rtl-feedback-padding-left-lg: @token-form-rtl-feedback-padding-left;
+  --@{ant-prefix}-form-rtl-feedback-padding-left-sm: @token-form-rtl-feedback-padding-left-sm;
+  --@{ant-prefix}-date-picker-padding-block-start: @token-picker-padding-top-base;
+  --@{ant-prefix}-date-picker-padding-block-end: @token-picker-padding-bottom-base;
+  --@{ant-prefix}-date-picker-padding-block-start-lg: @token-picker-padding-top-lg;
+  --@{ant-prefix}-date-picker-padding-block-end-lg: @token-picker-padding-bottom-lg;
+  --@{ant-prefix}-date-picker-padding-block-start-sm: @token-picker-padding-top-sm;
+  --@{ant-prefix}-date-picker-padding-block-end-sm: @token-picker-padding-bottom-sm;
+  --@{ant-prefix}-date-picker-preset-offset: @token-picker-preset-offset;
+  --@{ant-prefix}-select-single-content-height: @token-select-single-content-height;
+  --@{ant-prefix}-select-single-content-height-sm: @token-select-single-content-height-sm;
+  --@{ant-prefix}-select-small-arrow-padding-inline-end: @token-select-small-arrow-padding-inline-end;
+  --@{ant-prefix}-select-multiple-item-height: @token-select-multiple-item-height;
+  --@{ant-prefix}-select-multiple-item-height-sm: @token-select-multiple-item-height-sm;
+  --@{ant-prefix}-select-multiple-item-spacing-half: @token-select-multiple-item-spacing-half;
+}
+
+// ======== Input ========
+@input-height-base: ~'var(--@{ant-prefix}-input-control-height)';
+@input-height-lg: ~'var(--@{ant-prefix}-input-control-height-lg)';
+@input-height-sm: ~'var(--@{ant-prefix}-input-control-height-sm)';
+@input-derived-padding-horizontal: ~'var(--@{ant-prefix}-input-padding-inline)';
+@input-derived-padding-horizontal-sm: ~'var(--@{ant-prefix}-input-padding-inline-sm)';
+@input-derived-padding-vertical-base: ~'var(--@{ant-prefix}-input-padding-block)';
+@input-derived-padding-vertical-sm: ~'var(--@{ant-prefix}-input-padding-block-sm)';
+@input-derived-padding-vertical-lg: ~'var(--@{ant-prefix}-input-padding-block-lg)';
+@input-addon-select-margin-vertical: ~'var(--@{ant-prefix}-input-addon-select-margin-block)';
+@input-addon-select-margin-horizontal: ~'var(--@{ant-prefix}-input-addon-select-margin-inline)';
+@input-color: ~'var(--@{ant-prefix}-input-color)';
+@input-bg: ~'var(--@{ant-prefix}-input-bg)';
+@input-border-color: ~'var(--@{ant-prefix}-input-border-color)';
+@input-hover-border-color: ~'var(--@{ant-prefix}-input-hover-border-color)';
+@input-placeholder-color: ~'var(--@{ant-prefix}-input-placeholder-color)';
+@input-icon-color: ~'var(--@{ant-prefix}-input-icon-color)';
+@input-icon-hover-color: ~'var(--@{ant-prefix}-input-icon-hover-color)';
+@input-disabled-color: ~'var(--@{ant-prefix}-input-disabled-color)';
+@input-disabled-bg: ~'var(--@{ant-prefix}-input-disabled-bg)';
+@input-addon-bg: ~'var(--@{ant-prefix}-input-addon-bg)';
+
+// ======== Controls deriving from the input metrics ========
+@input-number-inner-height-base: ~'var(--@{ant-prefix}-input-number-inner-height)';
+@input-number-inner-height-lg: ~'var(--@{ant-prefix}-input-number-inner-height-lg)';
+@input-number-inner-height-sm: ~'var(--@{ant-prefix}-input-number-inner-height-sm)';
+@mention-editor-min-height: ~'var(--@{ant-prefix}-mention-editor-min-height)';
+@radio-button-line-height-lg: ~'var(--@{ant-prefix}-radio-button-line-height-lg)';
+@radio-button-line-height-sm: ~'var(--@{ant-prefix}-radio-button-line-height-sm)';
+@segmented-item-min-height-base: ~'var(--@{ant-prefix}-segmented-item-min-height)';
+@segmented-item-min-height-lg: ~'var(--@{ant-prefix}-segmented-item-min-height-lg)';
+@segmented-item-min-height-sm: ~'var(--@{ant-prefix}-segmented-item-min-height-sm)';
+@typography-edit-content-inset: ~'var(--@{ant-prefix}-typography-edit-content-inset)';
+@typography-edit-content-margin-top: ~'var(--@{ant-prefix}-typography-edit-content-margin-block-start)';
+@form-rtl-feedback-padding-left-base: ~'var(--@{ant-prefix}-form-rtl-feedback-padding-left)';
+@form-rtl-feedback-padding-left-lg: ~'var(--@{ant-prefix}-form-rtl-feedback-padding-left-lg)';
+@form-rtl-feedback-padding-left-sm: ~'var(--@{ant-prefix}-form-rtl-feedback-padding-left-sm)';
+@picker-padding-vertical-top-base: ~'var(--@{ant-prefix}-date-picker-padding-block-start)';
+@picker-padding-vertical-bottom-base: ~'var(--@{ant-prefix}-date-picker-padding-block-end)';
+@picker-padding-vertical-top-lg: ~'var(--@{ant-prefix}-date-picker-padding-block-start-lg)';
+@picker-padding-vertical-bottom-lg: ~'var(--@{ant-prefix}-date-picker-padding-block-end-lg)';
+@picker-padding-vertical-top-sm: ~'var(--@{ant-prefix}-date-picker-padding-block-start-sm)';
+@picker-padding-vertical-bottom-sm: ~'var(--@{ant-prefix}-date-picker-padding-block-end-sm)';
+@picker-preset-offset: ~'var(--@{ant-prefix}-date-picker-preset-offset)';
+@select-single-height-without-border-base: ~'var(--@{ant-prefix}-select-single-content-height)';
+@select-single-height-without-border-sm: ~'var(--@{ant-prefix}-select-single-content-height-sm)';
+@select-sm-show-arrow-padding-inline-end: ~'var(--@{ant-prefix}-select-small-arrow-padding-inline-end)';
+@select-multiple-item-height: ~'var(--@{ant-prefix}-select-multiple-item-height)';
+@select-multiple-item-height-sm: ~'var(--@{ant-prefix}-select-multiple-item-height-sm)';
+@select-multiple-item-spacing-half: ~'var(--@{ant-prefix}-select-multiple-item-spacing-half)';

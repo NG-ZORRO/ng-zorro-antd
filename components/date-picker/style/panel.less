@@ -2,9 +2,7 @@
 
 .@{picker-prefix-cls} {
   @picker-arrow-size: 7px;
-  @picker-year-month-cell-width: 60px;
-  @picker-panel-width: @picker-panel-cell-width * 7 + @padding-sm * 2 + 4;
-
+  
   &-panel {
     display: inline-flex;
     flex-direction: column;
@@ -446,7 +444,7 @@
   // ===================== Decade Panel =====================
   &-decade-panel {
     .@{picker-cell-inner-cls} {
-      padding: 0 (@padding-xs / 2);
+      padding: 0 @padding-xs-half;
     }
 
     .@{picker-prefix-cls}-cell::before {
@@ -458,9 +456,6 @@
   &-year-panel,
   &-quarter-panel,
   &-month-panel {
-    @hover-cell-fixed-distance: (
-      (((@picker-panel-width - @padding-xs * 2) / 3) - @picker-year-month-cell-width) / 2
-    );
 
     .@{picker-prefix-cls}-body {
       padding: 0 @padding-xs;
@@ -471,23 +466,23 @@
     }
 
     .@{picker-prefix-cls}-cell-range-hover-start::after {
-      left: @hover-cell-fixed-distance;
+      left: @picker-year-month-cell-margin;
       border-left: @border-width-base dashed @picker-date-hover-range-border-color;
       border-radius: @border-radius-base 0 0 @border-radius-base;
 
       .@{picker-prefix-cls}-panel-rtl & {
-        right: @hover-cell-fixed-distance;
+        right: @picker-year-month-cell-margin;
         border-right: @border-width-base dashed @picker-date-hover-range-border-color;
         border-radius: 0 @border-radius-base @border-radius-base 0;
       }
     }
     .@{picker-prefix-cls}-cell-range-hover-end::after {
-      right: @hover-cell-fixed-distance;
+      right: @picker-year-month-cell-margin;
       border-right: @border-width-base dashed @picker-date-hover-range-border-color;
       border-radius: 0 @border-radius-base @border-radius-base 0;
 
       .@{picker-prefix-cls}-panel-rtl & {
-        left: @hover-cell-fixed-distance;
+        left: @picker-year-month-cell-margin;
         border-left: @border-width-base dashed @picker-date-hover-range-border-color;
         border-radius: @border-radius-base 0 0 @border-radius-base;
       }

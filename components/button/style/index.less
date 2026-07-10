@@ -223,7 +223,7 @@
     }
 
     &[disabled] {
-      color: @disabled-color;
+      color: @btn-disable-color;
       background: @btn-default-ghost-bg;
       border-color: @btn-default-border;
     }
@@ -274,18 +274,18 @@ a.@{btn-prefix-cls} {
   // It is a render problem of chrome, which is only happened in the codesandbox demo
   // 0.1px for padding-top solution works and I don't why
   padding-top: 0.01px !important;
-  line-height: @btn-height-base - 2px;
+  line-height: @btn-anchor-line-height-base;
 
   &-disabled {
     .btn-href-disabled();
   }
 
   &-lg {
-    line-height: @btn-height-lg - 2px;
+    line-height: @btn-anchor-line-height-lg;
   }
 
   &-sm {
-    line-height: @btn-height-sm - 2px;
+    line-height: @btn-anchor-line-height-sm;
   }
 }
 

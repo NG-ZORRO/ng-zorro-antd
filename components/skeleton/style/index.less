@@ -136,14 +136,17 @@
   background: @skeleton-color;
   border-radius: @border-radius-base;
 
-  .skeleton-element-button-size(@btn-height-base);
+  // Global heights instead of `@btn-height-*`: the token theme remaps the
+  // button variables to CSS `var()` strings, which the `@size * 2` math in
+  // `.skeleton-element-button-size()` cannot operate on.
+  .skeleton-element-button-size(@height-base; @skeleton-button-width-base);
 
   &-lg {
-    .skeleton-element-button-size(@btn-height-lg);
+    .skeleton-element-button-size(@height-lg; @skeleton-button-width-lg);
   }
 
   &-sm {
-    .skeleton-element-button-size(@btn-height-sm);
+    .skeleton-element-button-size(@height-sm; @skeleton-button-width-sm);
   }
 }
 // Avatar
@@ -169,14 +172,17 @@
   vertical-align: top;
   background: @skeleton-color;
 
-  .skeleton-element-input-size(@input-height-base);
+  // Global heights instead of `@input-height-*`: the token theme remaps the
+  // input variables to CSS `var()` strings, which the `@size * 5` math in
+  // `.skeleton-element-input-size()` cannot operate on.
+  .skeleton-element-input-size(@height-base; @skeleton-input-width-base);
 
   &-lg {
-    .skeleton-element-input-size(@input-height-lg);
+    .skeleton-element-input-size(@height-lg; @skeleton-input-width-lg);
   }
 
   &-sm {
-    .skeleton-element-input-size(@input-height-sm);
+    .skeleton-element-input-size(@height-sm; @skeleton-input-width-sm);
   }
 }
 
@@ -210,9 +216,9 @@
   }
 }
 
-.skeleton-element-button-size(@size) {
-  width: @size * 2;
-  min-width: @size * 2;
+.skeleton-element-button-size(@size; @width: @size * 2) {
+  width: @width;
+  min-width: @width;
   .skeleton-element-common-size(@size);
 
   &.@{skeleton-button-prefix-cls}-square {
@@ -231,9 +237,9 @@
   }
 }
 
-.skeleton-element-input-size(@size) {
-  width: @size * 5;
-  min-width: @size * 5;
+.skeleton-element-input-size(@size; @width: @size * 5) {
+  width: @width;
+  min-width: @width;
   .skeleton-element-common-size(@size);
 }
 

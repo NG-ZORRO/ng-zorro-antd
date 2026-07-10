@@ -5,15 +5,11 @@
 @float-btn-group-prefix-cls: ~'@{ant-prefix}-float-btn-group';
 
 // patch variables
-@badge-offset: @padding-xss * 1.5;
 @dot-offset-in-circle: 5.6px;
 @dot-offset-in-square: 1px;
-@float-button-size: 40px;
-@float-button-body-size: @float-button-size - (@padding-xss * 2);
 @float-button-body-padding: @padding-xss;
 @float-button-inset-inline-end: 24px;
 @float-button-inset-block-end: @float-button-inset-inline-end * 2;
-@float-button-icon-size: @font-size-sm * 1.5;
 
 .@{float-btn-prefix-cls} {
   position: fixed;
@@ -43,10 +39,10 @@
     height: 100%;
 
     .@{ant-prefix}-badge-count {
-      top: -@badge-offset;
+      top: @float-button-badge-inset;
       transform: translate(0, 0);
       transform-origin: center;
-      inset-inline-end: -@badge-offset;
+      inset-inline-end: @float-button-badge-inset;
     }
   }
 
@@ -212,7 +208,7 @@
 
   &::after {
     position: absolute;
-    bottom: -@margin-md;
+    bottom: @float-button-group-margin-offset;
     width: 100%;
     height: @margin-md;
     content: '';
@@ -225,7 +221,7 @@
 
   &::after {
     position: absolute;
-    top: -@margin-md;
+    top: @float-button-group-margin-offset;
     width: 100%;
     height: @margin-md;
     content: '';
@@ -238,7 +234,7 @@
 
   &::after {
     position: absolute;
-    right: -@margin-md;
+    right: @float-button-group-margin-offset;
     width: @margin-md;
     height: 100%;
     content: '';
@@ -251,7 +247,7 @@
 
   &::after {
     position: absolute;
-    left: -@margin-md;
+    left: @float-button-group-margin-offset;
     width: @margin-md;
     height: 100%;
     content: '';
@@ -296,8 +292,8 @@
 
     .@{ant-prefix}-badge {
       .@{ant-prefix}-badge-count {
-        top: -(@float-button-body-padding + @badge-offset);
-        inset-inline-end: -(@float-button-body-padding + @badge-offset);
+        top: @float-button-group-badge-inset;
+        inset-inline-end: @float-button-group-badge-inset;
       }
     }
   }

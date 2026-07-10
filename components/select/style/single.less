@@ -2,10 +2,15 @@
 
 @select-prefix-cls: ~'@{ant-prefix}-select';
 
-.genSizeStyle(@suffix, @control-height, @font-size, @border-radius) {
-  @merged-cls: ~'@{select-prefix-cls}@{suffix}';
+.genSingleSizeStyle(
+  @suffix;
+  @control-height;
+  @font-size;
+  @border-radius;
   @select-height-without-border: @control-height - 2 * @line-width;
-  @show-arrow-padding-inline-end: ceil(@font-size * 1.25);
+  @show-arrow-padding-inline-end: ceil(@font-size * 1.25)
+) {
+  @merged-cls: ~'@{select-prefix-cls}@{suffix}';
 
   &.@{merged-cls} {
     height: @control-height;
@@ -121,12 +126,26 @@
 }
 
 .@{select-prefix-cls}-single {
-  .genSizeStyle('', @input-height-base, @font-size-base, @border-radius-base);
+  .genSingleSizeStyle(
+    '',
+    @input-height-base,
+    @font-size-base,
+    @border-radius-base,
+    @select-single-height-without-border-base,
+    @select-single-arrow-padding
+  );
 
   // ======================== Small ========================
   // Shared
   // stylelint-disable-next-line less/no-duplicate-variables
-  .genSizeStyle('-sm', @input-height-sm, @font-size-base, @border-radius-sm);
+  .genSingleSizeStyle(
+    '-sm',
+    @input-height-sm,
+    @font-size-base,
+    @border-radius-sm,
+    @select-single-height-without-border-sm,
+    @select-single-arrow-padding
+  );
 
   // Padding
   &.@{select-prefix-cls}-sm {
@@ -137,12 +156,12 @@
 
       // With arrow should provides `padding-inline-end` to show the arrow
       &.@{select-prefix-cls}-show-arrow .@{select-prefix-cls}-selection-search {
-        padding-inline-end: @input-padding-horizontal-sm + @font-size-base * 1.5;
+        padding-inline-end: @select-sm-show-arrow-padding-inline-end;
       }
 
       &.@{select-prefix-cls}-show-arrow .@{select-prefix-cls}-selection-item,
       &.@{select-prefix-cls}-show-arrow .@{select-prefix-cls}-selection-placeholder {
-        padding-inline-end: @font-size-base * 1.5;
+        padding-inline-end: @select-show-arrow-item-padding-right;
       }
     }
   }
@@ -150,5 +169,12 @@
   // ======================== Large ========================
   // Shared
   // stylelint-disable-next-line less/no-duplicate-variables
-  .genSizeStyle('-lg', @select-single-item-height-lg, @font-size-lg, @border-radius-lg);
+  .genSingleSizeStyle(
+    '-lg',
+    @select-single-item-height-lg,
+    @font-size-lg,
+    @border-radius-lg,
+    @select-single-item-height-lg - 2 * @line-width,
+    @select-single-arrow-padding-lg
+  );
 }

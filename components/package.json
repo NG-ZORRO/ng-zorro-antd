@@ -70,6 +70,12 @@
     "./ng-zorro-antd.variable.css": {
       "style": "./ng-zorro-antd.variable.css"
     },
+    "./ng-zorro-antd.token.min.css": {
+      "style": "./ng-zorro-antd.token.min.css"
+    },
+    "./ng-zorro-antd.token.css": {
+      "style": "./ng-zorro-antd.token.css"
+    },
     "./*.less": {
       "less": "./*.less"
     },
