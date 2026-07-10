@@ -10,8 +10,11 @@ import 'zone.js/testing';
 
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
+import { TestBed } from '@angular/core/testing';
 
 import { vi } from 'vitest';
+
+import { provideNzDateFnsAdapter } from 'ng-zorro-antd/core/time';
 
 const originalViewport = {
   innerHeight: window.innerHeight,
@@ -93,6 +96,12 @@ function createMediaQueryList(query: string): MediaQueryList {
 registerLocaleData(zh);
 
 const originalConsoleWarn = console.warn;
+
+beforeEach(() => {
+  TestBed.configureTestingModule({
+    providers: [provideNzDateFnsAdapter()]
+  });
+});
 
 afterEach(() => {
   // Fake timers can keep destroyed components alive and fire in a later spec

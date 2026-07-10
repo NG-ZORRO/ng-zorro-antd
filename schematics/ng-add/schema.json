@@ -118,6 +118,29 @@
       "type": "boolean",
       "default": true,
       "description": "Whether Angular browser animations should be set up."
+    },
+    "dateAdapter": {
+      "type": "string",
+      "default": "date-fns",
+      "description": "Choose which date adapter to use for date-picker, calendar, and time-picker components.",
+      "x-prompt": {
+        "message": "Choose date adapter for date/time components:",
+        "type": "list",
+        "items": [
+          {
+            "value": "date-fns",
+            "label": "date-fns (Recommended)"
+          },
+          {
+            "value": "native",
+            "label": "Native (Intl-based)"
+          },
+          {
+            "value": "none",
+            "label": "None (I will configure later)"
+          }
+        ]
+      }
     }
   },
   "required": []

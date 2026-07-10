@@ -3,22 +3,39 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Injectable } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { vi } from 'vitest';
 
-import { CandyDate } from 'ng-zorro-antd/core/time';
+import { CandyDate, NativeDateAdapter, NzDateAdapter, provideNzDateAdapter } from 'ng-zorro-antd/core/time';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { en_US, NzI18nModule } from 'ng-zorro-antd/i18n';
 
 import { DateHeaderComponent } from './date-header.component';
 import { DateTableComponent } from './date-table.component';
 import { LibPackerModule } from './lib-packer.module';
 
+@Injectable()
+class TuesdayStartDateAdapter extends NativeDateAdapter {
+  override getFirstDayOfWeek(): number {
+    return 2;
+  }
+
+  override format(date: Date, displayFormat: NzSafeAny): string {
+    if (displayFormat === 'E') {
+      return `weekday-${date.getDay()}`;
+    }
+    return super.format(date, displayFormat);
+  }
+}
+
 // TODO: Add unit test of date-table and month-table
 describe('Coverage supplements', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [LibPackerModule, NzI18nModule]
+      imports: [LibPackerModule, NzI18nModule],
+      providers: [provideNzDateAdapter(TuesdayStartDateAdapter)]
     });
   });
 
@@ -30,10 +47,32 @@ describe('Coverage supplements', () => {
     });
 
     it('should cover untouched branches', () => {
-      componentInstance.value = new CandyDate('2018-11-11');
+      componentInstance.value = new CandyDate(new Date(2018, 10, 11));
       componentInstance.showWeek = true;
       const weekRows = componentInstance.makeBodyRows();
       expect(weekRows.length > 0).toBeTruthy();
+    });
+
+    it('should use the configured adapter for week start and formatting', () => {
+      componentInstance.activeDate = new CandyDate(new Date(2024, 5, 15));
+      const headRow = componentInstance.makeHeadRow();
+
+      expect(headRow[0].value.getDay()).toBe(2);
+      expect(headRow[0].title).toBe('weekday-2');
+    });
+
+    it('should configure custom adapter provider', () => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [LibPackerModule, NzI18nModule],
+        providers: [provideNzDateAdapter(NativeDateAdapter, { firstDayOfWeek: 4, locale: 'zh-CN' })]
+      });
+      componentInstance = TestBed.createComponent(DateTableComponent).componentInstance;
+      componentInstance.activeDate = new CandyDate(new Date(2024, 5, 15));
+      const dateAdapter = TestBed.inject(NzDateAdapter);
+
+      expect(componentInstance.makeHeadRow()[0].value.getDay()).toBe(4);
+      expect(dateAdapter.format(new Date(2024, 10, 1), 'MMM')).toBe('11月');
     });
   });
 
@@ -45,7 +84,7 @@ describe('Coverage supplements', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(DateHeaderComponent);
       componentInstance = fixture.componentInstance;
-      componentInstance.value = new CandyDate('2020-02-25');
+      componentInstance.value = new CandyDate(new Date(2020, 1, 25));
       componentInstance.locale = en_US.DatePicker.lang;
     });
 
@@ -63,7 +102,7 @@ describe('Coverage supplements', () => {
       fixture.componentRef.setInput('mode', 'week');
       fixture.detectChanges();
       const initialMode = componentInstance.mode;
-      const newValue = new CandyDate('2020-03-15');
+      const newValue = new CandyDate(new Date(2020, 2, 15));
       componentInstance.changeValue(newValue);
       expect(componentInstance.mode).toBe(initialMode);
       expect(componentInstance.mode).toBe('week');
@@ -73,7 +112,7 @@ describe('Coverage supplements', () => {
       fixture.componentRef.setInput('mode', 'week');
       fixture.detectChanges();
       vi.spyOn(componentInstance.panelChange, 'emit').mockImplementation(() => {});
-      const newValue = new CandyDate('2020-03-15');
+      const newValue = new CandyDate(new Date(2020, 2, 15));
       componentInstance.changeValue(newValue);
       expect(componentInstance.panelChange.emit).toHaveBeenCalledWith({
         mode: 'week',

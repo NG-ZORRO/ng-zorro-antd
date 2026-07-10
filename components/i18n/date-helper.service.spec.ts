@@ -56,7 +56,7 @@ describe('DateHelperService', () => {
     });
   });
 
-  describe('Formatting with Data-fns', () => {
+  describe('Formatting with Date-fns', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [NzI18nModule],

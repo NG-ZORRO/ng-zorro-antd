@@ -17,25 +17,46 @@ import { getProjectStyle } from '../utils/project-style';
 // @ts-ignore
 import { hammerjsVersion, zorroVersion } from '../utils/version-names';
 
-export default function(options: Schema): Rule {
+const dateFnsVersion = '^2.16.1';
+
+export default function (options: Schema): Rule {
   return chain([
     (host: Tree, context: SchematicContext) => {
       // The CLI inserts `ng-zorro-antd` into the `package.json` before this schematic runs.
       // This means that we do not need to insert Angular Material into `package.json` files again.
       // In some cases though, it could happen that this schematic runs outside of the CLI `ng add`
-      // command, or Material is only listed a dev dependency. If that is the case, we insert a
-      // version based on the current build version (substituted version placeholder).
+      // command, or Material is only listed as a dev dependency. If that is the case, we insert a
+      // dependency based on the current build version (substituted version placeholder).
       if (!options.skipPackageJson) {
-        addPackageJsonDependency(host, { name: 'ng-zorro-antd', version: zorroVersion, type: NodeDependencyType.Default });
+        addPackageJsonDependency(host, {
+          name: 'ng-zorro-antd',
+          version: zorroVersion,
+          type: NodeDependencyType.Default
+        });
+        if ((options.dateAdapter || 'date-fns') === 'date-fns') {
+          addPackageJsonDependency(host, {
+            name: 'date-fns',
+            version: dateFnsVersion,
+            type: NodeDependencyType.Default
+          });
+        }
         if (options.gestures) {
-          addPackageJsonDependency(host, { name: 'hammerjs', version: hammerjsVersion, type: NodeDependencyType.Default });
+          addPackageJsonDependency(host, {
+            name: 'hammerjs',
+            version: hammerjsVersion,
+            type: NodeDependencyType.Default
+          });
         }
 
-        // Since Angular CLI v20 no longer installs `less` for the project which prefers `css` or 
+        // Since Angular CLI v20 no longer installs `less` for the project which prefers `css` or
         // `scss` as default stylesheet format, and ng-zorro-antd's custom theming requires `less`,
         // we should add `less` as a dev dependency.
         if (options.theme) {
-          addPackageJsonDependency(host, { name: 'less', version: latestVersions['less'], type: NodeDependencyType.Dev });
+          addPackageJsonDependency(host, {
+            name: 'less',
+            version: latestVersions['less'],
+            type: NodeDependencyType.Dev
+          });
         }
       }
 

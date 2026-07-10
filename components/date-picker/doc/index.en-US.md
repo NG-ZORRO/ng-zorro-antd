@@ -12,8 +12,7 @@ By clicking the input box, you can select a date from a popup calendar.
 
 ## API
 
-**Note:** Some of nz-date-picker's locale are coming from [Angular i18n](https://angular.dev/guide/i18n), that should be
-provided in the file `app.config.ts`.
+**Note:** Some of date-picker's locale are coming from [Angular i18n](https://angular.dev/guide/i18n), that should be provided in the file `app.config.ts`.
 
 For example:
 
@@ -24,9 +23,7 @@ import en from '@angular/common/locales/en';
 registerLocaleData(en);
 ```
 
-**Note:** All input and output date objects
-are [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date), you can manipulate it
-with [date-fns](https://date-fns.org/).
+**Note:** All input and output date objects are [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date), you can manipulate it with [date-fns](https://date-fns.org/).
 
 ### Common API
 
@@ -107,14 +104,11 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 
 ## FAQ
 
-### Why does manual input not take effect after setting `nzFormat="dd/MM/yyyy"`
+### How to use custom date library in Date-Picker
 
-You need to use `date-fns`. Date formatting currently supports two methods: `DatePipe` (
-default, [syntax reference](https://angular.dev/api/common/DatePipe)) and `date-fns` (
-see [`How to format a date using date-fns`](/docs/i18n/en#How%20to%20format%20a%20date%20using%20Date-fns)).NG-ZORRO
-takes the function provided by `date-fns` to implement date deserialization after using it.
+Refer to [Date Adapter](/docs/date-adapter/en).
 
-### Q: The overlay layer element does not follow the scroll position when scrolling
+### The overlay layer element does not follow the scroll position when scrolling
 
 By default, the overlay layer element uses body as the scroll container. If using another scroll container, add the [CdkScrollable](https://material.angular.dev/cdk/scrolling/api#CdkScrollable) directive to the custom scroll container element.
 Note: You need to import the `CdkScrollable` directive or `ScrollingModule` module from `@angular/cdk/scrolling`.

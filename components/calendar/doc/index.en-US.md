@@ -53,3 +53,9 @@ registerLocaleData(en);
 | `[nzDisabledDate]`  | specify the date that cannot be selected                                                                 | `(current: Date) => boolean`                            | -            |
 | `(nzPanelChange)`   | Callback for when panel changes                                                                          | `EventEmitter<{ date: Date, mode: 'month' \| 'year' }>` | -            |
 | `(nzSelectChange)`  | A callback function of selected item                                                                     | `EventEmitter<Date>`                                    | -            |
+
+## FAQ
+
+### How to use custom date library in Calendar
+
+Refer to [Date Adapter](/docs/date-adapter/en).

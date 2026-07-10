@@ -4,6 +4,7 @@ import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
 import { Component, computed, effect, inject, OnInit, Renderer2 } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { enUS, zhCN } from 'date-fns/locale';
 import { debounceTime, filter, startWith } from 'rxjs/operators';
 
 import { NzAffixModule } from 'ng-zorro-antd/affix';
@@ -11,6 +12,7 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzColor } from 'ng-zorro-antd/color-picker';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzDateAdapter } from 'ng-zorro-antd/core/time';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd/i18n';
@@ -78,6 +80,7 @@ export class AppComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly title = inject(Title);
   private readonly nzI18nService = inject(NzI18nService);
+  private readonly dateAdapter = inject(NzDateAdapter);
   private readonly nzMessageService = inject(NzMessageService);
   private readonly nzConfigService = inject(NzConfigService);
   private readonly platform = inject(Platform);
@@ -194,7 +197,7 @@ export class AppComponent implements OnInit {
     this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
       this.language.set(this.getLanguageFromURL(this.router.url)!);
 
-      this.nzI18nService.setLocale(this.isEn() ? en_US : zh_CN);
+      this.setNgZorroLocale(this.language());
       const currentDemoComponent = this.componentList.find(component =>
         // url may contains hash
         this.router.url.startsWith(`/${component.path}`)
@@ -362,9 +365,17 @@ export class AppComponent implements OnInit {
     const pathname = location.pathname;
     const hasLanguage = pathname.match(/(en|zh)(\/?)$/);
     if (language === 'zh-cn' && !hasLanguage) {
-      this.nzI18nService.setLocale(zh_CN);
-      // redirect to default page
+      this.setNgZorroLocale('zh');
+      // redirect to the default page
       this.router.navigate(['docs', 'introduce', 'zh']).then();
     }
+  }
+
+  private setNgZorroLocale(language: 'en' | 'zh'): void {
+    const ngZorroLocale = language === 'en' ? en_US : zh_CN;
+    const dateFnsLocale = language === 'en' ? enUS : zhCN;
+
+    this.nzI18nService.setLocale(ngZorroLocale);
+    this.dateAdapter.setLocale(dateFnsLocale);
   }
 }

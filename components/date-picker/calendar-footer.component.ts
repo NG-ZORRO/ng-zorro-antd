@@ -19,9 +19,9 @@ import {
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
-import { CandyDate } from 'ng-zorro-antd/core/time';
+import { CandyDate, NzDateAdapter } from 'ng-zorro-antd/core/time';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
 import { transCompatFormat } from './lib/util';
 import { PREFIX_CLASS } from './util';
@@ -81,7 +81,8 @@ import { PREFIX_CLASS } from './util';
   encapsulation: ViewEncapsulation.None
 })
 export class CalendarFooterComponent implements OnChanges {
-  private dateHelper = inject(DateHelperService);
+  private readonly dateAdapter = inject(NzDateAdapter);
+
   @Input() locale!: NzCalendarI18nInterface;
   @Input({ transform: booleanAttribute }) showToday: boolean = false;
   @Input({ transform: booleanAttribute }) showNow: boolean = false;
@@ -96,24 +97,24 @@ export class CalendarFooterComponent implements OnChanges {
   @Output() readonly clickOk = new EventEmitter<void>();
   @Output() readonly clickToday = new EventEmitter<CandyDate>();
 
-  prefixCls: string = PREFIX_CLASS;
+  readonly prefixCls: string = PREFIX_CLASS;
   isTodayDisabled: boolean = false;
   todayTitle: string = '';
 
   ngOnChanges(changes: SimpleChanges): void {
-    const now: Date = new Date();
-    if (changes.disabledDate) {
-      this.isTodayDisabled = !!(this.disabledDate && this.disabledDate(now));
+    const { disabledDate, locale } = changes;
+    const now = new Date();
+    if (disabledDate) {
+      this.isTodayDisabled = !!this.disabledDate?.(now);
     }
-    if (changes.locale) {
+    if (locale) {
       // NOTE: Compat for DatePipe formatting rules
-      const dateFormat: string = transCompatFormat(this.locale.dateFormat);
-      this.todayTitle = this.dateHelper.format(now, dateFormat);
+      this.todayTitle = this.dateAdapter.format(now, transCompatFormat(this.locale.dateFormat));
     }
   }
 
-  onClickToday(): void {
-    const now: CandyDate = new CandyDate();
+  protected onClickToday(): void {
+    const now = new CandyDate();
     this.clickToday.emit(now.clone()); // To prevent the "now" being modified from outside, we use clone
   }
 }

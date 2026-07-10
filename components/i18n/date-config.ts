@@ -3,23 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { InjectionToken } from '@angular/core';
-
-import { WeekDayIndex } from 'ng-zorro-antd/core/time';
-
-export interface NzDateConfig {
-  /** Customize the first day of a week */
-  firstDayOfWeek?: WeekDayIndex;
-}
-
-export const NZ_DATE_CONFIG = new InjectionToken<NzDateConfig>(
-  typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-date-config' : ''
-);
-
-export const NZ_DATE_CONFIG_DEFAULT: NzDateConfig = {
-  firstDayOfWeek: undefined
-};
-
-export function mergeDateConfig(config: NzDateConfig | null): NzDateConfig {
-  return { ...NZ_DATE_CONFIG_DEFAULT, ...config };
-}
+// Re-export date config types and tokens from core/time for backward compatibility.
+// These are now defined in core/time to avoid circular dependency.
+export {
+  type WeekDayIndex,
+  type NzDateConfig,
+  NZ_DATE_CONFIG,
+  NZ_DATE_LOCALE,
+  NZ_DATE_CONFIG_DEFAULT,
+  mergeDateConfig
+} from 'ng-zorro-antd/core/time';

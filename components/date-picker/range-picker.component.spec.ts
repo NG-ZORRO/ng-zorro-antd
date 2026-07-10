@@ -35,6 +35,7 @@ import {
   getRangePickerRightInput
 } from 'ng-zorro-antd/date-picker/testing/util';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/util';
+import en_US from 'ng-zorro-antd/i18n/languages/en_US';
 
 import { NzDatePickerModule } from './date-picker.module';
 
@@ -306,6 +307,7 @@ describe('range-picker', () => {
     });
 
     it('should support nzDefaultPickerValue', () => {
+      setNumericMonthFormat();
       fixtureInstance.nzDefaultPickerValue.set([new Date('2012-01-18'), new Date('2019-11-11')]);
       fixture.detectChanges();
       openPickerByClickTrigger();
@@ -471,6 +473,7 @@ describe('range-picker', () => {
     beforeEach(() => fixtureInstance.useSuite.set(1));
 
     it('should support date panel changes', async () => {
+      setNumericMonthFormat();
       fixtureInstance.modelValue.set([new Date('2018-6-11'), new Date('2018-12-12')]);
       await stabilize();
       openPickerByClickTrigger();
@@ -862,6 +865,7 @@ describe('range-picker', () => {
     });
 
     it('should display expected date when the range values are the same day (include the scenario of timepicker)', async () => {
+      setNumericMonthFormat();
       fixtureInstance.modelValue.set([new Date('2018-05-15'), new Date('2018-05-15')]);
       fixtureInstance.nzShowTime.set(true);
       await stabilize();
@@ -969,7 +973,7 @@ describe('range-picker', () => {
       rightInput.dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
       vi.advanceTimersByTime(500);
-      expect(nzOnChange).toHaveBeenCalledWith([new Date(newDateString[0]), new Date(newDateString[1])]);
+      expect(nzOnChange).toHaveBeenCalledWith([new Date(2019, 8, 15), new Date(2020, 9, 10)]);
     });
 
     it('should not change value when click ESC', () => {
@@ -1015,6 +1019,7 @@ describe('range-picker', () => {
     });
 
     it('should panel date follows the selected date', () => {
+      setNumericMonthFormat();
       fixtureInstance.nzShowTime.set(true);
       fixture.detectChanges();
       openPickerByClickTrigger();
@@ -1234,6 +1239,13 @@ describe('range-picker', () => {
     } else {
       dispatchFakeEvent(getRangePickerRightInput(fixture.debugElement), 'focusout');
     }
+  }
+
+  function setNumericMonthFormat(): void {
+    fixtureInstance.nzLocale.set({
+      ...en_US.DatePicker,
+      lang: { ...en_US.DatePicker.lang, monthFormat: 'M' }
+    });
   }
 });
 

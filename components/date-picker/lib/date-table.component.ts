@@ -3,30 +3,29 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, inject, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
-import { CandyDate } from 'ng-zorro-antd/core/time';
+import { CandyDate, NzDateAdapter, WeekDayIndex } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
-import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell } from './interface';
 import { transCompatFormat } from './util';
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'date-table',
   templateUrl: './abstract-table.html',
-  imports: [NzStringTemplateOutletDirective]
+  imports: [NzStringTemplateOutletDirective],
+  encapsulation: ViewEncapsulation.None
 })
 export class DateTableComponent extends AbstractTable implements OnChanges, OnInit {
-  @Input() format?: string;
+  private readonly i18n = inject(NzI18nService);
+  private readonly dateAdapter = inject(NzDateAdapter);
 
-  private i18n = inject(NzI18nService);
-  private dateHelper = inject(DateHelperService);
+  @Input() format?: string;
 
   private changeValueFromInside(value: CandyDate): void {
     // Only change date, does not change time
@@ -40,14 +39,14 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
 
   makeHeadRow(): DateCell[] {
     const weekDays: DateCell[] = [];
-    const start = this.activeDate.calendarStart({ weekStartsOn: this.dateHelper.getFirstDayOfWeek() });
+    const start = this.activeDate.calendarStart({ weekStartsOn: this.dateAdapter.getFirstDayOfWeek() as WeekDayIndex });
     for (let colIndex = 0; colIndex < this.MAX_COL; colIndex++) {
       const day = start.addDays(colIndex);
       weekDays.push({
         trackByIndex: null,
         value: day.nativeDate,
-        title: this.dateHelper.format(day.nativeDate, 'E'), // eg. Tue
-        content: this.dateHelper.format(day.nativeDate, this.getVeryShortWeekFormat()), // eg. Tu,
+        title: this.dateAdapter.format(day.nativeDate, 'E'), // eg. Tue
+        content: this.dateAdapter.format(day.nativeDate, this.getVeryShortWeekFormat()), // eg. Tu,
         isSelected: false,
         isDisabled: false,
         onClick(): void {},
@@ -63,7 +62,9 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
 
   makeBodyRows(): DateBodyRow[] {
     const weekRows: DateBodyRow[] = [];
-    const firstDayOfMonth = this.activeDate.calendarStart({ weekStartsOn: this.dateHelper.getFirstDayOfWeek() });
+    const firstDayOfMonth = this.activeDate.calendarStart({
+      weekStartsOn: this.dateAdapter.getFirstDayOfWeek() as WeekDayIndex
+    });
 
     for (let week = 0; week < this.MAX_ROW; week++) {
       const weekStart = firstDayOfMonth.addDays(week * 7);
@@ -78,8 +79,8 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
         const dateFormat = transCompatFormat(
           this.format ?? this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY-MM-DD')
         );
-        const title = this.dateHelper.format(date.nativeDate, dateFormat);
-        const label = this.dateHelper.format(date.nativeDate, 'dd');
+        const title = this.dateAdapter.format(date.nativeDate, dateFormat);
+        const label = this.dateAdapter.format(date.nativeDate, 'dd');
         const cell: DateCell = {
           trackByIndex: day,
           value: date.nativeDate,
@@ -98,7 +99,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
         this.addCellProperty(cell, date);
 
         if (this.showWeek && !row.weekNum) {
-          row.weekNum = this.dateHelper.getISOWeek(date.nativeDate);
+          row.weekNum = this.dateAdapter.getISOWeek(date.nativeDate);
         }
         if (date.isSameDay(this.value)) {
           row.isActive = date.isSameDay(this.value);

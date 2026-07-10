@@ -14,7 +14,7 @@ description: 按照日历形式展示数据的容器。
 
 ## API
 
-**注意：**Calendar 的部分 locale 来自于 Angular 自身的国际化支持，需要在 `app.config.ts` 文件中 引入相应的 Angular 语言包。
+**注意：** Calendar 的部分 locale 来自于 Angular 自身的国际化支持，需要在 `app.config.ts` 文件中 引入相应的 Angular 语言包。
 
 例如：
 
@@ -54,3 +54,9 @@ registerLocaleData(zh);
 | `[nzDisabledDate]`  | 不可选择的日期                                               | `(current: Date) => boolean`                            | -         |
 | `(nzPanelChange)`   | 面板变化的回调                                               | `EventEmitter<{ date: Date, mode: 'month' \| 'year' }>` | -         |
 | `(nzSelectChange)`  | 选择日期的回调                                               | `EventEmitter<Date>`                                    | -         |
+
+## FAQ
+
+### 如何在 Calendar 中使用自定义日期库
+
+参考 [日期适配器](/docs/date-adapter/zh)。

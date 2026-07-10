@@ -21,6 +21,7 @@ import { NzDatePickerSizeType } from 'ng-zorro-antd/date-picker/date-picker.comp
 import { getPickerAbstract, getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/util';
 import { NzDatePickerI18nInterface, NzDatePickerLangI18nInterface } from 'ng-zorro-antd/i18n';
+import en_US from 'ng-zorro-antd/i18n/languages/en_US';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { NzDatePickerModule } from './date-picker.module';
@@ -133,6 +134,10 @@ describe('month-picker', () => {
     });
 
     it('should support nzDisabledDate', async () => {
+      fixtureInstance.nzLocale.set({
+        ...en_US.DatePicker,
+        lang: { ...en_US.DatePicker.lang, monthFormat: 'M' }
+      });
       fixture.detectChanges();
       const compareDate = new Date('2018-11-15 00:00:00');
       fixtureInstance.nzValue.set(new Date('2018-11-11 12:12:12'));
@@ -202,6 +207,10 @@ describe('month-picker', () => {
     });
 
     it('should support nzValue', async () => {
+      fixtureInstance.nzLocale.set({
+        ...en_US.DatePicker,
+        lang: { ...en_US.DatePicker.lang, monthFormat: 'M' }
+      });
       fixtureInstance.nzValue.set(new Date('2018-11-22'));
       await stabilize();
       await openPickerByClickTrigger();
@@ -209,6 +218,10 @@ describe('month-picker', () => {
     });
 
     it('should support nzOnChange', async () => {
+      fixtureInstance.nzLocale.set({
+        ...en_US.DatePicker,
+        lang: { ...en_US.DatePicker.lang, monthFormat: 'M' }
+      });
       fixtureInstance.nzValue.set(new Date('2018-11'));
       const nzOnChange = vi.spyOn(fixtureInstance, 'nzOnChange');
       fixture.detectChanges();
@@ -294,6 +307,10 @@ describe('month-picker', () => {
     });
 
     it('should support selected month active', async () => {
+      fixtureInstance.nzLocale.set({
+        ...en_US.DatePicker,
+        lang: { ...en_US.DatePicker.lang, monthFormat: 'M月' }
+      });
       fixtureInstance.nzValue.set(new Date('2019-7-13 15:10:00'));
       await stabilize();
 
@@ -309,6 +326,10 @@ describe('month-picker', () => {
     beforeEach(() => fixtureInstance.useSuite.set(3));
 
     it('should specified date provide by "modelValue" be chosen', async () => {
+      fixtureInstance.nzLocale.set({
+        ...en_US.DatePicker,
+        lang: { ...en_US.DatePicker.lang, monthFormat: 'M' }
+      });
       fixtureInstance.modelValue.set(new Date('2018-11'));
       await stabilize();
       expect(getSelectedMonthCell().textContent).toContain('11');
@@ -390,10 +411,10 @@ describe('month-picker', () => {
         <nz-date-picker nzMode="month" [nzOpen]="nzOpen()" />
       }
       @case (3) {
-        <nz-date-picker nzMode="month" nzOpen [(ngModel)]="modelValue" />
+        <nz-date-picker nzMode="month" nzOpen [nzLocale]="nzLocale()!" [(ngModel)]="modelValue" />
       }
       @case (4) {
-        <nz-month-picker nzOpen [(ngModel)]="modelValue" />
+        <nz-month-picker nzOpen [nzLocale]="nzLocale()!" [(ngModel)]="modelValue" />
       }
     }
   `

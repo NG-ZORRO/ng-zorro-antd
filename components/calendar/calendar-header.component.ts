@@ -16,17 +16,19 @@ import {
   booleanAttribute,
   inject
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
-import { CandyDate } from 'ng-zorro-antd/core/time';
-import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
+import { CandyDate, NzDateAdapter } from 'ng-zorro-antd/core/time';
+import { NzI18nPipe } from 'ng-zorro-antd/i18n';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-calendar-header',
   exportAs: 'nzCalendarHeader',
+  imports: [FormsModule, NzI18nPipe, NzSelectModule, NzRadioModule, NzStringTemplateOutletDirective],
   encapsulation: ViewEncapsulation.None,
   template: `
     @if (nzCustomHeader) {
@@ -65,8 +67,8 @@ import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
           (ngModelChange)="modeChange.emit($event)"
           [nzSize]="size"
         >
-          <label nz-radio-button nzValue="month">{{ monthTypeText }}</label>
-          <label nz-radio-button nzValue="year">{{ yearTypeText }}</label>
+          <label nz-radio-button nzValue="month">{{ 'Calendar.lang.month' | nzI18n }}</label>
+          <label nz-radio-button nzValue="year">{{ 'Calendar.lang.year' | nzI18n }}</label>
         </nz-radio-group>
       </div>
     }
@@ -74,16 +76,14 @@ import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
   host: {
     class: 'ant-fullcalendar-header',
     '[style.display]': `'block'`
-  },
-  imports: [NzSelectModule, FormsModule, NzRadioModule, NzStringTemplateOutletDirective]
+  }
 })
 export class NzCalendarHeaderComponent implements OnInit, OnChanges {
-  private readonly dateHelper = inject(DateHelperService);
-  private readonly i18n = inject(NzI18nService);
+  private readonly dateAdapter = inject(NzDateAdapter);
 
   @Input() mode: 'month' | 'year' = 'month';
   @Input({ transform: booleanAttribute }) fullscreen: boolean = true;
-  @Input() activeDate: CandyDate = new CandyDate();
+  @Input() activeDate = new CandyDate();
   @Input() nzCustomHeader?: string | TemplateRef<void>;
 
   @Output() readonly modeChange = new EventEmitter<'month' | 'year'>();
@@ -107,12 +107,11 @@ export class NzCalendarHeaderComponent implements OnInit, OnChanges {
     return this.fullscreen ? 'default' : 'small';
   }
 
-  get yearTypeText(): string {
-    return this.i18n.getLocale().Calendar.lang.year;
-  }
-
-  get monthTypeText(): string {
-    return this.i18n.getLocale().Calendar.lang.month;
+  constructor() {
+    this.dateAdapter.localeChanges.pipe(takeUntilDestroyed()).subscribe(() => {
+      this.setUpYears();
+      this.setUpMonths();
+    });
   }
 
   ngOnInit(): void {
@@ -121,10 +120,9 @@ export class NzCalendarHeaderComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['activeDate']) {
-      const previousActiveDate = changes['activeDate'].previousValue as CandyDate;
-      const currentActiveDate = changes['activeDate'].currentValue as CandyDate;
-      if (previousActiveDate?.getYear() !== currentActiveDate?.getYear()) {
+    const { activeDate } = changes;
+    if (activeDate) {
+      if (activeDate.previousValue?.getYear() !== activeDate.currentValue?.getYear()) {
         this.setUpYears();
       }
     }
@@ -150,7 +148,7 @@ export class NzCalendarHeaderComponent implements OnInit, OnChanges {
 
     for (let i = 0; i < 12; i++) {
       const dateInMonth = this.activeDate.setMonth(i);
-      const monthText = this.dateHelper.format(dateInMonth.nativeDate, 'MMM');
+      const monthText = this.dateAdapter.format(dateInMonth.nativeDate, 'MMM');
       this.months.push({ label: monthText, value: i });
     }
   }

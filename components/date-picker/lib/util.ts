@@ -11,7 +11,7 @@
  * Each format docs as below:
  *
  * @link https://momentjs.com/docs/#/displaying/format/
- * @link https://angular.io/api/common/DatePipe#description
+ * @link https://angular.dev/api/common/DatePipe#description
  * @param format input format pattern
  */
 export function transCompatFormat(format: string): string {

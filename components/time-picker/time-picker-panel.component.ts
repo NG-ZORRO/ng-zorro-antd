@@ -30,8 +30,9 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { requestAnimationFrame } from 'ng-zorro-antd/core/polyfill';
+import { NzDateAdapter } from 'ng-zorro-antd/core/time';
 import { fromEventOutsideAngular, isNotNil } from 'ng-zorro-antd/core/util';
-import { DateHelperService, NzI18nModule } from 'ng-zorro-antd/i18n';
+import { NzI18nModule } from 'ng-zorro-antd/i18n';
 
 import { TimeHolder } from './time-holder';
 
@@ -48,7 +49,7 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
   template: `
     @if (nzInDatePicker) {
       <div class="ant-picker-header">
-        <div class="ant-picker-header-view">{{ dateHelper.format($any(time?.value), format) || '&nbsp;' }}</div>
+        <div class="ant-picker-header-view">{{ formatTimeValue() || '&nbsp;' }}</div>
       </div>
     }
     <div class="ant-picker-content">
@@ -155,11 +156,11 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
   imports: [DecimalPipe, NgTemplateOutlet, NzI18nModule, NzButtonModule]
 })
 export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit, OnChanges {
-  dateHelper = inject(DateHelperService);
-  private ngZone = inject(NgZone);
-  private cdr = inject(ChangeDetectorRef);
-  private elementRef = inject(ElementRef);
-  private destroyRef = inject(DestroyRef);
+  protected readonly dateAdapter = inject(NzDateAdapter);
+  private readonly ngZone = inject(NgZone);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly elementRef = inject(ElementRef);
+  private readonly destroyRef = inject(DestroyRef);
 
   private _nzHourStep = 1;
   private _nzMinuteStep = 1;
@@ -534,6 +535,11 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   isSelected12Hours(value: { index: number; value: string }): boolean {
     return value.value.toUpperCase() === this.time.selected12Hours;
+  }
+
+  formatTimeValue(): string {
+    const value = this.time.value;
+    return value && this.dateAdapter.isValid(value) ? this.dateAdapter.format(value, this.format) : '';
   }
 
   ngOnInit(): void {
