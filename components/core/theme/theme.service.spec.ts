@@ -4,7 +4,7 @@
  */
 
 import { CSP_NONCE } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { nzCompactAlgorithm } from './algorithms/compact';
 import { nzDarkAlgorithm } from './algorithms/dark';
@@ -110,24 +110,21 @@ describe('NzThemeService', () => {
     expect(themeStyleElement()!.textContent).toContain('--ant-color-primary:#f5222d;');
   });
 
-  it('should update the style element on setTheme/updateTheme/setAlgorithm', () => {
+  it('should update the style element on setTheme/updateTheme/setAlgorithm', fakeAsync(() => {
     TestBed.configureTestingModule({ providers: [provideNzTheme()] });
     const service = TestBed.inject(NzThemeService);
-
     service.setTheme({ token: { colorPrimary: '#00b96b' } });
-    TestBed.tick();
+    tick();
     expect(themeStyleElement()!.textContent).toContain('--ant-color-primary:#00b96b;');
-
     service.updateTheme({ token: { colorError: '#a61d24' } });
-    TestBed.tick();
+    tick();
     const css = themeStyleElement()!.textContent!;
     expect(css).toContain('--ant-color-primary:#00b96b;'); // merged, not replaced
     expect(css).toContain('--ant-color-error:#a61d24;');
-
     service.setAlgorithm(nzCompactAlgorithm);
-    TestBed.tick();
+    tick();
     expect(themeStyleElement()!.textContent).toContain('--ant-control-height:28px;');
-  });
+  }));
 
   it('should expose resolved tokens as signals', () => {
     TestBed.configureTestingModule({ providers: [provideNzTheme({ algorithm: nzDarkAlgorithm })] });
@@ -158,12 +155,11 @@ describe('NzThemeService', () => {
     expect(themeStyleElement()!.nonce).toBe('test-nonce');
   });
 
-  it('should reuse the existing style element instead of appending a second one', () => {
+  it('should reuse the existing style element instead of appending a second one', fakeAsync(() => {
     TestBed.configureTestingModule({ providers: [provideNzTheme()] });
     const service = TestBed.inject(NzThemeService);
     service.setTheme({ token: { colorPrimary: '#00b96b' } });
-    TestBed.tick();
-
+    tick();
     expect(document.head.querySelectorAll('style[nz-theme]').length).toBe(1);
-  });
+  }));
 });

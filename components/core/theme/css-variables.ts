@@ -42,8 +42,8 @@ export function tokenToCssVarName(token: string, prefix: string): string {
   return `--${prefix}-${kebabCase(token)}`;
 }
 
-function serializeTokenValue(key: string, value: string | number | boolean): string | null {
-  if (typeof value === 'boolean' || NON_CSS_TOKENS.has(key)) {
+function serializeTokenValue(key: string, value: string | number | boolean | null | undefined): string | null {
+  if (value === null || value === undefined || typeof value === 'boolean' || NON_CSS_TOKENS.has(key)) {
     return null;
   }
   if (typeof value === 'number') {
