@@ -11,7 +11,7 @@ components/**/*/__screenshots__/
 out-tsc/
 /site
 publish/
-lib/
+/lib
 schematics/demo
 schematics/utils/version-names.ts
 ng-zorro.github.io/
@@ -63,3 +63,6 @@ Thumbs.db
 
 # Local AI Agents skills
 .qwen/skills
+
+# Agents
+.claude/projects/

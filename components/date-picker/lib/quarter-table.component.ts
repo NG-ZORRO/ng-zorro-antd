@@ -3,28 +3,24 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, inject, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
-
-import { startOfQuarter } from 'date-fns';
+import { Component, inject, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
-import { CandyDate } from 'ng-zorro-antd/core/time';
+import { CandyDate, NzDateAdapter } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
-import { DateHelperService } from 'ng-zorro-antd/i18n';
 
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell } from './interface';
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'quarter-table',
+  imports: [NzStringTemplateOutletDirective],
   templateUrl: 'abstract-table.html',
-  imports: [NzStringTemplateOutletDirective]
+  encapsulation: ViewEncapsulation.None
 })
 export class QuarterTableComponent extends AbstractTable implements OnChanges, OnInit {
-  private readonly dateHelper = inject(DateHelperService);
+  private readonly dateAdapter = inject(NzDateAdapter);
 
   override MAX_ROW = 1;
   override MAX_COL = 4;
@@ -50,7 +46,7 @@ export class QuarterTableComponent extends AbstractTable implements OnChanges, O
     for (let colIndex = 1; colIndex <= this.MAX_COL; colIndex++, quarterValue++) {
       const date = this.activeDate.setQuarter(quarterValue);
       const isDisabled = this.isDisabledQuarter(date);
-      const content = this.dateHelper.format(date.nativeDate, '[Q]Q');
+      const content = this.dateAdapter.format(date.nativeDate, '[Q]Q');
       const cell: DateCell = {
         trackByIndex: colIndex,
         value: date.nativeDate,
@@ -76,7 +72,7 @@ export class QuarterTableComponent extends AbstractTable implements OnChanges, O
       return false;
     }
 
-    const firstDayOfQuarter = new CandyDate(startOfQuarter(quarter.nativeDate));
+    const firstDayOfQuarter = new CandyDate(this.dateAdapter.startOfQuarter(quarter.nativeDate));
     for (let date = firstDayOfQuarter; date.getQuarter() === quarter.getQuarter(); date = date.addMonths(1)) {
       if (!this.disabledDate(date.nativeDate)) {
         return false;

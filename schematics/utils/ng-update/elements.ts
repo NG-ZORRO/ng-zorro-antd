@@ -22,20 +22,34 @@ const hasClassName = (node: Element, className: string): Attribute | undefined =
 
 const compareCaseInsensitive = (a: string, b: string): boolean => a?.toLowerCase() === b?.toLowerCase();
 
-export function findElementWithoutStructuralDirective(html: string, tagName: string, directiveName: string, attr: string): number[] {
+export function findElementWithoutStructuralDirective(
+  html: string,
+  tagName: string,
+  directiveName: string,
+  attr: string
+): number[] {
   const document = parseFragment(html, { sourceCodeLocationInfo: true });
   const elements: Element[] = [];
 
   const visitNodes = (nodes: ChildNode[]): void => {
     nodes.forEach(node => {
-      if (node['childNodes'] && !(node['tagName'] === 'ng-template' && !!(node as Element).attrs.find(a => compareCaseInsensitive(a.name!, directiveName)))) {
+      if (
+        node['childNodes'] &&
+        !(
+          node['tagName'] === 'ng-template' &&
+          !!(node as Element).attrs.find(a => compareCaseInsensitive(a.name!, directiveName))
+        )
+      ) {
         visitNodes(node['childNodes']);
       }
 
       if (compareCaseInsensitive(node['tagName'], tagName)) {
         const element = node as Element;
         const directive = `*${directiveName}`;
-        if (!!element.attrs.find(a => compareCaseInsensitive(a.name!, attr)) && !element.attrs.find(a => compareCaseInsensitive(a.name!, directive))) {
+        if (
+          !!element.attrs.find(a => compareCaseInsensitive(a.name!, attr)) &&
+          !element.attrs.find(a => compareCaseInsensitive(a.name!, directive))
+        ) {
           elements.push(element);
         }
       }

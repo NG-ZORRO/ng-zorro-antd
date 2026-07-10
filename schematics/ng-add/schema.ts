@@ -48,6 +48,8 @@ export enum ProjectTemplate {
   None = 'none'
 }
 
+export type DateAdapterChoice = 'date-fns' | 'native' | 'none';
+
 export interface Schema {
   /** Name of the project to target. */
   project?: string;
@@ -61,4 +63,6 @@ export interface Schema {
   locale?: Locale;
   i18n?: Locale;
   template?: ProjectTemplate;
+  /** Which date adapter to use for date/time components. */
+  dateAdapter?: DateAdapterChoice;
 }

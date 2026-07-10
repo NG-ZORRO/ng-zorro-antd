@@ -6,17 +6,24 @@
 import { CssSelectorUpgradeData, TargetVersion, VersionChanges } from '@angular/cdk/schematics';
 
 export const cssSelectors: VersionChanges<CssSelectorUpgradeData> = {
-  [TargetVersion.V22]: [{
-    pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/9238',
-    changes: [{
-      replace: 'nz-tabset',
-      replaceWith: 'nz-tabs'
-    }]
-  }, {
-    pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/9330',
-    changes: [{
-      replace: 'nz-statistic-number',
-      replaceWith: 'nz-statistic-content-value'
-    }]
-  }]
+  [TargetVersion.V22]: [
+    {
+      pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/9238',
+      changes: [
+        {
+          replace: 'nz-tabset',
+          replaceWith: 'nz-tabs'
+        }
+      ]
+    },
+    {
+      pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/9330',
+      changes: [
+        {
+          replace: 'nz-statistic-number',
+          replaceWith: 'nz-statistic-content-value'
+        }
+      ]
+    }
+  ]
 };

@@ -10,9 +10,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
+import { zhCN } from 'date-fns/locale';
+
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
-import { CandyDate } from 'ng-zorro-antd/core/time';
+import { CandyDate, NzDateAdapter } from 'ng-zorro-antd/core/time';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzCalendarHeaderComponent, NzCalendarHeaderComponent as CalendarHeader } from './calendar-header.component';
@@ -139,6 +141,21 @@ describe('calendar Header', () => {
       expect(monthModel.model).toBe(1);
       const headerComponent = header.injector.get(NzCalendarHeaderComponent);
       expect(headerComponent.years[0].value).toBe(1991);
+    });
+
+    it('should update month labels when date adapter locale changes', () => {
+      fixture.detectChanges();
+
+      const header = fixture.debugElement.queryAll(By.directive(CalendarHeader))[0];
+      const headerComponent = header.injector.get(NzCalendarHeaderComponent);
+      const adapter = TestBed.inject(NzDateAdapter);
+
+      expect(headerComponent.months[0].label).toBe('Jan');
+
+      adapter.setLocale(zhCN);
+      fixture.detectChanges();
+
+      expect(headerComponent.months[0].label).toBe('1月');
     });
   });
 

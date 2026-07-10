@@ -6,13 +6,21 @@
 import { formatDate } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
 
-import { format as fnsFormat, getISOWeek as fnsGetISOWeek, parse as fnsParse, getQuarter } from 'date-fns';
+import { format as fnsFormat, getISOWeek as fnsGetISOWeek, getQuarter, parse as fnsParse } from 'date-fns';
 
-import { WeekDayIndex, ɵNgTimeParser } from 'ng-zorro-antd/core/time';
+import {
+  type WeekDayIndex,
+  NZ_DATE_CONFIG,
+  NzDateConfig,
+  mergeDateConfig,
+  ɵNgTimeParser
+} from 'ng-zorro-antd/core/time';
 
-import { NZ_DATE_CONFIG, NzDateConfig, mergeDateConfig } from './date-config';
 import { NzI18nService } from './nz-i18n.service';
 
+/**
+ * @deprecated Use `NzDateAdapter` directly instead. Will be removed in v23.
+ */
 export function DATE_HELPER_SERVICE_FACTORY(): DateHelperService {
   const i18n = inject(NzI18nService);
   return i18n.getDateLocale() ? new DateHelperByDateFns(i18n) : new DateHelperByDatePipe(i18n);
@@ -21,6 +29,8 @@ export function DATE_HELPER_SERVICE_FACTORY(): DateHelperService {
 /**
  * Abstract DateHelperService(Token via Class)
  * Compatibility: compact for original usage by default which using DatePipe
+ *
+ * @deprecated Use `NzDateAdapter` directly instead. Will be removed in v23.
  */
 @Injectable({
   providedIn: 'root',
@@ -42,6 +52,7 @@ export abstract class DateHelperService {
 
 /**
  * DateHelper that handles date formats with date-fns
+ * @deprecated Use {@link NzDateAdapter} directly instead. Will be removed in v23.
  */
 export class DateHelperByDateFns extends DateHelperService {
   getISOWeek(date: Date): number {
@@ -87,7 +98,7 @@ export class DateHelperByDateFns extends DateHelperService {
  * DateHelper that handles date formats with angular's date-pipe
  *
  * @see https://github.com/NG-ZORRO/ng-zorro-antd/issues/2406 - DatePipe may cause non-standard week bug, see:
- *
+ * @deprecated Use `NzDateAdapter` directly instead. Will be removed in v23.
  */
 export class DateHelperByDatePipe extends DateHelperService {
   getISOWeek(date: Date): number {

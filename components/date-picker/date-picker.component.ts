@@ -45,7 +45,7 @@ import { distinctUntilChanged } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { slideAnimationEnter, slideAnimationLeave } from 'ng-zorro-antd/core/animation';
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import {
   NZ_FORM_SIZE,
   NZ_FORM_VARIANT,
@@ -54,7 +54,7 @@ import {
 } from 'ng-zorro-antd/core/form';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { DATE_PICKER_POSITION_MAP, DEFAULT_DATE_PICKER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
-import { CandyDate, cloneDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
+import { CandyDate, cloneDate, CompatibleValue, NzDateAdapter, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import {
   BooleanInput,
   FunctionProp,
@@ -75,12 +75,7 @@ import {
   toBoolean,
   valueFunctionProp
 } from 'ng-zorro-antd/core/util';
-import {
-  DateHelperService,
-  NzDatePickerI18nInterface,
-  NzDatePickerLangI18nInterface,
-  NzI18nService
-} from 'ng-zorro-antd/i18n';
+import { NzDatePickerI18nInterface, NzDatePickerLangI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
@@ -278,17 +273,17 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
   ]
 })
 export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor {
-  public nzConfigService = inject(NzConfigService);
-  public datePickerService = inject(DatePickerService);
-  protected i18n = inject(NzI18nService);
-  protected cdr = inject(ChangeDetectorRef);
-  private renderer = inject(Renderer2);
-  private elementRef = inject(ElementRef<HTMLElement>);
-  private dateHelper = inject(DateHelperService);
-  private nzResizeObserver = inject(NzResizeObserver);
-  private platform = inject(Platform);
-  private destroyRef = inject(DestroyRef);
+  public readonly datePickerService = inject(DatePickerService);
+  protected readonly i18n = inject(NzI18nService);
+  protected readonly cdr = inject(ChangeDetectorRef);
   protected readonly dir = inject(Directionality).valueSignal;
+  private readonly renderer = inject(Renderer2);
+  private readonly elementRef = inject(ElementRef<HTMLElement>);
+  private readonly dateAdapter = inject(NzDateAdapter);
+  private readonly nzResizeObserver = inject(NzResizeObserver);
+  private readonly platform = inject(Platform);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly nzFormStatusService = inject(NzFormStatusService, { optional: true });
 
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
@@ -308,7 +303,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   private isCustomFormat: boolean = false;
   private showTime: SupportTimeOptions | boolean = false;
   private isNzDisableFirstChange: boolean = true;
-  // --- Common API
   readonly nzInline = input(false, { transform: booleanAttribute });
   @Input({ transform: booleanAttribute }) nzAllowClear: boolean = true;
   @Input({ transform: booleanAttribute }) nzAutoFocus: boolean = false;
@@ -352,11 +346,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     this.showTime = typeof value === 'object' ? value : toBoolean(value);
   }
 
-  // ------------------------------------------------------------------------
-  // Input API Start
-  // ------------------------------------------------------------------------
   @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay?: CdkConnectedOverlay;
-  @ViewChild(DateRangePopupComponent, { static: false }) panel!: DateRangePopupComponent;
+  @ViewChild(DateRangePopupComponent, { static: false }) panel?: DateRangePopupComponent;
   @ViewChild('separatorElement', { static: false }) separatorElement?: ElementRef;
   @ViewChild('pickerInput', { static: false }) pickerInput?: ElementRef<HTMLInputElement>;
   @ViewChildren('rangePickerInput') rangePickerInputs?: QueryList<ElementRef<HTMLInputElement>>;
@@ -560,6 +551,12 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
       return;
     }
 
+    if (!this.panel) {
+      this.datePickerService.setValue(this.datePickerService.initialValue!);
+      this.close();
+      return;
+    }
+
     if (this.panel.isAllowed(this.datePickerService.value!, true)) {
       if (Array.isArray(this.datePickerService.value) && wrongSortOrder(this.datePickerService.value)) {
         const index = this.datePickerService.getActiveIndex();
@@ -611,8 +608,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     this.cdr.markForCheck();
   }
 
-  formatValue(value: CandyDate): string {
-    return this.dateHelper.format(value && (value as CandyDate).nativeDate, this.nzFormat);
+  formatValue(value: CandyDate | null): string {
+    return value ? this.dateAdapter.format(value.nativeDate, this.nzFormat) : '';
   }
 
   onInputChange(value: string, isEnter: boolean = false): void {
@@ -631,7 +628,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
 
     const date = this.checkValidDate(value);
     // Can only change date when it's open
-    if (date && this.realOpenState) {
+    if (date && this.realOpenState && this.panel) {
       this.panel.changeValueFromSelect(date, isEnter);
     }
   }
@@ -641,9 +638,9 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   }
 
   private checkValidDate(value: string): CandyDate | null {
-    const date = new CandyDate(this.dateHelper.parseDate(value, this.nzFormat));
+    const date = new CandyDate(this.dateAdapter.parse(value, this.nzFormat));
 
-    if (!date.isValid() || value !== this.dateHelper.format(date.nativeDate, this.nzFormat)) {
+    if (!date.isValid() || value !== this.dateAdapter.format(date.nativeDate, this.nzFormat)) {
       return null;
     }
 
@@ -670,12 +667,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   isOpenHandledByUser(): boolean {
     return this.nzOpen !== undefined;
   }
-
-  private nzFormStatusService = inject(NzFormStatusService, { optional: true });
-
-  // ------------------------------------------------------------------------
-  // Input API End
-  // ------------------------------------------------------------------------
 
   ngOnInit(): void {
     this.nzFormStatusService?.formStatusChanges
@@ -747,18 +738,19 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
     });
   }
 
-  ngOnChanges({
-    nzStatus,
-    nzPlacement,
-    nzPopupStyle,
-    nzPlaceHolder,
-    nzLocale,
-    nzFormat,
-    nzRenderExtraFooter,
-    nzMode,
-    nzSize,
-    nzVariant
-  }: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    const {
+      nzStatus,
+      nzPlacement,
+      nzPopupStyle,
+      nzPlaceHolder,
+      nzLocale,
+      nzFormat,
+      nzRenderExtraFooter,
+      nzMode,
+      nzSize,
+      nzVariant
+    } = changes;
     if (nzPopupStyle) {
       // Always assign the popup style patch
       this.nzPopupStyle = this.nzPopupStyle ? { ...this.nzPopupStyle, ...POPUP_STYLE_PATCH } : POPUP_STYLE_PATCH;
