@@ -3,7 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { computed, CSP_NONCE, DOCUMENT, effect, inject, Injectable, Signal, signal } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { computed, CSP_NONCE, effect, inject, Injectable, Signal, signal } from '@angular/core';
 
 import { NZ_CONFIG } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
