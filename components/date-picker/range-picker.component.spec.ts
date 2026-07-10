@@ -12,8 +12,8 @@ import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import differenceInDays from 'date-fns/differenceInDays';
-import isSameDay from 'date-fns/isSameDay';
+import { differenceInDays } from 'date-fns/differenceInDays';
+import { isSameDay } from 'date-fns/isSameDay';
 import { vi } from 'vitest';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
