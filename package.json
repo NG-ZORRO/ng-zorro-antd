@@ -30,8 +30,7 @@
   },
   "dependencies": {
     "@angular/cdk": "^22.0.2",
-    "@ant-design/icons-angular": "^22.0.0",
-    "date-fns": "^4.4.0"
+    "@ant-design/icons-angular": "^22.0.0"
   },
   "devDependencies": {
     "@angular-devkit/core": "^22.0.4",
@@ -82,6 +81,7 @@
     "d3": "^6.3.1",
     "dagre": "^0.8.5",
     "dagre-compound": "^0.0.8",
+    "date-fns": "^4.1.0",
     "del": "^8.0.0",
     "detect-port": "^2.1.0",
     "eslint": "^9.39.0",
