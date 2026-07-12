@@ -10,7 +10,8 @@ NG-ZORRO date components access date operations through `NzDateAdapter`. Startin
 
 If you want to use the built-in adapter based on `date-fns`, use `provideNzDateFnsAdapter`:
 
-`date-fns` is a peer dependency of NG-ZORRO. Install it explicitly before using this adapter:
+`date-fns` is a peer dependency of NG-ZORRO. `ng add ng-zorro-antd` installs it by default when the
+date-fns adapter is selected. If you configure this adapter manually, install it explicitly first:
 
 ```bash
 npm install date-fns@^4.1.0
