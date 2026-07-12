@@ -36,7 +36,7 @@ describe('ng-add schematic', () => {
     const options = { ...defaultOptions };
     const tree = await runner.runSchematic('ng-add', options, appTree);
     expect(getPackageJsonDependency(tree, 'ng-zorro-antd')).not.toBeNull();
-    expect(getPackageJsonDependency(tree, 'date-fns')?.version).toBe('^4.1.0');
+    expect(getPackageJsonDependency(tree, 'date-fns')).toBeNull();
     expect(runner.tasks.some(task => task.name === NodePackageName)).toBe(true);
   });
 

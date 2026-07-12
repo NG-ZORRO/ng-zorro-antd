@@ -39,7 +39,7 @@ describe('[standalone] ng-add schematic', () => {
     const dependencies = packageJson.dependencies;
 
     expect(dependencies['ng-zorro-antd']).toBeDefined();
-    expect(dependencies['date-fns']).toBe('^4.1.0');
+    expect(dependencies['date-fns']).toBeUndefined();
     expect(runner.tasks.some(task => task.name === NodePackageName)).toBe(true);
   });
 
