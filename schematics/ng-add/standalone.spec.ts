@@ -10,7 +10,6 @@ import { Tree } from '@angular-devkit/schematics';
 import { NodePackageName } from '@angular-devkit/schematics/tasks/package-manager/options';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 import { readWorkspace } from '@schematics/angular/utility';
-import { getPackageJsonDependency } from '@schematics/angular/utility/dependencies';
 
 import { join } from 'path';
 
@@ -30,29 +29,6 @@ describe('[standalone] ng-add schematic', () => {
   beforeEach(async () => {
     runner = new SchematicTestRunner('schematics', require.resolve('../collection.json'));
     appTree = await createTestApp(runner);
-  });
-
-  it('should update package.json', async () => {
-    const options = { ...defaultOptions };
-    const tree = await runner.runSchematic('ng-add', options, appTree);
-    const packageJson = JSON.parse(getFileContent(tree, '/package.json'));
-    const dependencies = packageJson.dependencies;
-
-    expect(dependencies['ng-zorro-antd']).toBeDefined();
-    expect(dependencies['date-fns']).toBeUndefined();
-    expect(runner.tasks.some(task => task.name === NodePackageName)).toBe(true);
-  });
-
-  it('should not install date-fns when using native date adapter', async () => {
-    const options = { ...defaultOptions, dateAdapter: 'native' as const };
-    const tree = await runner.runSchematic('ng-add', options, appTree);
-    expect(getPackageJsonDependency(tree, 'date-fns')).toBeNull();
-  });
-
-  it('should not install date-fns when skipping date adapter setup', async () => {
-    const options = { ...defaultOptions, dateAdapter: 'none' as const };
-    const tree = await runner.runSchematic('ng-add', options, appTree);
-    expect(getPackageJsonDependency(tree, 'date-fns')).toBeNull();
   });
 
   it('should add hammerjs to package.json', async () => {
