@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { differenceInCalendarMonths } from 'date-fns/differenceInCalendarMonths';
+import { differenceInCalendarMonths } from 'date-fns';
 
 import { CandyDate, normalizeRangeValue, SingleValue } from './candy-date';
 import { NzSafeAny } from '../types';
