@@ -154,7 +154,7 @@ export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
     }
   }
 
- ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
     const { listOfContainerItem, activatedValue } = changes;
 
     const isInitialLoad =

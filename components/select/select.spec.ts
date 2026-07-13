@@ -1500,10 +1500,10 @@ describe('select', () => {
 
     it('should not run change detection when `nz-select-top-control` is clicked and should focus the `nz-select-search`', () => {
       const appRef = TestBed.inject(ApplicationRef);
-      vi.spyOn(appRef, 'tick').mockImplementation(() => { });
+      vi.spyOn(appRef, 'tick').mockImplementation(() => {});
 
       const nzSelectSearch = fixture.debugElement.query(By.directive(NzSelectSearchComponent));
-      vi.spyOn(nzSelectSearch.componentInstance, 'focus').mockImplementation(() => { });
+      vi.spyOn(nzSelectSearch.componentInstance, 'focus').mockImplementation(() => {});
 
       const nzSelectTopControl = fixture.debugElement.query(By.directive(NzSelectTopControlComponent));
       dispatchMouseEvent(nzSelectTopControl.nativeElement, 'click');
@@ -1514,7 +1514,7 @@ describe('select', () => {
 
     it('should not run change detection when non-backspace button is pressed on the `nz-select-top-control`', () => {
       const appRef = TestBed.inject(ApplicationRef);
-      vi.spyOn(appRef, 'tick').mockImplementation(() => { });
+      vi.spyOn(appRef, 'tick').mockImplementation(() => {});
 
       const nzSelectTopControl = fixture.debugElement.query(By.directive(NzSelectTopControlComponent));
       dispatchKeyboardEvent(nzSelectTopControl.nativeElement, 'keydown', TAB, nzSelectTopControl.nativeElement);
@@ -1799,7 +1799,7 @@ describe('option container scroll', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({ providers: [provideNzIconsTesting(), provideNzNoAnimation()] });
     container = TestBed.createComponent(NzOptionContainerComponent).componentInstance;
-    scrollSpy = vi.spyOn(container, 'scrollToActivatedValue').mockImplementation(() => { });
+    scrollSpy = vi.spyOn(container, 'scrollToActivatedValue').mockImplementation(() => {});
   });
 
   it('should not recenter when more options are appended on scroll', () => {
