@@ -5,7 +5,7 @@
 
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { ApplicationRef, Component, signal, TemplateRef, ViewChild, WritableSignal } from '@angular/core';
+import { ApplicationRef, Component, signal, SimpleChange, TemplateRef, ViewChild, WritableSignal } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -36,6 +36,7 @@ import {
   NzSelectOptionInterface,
   NzSelectPlacementType
 } from './select.types';
+import { NzOptionContainerComponent } from './option-container.component';
 
 describe('select', () => {
   beforeEach(() => {
@@ -1785,6 +1786,35 @@ describe('select finalVariant', () => {
     expect(selectElement.classList).not.toContain('ant-select-filled');
     expect(selectElement.classList).not.toContain('ant-select-borderless');
     expect(selectElement.classList).not.toContain('ant-select-underlined');
+  });
+});
+
+describe('option container scroll', () => {
+  let container: NzOptionContainerComponent;
+  let scrollSpy: ReturnType<typeof vi.spyOn>;
+
+  const change = (previousValue: unknown, currentValue: unknown, firstChange = false): SimpleChange =>
+    ({ previousValue, currentValue, firstChange, isFirstChange: () => firstChange }) as SimpleChange;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({ providers: [provideNzIconsTesting(), provideNzNoAnimation()] });
+    container = TestBed.createComponent(NzOptionContainerComponent).componentInstance;
+    scrollSpy = vi.spyOn(container, 'scrollToActivatedValue').mockImplementation(() => {});
+  });
+
+  it('should not recenter when more options are appended on scroll', () => {
+    container.ngOnChanges({ listOfContainerItem: change([{ key: 'a' }], [{ key: 'a' }, { key: 'b' }]) });
+    expect(scrollSpy).not.toHaveBeenCalled();
+  });
+
+  it('should recenter when the activated value changes (keyboard/selection)', () => {
+    container.ngOnChanges({ activatedValue: change('a', 'b') });
+    expect(scrollSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should recenter on the initial population of options', () => {
+    container.ngOnChanges({ listOfContainerItem: change([], [{ key: 'a' }], true) });
+    expect(scrollSpy).toHaveBeenCalledTimes(1);
   });
 });
 
