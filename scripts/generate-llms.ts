@@ -303,7 +303,9 @@ function generateFullContent(result: ProcessResult, lang: 'en' | 'cn'): string {
 }
 
 // Run if executed directly
-generateLLms().catch(e => {
-  console.error(e);
-  process.exit(1);
-});
+if (require.main === module) {
+  generateLLms().catch(e => {
+    console.error(e);
+    process.exit(1);
+  });
+}

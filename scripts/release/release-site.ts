@@ -31,6 +31,8 @@ export function releaseSite(version: string): boolean {
         'sitemap.js?(.map)',
         'static.paths.js?(.map)',
         'prerender.js?(.map)',
+        'schematics',
+        'schematics/**/*',
         'server/**/*',
         '.idea/**/*',
         '.vscode/**/*',

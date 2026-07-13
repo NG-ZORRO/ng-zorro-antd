@@ -1,0 +1,41 @@
+{
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "name": "schematics",
+  "projectType": "library",
+  "sourceRoot": "schematics",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsx scripts/tasks/generate-schematics.ts",
+          "tsc -p schematics/tsconfig.json",
+          "tsx scripts/tasks/copy-schematics-resources.ts",
+          "tsx scripts/tasks/clean-schematics.ts"
+        ],
+        "parallel": false
+      },
+      "inputs": [
+        "{projectRoot}/**/*",
+        "{workspaceRoot}/components/**/demo/**/*",
+        "{workspaceRoot}/components/package.json",
+        "{workspaceRoot}/scripts/schematics/**/*",
+        "sharedGlobals"
+      ],
+      "outputs": ["{workspaceRoot}/dist/schematics"],
+      "cache": true
+    },
+    "test": {
+      "command": "vitest run --globals --dir dist/schematics",
+      "dependsOn": ["build"],
+      "inputs": [
+        "{projectRoot}/**/*",
+        "{workspaceRoot}/components/**/demo/**/*",
+        "{workspaceRoot}/components/package.json",
+        "{workspaceRoot}/scripts/schematics/**/*",
+        "sharedGlobals"
+      ],
+      "cache": true
+    }
+  }
+}

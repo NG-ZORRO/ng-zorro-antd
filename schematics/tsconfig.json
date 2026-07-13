@@ -6,7 +6,7 @@
     ],
     "module": "commonjs",
     "moduleResolution": "bundler",
-    "outDir": "../publish/schematics",
+    "outDir": "../dist/schematics",
     "strict": false,
     "strictNullChecks": false,
     "noImplicitAny": false,
