@@ -79,6 +79,16 @@
       "executor": "nx:noop",
       "dependsOn": ["copy-libs"]
     },
+    "lint": {
+      "command": "eslint \"components/**/*.ts\" \"components/**/*.html\" --cache",
+      "inputs": [
+        "{projectRoot}/**/*.ts",
+        "{projectRoot}/**/*.html",
+        "{workspaceRoot}/eslint.config.mjs",
+        "sharedGlobals"
+      ],
+      "cache": true
+    },
     "lint-styles": {
       "command": "stylelint \"components/*/*.less\"",
       "inputs": [

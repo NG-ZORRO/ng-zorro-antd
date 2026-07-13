@@ -25,14 +25,7 @@ import { NzResizableService } from './resizable.service';
 export type NzCursorType = 'window' | 'grid';
 
 export type NzResizeDirection =
-  | 'top'
-  | 'right'
-  | 'bottom'
-  | 'left'
-  | 'topRight'
-  | 'bottomRight'
-  | 'bottomLeft'
-  | 'topLeft';
+  'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'bottomRight' | 'bottomLeft' | 'topLeft';
 
 export class NzResizeHandleMouseDownEvent {
   constructor(
