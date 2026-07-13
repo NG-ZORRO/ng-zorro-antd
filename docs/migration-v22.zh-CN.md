@@ -28,3 +28,20 @@ toc: false
 ### 3. 移除废弃 API
 
 - 请参考 [v22 changelog](/docs/changelog/zh#2200) 移除废弃 API
+
+### 4. 配置日期适配器
+
+NG-ZORRO 不再内置默认日期引擎适配器。如果你的应用使用 DatePicker、Calendar、TimePicker 等日期相关组件，需要在 `app.config.ts` 中显式配置日期适配器。
+
+如需保持旧版本基于 date-fns 的行为：
+
+```ts
+import { ApplicationConfig } from '@angular/core';
+import { provideNzDateFnsAdapter } from 'ng-zorro-antd/core/time';
+
+export const appConfig: ApplicationConfig = {
+  providers: [provideNzDateFnsAdapter()]
+};
+```
+
+`date-fns` 已升级至 v4。如果你的应用直接使用 `date-fns` API，请同步更新 import 和相关用法以兼容 v4。
