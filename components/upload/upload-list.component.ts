@@ -234,14 +234,7 @@ export class NzUploadListComponent implements OnChanges {
       });
   }
 
-  private showDownload(showIcon: NzShowUploadListIcon | undefined, file: NzUploadFile): boolean {
-    if (!showIcon) {
-      return false;
-    }
-    return (typeof showIcon === 'function' ? showIcon(file) : showIcon) && file.status === 'done';
-  }
-
-  private showRemoveOrPreview(showIcon: NzShowUploadListIcon | undefined, file: NzUploadFile): boolean {
+  private resolveShowIcon(showIcon: NzShowUploadListIcon | undefined, file: NzUploadFile): boolean {
     if (!showIcon) {
       return false;
     }
@@ -255,9 +248,9 @@ export class NzUploadListComponent implements OnChanges {
       file.linkProps = typeof file.linkProps === 'string' ? JSON.parse(file.linkProps) : file.linkProps;
       file.isImageUrl = this.previewIsImage ? this.previewIsImage(file) : this.isImageUrl(file);
       file.iconType = this.getIconType(file);
-      file.showDownload = this.showDownload(this.icons.showDownloadIcon, file);
-      file.showRemove = this.showRemoveOrPreview(this.icons.showRemoveIcon, file);
-      file.showPreview = this.showRemoveOrPreview(this.icons.showPreviewIcon, file);
+      file.showDownload = this.resolveShowIcon(this.icons.showDownloadIcon, file) && file.status === 'done';
+      file.showRemove = this.resolveShowIcon(this.icons.showRemoveIcon, file);
+      file.showPreview = this.resolveShowIcon(this.icons.showPreviewIcon, file);
     });
   }
 
