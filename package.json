@@ -9,7 +9,7 @@
   "scripts": {
     "nx": "nx",
     "start": "cross-env NODE_ENV=development nx run ng-zorro-antd-doc:start",
-    "test": "nx run ng-zorro-antd-lib:test --watch=false --coverage",
+    "test": "nx run ng-zorro-antd-lib:test --watch=false --coverage --progress=false",
     "test:watch": "nx run ng-zorro-antd-lib:test --watch --coverage",
     "test:schematics": "nx run schematics:test",
     "build:schematics": "nx run schematics:build",
