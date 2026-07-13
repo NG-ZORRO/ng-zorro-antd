@@ -22,7 +22,7 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, 
 import { form, FormField } from '@angular/forms/signals';
 import { By } from '@angular/platform-browser';
 
-import isSameDay from 'date-fns/isSameDay';
+import { isSameDay } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 import { vi } from 'vitest';
 
