@@ -31,7 +31,13 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
-import { NzIconRenderTemplate, NzShowUploadList, NzUploadFile, NzUploadListType } from './interface';
+import {
+  NzIconRenderTemplate,
+  NzShowUploadList,
+  NzShowUploadListIcon,
+  NzUploadFile,
+  NzUploadListType
+} from './interface';
 
 const isImageFileType = (type: string): boolean => !!type && type.indexOf('image/') === 0;
 
@@ -45,6 +51,8 @@ interface UploadListFile extends NzUploadFile {
   isUploading?: boolean;
   iconType?: UploadListIconType;
   showDownload?: boolean;
+  showRemove?: boolean;
+  showPreview?: boolean;
 }
 
 @Component({
@@ -226,8 +234,11 @@ export class NzUploadListComponent implements OnChanges {
       });
   }
 
-  private showDownload(file: NzUploadFile): boolean {
-    return !!(this.icons.showDownloadIcon && file.status === 'done');
+  private resolveShowIcon(showIcon: NzShowUploadListIcon | undefined, file: NzUploadFile): boolean {
+    if (!showIcon) {
+      return false;
+    }
+    return typeof showIcon === 'function' ? showIcon(file) : showIcon;
   }
 
   private fixData(): void {
@@ -237,7 +248,9 @@ export class NzUploadListComponent implements OnChanges {
       file.linkProps = typeof file.linkProps === 'string' ? JSON.parse(file.linkProps) : file.linkProps;
       file.isImageUrl = this.previewIsImage ? this.previewIsImage(file) : this.isImageUrl(file);
       file.iconType = this.getIconType(file);
-      file.showDownload = this.showDownload(file);
+      file.showDownload = this.resolveShowIcon(this.icons.showDownloadIcon, file) && file.status === 'done';
+      file.showRemove = this.resolveShowIcon(this.icons.showRemoveIcon, file);
+      file.showPreview = this.resolveShowIcon(this.icons.showPreviewIcon, file);
     });
   }
 
