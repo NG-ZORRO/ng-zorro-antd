@@ -1119,6 +1119,29 @@ describe('range-picker', () => {
       expect(end.getFullYear()).toBe(2026);
       expect(end.getMonth()).toBe(6);
     }));
+
+    it('should keep a typed start month when selecting the end month from the panel', fakeAsync(() => {
+      fixtureInstance.modelValue = [new Date('2026-01-01'), new Date('2026-05-01')];
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      const leftInput = getPickerInput(fixture.debugElement);
+      typeInElement('2026-02', leftInput);
+      fixture.detectChanges();
+      leftInput.dispatchEvent(ENTER_EVENT);
+      fixture.detectChanges();
+
+      dispatchMouseEvent(getMonthCell('left', 6), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+
+      const [start, end] = fixtureInstance.modelValue as Date[];
+      expect(start.getFullYear()).toBe(2026);
+      expect(start.getMonth()).toBe(1);
+      expect(end.getFullYear()).toBe(2026);
+      expect(end.getMonth()).toBe(5);
+    }));
   });
 
   describe('year mode', () => {
