@@ -1100,6 +1100,25 @@ describe('range-picker', () => {
       fixture.detectChanges();
       expect(rightThirdRowCell.classList.contains('ant-picker-cell-range-hover-end')).toBeTruthy();
     }));
+
+    it('should start a fresh range when reselecting months from an existing range', fakeAsync(() => {
+      fixtureInstance.modelValue = [new Date('2026-01-01'), new Date('2026-05-01')];
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      dispatchMouseEvent(getMonthCell('left', 7), 'click');
+      fixture.detectChanges();
+      dispatchMouseEvent(getMonthCell('left', 3), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+
+      const [start, end] = fixtureInstance.modelValue as Date[];
+      expect(start.getFullYear()).toBe(2026);
+      expect(start.getMonth()).toBe(2);
+      expect(end.getFullYear()).toBe(2026);
+      expect(end.getMonth()).toBe(6);
+    }));
   });
 
   describe('year mode', () => {
@@ -1193,6 +1212,13 @@ describe('range-picker', () => {
   function getFirstCell(partial: 'left' | 'right'): HTMLElement {
     const flg = partial === 'left' ? 'first' : 'last';
     return queryFromOverlay(`.ant-picker-panel:${flg}-child td:first-child .ant-picker-cell-inner`) as HTMLElement;
+  }
+
+  function getMonthCell(partial: 'left' | 'right', month: number): HTMLElement {
+    const flg = partial === 'left' ? 'first' : 'last';
+    return queryFromOverlay(`.ant-picker-panel:${flg}-child .ant-picker-month-panel`)!.querySelectorAll(
+      'td.ant-picker-cell .ant-picker-cell-inner'
+    )[month - 1] as HTMLElement;
   }
 
   function queryFromOverlay(selector: string): HTMLElement {
