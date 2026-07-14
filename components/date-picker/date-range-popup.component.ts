@@ -108,7 +108,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
           [hoverValue]="$any(hoverValue)"
           [format]="format"
           (cellHover)="onCellHover($event)"
-          (selectDate)="changeValueFromSelect($event, !showTime, true)"
+          (selectDate)="changeValueFromSelect($event, !showTime, true, partType)"
           (selectTime)="onSelectTime($event, partType)"
           (headerChange)="onActiveDateChange($event, partType)"
         />
@@ -312,7 +312,12 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     this.buildTimeOptions();
   }
 
-  changeValueFromSelect(value: CandyDate, emitValue: boolean = true, isDateCellClick: boolean = false): void {
+  changeValueFromSelect(
+    value: CandyDate,
+    emitValue: boolean = true,
+    isDateCellClick: boolean = false,
+    selectionPanel?: RangePartType
+  ): void {
     if (this.isRange) {
       const selectedValue: SingleValue[] = cloneDate(this.datePickerService.value) as CandyDate[];
       const checkedPart: RangePartType = this.datePickerService.activeInput;
@@ -372,6 +377,10 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
         this.datePickerService.setValue(selectedValue);
       }
       this.datePickerService.inputPartChange$.next(nextPart);
+      if (selectionPanel && !!selectedValue[0] !== !!selectedValue[1]) {
+        // Keep an incomplete range anchored to the panel where its value was selected.
+        this.onActiveDateChange(value, selectionPanel);
+      }
     } else {
       this.datePickerService.setValue(value);
       this.datePickerService.inputPartChange$.next(null);

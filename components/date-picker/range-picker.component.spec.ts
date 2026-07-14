@@ -1101,6 +1101,17 @@ describe('range-picker', () => {
       expect(rightThirdRowCell.classList.contains('ant-picker-cell-range-hover-end')).toBeTruthy();
     }));
 
+    it('should keep a selected start month in the right panel', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      const selectedMonth = getMonthCell('right', 6);
+      dispatchMouseEvent(selectedMonth, 'click');
+      fixture.detectChanges();
+
+      expect(queryFromOverlay('.ant-picker-panel:last-child .ant-picker-cell-selected')).not.toBeNull();
+    }));
+
     it('should start a fresh range when reselecting months from an existing range', fakeAsync(() => {
       fixtureInstance.modelValue = [new Date('2026-01-01'), new Date('2026-05-01')];
       fixture.detectChanges();
