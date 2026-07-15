@@ -78,7 +78,6 @@ export class AppComponent implements OnInit {
   private readonly title = inject(Title);
   private readonly nzI18nService = inject(NzI18nService);
   private readonly dateAdapter = inject(NzDateAdapter);
-  private readonly nzMessageService = inject(NzMessageService);
   private readonly nzConfigService = inject(NzConfigService);
   private readonly platform = inject(Platform);
   private readonly meta = inject(Meta);
