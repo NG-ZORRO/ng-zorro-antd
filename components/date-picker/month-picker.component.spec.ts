@@ -11,7 +11,7 @@ import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import isBefore from 'date-fns/isBefore';
+import { isBefore } from 'date-fns';
 import { vi } from 'vitest';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';

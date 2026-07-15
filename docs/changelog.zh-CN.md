@@ -16,16 +16,25 @@ tag: '{{version}}'
 
 ---
 
-## 22.0.0-alpha.1
+## 22.0.0-beta.0
 
-`2026-06-12`
+`2026-07-13`
 
-- 支持 Angular v22
-- 所有组件均使用 OnPush
+### Features
 
-> **注意**: v22 仍然处于预览阶段，未来版本可能会包含破坏性变更。
+- 所有组件均使用 OnPush ([#9824](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9824)) ([b50ea34](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b50ea34e298ff153f1809b96ca3d4c0a6d8b9082))
+- **\*:** 新增日期适配器支持 ([#9858](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9858)) ([d578c8b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d578c8bd619743f7a4c77f092d5d43b8b196e6e2))
+
+### Bug Fixes
+
+- **form:** 修复 signal form 兼容性问题 ([#9831](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9831)) ([f57fd67](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f57fd67fd49b3b274a8b8e54de22f230b82624da))
+- **i18n:** 补充 `ja_JP` 缺失翻译 ([#9857](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9857)) ([1ff499e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1ff499e511b2f10d444ed9e050d0beea9433a166))
 
 ### ⚠ BREAKING CHANGES
+
+日期相关组件不再内置默认日期引擎适配器。使用日期相关组件的应用需要在应用配置中显式提供日期适配器；如需保持旧版本基于 date-fns 的行为，可在 `app.config.ts` 中配置 `provideNzDateFnsAdapter()`。
+
+`date-fns` 已升级至 v4。直接使用 `date-fns` API 的应用需要更新 import 和相关用法，以兼容 v4 版本。([#9868](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9868)) ([a865a89](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a865a89832e1382dc291c1028c2ae58f47891987))
 
 移除以下在过去的版本中标记为废弃的 API:
 

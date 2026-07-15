@@ -44,10 +44,15 @@ export interface NzUploadChangeParam {
   type?: string;
 }
 
+export type NzShowUploadListIcon = boolean | ((file: NzUploadFile) => boolean);
 export interface NzShowUploadList {
-  showRemoveIcon?: boolean;
-  showPreviewIcon?: boolean;
-  showDownloadIcon?: boolean;
+  showRemoveIcon?: NzShowUploadListIcon;
+  showPreviewIcon?: NzShowUploadListIcon;
+  showDownloadIcon?: NzShowUploadListIcon;
+  extra?: TemplateRef<{ $implicit: NzUploadFile }>;
+  downloadIcon?: TemplateRef<{ $implicit: NzUploadFile }>;
+  removeIcon?: TemplateRef<{ $implicit: NzUploadFile }>;
+  previewIcon?: TemplateRef<{ $implicit: NzUploadFile }>;
 }
 
 export type NzBeforeUploadFileType =

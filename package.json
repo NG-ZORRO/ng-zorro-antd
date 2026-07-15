@@ -31,7 +31,7 @@
   "dependencies": {
     "@angular/cdk": "^22.0.2",
     "@ant-design/icons-angular": "^22.0.0",
-    "date-fns": "^2.16.1"
+    "date-fns": "^4.1.0"
   },
   "devDependencies": {
     "@angular-devkit/core": "^22.0.4",
