@@ -16,16 +16,25 @@ tag: '{{version}}'
 
 ---
 
-## 22.0.0-alpha.1
+## 22.0.0-beta.0
 
-`2026-06-12`
+`2026-07-13`
 
-- Support Angular v22
-- All components use OnPush change detection strategy
+### Features
 
-> **NOTE**: v22 is still in alpha stage and may contain breaking changes in future releases.
+- All components use OnPush change detection strategy ([#9824](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9824)) ([b50ea34](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b50ea34e298ff153f1809b96ca3d4c0a6d8b9082))
+- **\*:** add date adapter support ([#9858](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9858)) ([d578c8b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d578c8bd619743f7a4c77f092d5d43b8b196e6e2))
+
+### Bug Fixes
+
+- **form:** signal form compatibility ([#9831](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9831)) ([f57fd67](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f57fd67fd49b3b274a8b8e54de22f230b82624da))
+- **i18n:** add missing translations to `ja_JP` ([#9857](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9857)) ([1ff499e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1ff499e511b2f10d444ed9e050d0beea9433a166))
 
 ### ⚠ BREAKING CHANGES
+
+Date-related components no longer provide a default date engine adapter. Applications that use date-related components must configure a date adapter explicitly. To keep the previous date-fns based behavior, add `provideNzDateFnsAdapter()` in `app.config.ts`.
+
+`date-fns` has been upgraded to v4. Applications that use `date-fns` APIs directly should update their imports and date-fns usage to be compatible with v4. ([#9868](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9868)) ([a865a89](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a865a89832e1382dc291c1028c2ae58f47891987))
 
 Remove the following APIs which were marked as deprecated in the previous version:
 

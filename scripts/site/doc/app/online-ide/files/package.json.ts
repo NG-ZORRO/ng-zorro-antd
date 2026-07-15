@@ -22,7 +22,7 @@ export default (nzVersion: string, ngVersion: string) => {
       '@angular/cdk': ngVersion,
       '@angular/platform-browser-dynamic': ngVersion,
       '@ant-design/icons-angular': ngVersion,
-      'date-fns': '^2.16.1',
+      'date-fns': '^4.1.0',
       rxjs: '~7.8.1',
       tslib: '^2.0.0',
       'ng-zorro-antd': nzVersion,
