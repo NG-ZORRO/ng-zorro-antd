@@ -156,7 +156,10 @@ export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     const { listOfContainerItem, activatedValue } = changes;
-    if (listOfContainerItem || activatedValue) {
+
+    const isInitialLoad =
+      !!listOfContainerItem && !listOfContainerItem.previousValue?.length && !!listOfContainerItem.currentValue?.length;
+    if (activatedValue || isInitialLoad) {
       this.scrollToActivatedValue();
     }
   }
