@@ -106,7 +106,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
           [hoverValue]="$any(hoverValue)"
           [format]="format"
           (cellHover)="onCellHover($event)"
-          (selectDate)="changeValueFromSelect($event, !showTime)"
+          (selectDate)="changeValueFromSelect($event, !showTime, true, partType)"
           (selectTime)="onSelectTime($event, partType)"
           (headerChange)="onActiveDateChange($event, partType)"
         />
@@ -310,11 +310,23 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     this.buildTimeOptions();
   }
 
-  changeValueFromSelect(value: CandyDate, emitValue: boolean = true): void {
+  changeValueFromSelect(
+    value: CandyDate,
+    emitValue: boolean = true,
+    isDateCellClick: boolean = false,
+    selectionPanel?: RangePartType
+  ): void {
     if (this.isRange) {
       const selectedValue: SingleValue[] = cloneDate(this.datePickerService.value) as CandyDate[];
       const checkedPart: RangePartType = this.datePickerService.activeInput;
       let nextPart: RangePartType = checkedPart;
+      const hasCompleteRange = !!selectedValue[0] && !!selectedValue[1];
+      const isFreshSelection = !this.checkedPartArr[0] && !this.checkedPartArr[1];
+
+      // A new cell click should start a fresh range even when reopening with a complete existing value.
+      if (isDateCellClick && hasCompleteRange && isFreshSelection) {
+        selectedValue[this.datePickerService.getActiveIndex(this.reversedPart(checkedPart))] = null;
+      }
 
       selectedValue[this.datePickerService.getActiveIndex(checkedPart)] = value;
       this.checkedPartArr[this.datePickerService.getActiveIndex(checkedPart)] = true;
@@ -332,6 +344,8 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
           this.calendarChange.emit(selectedValue);
           if (this.isBothAllowed(selectedValue) && this.checkedPartArr[0] && this.checkedPartArr[1]) {
             this.clearHoverValue();
+            // The next user click should begin a new selection cycle.
+            this.resetCheckedPart();
             this.datePickerService.emitValue$.next();
           }
         } else {
@@ -349,6 +363,8 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
           if (this.isBothAllowed(selectedValue) && this.checkedPartArr[0] && this.checkedPartArr[1]) {
             this.calendarChange.emit(selectedValue);
             this.clearHoverValue();
+            // The next user click should begin a new selection cycle.
+            this.resetCheckedPart();
             this.datePickerService.emitValue$.next();
           } else if (this.isAllowed(selectedValue)) {
             nextPart = this.reversedPart(checkedPart);
@@ -359,6 +375,10 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
         this.datePickerService.setValue(selectedValue);
       }
       this.datePickerService.inputPartChange$.next(nextPart);
+      if (selectionPanel && !!selectedValue[0] !== !!selectedValue[1]) {
+        // Keep an incomplete range anchored to the panel where its value was selected.
+        this.onActiveDateChange(value, selectionPanel);
+      }
     } else {
       this.datePickerService.setValue(value);
       this.datePickerService.inputPartChange$.next(null);
@@ -463,6 +483,10 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
 
   private clearHoverValue(): void {
     this.hoverValue = [];
+  }
+
+  private resetCheckedPart(): void {
+    this.checkedPartArr = [false, false];
   }
 
   private buildTimeOptions(): void {

@@ -1098,6 +1098,59 @@ describe('range-picker', () => {
       fixture.detectChanges();
       expect(rightThirdRowCell.classList.contains('ant-picker-cell-range-hover-end')).toBeTruthy();
     });
+
+    it('should keep a selected start month in the right panel', () => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      const selectedMonth = getMonthCell('right', 6);
+      dispatchMouseEvent(selectedMonth, 'click');
+      fixture.detectChanges();
+
+      expect(queryFromOverlay('.ant-picker-panel:last-child .ant-picker-cell-selected')).not.toBeNull();
+    });
+
+    it('should start a fresh range when reselecting months from an existing range', () => {
+      fixtureInstance.modelValue.set([new Date('2026-01-01'), new Date('2026-05-01')]);
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      dispatchMouseEvent(getMonthCell('left', 7), 'click');
+      fixture.detectChanges();
+      dispatchMouseEvent(getMonthCell('left', 3), 'click');
+      fixture.detectChanges();
+      vi.advanceTimersByTime(500);
+      fixture.detectChanges();
+
+      const [start, end] = fixtureInstance.modelValue() as Date[];
+      expect(start.getFullYear()).toBe(2026);
+      expect(start.getMonth()).toBe(2);
+      expect(end.getFullYear()).toBe(2026);
+      expect(end.getMonth()).toBe(6);
+    });
+
+    it('should keep a typed start month when selecting the end month from the panel', () => {
+      fixtureInstance.modelValue.set([new Date('2026-01-01'), new Date('2026-05-01')]);
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      const leftInput = getPickerInput(fixture.debugElement);
+      typeInElement('2026-02', leftInput);
+      fixture.detectChanges();
+      leftInput.dispatchEvent(ENTER_EVENT);
+      fixture.detectChanges();
+
+      dispatchMouseEvent(getMonthCell('left', 6), 'click');
+      fixture.detectChanges();
+      vi.advanceTimersByTime(500);
+      fixture.detectChanges();
+
+      const [start, end] = fixtureInstance.modelValue() as Date[];
+      expect(start.getFullYear()).toBe(2026);
+      expect(start.getMonth()).toBe(1);
+      expect(end.getFullYear()).toBe(2026);
+      expect(end.getMonth()).toBe(5);
+    });
   });
 
   describe('year mode', () => {
@@ -1198,6 +1251,13 @@ describe('range-picker', () => {
   function getFirstCell(partial: 'left' | 'right'): HTMLElement {
     const flg = partial === 'left' ? 'first' : 'last';
     return queryFromOverlay(`.ant-picker-panel:${flg}-child td:first-child .ant-picker-cell-inner`) as HTMLElement;
+  }
+
+  function getMonthCell(partial: 'left' | 'right', month: number): HTMLElement {
+    const flg = partial === 'left' ? 'first' : 'last';
+    return queryFromOverlay(`.ant-picker-panel:${flg}-child .ant-picker-month-panel`)!.querySelectorAll(
+      'td.ant-picker-cell .ant-picker-cell-inner'
+    )[month - 1] as HTMLElement;
   }
 
   function queryFromOverlay(selector: string): HTMLElement {
