@@ -18,6 +18,7 @@ import { APP_LANGUAGE } from '../app.token';
 import { GithubButtonComponent } from './github-button.component';
 import { NavigationComponent } from './navigation.component';
 import { SearchbarComponent } from './searchbar.component';
+import { ThemeSwitcherComponent } from './theme-switcher.component';
 
 @Component({
   selector: 'app-header',
@@ -36,6 +37,7 @@ import { SearchbarComponent } from './searchbar.component';
     GithubButtonComponent,
     SearchbarComponent,
     NavigationComponent,
+    ThemeSwitcherComponent,
     UpperCasePipe
   ],
 })

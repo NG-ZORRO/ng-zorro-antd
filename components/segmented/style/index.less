@@ -4,8 +4,6 @@
 
 @segmented-prefix-cls: ~'@{ant-prefix}-segmented';
 
-@segmented-container-padding: 2px;
-
 .@{segmented-prefix-cls} {
   .reset-component();
   display: inline-block;
@@ -89,15 +87,15 @@
     }
 
     &-label {
-      min-height: @input-height-base - @segmented-container-padding * 2;
+      min-height: @segmented-item-min-height-base;
       padding: 0 @input-padding-horizontal-base;
-      line-height: @input-height-base - @segmented-container-padding * 2;
+      line-height: @segmented-item-min-height-base;
       .segmented-text-ellipsis();
     }
 
     // syntactic sugar to add `icon` for Segmented Item
     &-icon + * {
-      margin-left: (@margin-sm / 2);
+      margin-left: @margin-sm-half;
     }
 
     &-input {
@@ -113,16 +111,16 @@
 
   // size styles
   &&-lg &-item-label {
-    min-height: @input-height-lg - @segmented-container-padding * 2;
+    min-height: @segmented-item-min-height-lg;
     padding: 0 @input-padding-horizontal-lg;
     font-size: @font-size-lg;
-    line-height: @input-height-lg - @segmented-container-padding * 2;
+    line-height: @segmented-item-min-height-lg;
   }
 
   &&-sm &-item-label {
-    min-height: @input-height-sm - @segmented-container-padding * 2;
+    min-height: @segmented-item-min-height-sm;
     padding: 0 @input-padding-horizontal-sm;
-    line-height: @input-height-sm - @segmented-container-padding * 2;
+    line-height: @segmented-item-min-height-sm;
   }
 
   // disabled styles

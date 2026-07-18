@@ -52,7 +52,7 @@
       // ========================= Nest Table ===========================
       .@{table-prefix-cls}-wrapper:only-child {
         .@{table-prefix-cls}.@{table-prefix-cls}-rtl {
-          margin: -@table-padding-vertical (@table-padding-horizontal + ceil(@font-size-sm * 1.4)) -@table-padding-vertical -@table-padding-horizontal;
+          margin: -@table-padding-vertical @table-rtl-expand-icon-margin-right -@table-padding-vertical -@table-padding-horizontal;
         }
       }
     }

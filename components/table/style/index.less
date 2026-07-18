@@ -500,21 +500,18 @@
     position: relative;
     float: left;
     box-sizing: border-box;
-    width: @expand-icon-size;
-    height: @expand-icon-size;
+    width: @table-expand-icon-size;
+    height: @table-expand-icon-size;
     padding: 0;
     color: inherit;
-    line-height: ceil(((@font-size-sm * 1.4 - @border-width-base * 3) / 2)) * 2 + @border-width-base *
-      3;
+    line-height: @table-expand-icon-size;
     background: @table-expand-icon-bg;
     border: @border-width-base @border-style-base @table-border-color;
     border-radius: @border-radius-base;
-    transform: scale((unit(@checkbox-size) / unit(@expand-icon-size)));
+    transform: scale(@table-expand-icon-scale);
     transition: all 0.3s;
     user-select: none;
-    @expand-icon-size: ceil(((@font-size-sm * 1.4 - @border-width-base * 3) / 2)) * 2 +
-      @border-width-base * 3;
-
+    
     &:focus,
     &:hover,
     &:active {
@@ -530,7 +527,7 @@
     }
 
     &::before {
-      top: ceil(((@font-size-sm * 1.4 - @border-width-base * 3) / 2));
+      top: @table-expand-icon-offset;
       right: 3px;
       left: 3px;
       height: @border-width-base;
@@ -539,7 +536,7 @@
     &::after {
       top: 3px;
       bottom: 3px;
-      left: ceil(((@font-size-sm * 1.4 - @border-width-base * 3) / 2));
+      left: @table-expand-icon-offset;
       width: @border-width-base;
       transform: rotate(90deg);
     }
@@ -565,8 +562,7 @@
     }
 
     .@{table-prefix-cls}-row-indent + & {
-      margin-top: ((@font-size-base * @line-height-base - @border-width-base * 3) / 2) -
-        ceil(((@font-size-sm * 1.4 - @border-width-base * 3) / 2));
+      margin-top: @table-expand-icon-margin-top;
       margin-right: @padding-xs;
     }
   }

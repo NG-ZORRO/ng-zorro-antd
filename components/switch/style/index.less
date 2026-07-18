@@ -7,6 +7,13 @@
 @switch-pin-size: @switch-height - 4px;
 @switch-sm-pin-size: @switch-sm-height - 4px;
 
+// Guarded like the theme-level derived values: the token theme supplies this
+// as a CSS custom property and turns the flag off.
+.switch-derived-variables() when (@compute-derived-theme-variables = true) {
+  @switch-loading-icon-top: ((@switch-pin-size - @font-size-base) / 2);
+}
+.switch-derived-variables();
+
 .@{switch-prefix-cls} {
   .reset-component();
 
@@ -109,7 +116,7 @@
   // ======================== Loading =========================
   &-loading-icon.@{iconfont-css-prefix} {
     position: relative;
-    top: ((@switch-pin-size - @font-size-base) / 2);
+    top: @switch-loading-icon-top;
     color: rgba(0, 0, 0, 0.65);
     vertical-align: top;
   }

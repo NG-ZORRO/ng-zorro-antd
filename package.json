@@ -25,7 +25,7 @@
     "lint:fix": "npm run lint-fix:script && npm run lint-fix:style",
     "lint-fix:script": "npm run lint:script -- --fix",
     "lint-fix:style": "npm run lint:style -- --fix",
-    "pre-commit": "tsc -p components/tsconfig.json --noEmit && lint-staged",
+    "pre-commit": "tsc -p components/tsconfig.json --noEmit && lint-staged --concurrent false",
     "prepare": "husky"
   },
   "dependencies": {

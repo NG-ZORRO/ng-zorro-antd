@@ -232,7 +232,10 @@
 // ============================================================
 // ==                          Size                          ==
 // ============================================================
-.genSizeStyle(@suffix, @multiple-item-height, @border-radius, @border-radius-sm, @select-height, @font-size: @font-size-base) {
+// All six parameters are required so this mixin never matches the 5-argument
+// calls of the single-select `.genSizeStyle()` (which has an optional trailing
+// parameter) and vice versa.
+.genSizeStyle(@suffix, @multiple-item-height, @border-radius, @border-radius-sm, @select-height, @font-size) {
   @merged-cls: ~'@{select-prefix-cls}@{suffix}';
 
   // Calculate padding values
@@ -266,11 +269,11 @@
 // Main multiple style generation - equivalent to genMultipleStyle function
 .genMultipleStyle() {
   // ======================== Default ========================
-  .genSizeStyle('', @select-multiple-item-height, @border-radius-base, @border-radius-sm, @select-height);
+  .genSizeStyle('', @select-multiple-item-height, @border-radius-base, @border-radius-sm, @select-height, @font-size-base);
 
   // ======================== Small ========================
   // stylelint-disable-next-line less/no-duplicate-variables
-  .genSizeStyle('-sm', @select-multiple-item-height-sm, @border-radius-sm, @border-radius-sm, @input-height-sm);
+  .genSizeStyle('-sm', @select-multiple-item-height-sm, @border-radius-sm, @border-radius-sm, @input-height-sm, @font-size-base);
 
   // Size small need additional set padding
   .@{select-prefix-cls}-multiple.@{select-prefix-cls}-sm {

@@ -1,10 +1,15 @@
 // mixins for button
 // ------------------------
-.button-size(@height; @padding-horizontal; @font-size; @border-radius) {
+.button-size(
+  @height;
+  @padding-horizontal;
+  @font-size;
+  @border-radius;
   @padding-vertical: max(
     (round(((@height - @font-size * @line-height-base) / 2) * 10) / 10) - @border-width-base,
     0
-  );
+  )
+) {
   height: @height;
   padding: @padding-vertical @padding-horizontal;
   font-size: @font-size;
@@ -208,7 +213,7 @@
     }
   }
   .@{btnClassName}-icon-only {
-    font-size: @font-size-base;
+    font-size: @btn-font-size-base;
   }
 }
 // Base styles of buttons
@@ -227,7 +232,8 @@
   user-select: none;
   touch-action: manipulation;
   .button-size(
-    @btn-height-base; @btn-padding-horizontal-base; @font-size-base; @btn-border-radius-base
+    @btn-height-base; @btn-padding-horizontal-base; @btn-font-size-base; @btn-border-radius-base;
+      @btn-padding-vertical-base
   );
   > .@{iconfont-css-prefix} {
     line-height: 1;
@@ -258,13 +264,15 @@
 
   &-lg {
     .button-size(
-      @btn-height-lg; @btn-padding-horizontal-lg; @btn-font-size-lg; @btn-border-radius-base
+      @btn-height-lg; @btn-padding-horizontal-lg; @btn-font-size-lg; @btn-border-radius-base;
+        @btn-padding-vertical-lg
     );
   }
 
   &-sm {
     .button-size(
-      @btn-height-sm; @btn-padding-horizontal-sm; @btn-font-size-sm; @btn-border-radius-sm
+      @btn-height-sm; @btn-padding-horizontal-sm; @btn-font-size-sm; @btn-border-radius-sm;
+        @btn-padding-vertical-sm
     );
   }
 }
@@ -363,7 +371,7 @@
       .button-color(@error-color-active; transparent; transparent);
     }
   }
-  .button-disabled(@disabled-color; transparent; transparent);
+  .button-disabled(@btn-disable-color; transparent; transparent);
 }
 // link button style
 .btn-link() {
@@ -379,7 +387,7 @@
   &:active {
     border-color: transparent;
   }
-  .button-disabled(@disabled-color; transparent; transparent);
+  .button-disabled(@btn-disable-color; transparent; transparent);
 }
 // link button disabled style
 .btn-href-disabled() {
@@ -413,11 +421,11 @@
 
   &:active {
     color: @text-color;
-    background: fadein(@btn-text-hover-bg, 1%);
+    background: @btn-text-active-bg;
     border-color: transparent;
   }
 
-  .button-disabled(@disabled-color; transparent; transparent);
+  .button-disabled(@btn-disable-color; transparent; transparent);
 }
 .btn-danger-text() {
   .button-variant-other(@error-color, transparent, transparent);
@@ -438,42 +446,53 @@
 
   &:active {
     & when (@theme = dark) {
-      .button-color(colorPalette('@{error-color}', 5); fadein(@btn-text-hover-bg, 1%); transparent);
+      .button-color(colorPalette('@{error-color}', 5); @btn-text-active-bg; transparent);
     }
     & when (not (@theme = dark) and not (@theme = variable)) {
-      .button-color(colorPalette('@{error-color}', 7); fadein(@btn-text-hover-bg, 1%); transparent);
+      .button-color(colorPalette('@{error-color}', 7); @btn-text-active-bg; transparent);
     }
     & when (@theme = variable) {
-      .button-color(@error-color-active; fadein(@btn-text-hover-bg, 1%); transparent);
+      .button-color(@error-color-active; @btn-text-active-bg; transparent);
     }
   }
-  .button-disabled(@disabled-color; transparent; transparent);
+  .button-disabled(@btn-disable-color; transparent; transparent);
 }
 // round button
 .btn-round(@btnClassName: btn) {
-  .button-size(@btn-circle-size; (@btn-circle-size / 2); @font-size-base; @btn-circle-size);
+  .button-size(
+    @btn-circle-size; @btn-circle-padding-horizontal-base; @btn-font-size-base; @btn-circle-size;
+      @btn-circle-padding-vertical-base
+  );
   &.@{btnClassName}-lg {
     .button-size(
-      @btn-circle-size-lg; (@btn-circle-size-lg / 2); @btn-font-size-lg; @btn-circle-size-lg
+      @btn-circle-size-lg; @btn-circle-padding-horizontal-lg; @btn-font-size-lg; @btn-circle-size-lg;
+        @btn-circle-padding-vertical-lg
     );
   }
   &.@{btnClassName}-sm {
     .button-size(
-      @btn-circle-size-sm; (@btn-circle-size-sm / 2); @font-size-base; @btn-circle-size-sm
+      @btn-circle-size-sm; @btn-circle-padding-horizontal-sm; @btn-font-size-base; @btn-circle-size-sm;
+        @btn-circle-padding-vertical-sm
     );
   }
 }
 // square button: the content only contains icon
 .btn-square(@btnClassName: btn) {
   .square(@btn-square-size);
-  .button-size(@btn-square-size; 0; @btn-square-only-icon-size; @btn-border-radius-base);
+  .button-size(
+    @btn-square-size; 0; @btn-square-only-icon-size; @btn-border-radius-base;
+      @btn-square-padding-vertical-base
+  );
 
   & > * {
     font-size: @btn-square-only-icon-size;
   }
   &.@{btnClassName}-lg {
     .square(@btn-square-size-lg);
-    .button-size(@btn-square-size-lg; 0; @btn-square-only-icon-size-lg; @btn-border-radius-base);
+    .button-size(
+      @btn-square-size-lg; 0; @btn-square-only-icon-size-lg; @btn-border-radius-base;
+        @btn-square-padding-vertical-lg
+    );
 
     & > * {
       font-size: @btn-square-only-icon-size-lg;
@@ -481,7 +500,10 @@
   }
   &.@{btnClassName}-sm {
     .square(@btn-square-size-sm);
-    .button-size(@btn-square-size-sm; 0; @btn-square-only-icon-size-sm; @btn-border-radius-base);
+    .button-size(
+      @btn-square-size-sm; 0; @btn-square-only-icon-size-sm; @btn-border-radius-base;
+        @btn-square-padding-vertical-sm
+    );
 
     & > * {
       font-size: @btn-square-only-icon-size-sm;

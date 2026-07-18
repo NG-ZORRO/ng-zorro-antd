@@ -41,6 +41,10 @@ async function compileLess(
 const sourcePath = buildConfig.componentsDir;
 const targetPath = buildConfig.publishDir;
 
+// Components migrated to the design-token theme; each gets an additional
+// `style/token.css` compiled with `@root-entry-name: token`.
+const tokenThemeComponents = ['button', 'input'];
+
 export async function compile(): Promise<void | void[]> {
   const componentFolders = readdirSync(targetPath);
   const promiseList: Array<Promise<void>> = [];
@@ -76,6 +80,28 @@ export async function compile(): Promise<void | void[]> {
             buildFilePath
           )
         );
+
+        if (tokenThemeComponents.includes(dir) && needTransformStyle(componentLess)) {
+          const tokenEntryLessFileContent = `@root-entry-name: token;\n${componentLess}`;
+          promiseList.push(
+            compileLess(
+              tokenEntryLessFileContent,
+              path.join(targetPath, dir, 'style', `token.css`),
+              false,
+              true,
+              buildFilePath
+            )
+          );
+          promiseList.push(
+            compileLess(
+              tokenEntryLessFileContent,
+              path.join(targetPath, dir, 'style', `token.min.css`),
+              true,
+              true,
+              buildFilePath
+            )
+          );
+        }
       }
     }
   }
@@ -95,6 +121,8 @@ export async function compile(): Promise<void | void[]> {
     `${targetPath}/ng-zorro-antd.variable.less`,
     await readFile(`${sourcePath}/ng-zorro-antd.variable.less`)
   );
+
+  await writeFile(`${targetPath}/ng-zorro-antd.token.less`, await readFile(`${sourcePath}/ng-zorro-antd.token.less`));
 
   // Compile concentrated less file to CSS file.
   const lessContent = `@import "${path.posix.join(targetPath, 'ng-zorro-antd.less')}";`;
@@ -116,10 +144,15 @@ export async function compile(): Promise<void | void[]> {
   promiseList.push(compileLess(aliyunLessContent, path.join(targetPath, 'ng-zorro-antd.aliyun.css'), false));
   promiseList.push(compileLess(aliyunLessContent, path.join(targetPath, 'ng-zorro-antd.aliyun.min.css'), true));
 
-  // Compile the aliyun theme less file to CSS file.
+  // Compile the css variable theme less file to CSS file.
   const variableLessContent = `@import "${path.posix.join(targetPath, 'ng-zorro-antd.variable.less')}";`;
   promiseList.push(compileLess(variableLessContent, path.join(targetPath, 'ng-zorro-antd.variable.css'), false));
   promiseList.push(compileLess(variableLessContent, path.join(targetPath, 'ng-zorro-antd.variable.min.css'), true));
+
+  // Compile the design-token theme less file to CSS file.
+  const tokenLessContent = `@import "${path.posix.join(targetPath, 'ng-zorro-antd.token.less')}";`;
+  promiseList.push(compileLess(tokenLessContent, path.join(targetPath, 'ng-zorro-antd.token.css'), false));
+  promiseList.push(compileLess(tokenLessContent, path.join(targetPath, 'ng-zorro-antd.token.min.css'), true));
 
   // Compile css file that doesn't have component-specific styles.
   const cssIndexPath = path.join(sourcePath, 'style', 'entry.less');
