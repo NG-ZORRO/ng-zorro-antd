@@ -3,9 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { watch } from 'chokidar';
 import { debounce } from 'lodash';
-
-import { watch } from 'fs';
 
 import { buildConfig } from '../build-config';
 import siteGenerate from '../site/generate-site';
@@ -20,14 +19,16 @@ const reload = debounce((component: string) => {
   siteGenerate(component);
 }, 3000);
 
-watch(buildConfig.componentsDir, { recursive: true }, (_eventType, filename) => {
-  if (!filename) {
-    return;
-  }
-  const execArray = watchedFilePattern.exec(filename.replace(/\\/g, '/'));
-  if (execArray && execArray[1]) {
-    reload(execArray[1]);
-  }
-});
+watch(buildConfig.componentsDir, { ignoreInitial: true })
+  .on('all', (eventType, path) => {
+    if (!path) {
+      return;
+    }
+    const execArray = watchedFilePattern.exec(path.replace(/\\/g, '/'));
+    if (execArray && execArray[1]) {
+      reload(execArray[1]);
+    }
+  })
+  .on('error', console.error);
 
 console.log('Watching components docs and demos for changes...');

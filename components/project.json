@@ -19,8 +19,12 @@
         }
       },
       "defaultConfiguration": "production",
-      "inputs": ["production"],
-      "outputs": ["{workspaceRoot}/publish"],
+      "inputs": [
+        "production"
+      ],
+      "outputs": [
+        "{workspaceRoot}/publish"
+      ],
       "cache": true
     },
     "test": {
@@ -29,10 +33,17 @@
         "buildTarget": "ng-zorro-antd-lib:build:development",
         "runner": "vitest",
         "runnerConfig": "components/vitest.config.mjs",
-        "browsers": ["ChromiumHeadless"],
+        "browsers": [
+          "ChromiumHeadless"
+        ],
         "browserViewport": "1000x1000",
         "coverage": true,
-        "coverageReporters": ["html", "text-summary", "lcovonly", "cobertura"],
+        "coverageReporters": [
+          "html",
+          "text-summary",
+          "lcovonly",
+          "cobertura"
+        ],
         "reporters": [
           "default",
           [
@@ -42,42 +53,72 @@
             }
           ]
         ],
-        "setupFiles": ["components/vitest-setup.ts"],
+        "setupFiles": [
+          "components/vitest-setup.ts"
+        ],
         "tsConfig": "components/tsconfig.spec.json",
-        "include": ["**/*.spec.ts"]
+        "include": [
+          "**/*.spec.ts"
+        ]
       },
-      "inputs": ["default"],
-      "outputs": ["{workspaceRoot}/coverage-report", "{workspaceRoot}/junit"],
+      "inputs": [
+        "default"
+      ],
+      "outputs": [
+        "{workspaceRoot}/coverage-report",
+        "{workspaceRoot}/junit"
+      ],
       "cache": true
     },
     "compile-styles": {
       "command": "tsx scripts/tasks/compile-styles.ts",
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "cache": false
     },
     "generate-less-vars": {
       "command": "tsx scripts/tasks/generate-less-vars.ts",
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "cache": false
     },
     "copy-resources": {
       "command": "tsx scripts/tasks/copy-lib-resources.ts",
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "cache": false
     },
     "copy-schematics": {
       "command": "tsx scripts/tasks/copy-schematics.ts",
-      "dependsOn": ["build", { "projects": ["schematics"], "target": "build" }],
+      "dependsOn": [
+        "build",
+        {
+          "projects": [
+            "schematics"
+          ],
+          "target": "build"
+        }
+      ],
       "cache": false
     },
     "copy-libs": {
       "command": "tsx scripts/tasks/copy-libs.ts",
-      "dependsOn": ["compile-styles", "generate-less-vars", "copy-resources", "copy-schematics"],
+      "dependsOn": [
+        "compile-styles",
+        "generate-less-vars",
+        "copy-resources",
+        "copy-schematics"
+      ],
       "cache": false
     },
     "build-lib": {
       "executor": "nx:noop",
-      "dependsOn": ["copy-libs"]
+      "dependsOn": [
+        "copy-libs"
+      ]
     },
     "lint": {
       "command": "eslint \"components/**/*.ts\" \"components/**/*.html\" --cache",
@@ -90,7 +131,7 @@
       "cache": true
     },
     "lint-styles": {
-      "command": "stylelint \"components/*/*.less\"",
+      "command": "stylelint \"components/**/*.less\"",
       "inputs": [
         "{projectRoot}/**/*.less",
         "{workspaceRoot}/.stylelintrc.json",

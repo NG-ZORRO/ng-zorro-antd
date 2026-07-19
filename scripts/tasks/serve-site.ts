@@ -10,7 +10,7 @@ import { spawn } from 'child_process';
 /** Run `nx serve` on a free port (falls back to a random port if 4200 is taken). */
 async function main(): Promise<void> {
   const port = await detect(4200);
-  const childProcess = spawn('nx', ['run', 'ng-zorro-antd-doc:serve', `--port=${port === 4200 ? '4200' : '0'}`], {
+  const childProcess = spawn('nx', ['run', 'ng-zorro-antd-doc:serve', `--port=${port}`], {
     stdio: 'inherit',
     shell: process.platform === 'win32'
   });
