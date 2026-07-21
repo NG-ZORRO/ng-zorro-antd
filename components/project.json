@@ -1,0 +1,143 @@
+{
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "name": "ng-zorro-antd-lib",
+  "projectType": "library",
+  "sourceRoot": "components",
+  "prefix": "nz",
+  "targets": {
+    "build": {
+      "executor": "@angular/build:ng-packagr",
+      "options": {
+        "project": "components/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "components/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "components/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production",
+      "inputs": [
+        "production"
+      ],
+      "outputs": [
+        "{workspaceRoot}/publish"
+      ],
+      "cache": true
+    },
+    "test": {
+      "executor": "@angular/build:unit-test",
+      "options": {
+        "buildTarget": "ng-zorro-antd-lib:build:development",
+        "runner": "vitest",
+        "runnerConfig": "components/vitest.config.mjs",
+        "browsers": [
+          "ChromiumHeadless"
+        ],
+        "browserViewport": "1000x1000",
+        "coverage": true,
+        "coverageReporters": [
+          "html",
+          "text-summary",
+          "lcovonly",
+          "cobertura"
+        ],
+        "reporters": [
+          "default",
+          [
+            "junit",
+            {
+              "outputFile": "junit/TESTS-vitest.xml"
+            }
+          ]
+        ],
+        "setupFiles": [
+          "components/vitest-setup.ts"
+        ],
+        "tsConfig": "components/tsconfig.spec.json",
+        "include": [
+          "**/*.spec.ts"
+        ]
+      },
+      "inputs": [
+        "default"
+      ],
+      "outputs": [
+        "{workspaceRoot}/coverage-report",
+        "{workspaceRoot}/junit"
+      ],
+      "cache": true
+    },
+    "compile-styles": {
+      "command": "tsx scripts/tasks/compile-styles.ts",
+      "dependsOn": [
+        "build"
+      ],
+      "cache": false
+    },
+    "generate-less-vars": {
+      "command": "tsx scripts/tasks/generate-less-vars.ts",
+      "dependsOn": [
+        "build"
+      ],
+      "cache": false
+    },
+    "copy-resources": {
+      "command": "tsx scripts/tasks/copy-lib-resources.ts",
+      "dependsOn": [
+        "build"
+      ],
+      "cache": false
+    },
+    "copy-schematics": {
+      "command": "tsx scripts/tasks/copy-schematics.ts",
+      "dependsOn": [
+        "build",
+        {
+          "projects": [
+            "schematics"
+          ],
+          "target": "build"
+        }
+      ],
+      "cache": false
+    },
+    "copy-libs": {
+      "command": "tsx scripts/tasks/copy-libs.ts",
+      "dependsOn": [
+        "compile-styles",
+        "generate-less-vars",
+        "copy-resources",
+        "copy-schematics"
+      ],
+      "cache": false
+    },
+    "build-lib": {
+      "executor": "nx:noop",
+      "dependsOn": [
+        "copy-libs"
+      ]
+    },
+    "lint": {
+      "command": "eslint \"components/**/*.ts\" \"components/**/*.html\" --cache",
+      "inputs": [
+        "{projectRoot}/**/*.ts",
+        "{projectRoot}/**/*.html",
+        "{workspaceRoot}/eslint.config.mjs",
+        "sharedGlobals"
+      ],
+      "cache": true
+    },
+    "lint-styles": {
+      "command": "stylelint \"components/**/*.less\"",
+      "inputs": [
+        "{projectRoot}/**/*.less",
+        "{workspaceRoot}/.stylelintrc.json",
+        "{workspaceRoot}/package.json"
+      ],
+      "cache": true
+    }
+  }
+}

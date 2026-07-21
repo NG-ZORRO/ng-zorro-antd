@@ -11,8 +11,10 @@ import  path from 'path';
 import { buildConfig } from '../build-config';
 
 const srcPath = path.join(buildConfig.projectDir, `schematics`);
-const targetPath = path.join(buildConfig.publishDir, `schematics`);
-const copyFilter = (p: string): boolean => (/files(\/|\\)__path__/.test(p) || !/.+\.ts/.test(p) || /.template$/.test(p));
+const targetPath = path.join(buildConfig.outputDir, `schematics`);
+const copyFilter = (p: string): boolean =>
+  !/schematics(\/|\\)project\.json$/.test(p) &&
+  (/files(\/|\\)__path__/.test(p) || !/.+\.ts/.test(p) || /.template$/.test(p));
 
 function mergeDemoCollection(): void {
   const demoCollectionPath = path.resolve(targetPath, `demo/collection.json`);

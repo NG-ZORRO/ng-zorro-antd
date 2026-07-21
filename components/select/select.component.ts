@@ -773,9 +773,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
           );
         this.listOfTagAndTemplateItem = [...listOfTemplateItem, ...listOfTagItem];
         this.listOfTopItem = this.listOfValue
-          .map(
-            v =>
-              [...this.listOfTagAndTemplateItem, ...this.listOfTopItem].find(item => this.compareWith(v, item.nzValue))!
+          .map(v =>
+            [...this.listOfTagAndTemplateItem, ...this.listOfTopItem].find(item => this.compareWith(v, item.nzValue))!
           )
           .filter(item => !!item);
         this.updateListOfContainerItem();

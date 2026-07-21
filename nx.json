@@ -1,0 +1,32 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "defaultBase": "master",
+  "namedInputs": {
+    "sharedGlobals": [
+      "{workspaceRoot}/package.json",
+      "{workspaceRoot}/package-lock.json",
+      "{workspaceRoot}/tsconfig.json",
+      "{workspaceRoot}/tsconfig-build.json",
+      "{workspaceRoot}/build-config.js"
+    ],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "production": [
+      "default",
+      "!{projectRoot}/**/*.spec.ts",
+      "!{projectRoot}/**/demo/**/*",
+      "!{projectRoot}/**/doc/**/*",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/vitest.config.mjs",
+      "!{projectRoot}/vitest-setup.ts"
+    ]
+  },
+  "targetDefaults": {
+    "build": {
+      "cache": true
+    },
+    "test": {
+      "cache": true
+    }
+  },
+  "analytics": false
+}

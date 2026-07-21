@@ -1,0 +1,186 @@
+{
+  "$schema": "./node_modules/nx/schemas/project-schema.json",
+  "name": "ng-zorro-antd-doc",
+  "projectType": "application",
+  "sourceRoot": "site",
+  "targets": {
+    "generate-site": {
+      "command": "tsx scripts/tasks/generate-site.ts",
+      "inputs": [
+        "{workspaceRoot}/scripts/site/**/*",
+        "{workspaceRoot}/scripts/build/**/*",
+        "{workspaceRoot}/components/**/doc/**/*",
+        "{workspaceRoot}/components/**/demo/**/*",
+        "{workspaceRoot}/components/**/page/**/*",
+        "{workspaceRoot}/components/style/**/*",
+        "{workspaceRoot}/docs/**/*",
+        "sharedGlobals",
+        { "env": "NODE_ENV" }
+      ],
+      "outputs": ["{workspaceRoot}/site"],
+      "cache": true
+    },
+    "generate-site-release": {
+      "command": "tsx scripts/tasks/generate-site.ts --release",
+      "inputs": [
+        "{workspaceRoot}/scripts/site/**/*",
+        "{workspaceRoot}/scripts/build/**/*",
+        "{workspaceRoot}/scripts/generate-llms.ts",
+        "{workspaceRoot}/components/**/doc/**/*",
+        "{workspaceRoot}/components/**/demo/**/*",
+        "{workspaceRoot}/components/**/page/**/*",
+        "{workspaceRoot}/components/style/**/*",
+        "{workspaceRoot}/docs/**/*",
+        "sharedGlobals",
+        { "env": "NODE_ENV" }
+      ],
+      "outputs": ["{workspaceRoot}/site"],
+      "cache": true
+    },
+    "build": {
+      "executor": "@angular/build:application",
+      "options": {
+        "outputPath": "dist",
+        "index": "site/index.html",
+        "browser": "site/main.ts",
+        "server": "site/main.server.ts",
+        "tsConfig": "site/tsconfig.app.json",
+        "serviceWorker": "ngsw-config.json",
+        "prerender": true,
+        "ssr": {
+          "entry": "site/server.ts"
+        },
+        "assets": [
+          "site/assets",
+          "site/manifest.json",
+          "site/favicon.ico",
+          "site/404.html",
+          "site/google854eb8b183564acb.html",
+          "site/robots.txt",
+          "site/llms.txt",
+          "site/llms-full.txt",
+          "site/llms-full-cn.txt",
+          {
+            "glob": "**/*.md",
+            "input": "site/components",
+            "output": "/components/"
+          },
+          {
+            "glob": "**/*.md",
+            "input": "site/docs",
+            "output": "/docs/"
+          },
+          {
+            "glob": "**/*",
+            "input": "node_modules/@ant-design/icons-angular/src/inline-svg/",
+            "output": "/assets/"
+          },
+          {
+            "glob": "**/*",
+            "input": "node_modules/monaco-editor/min/vs",
+            "output": "/assets/vs/"
+          }
+        ],
+        "styles": ["site/styles.less"],
+        "allowedCommonJsDependencies": ["@ant-design/colors", "cron-parser"]
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "site/environments/environment.ts",
+              "with": "site/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production",
+      "dependsOn": [
+        "generate-site-release",
+        { "projects": ["ng-zorro-antd-lib"], "target": "build-lib" }
+      ],
+      "inputs": [
+        "{workspaceRoot}/site/**/*",
+        "{workspaceRoot}/publish/**/*",
+        "{workspaceRoot}/ngsw-config.json",
+        "sharedGlobals"
+      ],
+      "outputs": [
+        "{workspaceRoot}/dist/browser",
+        "{workspaceRoot}/dist/server",
+        "{workspaceRoot}/dist/prerendered-routes.json",
+        "{workspaceRoot}/dist/3rdpartylicenses.txt"
+      ],
+      "cache": true
+    },
+    "serve": {
+      "executor": "@angular/build:dev-server",
+      "continuous": true,
+      "options": {
+        "buildTarget": "ng-zorro-antd-doc:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "ng-zorro-antd-doc:build:production"
+        },
+        "development": {
+          "buildTarget": "ng-zorro-antd-doc:build:development"
+        }
+      },
+      "defaultConfiguration": "development",
+      "dependsOn": ["generate-site"]
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "continuous": true,
+      "options": {
+        "commands": ["tsx scripts/tasks/watch-site.ts", "tsx scripts/tasks/serve-site.ts"],
+        "parallel": true
+      },
+      "dependsOn": ["generate-site"],
+      "cache": false
+    },
+    "sitemap": {
+      "command": "tsx scripts/tasks/sitemap.ts",
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "ngsw": {
+      "command": "tsx scripts/tasks/regen-ngsw.ts",
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "issue-helper": {
+      "command": "bash scripts/release-helper.sh",
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "build-site": {
+      "executor": "nx:noop",
+      "dependsOn": ["build", "sitemap", "ngsw", "issue-helper"]
+    },
+    "lint": {
+      "command": "eslint --cache",
+      "inputs": [
+        "{workspaceRoot}/components/**/*",
+        "{workspaceRoot}/scripts/**/*",
+        "{workspaceRoot}/schematics/**/*",
+        "{workspaceRoot}/docs/**/*",
+        "{workspaceRoot}/eslint.config.mjs",
+        "sharedGlobals"
+      ],
+      "cache": true
+    },
+    "clean": {
+      "command": "tsx scripts/tasks/clean.ts",
+      "cache": false
+    }
+  }
+}

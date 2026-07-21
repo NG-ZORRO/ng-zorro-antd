@@ -468,7 +468,7 @@ export class NativeDateAdapter extends NzDateAdapter<Date, string> {
     };
     const tokens = Object.keys(tokenPatterns).sort((a, b) => b.length - a.length);
     let source = '';
-    for (let i = 0; i < formatStr.length; ) {
+    for (let i = 0; i < formatStr.length;) {
       if (formatStr[i] === '[') {
         const end = formatStr.indexOf(']', i + 1);
         const literal = end === -1 ? formatStr.slice(i + 1) : formatStr.slice(i + 1, end);
@@ -590,7 +590,7 @@ export class NativeDateAdapter extends NzDateAdapter<Date, string> {
     const tokens = Object.keys(tokenValues).sort((a, b) => b.length - a.length);
     let result = '';
 
-    for (let i = 0; i < formatStr.length; ) {
+    for (let i = 0; i < formatStr.length;) {
       if (formatStr[i] === '[') {
         const end = formatStr.indexOf(']', i + 1);
         result += end === -1 ? formatStr.slice(i + 1) : formatStr.slice(i + 1, end);

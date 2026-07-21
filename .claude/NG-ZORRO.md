@@ -50,11 +50,11 @@ ng-zorro-antd/
 │ └── utils/
 ├── scripts/ # Build and utility scripts
 │ ├── build/
-│ ├── gulp/
 │ ├── prerender/
 │ ├── release/
 │ ├── schematics/
-│ └── site/
+│ ├── site/
+│ └── tasks/ # Nx task entry points (run with tsx)
 ├── .editorconfig # Editor configuration
 ├── .gitignore # Git ignore rules
 ├── .lintstagedrc # Lint-staged configuration
@@ -63,7 +63,7 @@ ng-zorro-antd/
 ├── .prettierignore # Prettier ignore rules
 ├── .prettierrc.js # Prettier configuration
 ├── .stylelintrc.json # Stylelint configuration
-├── angular.json # Angular workspace configuration
+├── angular.json # Workspace schematic defaults (projects live in project.json files)
 ├── azure-pipelines.yml # Azure DevOps pipeline
 ├── build-config.js # Build configuration
 ├── CHANGELOG.md # Version changelog
@@ -71,7 +71,6 @@ ng-zorro-antd/
 ├── commitlint.config.js # Commit message linting
 ├── CONTRIBUTING.md # Contribution guidelines
 ├── eslint.config.mjs # ESLint configuration
-├── gulpfile.js # Gulp build tasks
 ├── LICENSE # MIT License
 ├── logo.svg # Project logo
 ├── ngsw-config.json # Angular service worker config
