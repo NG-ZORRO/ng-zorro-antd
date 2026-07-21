@@ -1,14 +1,16 @@
-## [22.0.0-beta.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/21.3.2...22.0.0-beta.0) (2026-07-13)
+## [22.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/21.3.3...22.0.0) (2026-07-21)
 
 ### Features
 
 - All components use OnPush change detection strategy ([#9824](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9824)) ([b50ea34](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b50ea34e298ff153f1809b96ca3d4c0a6d8b9082))
 - **\*:** add date adapter support ([#9858](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9858)) ([d578c8b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d578c8bd619743f7a4c77f092d5d43b8b196e6e2))
+- **upload:** support custom actions and extra ([#9850](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9850)) ([fd0a22c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fd0a22ce174188418fe2a420eb668158f1ceba48))
 
 ### Bug Fixes
 
 - **form:** signal form compatibility ([#9831](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9831)) ([f57fd67](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f57fd67fd49b3b274a8b8e54de22f230b82624da))
-- **i18n:** add missing translations to `ja_JP` ([#9857](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9857)) ([1ff499e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1ff499e511b2f10d444ed9e050d0beea9433a166))
+
+* **select:** keep dropdown scroll position when loading more options on scroll ([#9872](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9872)) ([1cfeaf9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1cfeaf920c1c5bce5e2c35177123af25ae14afaa))
 
 ### ⚠ BREAKING CHANGES
 
@@ -37,6 +39,16 @@ Remove the following APIs which were marked as deprecated in the previous versio
 | `ng-zorro-antd/transfer`      | `NzTransferSearchComponent`, `[nz-transfer-search]`                                  |
 | `ng-zorro-antd/upload`        | `nz-upload[nzTransformFile]`, `NzUploadTransformFileType`                            |
 | `ng-zorro-antd/upload`        | `ZipButtonOptions#transformFile`                                                     |
+
+## [21.3.3](https://github.com/NG-ZORRO/ng-zorro-antd/compare/21.3.2...21.3.3) (2026-07-18)
+
+### Bug Fixes
+
+- **date-picker:** preserve range selection behavior ([#9873](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9873)) ([1e595e0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1e595e0c47448e752904840bbd595c7fb7144827))
+- **dropdown,menu:** add deprecated aliases for renamed exports ([#9860](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9860)) ([9ca8d3d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9ca8d3d3f7a7761bf5125fdc5a4fd8dc1bc942e3)), closes [#9527](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9527)
+- **i18n:** add missing translations to `ja_JP` ([#9857](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9857)) ([3bae672](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3bae672c7a07906f844dbb1d505a8590305e0fc0))
+- **i18n:** add missing translations to `ko_KR` ([#9864](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9864)) ([c32e64e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c32e64e578fc1620c9babfc4aa7f24ea08394a32))
+- **select:** restore virtual scroll spacer width ([#9874](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9874)) ([200ac21](https://github.com/NG-ZORRO/ng-zorro-antd/commit/200ac21a53376b9a7e148f6eeb928d5ade3a76d5))
 
 ## [21.3.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/21.3.1...21.3.2) (2026-06-27)
 

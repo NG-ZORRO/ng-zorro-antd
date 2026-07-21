@@ -47,6 +47,7 @@ export class HeaderComponent {
 
   readonly searching = signal(false);
   readonly oldVersionList = [
+    '21.3.x',
     '20.4.x',
     '19.3.x',
     '18.2.x',
