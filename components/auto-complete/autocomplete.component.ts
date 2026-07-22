@@ -111,6 +111,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   @Input() nzOverlayStyle: Record<string, string> = {};
   @Input({ transform: booleanAttribute }) nzDefaultActiveFirstOption = true;
   @Input({ transform: booleanAttribute }) nzBackfill = false;
+  @Input({ transform: booleanAttribute }) nzDropdownMatchSelectWidth = true;
   @Input() compareWith: CompareWith = (o1, o2) => o1 === o2;
   @Input() nzDataSource?: AutocompleteDataSource;
   @Output()
