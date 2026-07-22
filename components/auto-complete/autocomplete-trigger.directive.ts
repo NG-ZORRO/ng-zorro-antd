@@ -263,12 +263,14 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
     }
 
     if (!this.overlayRef) {
+      const width = this.nzAutocomplete.nzWidth || this.getHostWidth();
+      const dropdownMatchSelectWidth = this.nzAutocomplete.nzDropdownMatchSelectWidth;
       this.overlayRef = createOverlayRef(this.injector, {
         positionStrategy: this.getOverlayPosition(),
         disposeOnNavigation: true,
         scrollStrategy: createRepositionScrollStrategy(this.injector),
-        // default host element width
-        width: this.nzAutocomplete.nzWidth || this.getHostWidth()
+        minWidth: dropdownMatchSelectWidth ? undefined : width,
+        width: dropdownMatchSelectWidth ? width : undefined
       });
     }
 
@@ -289,7 +291,9 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
 
   private updateStatus(): void {
     if (this.overlayRef) {
-      this.overlayRef.updateSize({ width: this.nzAutocomplete.nzWidth || this.getHostWidth() });
+      const dropdownMatchSelectWidth = this.nzAutocomplete.nzDropdownMatchSelectWidth;
+      const width = this.nzAutocomplete.nzWidth || this.getHostWidth();
+      this.overlayRef.updateSize({ width: dropdownMatchSelectWidth ? width : undefined });
     }
     this.nzAutocomplete.setVisibility();
     this.resetActiveItem();
