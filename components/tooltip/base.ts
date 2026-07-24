@@ -226,7 +226,11 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
 
     this.removeTriggerListeners();
 
-    if (trigger === 'hover') {
+
+    // Individuate if the device primary touch 
+    const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+    if (trigger === 'hover' && !isTouchDevice) {
       let overlayElement: HTMLElement;
       this.triggerDisposables.push(
         this.renderer.listen(el, 'mouseenter', () => {
