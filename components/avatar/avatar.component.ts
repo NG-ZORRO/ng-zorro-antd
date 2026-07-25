@@ -6,6 +6,7 @@
 import {
   afterEveryRender,
   ChangeDetectorRef,
+  computed,
   Component,
   ElementRef,
   EventEmitter,
@@ -18,9 +19,10 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { of, switchMap } from 'rxjs';
 
-import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, withConfigFactory, WithConfig } from 'ng-zorro-antd/core/config';
 import {
   gridResponsiveMap,
   NzBreakpointEnum,
@@ -33,6 +35,7 @@ import { isPlainObject, toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
+const withConfig = withConfigFactory(NZ_CONFIG_MODULE_NAME);
 export type NzAvatarSize = NzSizeLDSType | number | Partial<ResponsiveLike<number>>;
 
 /** https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-loading */
@@ -64,23 +67,23 @@ type NzAvatarFetchPriority = 'high' | 'low' | 'auto';
   `,
   host: {
     class: 'ant-avatar',
-    '[class.ant-avatar-lg]': `nzSize === 'large'`,
-    '[class.ant-avatar-sm]': `nzSize === 'small'`,
+    '[class.ant-avatar-lg]': `size() === 'large'`,
+    '[class.ant-avatar-sm]': `size() === 'small'`,
     '[class.ant-avatar-square]': `nzShape === 'square'`,
     '[class.ant-avatar-circle]': `nzShape === 'circle'`,
     '[class.ant-avatar-icon]': `nzIcon`,
     '[class.ant-avatar-image]': `hasSrc `,
-    '[style.width]': 'customSize',
-    '[style.height]': 'customSize',
-    '[style.line-height]': 'customSize',
-    '[style.font-size.px]': 'hasIcon ? customSizeFont : null'
+    '[style.width]': 'customSize()',
+    '[style.height]': 'customSize()',
+    '[style.line-height]': 'customSize()',
+    '[style.font-size.px]': 'hasIcon ? customFontSize() : null'
   },
   encapsulation: ViewEncapsulation.None
 })
 export class NzAvatarComponent implements OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   @Input() @WithConfig() nzShape: NzShapeSCType = 'circle';
-  @Input() @WithConfig() nzSize: NzAvatarSize = 'default';
+  readonly nzSize = input<NzAvatarSize>();
   @Input({ transform: numberAttribute }) @WithConfig() nzGap = 4;
   @Input() nzText?: string;
   @Input() nzSrc?: string;
@@ -94,25 +97,41 @@ export class NzAvatarComponent implements OnChanges {
   hasText: boolean = false;
   hasSrc: boolean = true;
   hasIcon: boolean = false;
-  customSize: string | null = null;
-  customSizeFont: number | null = null;
-
-  @ViewChild('textEl', { static: false }) textEl?: ElementRef<HTMLSpanElement>;
 
   private el: HTMLElement = inject(ElementRef).nativeElement;
   private cdr = inject(ChangeDetectorRef);
   private breakpointService = inject(NzBreakpointService);
-  private currentBreakpoint: NzBreakpointEnum = NzBreakpointEnum.md;
+
+  protected readonly size = withConfig('nzSize', this.nzSize, 'default');
+  private readonly currentBreakpoint = toSignal(
+    toObservable(this.size).pipe(
+      switchMap(size =>
+        isPlainObject<Partial<ResponsiveLike<number>>>(size)
+          ? this.breakpointService.subscribe(gridResponsiveMap)
+          : of(NzBreakpointEnum.md)
+      )
+    ),
+    { initialValue: NzBreakpointEnum.md }
+  );
+  private readonly currentSize = computed(() => {
+    const size = this.size();
+
+    return isPlainObject<Partial<ResponsiveLike<number>>>(size) ? size[this.currentBreakpoint() as Breakpoint] : size;
+  });
+  protected readonly customSize = computed(() => {
+    const size = this.currentSize();
+
+    return typeof size === 'number' ? toCssPixel(size) : null;
+  });
+  protected readonly customFontSize = computed(() => {
+    const size = this.currentSize();
+
+    return typeof size === 'number' ? size / 2 : null;
+  });
+
+  @ViewChild('textEl', { static: false }) textEl?: ElementRef<HTMLSpanElement>;
 
   constructor() {
-    this.breakpointService
-      .subscribe(gridResponsiveMap)
-      .pipe(takeUntilDestroyed())
-      .subscribe(bp => {
-        this.currentBreakpoint = bp;
-        this.setSizeStyle();
-        this.calcStringSize();
-      });
     afterEveryRender(() => this.calcStringSize());
   }
 
@@ -128,8 +147,6 @@ export class NzAvatarComponent implements OnChanges {
         this.hasText = true;
       }
       this.cdr.detectChanges();
-      this.setSizeStyle();
-      this.calcStringSize();
     }
   }
 
@@ -137,9 +154,6 @@ export class NzAvatarComponent implements OnChanges {
     this.hasText = !this.nzSrc && !!this.nzText;
     this.hasIcon = !this.nzSrc && !!this.nzIcon;
     this.hasSrc = !!this.nzSrc;
-
-    this.setSizeStyle();
-    this.calcStringSize();
   }
 
   private calcStringSize(): void {
@@ -154,28 +168,6 @@ export class NzAvatarComponent implements OnChanges {
     const scale = avatarWidth - offset < childrenWidth ? (avatarWidth - offset) / childrenWidth : 1;
 
     textEl.style.transform = `scale(${scale}) translateX(-50%)`;
-    textEl.style.lineHeight = this.customSize || '';
-  }
-
-  private setSizeStyle(): void {
-    const size = this.getCurrentSize();
-
-    if (typeof size === 'number') {
-      this.customSize = toCssPixel(size);
-      this.customSizeFont = size / 2;
-    } else {
-      this.customSize = null;
-      this.customSizeFont = null;
-    }
-
-    this.cdr.markForCheck();
-  }
-
-  private getCurrentSize(): NzSizeLDSType | number | undefined {
-    if (isPlainObject<Partial<ResponsiveLike<number>>>(this.nzSize)) {
-      return this.nzSize[this.currentBreakpoint as Breakpoint];
-    }
-
-    return this.nzSize;
+    textEl.style.lineHeight = this.customSize() || '';
   }
 }

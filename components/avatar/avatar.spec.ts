@@ -6,8 +6,9 @@
 import { Component, DebugElement, ViewChild, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { BehaviorSubject } from 'rxjs';
 
-import { NzBreakpointEnum } from 'ng-zorro-antd/core/services';
+import { NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { createFakeEvent, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny, NzShapeSCType } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -49,14 +50,29 @@ describe('avatar', () => {
   let fixture: ComponentFixture<TestAvatarComponent>;
   let context: TestAvatarComponent;
   let dl: DebugElement;
+  let breakpoint$: BehaviorSubject<NzBreakpointEnum>;
+  let breakpointSubscriptionCount: number;
 
   function getImageElement(): HTMLImageElement {
     return dl.query(By.css('img')).nativeElement;
   }
 
   beforeEach(async () => {
+    breakpoint$ = new BehaviorSubject<NzBreakpointEnum>(NzBreakpointEnum.md);
+    breakpointSubscriptionCount = 0;
     TestBed.configureTestingModule({
-      providers: [provideNzIconsTesting()]
+      providers: [
+        provideNzIconsTesting(),
+        {
+          provide: NzBreakpointService,
+          useValue: {
+            subscribe: () => {
+              breakpointSubscriptionCount++;
+              return breakpoint$.asObservable();
+            }
+          }
+        }
+      ]
     });
 
     fixture = TestBed.createComponent(TestAvatarComponent);
@@ -231,6 +247,13 @@ describe('avatar', () => {
       expect(hostStyle.fontSize === `${64 / 2}px`).toBe(true);
     });
 
+    it('should not subscribe to breakpoints for a non-responsive size', async () => {
+      context.nzSize.set(64);
+      await updateNonSignalsInput(fixture);
+
+      expect(breakpointSubscriptionCount).toBe(0);
+    });
+
     it('responsive size', async () => {
       context.nzSize.set({ xs: 24, md: 40, lg: 64 });
       context.nzIcon.set('user');
@@ -238,16 +261,14 @@ describe('avatar', () => {
       await updateNonSignalsInput(fixture);
 
       const hostStyle = dl.nativeElement.querySelector('nz-avatar').style;
-      context.comp['currentBreakpoint'] = NzBreakpointEnum.lg;
-      context.comp['setSizeStyle']();
+      breakpoint$.next(NzBreakpointEnum.lg);
       await fixture.whenStable();
       expect(hostStyle.height).toBe('64px');
       expect(hostStyle.width).toBe('64px');
       expect(hostStyle.lineHeight).toBe('64px');
       expect(hostStyle.fontSize).toBe('32px');
 
-      context.comp['currentBreakpoint'] = NzBreakpointEnum.xs;
-      context.comp['setSizeStyle']();
+      breakpoint$.next(NzBreakpointEnum.xs);
       await fixture.whenStable();
       expect(hostStyle.height).toBe('24px');
       expect(hostStyle.width).toBe('24px');
@@ -262,8 +283,7 @@ describe('avatar', () => {
       await updateNonSignalsInput(fixture);
 
       const hostStyle = dl.nativeElement.querySelector('nz-avatar').style;
-      context.comp['currentBreakpoint'] = NzBreakpointEnum.lg;
-      context.comp['setSizeStyle']();
+      breakpoint$.next(NzBreakpointEnum.lg);
       await fixture.whenStable();
       expect(hostStyle.height).toBe('');
       expect(hostStyle.width).toBe('');
