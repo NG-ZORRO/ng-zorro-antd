@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
@@ -35,6 +36,7 @@ import {
 } from 'ng-zorro-antd/core/testing';
 
 import { NZ_MODAL_DATA } from './modal-config';
+import { NzModalContainerComponent } from './modal-container.component';
 import { NzModalRef, NzModalState } from './modal-ref';
 import { NzModalComponent } from './modal.component';
 import { NzModalModule } from './modal.module';
@@ -1489,6 +1491,28 @@ describe('modal', () => {
       componentInstance.draggable.set(false);
       await fixture.whenStable();
       expect(getComputedStyle(modalHeader!).cursor).toEqual('auto');
+    });
+
+    it('should persist the drag offset as layout position when drag ends so that the modal closes in place', async () => {
+      componentInstance.visible.set(true);
+      componentInstance.draggable.set(true);
+      await fixture.whenStable();
+
+      const modalRef = componentInstance.nzModalComponent.getModalRef()!;
+      const containerInstance = modalRef.containerInstance as NzModalContainerComponent;
+      const modalElement = overlayContainerElement.querySelector<HTMLElement>('.ant-modal')!;
+      const resetSpy = vi.fn();
+
+      containerInstance.onDragEnded({
+        source: {
+          getFreeDragPosition: () => ({ x: 120, y: 80 }),
+          reset: resetSpy
+        }
+      } as unknown as CdkDragEnd);
+
+      expect(resetSpy).toHaveBeenCalled();
+      expect(modalElement.style.top).toBe('80px');
+      expect(modalElement.style.left).toBe('120px');
     });
   });
 });
