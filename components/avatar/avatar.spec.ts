@@ -255,7 +255,7 @@ describe('avatar', () => {
     });
 
     it('responsive size', async () => {
-      context.nzSize.set({ xs: 24, md: 40, lg: 64 });
+      context.nzSize.set({ xs: 24, md: 40, lg: 64, xxxl: 120 });
       context.nzIcon.set('user');
       context.nzSrc.set(undefined);
       await updateNonSignalsInput(fixture);
@@ -274,6 +274,13 @@ describe('avatar', () => {
       expect(hostStyle.width).toBe('24px');
       expect(hostStyle.lineHeight).toBe('24px');
       expect(hostStyle.fontSize).toBe('12px');
+
+      breakpoint$.next(NzBreakpointEnum.xxxl);
+      await fixture.whenStable();
+      expect(hostStyle.height).toBe('120px');
+      expect(hostStyle.width).toBe('120px');
+      expect(hostStyle.lineHeight).toBe('120px');
+      expect(hostStyle.fontSize).toBe('60px');
     });
 
     it('should clear responsive size when current breakpoint has no value', async () => {
