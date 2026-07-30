@@ -95,7 +95,7 @@ export class NzModalContainerComponent extends BaseModalContainerComponent imple
     this.setupMouseListeners(this.modalElementRef);
   }
 
-  onDragEnded(event: CdkDragEnd): void {
+  protected onDragEnded(event: CdkDragEnd): void {
     const element = this.modalElementRef.nativeElement;
     const dragPosition = event.source.getFreeDragPosition();
     const { top, left } = getComputedStyle(element);
