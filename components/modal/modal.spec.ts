@@ -1503,7 +1503,7 @@ describe('modal', () => {
       const modalElement = overlayContainerElement.querySelector<HTMLElement>('.ant-modal')!;
       const resetSpy = vi.fn();
 
-      containerInstance.onDragEnded({
+      containerInstance['onDragEnded']({
         source: {
           getFreeDragPosition: () => ({ x: 120, y: 80 }),
           reset: resetSpy
