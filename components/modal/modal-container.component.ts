@@ -3,7 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { coerceCssPixelValue } from '@angular/cdk/coercion';
+import { CdkDrag, CdkDragEnd, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { CdkScrollable } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, PortalModule } from '@angular/cdk/portal';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
@@ -34,6 +35,7 @@ import { NzModalTitleComponent } from './modal-title.component';
       cdkDrag
       cdkDragBoundary=".cdk-overlay-container"
       [cdkDragDisabled]="!config.nzDraggable"
+      (cdkDragEnded)="onDragEnded($event)"
       role="document"
       class="ant-modal"
       [class]="config.nzClassName!"
@@ -91,5 +93,17 @@ export class NzModalContainerComponent extends BaseModalContainerComponent imple
 
   ngOnInit(): void {
     this.setupMouseListeners(this.modalElementRef);
+  }
+
+  protected onDragEnded(event: CdkDragEnd): void {
+    const element = this.modalElementRef.nativeElement;
+    const dragPosition = event.source.getFreeDragPosition();
+    const { top, left } = getComputedStyle(element);
+    // Persist the drag offset as layout offsets (the modal is `position: relative`) and clear
+    // the CDK drag transform, otherwise the zoom-out exit animation would override the
+    // `translate3d` transform and make the modal jump back to the center before closing.
+    this.renderer.setStyle(element, 'top', coerceCssPixelValue((parseFloat(top) || 0) + dragPosition.y));
+    this.renderer.setStyle(element, 'left', coerceCssPixelValue((parseFloat(left) || 0) + dragPosition.x));
+    event.source.reset();
   }
 }
