@@ -102,8 +102,8 @@ export class NzModalContainerComponent extends BaseModalContainerComponent imple
     // Persist the drag offset as layout offsets (the modal is `position: relative`) and clear
     // the CDK drag transform, otherwise the zoom-out exit animation would override the
     // `translate3d` transform and make the modal jump back to the center before closing.
-    this.renderer.setStyle(element, 'top', coerceCssPixelValue(parseFloat(top) || 0) + dragPosition.y);
-    this.renderer.setStyle(element, 'left', coerceCssPixelValue(parseFloat(left) || 0) + dragPosition.x);
+    this.renderer.setStyle(element, 'top', coerceCssPixelValue((parseFloat(top) || 0) + dragPosition.y));
+    this.renderer.setStyle(element, 'left', coerceCssPixelValue((parseFloat(left) || 0) + dragPosition.x));
     event.source.reset();
   }
 }
