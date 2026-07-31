@@ -22,7 +22,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { NgControl } from '@angular/forms';
-import { FormField } from '@angular/forms/signals';
+import { FORM_FIELD } from '@angular/forms/signals';
 import { EMPTY } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
@@ -74,7 +74,7 @@ export class NzInputDirective implements OnInit {
   private hostView = inject(ViewContainerRef);
   private readonly inputPasswordDir = inject(NzInputPasswordDirective, { host: true, optional: true });
   private readonly inputSearchDir = inject(NZ_INPUT_SEARCH, { host: true, optional: true });
-  private readonly formField = inject(FormField, { self: true, optional: true });
+  private readonly formField = inject(FORM_FIELD, { self: true, optional: true });
 
   readonly ngControl = inject(NgControl, { self: true, optional: true });
   private readonly nativeValue = signal(this.elementRef.nativeElement.value);
