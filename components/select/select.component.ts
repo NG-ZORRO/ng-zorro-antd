@@ -666,6 +666,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       };
       const listOfValue = covertModelToList(modelValue, this.nzMode);
       this.listOfValue = listOfValue;
+      if (!this.nzOpen) {
+        this.activatedValue = listOfValue[0] ?? null;
+      }
       this.listOfValue$.next(listOfValue);
       this.cdr.markForCheck();
     }
