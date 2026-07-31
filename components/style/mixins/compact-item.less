@@ -5,26 +5,14 @@
       border-radius: 0;
     }
 
-    &-item.@{prefix-cls}&-first-item:not(&-last-item):not(&-item-rtl) {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
+    &-item.@{prefix-cls}&-first-item:not(&-last-item) {
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
     }
 
-    &-item.@{prefix-cls}&-last-item:not(&-first-item):not(&-item-rtl) {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-
-    // ----------rtl for first item----------
-    &-item.@{prefix-cls}&-item-rtl&-first-item:not(&-last-item) {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-
-    // ----------rtl for last item----------
-    &-item.@{prefix-cls}&-item-rtl&-last-item:not(&-first-item) {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
+    &-item.@{prefix-cls}&-last-item:not(&-first-item) {
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
     }
   }
 
@@ -34,26 +22,14 @@
       border-radius: 0;
     }
 
-    &-item&-first-item.@{prefix-cls}:not(&-last-item):not(&-item-rtl) .@{bordered-item-cls} {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
+    &-item&-first-item.@{prefix-cls}:not(&-last-item) .@{bordered-item-cls} {
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
     }
 
-    &-item&-last-item.@{prefix-cls}:not(&-first-item):not(&-item-rtl) .@{bordered-item-cls} {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-
-    // ----------rtl for first item----------
-    &-item.@{prefix-cls}&-first-item&-item-rtl:not(&-last-item) .@{bordered-item-cls} {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-
-    // ----------rtl for last item----------
-    &-item.@{prefix-cls}&-last-item&-item-rtl:not(&-first-item) .@{bordered-item-cls} {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
+    &-item&-last-item.@{prefix-cls}:not(&-first-item) .@{bordered-item-cls} {
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
     }
   }
 }
@@ -61,13 +37,8 @@
 .compact-item-border(@prefix-cls, @bordered-item-cls: null, @special-open-cls) {
   & when (@bordered-item-cls = null) {
     // border collapse
-    &-item:not(&-last-item):not(&-item-rtl) {
-      margin-right: -@border-width-base;
-    }
-
-    // rtl border collapse
-    &-item:not(&-last-item)&-item-rtl {
-      margin-left: -@border-width-base;
+    &-item:not(&-last-item) {
+      margin-inline-end: -@border-width-base;
     }
 
     &-item {
@@ -93,12 +64,7 @@
   & when (not (@bordered-item-cls = null)) {
     // border collapse
     &-item:not(&-last-item) {
-      margin-right: -@border-width-base;
-
-      &.@{prefix-cls}-compact-item-rtl {
-        margin-right: 0;
-        margin-left: -@border-width-base;
-      }
+      margin-inline-end: -@border-width-base;
     }
 
     &-item {

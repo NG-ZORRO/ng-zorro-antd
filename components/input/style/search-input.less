@@ -12,7 +12,7 @@
       border-color: @input-hover-border-color;
 
       + .@{ant-prefix}-input-group-addon .@{search-prefix}-button:not(.@{ant-prefix}-btn-primary) {
-        border-left-color: @input-hover-border-color;
+        border-inline-start-color: @input-hover-border-color;
       }
     }
   }
@@ -29,14 +29,15 @@
 
   > .@{ant-prefix}-input-group {
     > .@{ant-prefix}-input-group-addon:last-child {
-      left: -1px;
+      inset-inline-start: -1px;
       padding: 0;
       border: 0;
 
       .@{search-prefix}-button {
         padding-top: 0;
         padding-bottom: 0;
-        border-radius: 0 @border-radius-base @border-radius-base 0;
+        border-start-end-radius: @border-radius-base;
+        border-end-end-radius: @border-radius-base;
       }
 
       .@{search-prefix}-button:not(.@{ant-prefix}-btn-primary) {
@@ -44,9 +45,9 @@
 
         &.@{ant-prefix}-btn-loading::before {
           top: 0;
-          right: 0;
+          inset-inline-end: 0;
           bottom: 0;
-          left: 0;
+          inset-inline-start: 0;
         }
       }
     }
@@ -71,13 +72,11 @@
 
   // ===================== Compact Item Customized Styles =====================
   &.@{input-prefix-cls}-compact-item {
-    &:not(.@{input-prefix-cls}-compact-item-rtl) {
-      &:not(.@{input-prefix-cls}-compact-last-item) {
-        .@{input-prefix-cls}-group-addon {
-          .@{input-prefix-cls}-search-button {
-            margin-right: -@border-width-base;
-            border-radius: 0;
-          }
+    &:not(.@{input-prefix-cls}-compact-last-item) {
+      .@{input-prefix-cls}-group-addon {
+        .@{input-prefix-cls}-search-button {
+          margin-inline-end: -@border-width-base;
+          border-radius: 0;
         }
       }
     }
@@ -101,17 +100,6 @@
 
     > .@{input-prefix-cls}-affix-wrapper-focused {
       z-index: 2;
-    }
-  }
-  // ===================== For RTL Compact Item Customized Styles =====================
-  &.@{input-prefix-cls}-compact-item-rtl {
-    &:not(.@{input-prefix-cls}-compact-last-item) {
-      .@{input-prefix-cls}-group-addon:last-child {
-        .@{input-prefix-cls}-search-button {
-          margin-left: -@border-width-base;
-          border-radius: 0;
-        }
-      }
     }
   }
 }

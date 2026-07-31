@@ -3,8 +3,9 @@
 @import '../../style/core/motion/zoom';
 @import './modal';
 @import './confirm';
-@import './rtl';
 
+@dialog-prefix-cls: ~'@{ant-prefix}-modal';
+@confirm-prefix-cls: ~'@{ant-prefix}-modal-confirm';
 .popover-customize-bg(@dialog-prefix-cls, @popover-background);
 
 // Animations

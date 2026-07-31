@@ -16,7 +16,7 @@
 
   &-header {
     display: table-cell;
-    padding-right: @padding-md;
+    padding-inline-end: @padding-md;
     vertical-align: top;
 
     // Avatar
@@ -287,4 +287,35 @@
   }
 }
 
-@import './rtl';
+
+
+.@{skeleton-prefix-cls} {
+
+  // With active animation
+  &.@{skeleton-prefix-cls}-active {
+    & .@{skeleton-prefix-cls}-content {
+      .@{skeleton-title-prefix-cls},
+      .@{skeleton-paragraph-prefix-cls} > li {
+        &:dir(rtl) {
+          animation-name: ~'@{skeleton-prefix-cls}-loading-reverse';
+        }
+      }
+    }
+
+    .@{skeleton-avatar-prefix-cls} {
+      &:dir(rtl) {
+        animation-name: ~'@{skeleton-prefix-cls}-loading-reverse';
+      }
+    }
+  }
+}
+
+@keyframes ~"@{skeleton-prefix-cls}-loading-reverse" {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 100% 50%;
+  }
+}
