@@ -13,9 +13,6 @@
   &-dropdown {
     padding: @padding-xs (@padding-xs / 2);
 
-    &-rtl {
-      direction: rtl;
-    }
     // ======================== Tree ========================
     .@{select-tree-prefix-cls} {
       border-radius: 0;
@@ -41,7 +38,7 @@
     &_close {
       .@{select-tree-prefix-cls}-switcher-icon {
         svg {
-          .@{tree-select-prefix-cls}-dropdown-rtl & {
+          &:dir(rtl) {
             transform: rotate(90deg);
           }
         }
@@ -49,7 +46,7 @@
     }
 
     &-loading-icon {
-      .@{tree-select-prefix-cls}-dropdown-rtl & {
+      &:dir(rtl) {
         transform: scaleY(-1);
       }
     }

@@ -15,7 +15,7 @@
   &-avatar {
     position: relative;
     flex-shrink: 0;
-    margin-right: @margin-sm;
+    margin-inline-end: @margin-sm;
     cursor: pointer;
 
     img {
@@ -41,7 +41,7 @@
 
       & > a,
       & > span {
-        padding-right: @padding-xs;
+        padding-inline-end: @padding-xs;
         font-size: @comment-font-size-sm;
         line-height: 18px;
       }
@@ -76,14 +76,14 @@
   &-actions {
     margin-top: @comment-actions-margin-top;
     margin-bottom: @comment-actions-margin-bottom;
-    padding-left: 0;
+    padding-inline-start: 0;
 
     > li {
       display: inline-block;
       color: @comment-action-color;
 
       > span {
-        margin-right: 10px;
+        margin-inline-end: 10px;
         color: @comment-action-color;
         font-size: @comment-font-size-sm;
         cursor: pointer;
@@ -98,8 +98,6 @@
   }
 
   &-nested {
-    margin-left: @comment-nest-indent;
+    margin-inline-start: @comment-nest-indent;
   }
 }
-
-@import './rtl';

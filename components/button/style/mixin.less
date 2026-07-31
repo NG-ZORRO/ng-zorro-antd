@@ -515,7 +515,7 @@
   > span + span,
   & + .@{btnClassName},
   & + & {
-    margin-left: -1px;
+    margin-inline-start: -1px;
   }
   .@{btnClassName}-primary + .@{btnClassName}:not(.@{btnClassName}-primary):not([disabled]) {
     border-left-color: transparent;
@@ -525,7 +525,7 @@
   }
   > .@{btnClassName}:first-child,
   > span:first-child > .@{btnClassName} {
-    margin-left: 0;
+    margin-inline-start: 0;
   }
   > .@{btnClassName}:only-child {
     border-radius: @btn-border-radius-base;
@@ -535,13 +535,13 @@
   }
   > .@{btnClassName}:first-child:not(:last-child),
   > span:first-child:not(:last-child) > .@{btnClassName} {
-    border-top-left-radius: @btn-border-radius-base;
-    border-bottom-left-radius: @btn-border-radius-base;
+    border-start-start-radius: @btn-border-radius-base;
+    border-end-start-radius: @btn-border-radius-base;
   }
   > .@{btnClassName}:last-child:not(:first-child),
   > span:last-child:not(:first-child) > .@{btnClassName} {
-    border-top-right-radius: @btn-border-radius-base;
-    border-bottom-right-radius: @btn-border-radius-base;
+    border-start-end-radius: @btn-border-radius-base;
+    border-end-end-radius: @btn-border-radius-base;
   }
 
   &-sm {
@@ -553,13 +553,13 @@
     }
     > .@{btnClassName}:first-child:not(:last-child),
     > span:first-child:not(:last-child) > .@{btnClassName} {
-      border-top-left-radius: @btn-border-radius-sm;
-      border-bottom-left-radius: @btn-border-radius-sm;
+      border-start-start-radius: @btn-border-radius-sm;
+      border-end-start-radius: @btn-border-radius-sm;
     }
     > .@{btnClassName}:last-child:not(:first-child),
     > span:last-child:not(:first-child) > .@{btnClassName} {
-      border-top-right-radius: @btn-border-radius-sm;
-      border-bottom-right-radius: @btn-border-radius-sm;
+      border-start-end-radius: @btn-border-radius-sm;
+      border-end-end-radius: @btn-border-radius-sm;
     }
   }
 

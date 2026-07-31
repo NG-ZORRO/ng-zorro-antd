@@ -37,7 +37,7 @@
   &-close {
     position: absolute;
     top: 0;
-    right: 0;
+    inset-inline-end: 0;
     z-index: @zindex-popup-close;
     padding: 0;
     color: @modal-close-color;
@@ -87,7 +87,7 @@
 
   &-footer {
     padding: @modal-footer-padding-vertical @modal-footer-padding-horizontal;
-    text-align: right;
+    text-align: end;
     background: @modal-footer-bg;
     border-top: @modal-footer-border-width @modal-footer-border-style
       @modal-footer-border-color-split;
@@ -95,7 +95,7 @@
 
     .@{ant-prefix}-btn + .@{ant-prefix}-btn:not(.@{ant-prefix}-dropdown-trigger) {
       margin-bottom: 0;
-      margin-left: 8px;
+      margin-inline-start: 8px;
     }
   }
 
