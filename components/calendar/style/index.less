@@ -20,11 +20,11 @@
 
     .@{calendar-prefix-cls}-month-select {
       min-width: 70px;
-      margin-left: @padding-xs;
+      margin-inline-start: @padding-xs;
     }
 
     .@{calendar-prefix-cls}-mode-switch {
-      margin-left: @padding-xs;
+      margin-inline-start: @padding-xs;
     }
   }
 
@@ -53,8 +53,7 @@
     border-radius: @border-radius-base;
 
     .@{calendar-picker-prefix-cls}-calendar-header {
-      padding-right: @padding-xs;
-      padding-left: @padding-xs;
+      padding-inline: @padding-xs;
     }
 
     .@{calendar-picker-prefix-cls}-panel {
@@ -81,7 +80,7 @@
     .@{calendar-picker-prefix-cls}-panel {
       display: block;
       width: 100%;
-      text-align: right;
+      text-align: end;
       background: @calendar-full-bg;
       border: 0;
 
@@ -93,7 +92,8 @@
 
         th {
           height: auto;
-          padding: 0 12px 5px 0;
+          padding-block-end: 5px;
+          padding-inline-end: 12px;
           line-height: 18px;
         }
       }
@@ -151,7 +151,7 @@
           overflow-y: auto;
           color: @text-color;
           line-height: @line-height-base;
-          text-align: left;
+          text-align: start;
         }
 
         &-today {
@@ -182,7 +182,7 @@
       .@{calendar-prefix-cls}-mode-switch {
         width: 100%;
         margin-top: @padding-xs;
-        margin-left: 0;
+        margin-inline-start: 0;
 
         > label {
           width: 50%;
@@ -192,5 +192,3 @@
     }
   }
 }
-
-@import './rtl';

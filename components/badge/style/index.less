@@ -67,7 +67,7 @@
   .@{number-prefix-cls}-custom-component {
     position: absolute;
     top: 0;
-    right: 0;
+    inset-inline-end: 0;
     transform: translate(50%, -50%);
     transform-origin: 100% 0%;
 
@@ -101,7 +101,7 @@
       &::after {
         position: absolute;
         top: 0;
-        left: 0;
+        inset-inline-start: 0;
         width: 100%;
         height: 100%;
         border: 1px solid @processing-color;
@@ -280,4 +280,48 @@
 }
 
 @import './ribbon';
-@import './rtl';
+.@{badge-prefix-cls} {
+
+  &:not(&-not-a-wrapper) &-count,
+  &:not(&-not-a-wrapper) &-dot,
+  &:not(&-not-a-wrapper) .@{number-prefix-cls}-custom-component {
+    &:dir(rtl) {
+      direction: ltr;
+      transform: translate(-50%, -50%);
+      transform-origin: 0% 0%;
+    }
+  }
+
+  &:not(&-not-a-wrapper):dir(rtl) {
+    .@{badge-prefix-cls}-zoom-appear,
+    .@{badge-prefix-cls}-zoom-enter {
+      animation-name: antZoomBadgeInReverse;
+    }
+
+    .@{badge-prefix-cls}-zoom-leave {
+      animation-name: antZoomBadgeOutReverse;
+    }
+  }
+}
+
+@keyframes antZoomBadgeInReverse {
+  0% {
+    transform: scale(0) translate(-50%, -50%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+  }
+}
+
+@keyframes antZoomBadgeOutReverse {
+  0% {
+    transform: scale(1) translate(-50%, -50%);
+  }
+
+  100% {
+    transform: scale(0) translate(-50%, -50%);
+    opacity: 0;
+  }
+}

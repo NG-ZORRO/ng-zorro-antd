@@ -8,7 +8,7 @@
 
   display: inline-block;
   height: auto;
-  margin-right: 8px;
+  margin-inline-end: 8px;
   padding: 0 7px;
   font-size: @tag-font-size;
   line-height: @tag-line-height;
@@ -32,7 +32,7 @@
   }
 
   &-close-icon {
-    margin-left: 3px;
+    margin-inline-start: 3px;
     color: @text-color-secondary;
     font-size: 10px;
     cursor: pointer;
@@ -122,8 +122,6 @@
   // To ensure that a space will be placed between character and `Icon`.
   > .@{iconfont-css-prefix} + span,
   > span + .@{iconfont-css-prefix} {
-    margin-left: 7px;
+    margin-inline-start: 7px;
   }
 }
-
-@import './rtl';

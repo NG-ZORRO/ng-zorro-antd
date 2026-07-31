@@ -152,14 +152,14 @@
 
   &-prefix {
     flex: 0 0 auto;
-    margin-right: (@padding-xs / 2);
+    margin-inline-end: (@padding-xs / 2);
   }
 
   &-suffix {
     display: flex;
     flex: none;
     align-self: center;
-    margin-left: (@padding-xs / 2);
+    margin-inline-start: (@padding-xs / 2);
     color: @disabled-color;
     line-height: 1;
     pointer-events: none;
@@ -168,7 +168,7 @@
       vertical-align: top;
 
       &:not(:last-child) {
-        margin-right: 8px;
+        margin-inline-end: 8px;
       }
     }
   }
@@ -176,7 +176,7 @@
   &-clear {
     position: absolute;
     top: 50%;
-    right: 0;
+    inset-inline-end: 0;
     color: @disabled-color;
     line-height: 1;
     background: @component-background;
@@ -224,7 +224,7 @@
 
     // Clear
     .@{picker-prefix-cls}-clear {
-      right: @input-padding-horizontal-base;
+      inset-inline-end: @input-padding-horizontal-base;
     }
 
     &:hover {
@@ -237,7 +237,7 @@
     .@{picker-prefix-cls}-active-bar {
       bottom: -@border-width-base;
       height: 2px;
-      margin-left: @input-padding-horizontal-base;
+      margin-inline-start: @input-padding-horizontal-base;
       background: @primary-color;
       opacity: 0;
       transition: all @animation-duration-slow ease-out;
@@ -258,11 +258,11 @@
 
     &.@{picker-prefix-cls}-small {
       .@{picker-prefix-cls}-clear {
-        right: @input-padding-horizontal-sm;
+        inset-inline-end: @input-padding-horizontal-sm;
       }
 
       .@{picker-prefix-cls}-active-bar {
-        margin-left: @input-padding-horizontal-sm;
+        margin-inline-start: @input-padding-horizontal-sm;
       }
     }
   }
@@ -412,4 +412,3 @@
 }
 
 @import './panel';
-@import './rtl';

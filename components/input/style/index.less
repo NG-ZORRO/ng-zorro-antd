@@ -65,7 +65,7 @@
     }
 
     &::after {
-      float: right;
+      float: inline-end;
       color: @text-color-secondary;
       white-space: nowrap;
       content: attr(data-count);
@@ -82,7 +82,7 @@
   &-textarea-suffix {
     position: absolute;
     top: 0;
-    right: @input-padding-horizontal-base;
+    inset-inline-end: @input-padding-horizontal-base;
     bottom: 0;
     z-index: 1;
     display: inline-flex;
@@ -104,5 +104,4 @@
 }
 
 @import './search-input';
-@import './rtl';
 @import './IE11';

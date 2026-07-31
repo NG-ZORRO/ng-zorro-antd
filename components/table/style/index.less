@@ -18,6 +18,7 @@
   clear: both;
   max-width: 100%;
   .clearfix();
+
 }
 
 .@{table-prefix-cls} {
@@ -30,7 +31,7 @@
   // https://github.com/ant-design/ant-design/issues/17611
   table {
     width: 100%;
-    text-align: left;
+    text-align: start;
     border-radius: @table-border-radius-base @table-border-radius-base 0 0;
     border-collapse: separate;
     border-spacing: 0;
@@ -90,7 +91,7 @@
         position: relative;
         color: @table-header-color;
         font-weight: 500;
-        text-align: left;
+        text-align: start;
         background: @table-header-bg;
         border-bottom: @border-width-base @border-style-base @table-border-color;
         transition: background 0.3s ease;
@@ -102,7 +103,7 @@
         &:not(:last-child):not(.@{table-prefix-cls}-selection-column):not(.@{table-prefix-cls}-row-expand-icon-cell):not([colspan])::before {
           position: absolute;
           top: 50%;
-          right: 0;
+          inset-inline-end: 0;
           width: 1px;
           height: 1.6em;
           background-color: @table-header-cell-split-color;
@@ -267,9 +268,9 @@
     &::after {
       position: absolute;
       top: 0;
-      right: 0;
+      inset-inline-end: 0;
       bottom: 0;
-      left: 0;
+      inset-inline-start: 0;
       width: 100%;
       height: 100%;
       content: '';
@@ -277,7 +278,7 @@
   }
 
   &-column-sorter {
-    margin-left: 4px;
+    margin-inline-start: 4px;
     color: @table-header-icon-color;
     font-size: 0;
     transition: color 0.3s;
@@ -316,7 +317,8 @@
     position: relative;
     display: flex;
     align-items: center;
-    margin: -4px (-@table-padding-horizontal / 2) -4px 4px;
+    margin-block: -4px;
+    margin-inline: (-@table-padding-horizontal / 2) 4px;
     padding: 0 4px;
     color: @table-header-icon-color;
     font-size: @font-size-sm;
@@ -491,14 +493,14 @@
   }
 
   &-row-indent {
-    float: left;
+    float: inline-start;
     height: 1px;
   }
 
   &-row-expand-icon {
     .operation-unit();
     position: relative;
-    float: left;
+    float: inline-start;
     box-sizing: border-box;
     width: @expand-icon-size;
     height: @expand-icon-size;
@@ -531,15 +533,14 @@
 
     &::before {
       top: ceil(((@font-size-sm * 1.4 - @border-width-base * 3) / 2));
-      right: 3px;
-      left: 3px;
+      inset-inline: 3px;
       height: @border-width-base;
     }
 
     &::after {
       top: 3px;
       bottom: 3px;
-      left: ceil(((@font-size-sm * 1.4 - @border-width-base * 3) / 2));
+      inset-inline-start: ceil(((@font-size-sm * 1.4 - @border-width-base * 3) / 2));
       width: @border-width-base;
       transform: rotate(90deg);
     }
@@ -567,7 +568,7 @@
     .@{table-prefix-cls}-row-indent + & {
       margin-top: ((@font-size-base * @line-height-base - @border-width-base * 3) / 2) -
         ceil(((@font-size-sm * 1.4 - @border-width-base * 3) / 2));
-      margin-right: @padding-xs;
+      margin-inline-end: @padding-xs;
     }
   }
 
@@ -760,4 +761,27 @@
 }
 
 @import './radius';
-@import './rtl';
+
+.@{table-prefix-cls} {
+  &-pagination-left:dir(rtl) {
+    justify-content: flex-end;
+  }
+
+  &-pagination-right:dir(rtl) {
+    justify-content: flex-start;
+  }
+
+  &-row-expand-icon:dir(rtl) {
+    &::after {
+      transform: rotate(-90deg);
+    }
+
+    &-collapsed::before {
+      transform: rotate(180deg);
+    }
+
+    &-collapsed::after {
+      transform: rotate(0deg);
+    }
+  }
+}

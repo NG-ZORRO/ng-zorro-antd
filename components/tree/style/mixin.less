@@ -34,7 +34,7 @@
     &::after {
       position: absolute;
       top: -3px;
-      left: -6px;
+      inset-inline-start: -6px;
       width: 8px;
       height: 8px;
       background-color: transparent;
@@ -219,7 +219,8 @@
   // >>> Checkbox
   &-checkbox {
     top: initial;
-    margin: ((@tree-title-height - @checkbox-size) / 2) 8px 0 0;
+    margin-block-start: ((@tree-title-height - @checkbox-size) / 2);
+    margin-inline-end: 8px;
   }
 
   // >>> Title
