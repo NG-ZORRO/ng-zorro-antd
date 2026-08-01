@@ -47,6 +47,10 @@
       &.@{ant-prefix}-anchor-ink-ball-visible {
         display: inline-block;
       }
+
+      &:dir(rtl) {
+        transform: translateX(50%);
+      }
     }
   }
 
@@ -55,7 +59,8 @@
   }
 
   &-link {
-    padding: @anchor-link-padding;
+    padding-block: @anchor-link-padding-block;
+    padding-inline-start: @anchor-link-padding-inline-start;
 
     &-title {
       position: relative;
@@ -81,8 +86,4 @@
     padding-top: 2px;
     padding-bottom: 2px;
   }
-}
-
-.@{ant-prefix}-anchor-ink-ball:dir(rtl) {
-  transform: translateX(50%);
 }
