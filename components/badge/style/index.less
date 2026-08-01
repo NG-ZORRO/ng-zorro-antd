@@ -181,29 +181,6 @@
   }
 }
 
-// ====================== RTL =======================
-.@{badge-prefix-cls}-rtl {
-  direction: rtl;
-}
-
-.@{badge-prefix-cls}:not(.@{badge-prefix-cls}-not-a-wrapper).@{badge-prefix-cls}-rtl {
-  .@{badge-prefix-cls}-count,
-  .@{badge-prefix-cls}-dot,
-  .@{number-prefix-cls}-custom-component {
-    transform: translate(-50%, -50%);
-  }
-
-  .@{badge-prefix-cls}-zoom-appear,
-  .@{badge-prefix-cls}-zoom-enter {
-    animation-name: antZoomBadgeInRtl;
-  }
-
-  .@{badge-prefix-cls}-zoom-leave {
-    animation-name: antZoomBadgeOutRtl;
-  }
-}
-
-// ====================== Animations =======================
 @keyframes antStatusProcessing {
   0% {
     transform: scale(0.8);
@@ -268,28 +245,6 @@
   }
 }
 
-@keyframes antZoomBadgeInRtl {
-  0% {
-    transform: scale(0) translate(-50%, -50%);
-    opacity: 0;
-  }
-
-  100% {
-    transform: scale(1) translate(-50%, -50%);
-  }
-}
-
-@keyframes antZoomBadgeOutRtl {
-  0% {
-    transform: scale(1) translate(-50%, -50%);
-  }
-
-  100% {
-    transform: scale(0) translate(-50%, -50%);
-    opacity: 0;
-  }
-}
-
 @keyframes antNoWrapperZoomBadgeIn {
   0% {
     transform: scale(0);
@@ -324,3 +279,4 @@
 }
 
 @import './ribbon';
+@import './rtl';
