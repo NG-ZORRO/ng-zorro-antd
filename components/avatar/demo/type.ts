@@ -16,7 +16,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
   styles: `
     nz-avatar {
       margin-top: 16px;
-      margin-right: 16px;
+      margin-inline-end: 16px;
     }
   `
 })

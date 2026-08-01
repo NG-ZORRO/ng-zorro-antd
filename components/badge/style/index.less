@@ -135,7 +135,7 @@
     .make-color-classes();
 
     &-text {
-      margin-left: @margin-xs;
+      margin-inline-start: @margin-xs;
       color: @text-color;
       font-size: @font-size-base;
     }
@@ -181,6 +181,29 @@
   }
 }
 
+// ====================== RTL =======================
+.@{badge-prefix-cls}-rtl {
+  direction: rtl;
+}
+
+.@{badge-prefix-cls}:not(.@{badge-prefix-cls}-not-a-wrapper).@{badge-prefix-cls}-rtl {
+  .@{badge-prefix-cls}-count,
+  .@{badge-prefix-cls}-dot,
+  .@{number-prefix-cls}-custom-component {
+    transform: translate(-50%, -50%);
+  }
+
+  .@{badge-prefix-cls}-zoom-appear,
+  .@{badge-prefix-cls}-zoom-enter {
+    animation-name: antZoomBadgeInRtl;
+  }
+
+  .@{badge-prefix-cls}-zoom-leave {
+    animation-name: antZoomBadgeOutRtl;
+  }
+}
+
+// ====================== Animations =======================
 @keyframes antStatusProcessing {
   0% {
     transform: scale(0.8);
@@ -203,7 +226,6 @@
 
 .@{number-prefix-cls} {
   overflow: hidden;
-  direction: ltr;
 
   &-only {
     position: relative;
@@ -246,6 +268,28 @@
   }
 }
 
+@keyframes antZoomBadgeInRtl {
+  0% {
+    transform: scale(0) translate(-50%, -50%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+  }
+}
+
+@keyframes antZoomBadgeOutRtl {
+  0% {
+    transform: scale(1) translate(-50%, -50%);
+  }
+
+  100% {
+    transform: scale(0) translate(-50%, -50%);
+    opacity: 0;
+  }
+}
+
 @keyframes antNoWrapperZoomBadgeIn {
   0% {
     transform: scale(0);
@@ -280,48 +324,3 @@
 }
 
 @import './ribbon';
-.@{badge-prefix-cls} {
-
-  &:not(&-not-a-wrapper) &-count,
-  &:not(&-not-a-wrapper) &-dot,
-  &:not(&-not-a-wrapper) .@{number-prefix-cls}-custom-component {
-    &:dir(rtl) {
-      direction: ltr;
-      transform: translate(-50%, -50%);
-      transform-origin: 0% 0%;
-    }
-  }
-
-  &:not(&-not-a-wrapper):dir(rtl) {
-    .@{badge-prefix-cls}-zoom-appear,
-    .@{badge-prefix-cls}-zoom-enter {
-      animation-name: antZoomBadgeInReverse;
-    }
-
-    .@{badge-prefix-cls}-zoom-leave {
-      animation-name: antZoomBadgeOutReverse;
-    }
-  }
-}
-
-@keyframes antZoomBadgeInReverse {
-  0% {
-    transform: scale(0) translate(-50%, -50%);
-    opacity: 0;
-  }
-
-  100% {
-    transform: scale(1) translate(-50%, -50%);
-  }
-}
-
-@keyframes antZoomBadgeOutReverse {
-  0% {
-    transform: scale(1) translate(-50%, -50%);
-  }
-
-  100% {
-    transform: scale(0) translate(-50%, -50%);
-    opacity: 0;
-  }
-}
