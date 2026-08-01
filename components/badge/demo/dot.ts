@@ -16,7 +16,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   `,
   styles: `
     nz-badge {
-      margin-right: 20px;
+      margin-inline-end: 20px;
     }
 
     nz-icon {
