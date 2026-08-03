@@ -6,9 +6,10 @@
 import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { form, FormField } from '@angular/forms/signals';
 import { By } from '@angular/platform-browser';
 
-import { updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
+import { dispatchFakeEvent, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzInputModule } from 'ng-zorro-antd/input/input.module';
 import { NzTextareaCountComponent } from 'ng-zorro-antd/input/textarea-count.component';
 
@@ -62,6 +63,22 @@ describe('textarea-count', () => {
       expect(textareaCountElement.getAttribute('data-count')).toBe('4/100');
     });
   });
+
+  describe('with Signal Forms', () => {
+    it('should update the count when the field value changes', async () => {
+      const fixture = TestBed.createComponent(NzTestInputTextareaCountWithSignalFormComponent);
+      fixture.autoDetectChanges();
+      await fixture.whenStable();
+
+      const textarea = fixture.nativeElement.querySelector('textarea') as HTMLTextAreaElement;
+      const textareaCountElement = fixture.debugElement.query(By.directive(NzTextareaCountComponent)).nativeElement;
+      textarea.value = 'Signal Forms';
+      dispatchFakeEvent(textarea, 'input');
+      await fixture.whenStable();
+
+      expect(textareaCountElement.getAttribute('data-count')).toBe('12/50');
+    });
+  });
 });
 
 @Component({
@@ -86,4 +103,17 @@ export class NzTestInputTextareaCountWithoutMaxComponent {
 })
 export class NzTestInputTextareaCountWithMaxComponent {
   readonly inputValue = signal('');
+}
+
+@Component({
+  imports: [FormField, NzInputModule],
+  template: `
+    <nz-textarea-count [nzMaxCharacterCount]="50">
+      <textarea rows="4" nz-input [formField]="form.bio"></textarea>
+    </nz-textarea-count>
+  `
+})
+export class NzTestInputTextareaCountWithSignalFormComponent {
+  readonly model = signal({ bio: '' });
+  readonly form = form(this.model);
 }

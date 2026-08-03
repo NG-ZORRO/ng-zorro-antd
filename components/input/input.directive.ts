@@ -22,6 +22,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { NgControl } from '@angular/forms';
+import { FORM_FIELD } from '@angular/forms/signals';
 import { EMPTY } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
@@ -56,6 +57,7 @@ const PREFIX_CLS = 'ant-input';
     '[class.ant-input-sm]': `finalSize() === 'small'`,
     '[attr.disabled]': 'finalDisabled() || null',
     '[attr.readonly]': 'readonly() || null',
+    '(input)': 'onInput($event)',
     '[class.ant-input-rtl]': `dir() === 'rtl'`,
     '[class.ant-input-focused]': 'focused()'
   },
@@ -72,9 +74,16 @@ export class NzInputDirective implements OnInit {
   private hostView = inject(ViewContainerRef);
   private readonly inputPasswordDir = inject(NzInputPasswordDirective, { host: true, optional: true });
   private readonly inputSearchDir = inject(NZ_INPUT_SEARCH, { host: true, optional: true });
+  private readonly formField = inject(FORM_FIELD, { self: true, optional: true });
 
   readonly ngControl = inject(NgControl, { self: true, optional: true });
-  readonly value = signal<string>(this.elementRef.nativeElement.value);
+  private readonly nativeValue = signal(this.elementRef.nativeElement.value);
+  readonly value = computed(() => {
+    if (this.formField) {
+      return String(this.formField.state().value() ?? '');
+    }
+    return this.nativeValue();
+  });
 
   readonly nzVariant = input<NzVariant>();
   readonly nzSize = input<NzSizeLDSType>('default');
@@ -83,7 +92,12 @@ export class NzInputDirective implements OnInit {
   readonly readonly = input(false, { transform: booleanAttribute });
 
   readonly controlDisabled = signal(false);
-  readonly finalDisabled = this.ngControl ? this.controlDisabled : this.disabled;
+  readonly finalDisabled = computed(() => {
+    if (this.formField) {
+      return this.formField.state().disabled();
+    }
+    return this.ngControl ? this.controlDisabled() : this.disabled();
+  });
   readonly dir = inject(Directionality).valueSignal;
   // TODO: When the input group is removed, we can remove this.
   readonly size = linkedSignal(this.nzSize);
@@ -150,8 +164,12 @@ export class NzInputDirective implements OnInit {
     this.ngControl?.valueChanges
       ?.pipe(startWith(this.ngControl?.control?.value), takeUntilDestroyed(this.destroyRef))
       .subscribe(value => {
-        this.value.set(value ?? '');
+        this.nativeValue.set(value ?? '');
       });
+  }
+
+  onInput(event: Event): void {
+    this.nativeValue.set((event.target as HTMLInputElement | HTMLTextAreaElement).value);
   }
 
   private renderFeedbackIcon(): void {

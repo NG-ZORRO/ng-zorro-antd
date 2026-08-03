@@ -7,17 +7,15 @@ import {
   AfterContentInit,
   Component,
   ContentChild,
-  DestroyRef,
   ElementRef,
+  effect,
   inject,
+  Injector,
   Input,
   isDevMode,
   numberAttribute,
   Renderer2
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { EMPTY } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 
 import { isNotNil } from 'ng-zorro-antd/core/util';
 
@@ -32,7 +30,7 @@ import { NzInputDirective } from './input.directive';
 })
 export class NzTextareaCountComponent implements AfterContentInit {
   private renderer = inject(Renderer2);
-  private destroyRef = inject(DestroyRef);
+  private injector = inject(Injector);
   private elementRef: ElementRef<HTMLElement> = inject(ElementRef);
 
   @ContentChild(NzInputDirective, { static: true }) nzInputDirective!: NzInputDirective;
@@ -45,18 +43,7 @@ export class NzTextareaCountComponent implements AfterContentInit {
       throw new Error('[nz-textarea-count]: Could not find matching textarea[nz-input] child.');
     }
 
-    if (this.nzInputDirective.ngControl) {
-      const valueChanges = this.nzInputDirective.ngControl.valueChanges || EMPTY;
-      valueChanges
-        .pipe(
-          takeUntilDestroyed(this.destroyRef),
-          map(() => this.nzInputDirective.ngControl!.value),
-          startWith(this.nzInputDirective.ngControl.value as string)
-        )
-        .subscribe(value => {
-          this.setDataCount(value);
-        });
-    }
+    effect(() => this.setDataCount(this.nzInputDirective.value()), { injector: this.injector });
   }
 
   setDataCount(value: string): void {
