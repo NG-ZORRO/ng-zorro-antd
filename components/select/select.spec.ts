@@ -113,6 +113,23 @@ describe('select', () => {
       expect(component.valueChange).not.toHaveBeenCalled();
     });
 
+    it('should scroll to the initially selected option when opened', async () => {
+      component.listOfOption.set(
+        Array.from({ length: 30 }, (_, index) => ({ nzValue: index + 1, nzLabel: `Option ${index + 1}` }))
+      );
+      component.value.set(15);
+      await flushChanges();
+
+      component.nzOpen.set(true);
+      await flushChanges();
+
+      const viewport = overlayContainerElement.querySelector<HTMLElement>('.cdk-virtual-scroll-viewport');
+      expect(viewport!.scrollTop).toBeGreaterThan(0);
+      expect(overlayContainerElement.querySelector('.ant-select-item-option-active')!.textContent?.trim()).toBe(
+        'Option 15'
+      );
+    });
+
     it('should ngModelChange trigger when click option', async () => {
       component.listOfOption.set([
         { nzValue: 'test_01', nzLabel: 'test_01' },
@@ -636,6 +653,28 @@ describe('select', () => {
       expect(listOfSelectItem[0].textContent?.trim()).toBe('label_01');
       expect(listOfSelectItem[1].textContent?.trim()).toBe('label_02');
       expect(component.valueChange).not.toHaveBeenCalled();
+    });
+
+    it('should preserve the activated option when the value changes while opened', async () => {
+      component.listOfOption.set([
+        { nzValue: 'value_01', nzLabel: 'label_01' },
+        { nzValue: 'value_02', nzLabel: 'label_02' },
+        { nzValue: 'value_03', nzLabel: 'label_03' }
+      ]);
+      component.value.set(['value_01']);
+      await flushChanges();
+
+      component.nzOpen.set(true);
+      await flushChanges();
+      dispatchFakeEvent(overlayContainerElement.querySelectorAll('nz-option-item')[1], 'mouseenter');
+      await flushChanges();
+
+      component.value.set(['value_01', 'value_03']);
+      await flushChanges();
+
+      expect(overlayContainerElement.querySelectorAll('nz-option-item')[1].classList).toContain(
+        'ant-select-item-option-active'
+      );
     });
 
     it('should click option work', async () => {
