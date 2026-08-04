@@ -12,6 +12,10 @@
   z-index: @zindex-dropdown;
   display: block;
 
+  &-rtl {
+    direction: rtl;
+  }
+
   &-hidden {
     display: none;
   }
@@ -22,7 +26,7 @@
     padding: @dropdown-edge-child-vertical-padding 0;
     overflow-x: hidden;
     overflow-y: auto;
-    text-align: left;
+    text-align: start;
     list-style-type: none;
     background-color: @dropdown-menu-bg;
     background-clip: padding-box;
@@ -53,7 +57,7 @@
 
       &-remove {
         flex: none;
-        margin-left: @margin-sm;
+        margin-inline-start: @margin-sm;
         color: @text-color-secondary;
         font-size: @font-size-sm;
         background: transparent;

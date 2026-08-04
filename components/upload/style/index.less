@@ -11,7 +11,7 @@
 
   outline: 0;
 
-  &&-rtl {
+  &-rtl {
     direction: rtl;
   }
 
@@ -149,7 +149,7 @@
   .clearfix();
   line-height: @line-height-base;
 
-  &&-rtl {
+  &-rtl {
     direction: rtl;
   }
 
@@ -322,7 +322,7 @@
       top: 50%;
       inset-inline-start: 50%;
       font-size: 26px;
-      transform: translateX(-50%) translateY(-50%);
+      transform: translate(-50%, -50%);
 
       .@{iconfont-css-prefix} {
         font-size: 26px;
@@ -409,7 +409,7 @@
       inset-inline-start: 50%;
       z-index: 10;
       white-space: nowrap;
-      transform: translateX(-50%) translateY(-50%);
+      transform: translate(-50%, -50%);
       opacity: 0;
       transition: all 0.3s;
 

@@ -26,7 +26,7 @@ interface ItemData {
         </tr>
       </thead>
       <tbody>
-        @for (data of editRowTable.data; track data) {
+        @for (data of editRowTable.data; track data.id) {
           <tr>
             @if (!editCache()[data.id].edit) {
               <td>{{ data.name }}</td>
@@ -49,7 +49,7 @@ interface ItemData {
   `,
   styles: `
     .save {
-      margin-right: 8px;
+      margin-inline-end: 8px;
     }
   `
 })

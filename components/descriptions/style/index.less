@@ -4,6 +4,10 @@
 @descriptions-prefix-cls: ~'@{ant-prefix}-descriptions';
 
 .@{descriptions-prefix-cls} {
+  &-rtl {
+    direction: rtl;
+  }
+
   &-header {
     display: flex;
     align-items: center;
@@ -22,7 +26,7 @@
   }
 
   &-extra {
-    margin-left: auto;
+    margin-inline-start: auto;
     color: @descriptions-extra-color;
     font-size: @font-size-base;
   }

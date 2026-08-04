@@ -133,20 +133,14 @@
         transition: all 0.2s;
 
         &-svg {
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
+          inset: 0;
           margin: auto;
         }
       }
 
       .@{pagination-prefix-cls}-item-ellipsis {
         position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
+        inset: 0;
         display: block;
         margin: auto;
         color: @disabled-color;
@@ -181,7 +175,7 @@
   &-prev,
   &-jump-prev,
   &-jump-next {
-    margin-right: 8px;
+    margin-inline-end: 8px;
   }
 
   &-prev,
@@ -395,7 +389,7 @@
   &&-mini &-jump-prev,
   &&-mini &-jump-next {
     height: @pagination-item-size-sm;
-    margin-right: 0;
+    margin-inline-end: 0;
     line-height: @pagination-item-size-sm;
   }
 

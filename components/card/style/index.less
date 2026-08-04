@@ -15,6 +15,10 @@
   background: @card-background;
   border-radius: @card-radius;
 
+  &-rtl {
+    direction: rtl;
+  }
+
   &-hoverable {
     cursor: pointer;
     transition: box-shadow 0.3s, border-color 0.3s;
@@ -129,8 +133,7 @@
 
   &-bordered &-cover {
     margin-top: -1px;
-    margin-right: -1px;
-    margin-left: -1px;
+    margin-inline: -1px;
   }
 
   &-cover {

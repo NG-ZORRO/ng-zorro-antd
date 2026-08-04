@@ -8,7 +8,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
   selector: 'nz-demo-tabs-link-router',
   imports: [RouterLink, NzTabsModule, NzButtonModule],
   template: `
-    <div style="margin-bottom: 16px;">
+    <div style="margin-block-end: 16px;">
       <button nz-button (click)="newTab()">ADD</button>
     </div>
     <nz-tabs nzLinkRouter>

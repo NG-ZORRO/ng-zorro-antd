@@ -26,7 +26,7 @@ The component in `nz-table` such as `th`, `td`, `thead` etc. are enhanced. Devel
 
 ### Data Processing
 
-The data passed to `[nzData]` is exported with [Template Context](https://angular.dev/guide/templates/template-statements#statement-context) after processing (including paging, sorting and filtering). `*ngFor` can be used to render current page data in table.
+The data passed to `[nzData]` is exported with [Template Context](https://angular.dev/guide/templates/template-statements#statement-context) after processing (including paging, sorting and filtering). `@for` can be used to render current page data in table.
 
 ```html
 <nz-table #basicTable [nzData]="dataSet">
@@ -39,7 +39,8 @@ The data passed to `[nzData]` is exported with [Template Context](https://angula
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let data of basicTable.data">
+    @for (data of basicTable.data; track data.name) {
+    <tr>
       <td>{{data.name}}</td>
       <td>{{data.age}}</td>
       <td>{{data.address}}</td>
@@ -49,6 +50,7 @@ The data passed to `[nzData]` is exported with [Template Context](https://angula
         <a>Delete</a>
       </td>
     </tr>
+    }
   </tbody>
 </nz-table>
 ```

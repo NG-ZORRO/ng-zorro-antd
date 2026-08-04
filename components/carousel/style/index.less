@@ -12,6 +12,10 @@
 .@{carousel-prefix-cls} {
   .reset-component();
 
+  &-rtl {
+    direction: rtl;
+  }
+
   .slick-slider {
     position: relative;
     display: block;
@@ -185,10 +189,6 @@
     &::after {
       transform: rotate(-45deg);
     }
-
-    &:dir(rtl)::after {
-      transform: rotate(135deg);
-    }
   }
 
   .slick-next {
@@ -196,10 +196,6 @@
 
     &::after {
       transform: rotate(135deg);
-    }
-
-    &:dir(rtl)::after {
-      transform: rotate(-45deg);
     }
   }
 

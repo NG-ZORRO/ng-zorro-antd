@@ -23,7 +23,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
         </tr>
       </thead>
       <tbody>
-        @for (data of columnTable.data; track data) {
+        @for (data of columnTable.data; track data.key) {
           <tr>
             <td nzLeft>{{ data.name }}</td>
             <td nzLeft>{{ data.age }}</td>

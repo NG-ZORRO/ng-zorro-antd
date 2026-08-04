@@ -52,6 +52,10 @@
   border-radius: @border-radius-base;
   transition: background-color 0.3s;
 
+  &-rtl {
+    direction: rtl;
+  }
+
   &-focused:not(:hover):not(&-active-focused) {
     background: @primary-1;
   }
@@ -181,6 +185,10 @@
       .@{custom-tree-prefix-cls}-switcher-icon {
         svg {
           transform: rotate(-90deg);
+
+          .@{custom-tree-prefix-cls}-rtl & {
+            transform: rotate(90deg);
+          }
         }
       }
     }
