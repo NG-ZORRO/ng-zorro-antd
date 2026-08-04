@@ -1,6 +1,3 @@
-@import '../../style/themes/index';
-@tab-prefix-cls: ~'@{ant-prefix}-tabs';
-
 .@{tab-prefix-cls} {
   // ========================== Top & Bottom ==========================
   &-top,
@@ -13,8 +10,7 @@
 
       &::before {
         position: absolute;
-        right: 0;
-        left: 0;
+        inset-inline: 0;
         border-bottom: @border-width-base @border-style-base @border-color-split;
         content: '';
       }
@@ -73,8 +69,8 @@
     > .@{tab-prefix-cls}-nav,
     > div > .@{tab-prefix-cls}-nav {
       order: 1;
-      margin-top: @margin-md;
-      margin-bottom: 0;
+      margin-block-start: @margin-md;
+      margin-block-end: 0;
 
       &::before {
         top: 0;
@@ -115,8 +111,7 @@
 
         &::before,
         &::after {
-          right: 0;
-          left: 0;
+          inset-inline: 0;
           height: 30px;
         }
 

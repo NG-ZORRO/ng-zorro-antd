@@ -26,8 +26,8 @@ export interface TreeNodeInterface {
         </tr>
       </thead>
       <tbody>
-        @for (data of expandTable.data; track data) {
-          @for (item of mapOfExpandedData[data.key]; track item) {
+        @for (data of expandTable.data; track data.key) {
+          @for (item of mapOfExpandedData[data.key]; track item.key) {
             @if ((item.parent && item.parent.expand) || !item.parent) {
               <tr>
                 <td

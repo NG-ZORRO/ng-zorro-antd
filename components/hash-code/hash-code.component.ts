@@ -35,9 +35,7 @@ import { NzModeType } from './typings';
           <ng-template [nzStringTemplateOutlet]="nzLogo">{{ nzLogo }}</ng-template>
         </div>
       </div>
-    }
-
-    @if (nzMode === 'single' || nzMode === 'rect') {
+    } @else {
       <div class="ant-hash-code-header-copy" (click)="copyHandle()">
         <nz-icon nzType="copy" nzTheme="outline" />
       </div>

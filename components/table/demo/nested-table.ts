@@ -42,7 +42,7 @@ interface ChildrenItemData {
         </tr>
       </thead>
       <tbody>
-        @for (data of nestedTable.data; track data) {
+        @for (data of nestedTable.data; track data.key) {
           <tr>
             <td [(nzExpand)]="data.expand"></td>
             <td>{{ data.name }}</td>
@@ -67,7 +67,7 @@ interface ChildrenItemData {
                 </tr>
               </thead>
               <tbody>
-                @for (data of innerTable.data; track data) {
+                @for (data of innerTable.data; track data.key) {
                   <tr>
                     <td>{{ data.date }}</td>
                     <td>{{ data.name }}</td>

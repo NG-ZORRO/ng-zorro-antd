@@ -7,7 +7,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
   selector: 'nz-demo-tabs-custom-add-trigger',
   imports: [NzButtonModule, NzTabsModule],
   template: `
-    <div style="margin-bottom: 16px;">
+    <div style="margin-block-end: 16px;">
       <button nz-button (click)="newTab()">ADD</button>
     </div>
     <nz-tabs [(nzSelectedIndex)]="index" nzType="editable-card" nzHideAdd (nzClose)="closeTab($event)">

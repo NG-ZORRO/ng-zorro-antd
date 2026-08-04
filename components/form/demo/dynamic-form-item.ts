@@ -62,13 +62,16 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     </form>
   `,
   styles: `
+    ::ng-deep .ant-form-item-control-input-content {
+      display: flex;
+    }
+
     .dynamic-delete-button {
       cursor: pointer;
-      position: relative;
-      top: 4px;
       font-size: 24px;
       color: #999;
       transition: all 0.3s;
+      margin-inline-start: 8px;
     }
 
     .dynamic-delete-button:hover {
@@ -77,7 +80,6 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 
     .passenger-input {
       width: 60%;
-      margin-right: 8px;
     }
 
     [nz-form] {

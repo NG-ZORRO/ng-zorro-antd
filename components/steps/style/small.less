@@ -1,23 +1,24 @@
 .@{steps-prefix-cls}-small {
   &.@{steps-prefix-cls}-horizontal:not(.@{steps-prefix-cls}-label-vertical)
     .@{steps-prefix-cls}-item {
-    padding-left: 12px;
+    padding-inline-start: 12px;
 
     &:first-child {
-      padding-left: 0;
+      padding-inline-start: 0;
     }
   }
   .@{steps-prefix-cls}-item-icon {
     width: @steps-small-icon-size;
     height: @steps-small-icon-size;
     margin: @steps-small-icon-margin;
+    margin-inline: 0 8px;
     font-size: @font-size-sm;
     line-height: @steps-small-icon-size;
     text-align: center;
     border-radius: @steps-small-icon-size;
   }
   .@{steps-prefix-cls}-item-title {
-    padding-right: 12px;
+    padding-inline-end: 12px;
     font-size: @font-size-base;
     line-height: @steps-small-icon-size;
 

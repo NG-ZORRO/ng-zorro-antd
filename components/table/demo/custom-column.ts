@@ -49,7 +49,7 @@ interface CustomColumn extends NzCustomColumn {
         </tr>
       </thead>
       <tbody>
-        @for (data of basicTable.data; track data) {
+        @for (data of basicTable.data; track data.key) {
           <tr>
             <td nzCellControl="name">{{ data.name }}</td>
             <td nzCellControl="gender">{{ data.gender }}</td>
@@ -71,7 +71,7 @@ interface CustomColumn extends NzCustomColumn {
           <div nz-col class="gutter-row" [nzSpan]="12">
             <div class="example-container">
               <p>Displayed (drag and drop to sort)</p>
-              @for (item of title(); track item) {
+              @for (item of title(); track item.value) {
                 <div class="example-box">
                   {{ item.name }}
                 </div>
@@ -84,14 +84,14 @@ interface CustomColumn extends NzCustomColumn {
                 class="example-list"
                 (cdkDropListDropped)="drop($event)"
               >
-                @for (item of fix(); track item) {
+                @for (item of fix(); track item.value) {
                   <div class="example-box" cdkDrag>
                     {{ item.name }}
                     <nz-icon nzType="minus-circle" nzTheme="outline" (click)="deleteCustom(item, $index)" />
                   </div>
                 }
               </div>
-              @for (item of footer(); track item) {
+              @for (item of footer(); track item.value) {
                 <div class="example-box">
                   {{ item.name }}
                 </div>
@@ -109,7 +109,7 @@ interface CustomColumn extends NzCustomColumn {
                 class="example-list"
                 (cdkDropListDropped)="drop($event)"
               >
-                @for (item of notFix(); track item) {
+                @for (item of notFix(); track item.value) {
                   <div class="example-box" cdkDrag>
                     {{ item.name }}
                     <nz-icon nzType="plus-circle" nzTheme="outline" (click)="addCustom(item, $index)" />

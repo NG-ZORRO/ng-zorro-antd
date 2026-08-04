@@ -8,9 +8,9 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   selector: 'nz-demo-slider-reverse',
   imports: [FormsModule, NzSliderModule, NzSwitchModule],
   template: `
-    <nz-slider [ngModel]="30" [nzReverse]="reverse" />
-    <nz-slider nzRange [ngModel]="[20, 50]" [nzReverse]="reverse" />
-    <nz-slider [nzMarks]="marks" [ngModel]="30" [nzReverse]="reverse" />
+    <nz-slider [ngModel]="30" [nzReverse]="reverse()" />
+    <nz-slider nzRange [ngModel]="[20, 50]" [nzReverse]="reverse()" />
+    <nz-slider [nzMarks]="marks" [ngModel]="30" [nzReverse]="reverse()" />
     Reversed:
     <nz-switch nzSize="small" [(ngModel)]="reverse" />
   `,

@@ -16,9 +16,9 @@ description: 引导用户按照流程完成任务的导航条。
 
 ```html
 <nz-steps>
-  <nz-step nzTitle="第一步"></nz-step>
-  <nz-step nzTitle="第二步"></nz-step>
-  <nz-step nzTitle="第三步"></nz-step>
+  <nz-step nzTitle="第一步" />
+  <nz-step nzTitle="第二步" />
+  <nz-step nzTitle="第三步" />
 </nz-steps>
 ```
 

@@ -69,9 +69,8 @@
 
       &::after {
         position: absolute;
-        right: 0;
         bottom: 0;
-        left: 0;
+        inset-inline: 0;
         height: 5px;
         transform: translateY(100%);
         content: '';
@@ -149,8 +148,8 @@
 
     &-remove {
       flex: none;
-      margin-right: -@margin-xss;
-      margin-left: @margin-xs;
+      margin-inline-start: @margin-xs;
+      margin-inline-end: -@margin-xss;
       color: @text-color-secondary;
       font-size: @font-size-sm;
       background: transparent;

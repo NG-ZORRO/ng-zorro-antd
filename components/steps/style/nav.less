@@ -4,7 +4,7 @@
   &.@{steps-prefix-cls}-small {
     .@{steps-prefix-cls}-item {
       &-container {
-        margin-left: -12px;
+        margin-inline-start: -12px;
       }
     }
   }
@@ -16,9 +16,9 @@
     &-container {
       display: inline-block;
       height: 100%;
-      margin-left: -16px;
+      margin-inline-start: -16px;
       padding-bottom: 12px;
-      text-align: left;
+      text-align: start;
       transition: opacity 0.3s;
 
       .@{steps-prefix-cls}-item-content {
@@ -27,7 +27,7 @@
 
       .@{steps-prefix-cls}-item-title {
         max-width: 100%;
-        padding-right: 0;
+        padding-inline-end: 0;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -59,15 +59,15 @@
     &::after {
       position: absolute;
       top: 50%;
-      left: 100%;
+      inset-inline-start: 100%;
       display: inline-block;
       width: 12px;
       height: 12px;
       margin-top: -14px;
-      margin-left: -2px;
+      margin-inline-start: -2px;
       border: 1px solid @steps-nav-arrow-color;
       border-bottom: none;
-      border-left: none;
+      border-inline-start: none;
       transform: rotate(45deg);
       content: '';
     }
@@ -75,34 +75,33 @@
     &::before {
       position: absolute;
       bottom: 0;
-      left: 50%;
+      inset-inline-start: 50%;
       display: inline-block;
       width: 0;
       height: 2px;
       background-color: @steps-nav-active-color;
-      transition: width 0.3s, left 0.3s;
+      transition: width 0.3s, inset-inline-start 0.3s;
       transition-timing-function: ease-out;
       content: '';
     }
   }
 
   .@{steps-prefix-cls}-item.@{steps-prefix-cls}-item-active::before {
-    left: 0;
+    inset-inline-start: 0;
     width: 100%;
   }
 }
 
 .@{steps-prefix-cls}-navigation.@{steps-prefix-cls}-vertical {
   > .@{steps-prefix-cls}-item {
-    margin-right: 0 !important;
+    margin-inline-end: 0 !important;
 
     &::before {
       display: none;
     }
     &.@{steps-prefix-cls}-item-active::before {
       top: 0;
-      right: 0;
-      left: unset;
+      inset-inline-end: 0;
       display: block;
       width: 3px;
       height: calc(100% - 24px);
@@ -111,7 +110,7 @@
     &::after {
       position: relative;
       top: -2px;
-      left: 50%;
+      inset-inline-start: 50%;
       display: block;
       width: 8px;
       height: 8px;

@@ -12,7 +12,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
         nzIcon="customer-service"
         nzType="primary"
         nzTrigger="click"
-        style="right: 24px"
+        style="inset-inline-end: 24px"
         (nzOnOpenChange)="openChange($event)"
       >
         <nz-float-button />
@@ -22,7 +22,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
         nzIcon="customer-service"
         nzType="primary"
         nzTrigger="hover"
-        style="right: 94px"
+        style="inset-inline-end: 94px"
         (nzOnOpenChange)="openChange($event)"
       >
         <nz-float-button />
