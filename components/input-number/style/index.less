@@ -11,6 +11,14 @@
   .reset-component();
   .input();
 
+  &-rtl {
+    direction: rtl;
+
+    .@{input-number-prefix-cls}-input {
+      direction: rtl;
+    }
+  }
+
   //== Style for input-group: input with label, with button or dropdown...
   &-group {
     .reset-component();

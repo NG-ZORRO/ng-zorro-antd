@@ -65,7 +65,7 @@ interface DataItem {
     }
 
     .search-button {
-      margin-right: 8px;
+      margin-inline-end: 8px;
     }
   `
 })

@@ -16,11 +16,10 @@
   .reset-component();
 
   margin-bottom: 0;
-  padding-left: 0; // Override default ul/ol
+  padding-inline-start: 0; // Override default ul/ol
   color: @menu-item-color;
   font-size: @menu-item-font-size;
   line-height: 0; // Fix display inline-block gap
-  text-align: left;
   list-style: none;
   background: @menu-bg;
   outline: none;
@@ -31,6 +30,10 @@
 
   &&-root:focus-visible {
     .accessibility-focus();
+  }
+
+  &&-rtl {
+    direction: rtl;
   }
 
   ul,
@@ -103,10 +106,7 @@
 
     &::before {
       position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
+      inset: 0;
       background-color: transparent;
       content: '';
     }
@@ -160,11 +160,11 @@
   &-inline,
   &-vertical,
   &-vertical-left {
-    border-right: @border-width-base @border-style-base @border-color-split;
+    border-inline-end: @border-width-base @border-style-base @border-color-split;
   }
 
   &-vertical-right {
-    border-left: @border-width-base @border-style-base @border-color-split;
+    border-inline-start: @border-width-base @border-style-base @border-color-split;
   }
 
   &-vertical&-sub,
@@ -174,7 +174,7 @@
     max-height: calc(100vh - 100px);
     padding: 0;
     overflow: hidden;
-    border-right: 0;
+    border-inline-end: 0;
 
     // https://github.com/ant-design/ant-design/issues/22244
     // https://github.com/ant-design/ant-design/issues/26812
@@ -184,12 +184,12 @@
     }
 
     .@{menu-prefix-cls}-item {
-      left: 0;
-      margin-left: 0;
-      border-right: 0;
+      inset-inline-start: 0;
+      margin-inline-start: 0;
+      border-inline-end: 0;
 
       &::after {
-        border-right: 0;
+        border-inline-end: 0;
       }
     }
     > .@{menu-prefix-cls}-item,
@@ -226,7 +226,7 @@
         margin @animation-duration-slow @ease-in-out, color @animation-duration-slow;
 
       + span {
-        margin-left: @menu-icon-margin-right;
+        margin-inline-start: @menu-icon-margin-right;
         opacity: 1;
         transition: opacity @animation-duration-slow @ease-in-out, margin @animation-duration-slow,
           color @animation-duration-slow;
@@ -240,7 +240,7 @@
     &.@{menu-prefix-cls}-item-only-child {
       > .@{iconfont-css-prefix},
       > .@{menu-prefix-cls}-item-icon {
-        margin-right: 0;
+        margin-inline-end: 0;
       }
     }
 
@@ -267,9 +267,8 @@
       &::before {
         position: absolute;
         top: -7px;
-        right: 0;
         bottom: 0;
-        left: 0;
+        inset-inline: 0;
         z-index: -1;
         width: 100%;
         height: 100%;
@@ -281,7 +280,7 @@
     // https://github.com/ant-design/ant-design/issues/13955
     &-placement-rightTop::before {
       top: 0;
-      left: -7px;
+      inset-inline-start: -7px;
     }
 
     > .@{menu-prefix-cls} {
@@ -301,7 +300,7 @@
     &-arrow {
       position: absolute;
       top: 50%;
-      right: 16px;
+      inset-inline-end: 16px;
       width: 10px;
       color: @menu-item-color;
       transform: translateY(-50%);
@@ -408,9 +407,8 @@
 
       &::after {
         position: absolute;
-        right: @menu-item-padding-horizontal;
         bottom: 0;
-        left: @menu-item-padding-horizontal;
+        inset-inline: @menu-item-padding-horizontal;
         border-bottom: 2px solid transparent;
         transition: border-color @animation-duration-slow @ease-in-out;
         content: '';
@@ -457,9 +455,9 @@
       &::after {
         position: absolute;
         top: 0;
-        right: 0;
         bottom: 0;
-        border-right: @menu-item-active-border-width solid @menu-highlight-color;
+        inset-inline-end: 0;
+        border-inline-end: @menu-item-active-border-width solid @menu-highlight-color;
         transform: scaleY(0.0001);
         opacity: 0;
         transition: transform @menu-animation-duration-normal @ease-out,
@@ -498,7 +496,7 @@
   &-vertical {
     .@{menu-prefix-cls}-item-group-list .@{menu-prefix-cls}-submenu-title,
     .@{menu-prefix-cls}-submenu-title {
-      padding-right: 34px;
+      padding-inline-end: 34px;
     }
   }
 
@@ -521,7 +519,7 @@
 
     .@{menu-prefix-cls}-item-group-list .@{menu-prefix-cls}-submenu-title,
     .@{menu-prefix-cls}-submenu-title {
-      padding-right: 34px;
+      padding-inline-end: 34px;
     }
 
     // Motion enhance for first level
@@ -559,7 +557,7 @@
       > .@{menu-prefix-cls}-submenu
       > .@{menu-prefix-cls}-submenu-title,
     > .@{menu-prefix-cls}-submenu > .@{menu-prefix-cls}-submenu-title {
-      left: 0;
+      inset-inline-start: 0;
       padding: 0 ~'calc(50% - @{menu-icon-size-lg} / 2)';
       text-overflow: clip;
 
@@ -599,8 +597,7 @@
     }
 
     .@{menu-prefix-cls}-item-group-title {
-      padding-right: 4px;
-      padding-left: 4px;
+      padding-inline: 4px;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -648,7 +645,7 @@
     }
 
     & .@{menu-prefix-cls}-item-group-title {
-      padding-left: 32px;
+      padding-inline-start: 32px;
     }
   }
 
@@ -698,165 +695,3 @@
 
 @import './light';
 @import './dark';
-
-
-.@{menu-prefix-cls} {
-  &&:dir(rtl) {
-    direction: rtl;
-    text-align: right;
-  }
-
-  &-item-group-title {
-    &:dir(rtl) {
-      text-align: right;
-    }
-  }
-
-  &-inline,
-  &-vertical {
-    &:dir(rtl) {
-      border-right: none;
-      border-left: @border-width-base @border-style-base @border-color-split;
-    }
-  }
-
-  &-dark&-inline,
-  &-dark&-vertical {
-    &:dir(rtl) {
-      border-left: none;
-    }
-  }
-
-  &-vertical&-sub,
-  &-vertical-left&-sub,
-  &-vertical-right&-sub {
-    > .@{menu-prefix-cls}-item,
-    > .@{menu-prefix-cls}-submenu {
-      &:dir(rtl) {
-        transform-origin: top right;
-      }
-    }
-  }
-
-  &-item,
-  &-submenu-title {
-    .@{menu-prefix-cls}-item-icon,
-    .@{iconfont-css-prefix} {
-      &:dir(rtl) {
-        margin-right: auto;
-        margin-left: @menu-icon-margin-right;
-      }
-    }
-
-    &.@{menu-prefix-cls}-item-only-child {
-      > .@{menu-prefix-cls}-item-icon,
-      > .@{iconfont-css-prefix} {
-        &:dir(rtl) {
-          margin-left: 0;
-        }
-      }
-    }
-  }
-
-  &-submenu {
-    &:dir(rtl).@{menu-prefix-cls}-submenu-popup {
-      transform-origin: 100% 0;
-    }
-
-    &-vertical,
-    &-vertical-left,
-    &-vertical-right,
-    &-inline {
-      > .@{menu-prefix-cls}-submenu-title .@{menu-prefix-cls}-submenu-arrow {
-        &:dir(rtl) {
-          right: auto;
-          left: 16px;
-        }
-      }
-    }
-
-    &-vertical,
-    &-vertical-left,
-    &-vertical-right {
-      > .@{menu-prefix-cls}-submenu-title .@{menu-prefix-cls}-submenu-arrow {
-        &::before {
-          &:dir(rtl) {
-            transform: rotate(-45deg) translateY(-2px);
-          }
-        }
-
-        &::after {
-          &:dir(rtl) {
-            transform: rotate(45deg) translateY(2px);
-          }
-        }
-      }
-    }
-  }
-
-  &-vertical,
-  &-vertical-left,
-  &-vertical-right,
-  &-inline {
-    .@{menu-prefix-cls}-item {
-      &::after {
-        &:dir(rtl) {
-          right: auto;
-          left: 0;
-        }
-      }
-    }
-
-    .@{menu-prefix-cls}-item,
-    .@{menu-prefix-cls}-submenu-title {
-      &:dir(rtl) {
-        text-align: right;
-      }
-    }
-  }
-
-  &-inline {
-    .@{menu-prefix-cls}-submenu-title {
-      &:dir(rtl) {
-        padding-right: 0;
-        padding-left: 34px;
-      }
-    }
-  }
-
-  &-vertical {
-    .@{menu-prefix-cls}-submenu-title {
-      &:dir(rtl) {
-        padding-right: 16px;
-        padding-left: 34px;
-      }
-    }
-  }
-
-  &-inline-collapsed&-vertical {
-    .@{menu-prefix-cls}-submenu-title {
-      &:dir(rtl) {
-        padding: 0 ~'calc(50% - @{menu-icon-size-lg} / 2)';
-      }
-    }
-  }
-
-  &-item-group-list {
-    .@{menu-prefix-cls}-item,
-    .@{menu-prefix-cls}-submenu-title {
-      &:dir(rtl) {
-        padding: 0 28px 0 16px;
-      }
-    }
-  }
-
-  &-sub&-inline {
-    border: 0;
-    & .@{menu-prefix-cls}-item-group-title {
-      &:dir(rtl) {
-        padding-right: 32px;
-        padding-left: 0;
-      }
-    }
-  }
-}

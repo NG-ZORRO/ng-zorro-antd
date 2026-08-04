@@ -11,10 +11,18 @@
   .reset-component();
   .input();
 
+  &-rtl, &-textarea-rtl {
+    direction: rtl;
+  }
+
   //== Style for input-group: input with label, with button or dropdown...
   &-group {
     .reset-component();
     .input-group(~'@{input-prefix-cls}');
+
+    &-rtl {
+      direction: rtl;
+    }
 
     &-wrapper {
       display: inline-block;
@@ -23,6 +31,10 @@
       vertical-align: top; // https://github.com/ant-design/ant-design/issues/6403
 
       .input-group-wrapper-compact(~'@{input-prefix-cls}');
+
+      &-rtl {
+        direction: rtl;
+      }
     }
   }
 
@@ -104,4 +116,3 @@
 }
 
 @import './search-input';
-@import './IE11';

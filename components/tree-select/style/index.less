@@ -9,6 +9,10 @@
 .antCheckboxFn(@checkbox-prefix-cls: ~'@{select-tree-prefix-cls}-checkbox');
 
 .@{tree-select-prefix-cls} {
+  &-rtl {
+    direction: rtl;
+  }
+
   // ======================= Dropdown =======================
   &-dropdown {
     padding: @padding-xs (@padding-xs / 2);
@@ -38,7 +42,7 @@
     &_close {
       .@{select-tree-prefix-cls}-switcher-icon {
         svg {
-          &:dir(rtl) {
+          .@{tree-select-prefix-cls}-dropdown-rtl & {
             transform: rotate(90deg);
           }
         }
@@ -46,7 +50,7 @@
     }
 
     &-loading-icon {
-      &:dir(rtl) {
+      .@{tree-select-prefix-cls}-dropdown-rtl &  {
         transform: scaleY(-1);
       }
     }

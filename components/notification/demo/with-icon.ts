@@ -14,7 +14,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
   `,
   styles: `
     button {
-      margin-right: 1em;
+      margin-inline-end: 1em;
     }
   `
 })

@@ -63,16 +63,10 @@ import { NzInputModule } from 'ng-zorro-antd/input';
       overflow: visible;
     }
 
-    button {
-      margin-left: 8px;
-    }
-
-    .collapse {
-      margin-left: 8px;
-      font-size: 12px;
-    }
-
     .search-area {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       text-align: right;
     }
   `

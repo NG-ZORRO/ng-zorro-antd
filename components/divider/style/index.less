@@ -16,7 +16,7 @@
     margin: 0 @divider-vertical-gutter;
     vertical-align: middle;
     border-top: 0;
-    border-left: @border-width-base solid @divider-color;
+    border-inline-start: @border-width-base solid @divider-color;
   }
 
   &-horizontal {
@@ -111,7 +111,7 @@
     }
 
     .@{divider-prefix-cls}-inner-text {
-      padding-left: 0;
+      padding-inline-start: 0;
     }
   }
 
@@ -125,31 +125,7 @@
     }
 
     .@{divider-prefix-cls}-inner-text {
-      padding-right: 0;
-    }
-  }
-}
-
-
-
-.@{divider-prefix-cls} {
-  &-horizontal&-with-text-left:dir(rtl) {
-    &::before {
-      width: 100% - @divider-orientation-margin;
-    }
-
-    &::after {
-      width: @divider-orientation-margin;
-    }
-  }
-
-  &-horizontal&-with-text-right:dir(rtl) {
-    &::before {
-      width: @divider-orientation-margin;
-    }
-
-    &::after {
-      width: 100% - @divider-orientation-margin;
+      padding-inline-end: 0;
     }
   }
 }

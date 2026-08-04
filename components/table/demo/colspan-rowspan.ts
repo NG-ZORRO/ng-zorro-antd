@@ -16,7 +16,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
         </tr>
       </thead>
       <tbody>
-        @for (data of colSpanTable.data; track data) {
+        @for (data of colSpanTable.data; track data.key) {
           <tr>
             <td>{{ data.name }}</td>
             @switch ($index) {

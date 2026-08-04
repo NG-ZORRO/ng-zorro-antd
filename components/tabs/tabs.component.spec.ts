@@ -269,7 +269,7 @@ describe('tabs', () => {
       expect(tabsButtons.length).toBe(3);
 
       tabsButtons.forEach(tab => {
-        expect(tab.style.marginRight).toBe('10px');
+        expect(tab.style.marginInlineEnd).toBe('10px');
         expect(tab.style.marginBottom).toBe('');
       });
 
@@ -277,7 +277,7 @@ describe('tabs', () => {
       fixture.detectChanges();
 
       tabsButtons.forEach(tab => {
-        expect(tab.style.marginRight).toBe('');
+        expect(tab.style.marginInlineEnd).toBe('');
         expect(tab.style.marginBottom).toBe('10px');
       });
     });

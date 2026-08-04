@@ -396,7 +396,7 @@
     &-checkall {
       width: 100%;
       margin-bottom: 4px;
-      margin-left: 4px;
+      margin-inline-start: 4px;
     }
 
     &-submenu > ul {
@@ -409,7 +409,7 @@
     &,
     &-submenu {
       .@{ant-prefix}-checkbox-wrapper + span {
-        padding-left: 8px;
+        padding-inline-start: 8px;
       }
     }
 
@@ -435,12 +435,11 @@
 
   table tr th&-selection-column,
   table tr td&-selection-column {
-    padding-right: @padding-xs;
-    padding-left: @padding-xs;
+    padding-inline: @padding-xs;
     text-align: center;
 
     .@{ant-prefix}-radio-wrapper {
-      margin-right: 0;
+      margin-inline-end: 0;
     }
   }
 
@@ -761,27 +760,3 @@
 }
 
 @import './radius';
-
-.@{table-prefix-cls} {
-  &-pagination-left:dir(rtl) {
-    justify-content: flex-end;
-  }
-
-  &-pagination-right:dir(rtl) {
-    justify-content: flex-start;
-  }
-
-  &-row-expand-icon:dir(rtl) {
-    &::after {
-      transform: rotate(-90deg);
-    }
-
-    &-collapsed::before {
-      transform: rotate(180deg);
-    }
-
-    &-collapsed::after {
-      transform: rotate(0deg);
-    }
-  }
-}

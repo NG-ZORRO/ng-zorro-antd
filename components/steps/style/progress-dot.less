@@ -8,31 +8,31 @@
     &-tail {
       top: @steps-dot-top;
       width: 100%;
-      margin: 0 0 0 (@steps-description-max-width / 2);
+      margin-inline-start: (@steps-description-max-width / 2);
       padding: 0;
 
       &::after {
         width: ~'calc(100% - 20px)';
         height: 3px;
-        margin-left: 12px;
+        margin-inline-start: 12px;
       }
     }
     &:first-child .@{steps-prefix-cls}-icon-dot {
-      left: 2px;
+      inset-inline-start: 2px;
     }
 
     &-icon {
       width: @steps-dot-size;
       height: @steps-dot-size;
-      margin-left: 67px;
-      padding-right: 0;
+      margin-inline-start: 67px;
+      padding-inline-end: 0;
       line-height: @steps-dot-size;
       background: transparent;
       border: 0;
 
       .@{steps-prefix-cls}-icon-dot {
         position: relative;
-        float: left;
+        float: inline-start;
         width: 100%;
         height: 100%;
         border-radius: 100px;
@@ -42,7 +42,7 @@
         &::after {
           position: absolute;
           top: -12px;
-          left: -26px;
+          inset-inline-start: -26px;
           width: 60px;
           height: 32px;
           background: fade(@black, 0.1%);
@@ -64,7 +64,7 @@
     }
     &-process .@{steps-prefix-cls}-icon {
       &:first-child .@{steps-prefix-cls}-icon-dot {
-        left: 0;
+        inset-inline-start: 0;
       }
     }
   }
@@ -73,14 +73,14 @@
 .@{steps-prefix-cls}-vertical.@{steps-prefix-cls}-dot {
   .@{steps-prefix-cls}-item-icon {
     margin-top: 13px;
-    margin-left: 0;
+    margin-inline-start: 0;
     background: none;
   }
 
   // https://github.com/ant-design/ant-design/issues/18354
   .@{steps-prefix-cls}-item > .@{steps-prefix-cls}-item-container > .@{steps-prefix-cls}-item-tail {
     top: 6.5px;
-    left: -9px;
+    inset-inline-start: -9px;
     margin: 0;
     padding: 22px 0 4px;
   }
@@ -98,7 +98,7 @@
   }
 
   .@{steps-prefix-cls}-item:first-child .@{steps-prefix-cls}-icon-dot {
-    left: 0;
+    inset-inline-start: 0;
   }
   .@{steps-prefix-cls}-item-content {
     width: inherit;
@@ -108,6 +108,6 @@
     .@{steps-prefix-cls}-item-icon
     .@{steps-prefix-cls}-icon-dot {
     top: -1px;
-    left: -1px;
+    inset-inline-start: -1px;
   }
 }

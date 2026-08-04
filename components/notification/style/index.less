@@ -14,7 +14,11 @@
 
   position: fixed;
   z-index: @zindex-notification;
-  margin-right: @notification-margin-edge;
+  margin-inline-end: @notification-margin-edge;
+
+  &-rtl {
+    direction: rtl;
+  }
 
   &-close-icon {
     font-size: @font-size-base;
@@ -29,8 +33,8 @@
     position: relative;
     width: @notification-width;
     max-width: ~'calc(100vw - @{notification-margin-edge} * 2)';
-    margin-bottom: @notification-margin-bottom;
-    margin-left: auto;
+    margin-block-end: @notification-margin-bottom;
+    margin-inline-start: auto;
     padding: @notification-padding;
     overflow: hidden;
     line-height: @line-height-base;
@@ -41,8 +45,7 @@
 
     .@{notification-prefix-cls}-top &,
     .@{notification-prefix-cls}-bottom & {
-      margin-right: auto;
-      margin-left: auto;
+      margin-inline: auto;
     }
 
     .@{notification-prefix-cls}-topLeft &,
@@ -52,7 +55,7 @@
     }
 
     &-message {
-      margin-bottom: 8px;
+      margin-block-end: 8px;
       color: @heading-color;
       font-size: @font-size-lg;
       line-height: 24px;
@@ -81,7 +84,7 @@
     }
 
     &-with-icon &-message {
-      margin-bottom: 4px;
+      margin-block-end: 4px;
       margin-inline-start: 48px;
       font-size: @font-size-lg;
     }

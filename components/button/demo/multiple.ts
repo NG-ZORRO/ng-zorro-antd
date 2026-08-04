@@ -30,7 +30,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   `,
   styles: `
     [nz-button] {
-      margin-right: 8px;
+      margin-inline-end: 8px;
       margin-bottom: 12px;
     }
   `

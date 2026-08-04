@@ -4,7 +4,6 @@
 @import '../../button/style/mixin';
 @import '../../grid/style/mixin';
 @import './animation';
-@import './components';
 @import './inline';
 @import './horizontal';
 @import './vertical';
@@ -18,6 +17,10 @@
 .@{form-prefix-cls} {
   .reset-component();
   .reset-form();
+
+  &-rtl {
+    direction: rtl;
+  }
 
   .@{form-prefix-cls}-text {
     display: inline-block;
@@ -44,7 +47,6 @@
   &-large {
     .formSize(@input-height-lg);
   }
-
 }
 
 .explainAndExtraDistance(@num) when (@num >= 0) {
@@ -334,161 +336,6 @@
   100% {
     transform: scale(1);
     opacity: 1;
-  }
-}
-
-
-
-
-// ================================================================
-// =                             Item                             =
-// ================================================================
-.@{form-item-prefix-cls} {
-  // ==============================================================
-  // =                            Input                           =
-  // ==============================================================
-  &-control {
-    &:dir(rtl):first-child {
-      width: 100%;
-    }
-  }
-
-  // status
-  &-has-feedback {
-    .@{ant-prefix}-input {
-      &:dir(rtl) {
-        padding-right: @input-padding-horizontal-base;
-        padding-left: 24px;
-      }
-    }
-
-    .@{ant-prefix}-input-affix-wrapper {
-      .@{ant-prefix}-input-suffix {
-        &:dir(rtl) {
-          padding-right: @input-padding-horizontal-base;
-          padding-left: 18px;
-        }
-      }
-      .@{ant-prefix}-input {
-        &:dir(rtl) {
-          padding: 0;
-        }
-      }
-    }
-
-    .@{ant-prefix}-input-number-affix-wrapper {
-      .@{ant-prefix}-input-number {
-        &:dir(rtl) {
-          padding: 0;
-        }
-      }
-    }
-
-    .@{ant-prefix}-input-search:not(.@{ant-prefix}-input-search-enter-button) {
-      .@{ant-prefix}-input-suffix {
-        &:dir(rtl) {
-          right: auto;
-          left: 28px;
-        }
-      }
-    }
-
-    .@{ant-prefix}-input-number {
-      &:dir(rtl) {
-        padding-left: 18px;
-      }
-    }
-
-    > .@{ant-prefix}-select .@{ant-prefix}-select-arrow,
-    > .@{ant-prefix}-select .@{ant-prefix}-select-clear,
-    :not(.@{ant-prefix}-input-group-addon) > .@{ant-prefix}-select .@{ant-prefix}-select-arrow,
-    :not(.@{ant-prefix}-input-group-addon) > .@{ant-prefix}-select .@{ant-prefix}-select-clear,
-    :not(.@{ant-prefix}-input-number-group-addon)
-      > .@{ant-prefix}-select
-      .@{ant-prefix}-select-arrow,
-    :not(.@{ant-prefix}-input-number-group-addon)
-      > .@{ant-prefix}-select
-      .@{ant-prefix}-select-clear {
-      &:dir(rtl) {
-        right: auto;
-        left: 32px;
-      }
-    }
-
-    > .@{ant-prefix}-select .@{ant-prefix}-select-selection-selected-value,
-    :not(.@{ant-prefix}-input-group-addon)
-      > .@{ant-prefix}-select
-      .@{ant-prefix}-select-selection-selected-value,
-    :not(.@{ant-prefix}-input-number-group-addon)
-      > .@{ant-prefix}-select
-      .@{ant-prefix}-select-selection-selected-value {
-      &:dir(rtl) {
-        padding-right: 0;
-        padding-left: 42px;
-      }
-    }
-
-    .@{ant-prefix}-cascader-picker {
-      &-arrow {
-        &:dir(rtl) {
-          margin-right: 0;
-          margin-left: 19px;
-        }
-      }
-
-      &-clear {
-        &:dir(rtl) {
-          right: auto;
-          left: 32px;
-        }
-      }
-    }
-
-    .@{ant-prefix}-picker {
-      &:dir(rtl) {
-        padding-right: @input-padding-horizontal-base;
-        padding-left: @input-padding-horizontal-base + @font-size-base * 1.3;
-      }
-
-      &-large {
-        &:dir(rtl) {
-          padding-right: @input-padding-horizontal-lg;
-          padding-left: @input-padding-horizontal-lg + @font-size-base * 1.3;
-        }
-      }
-
-      &-small {
-        &:dir(rtl) {
-          padding-right: @input-padding-horizontal-sm;
-          padding-left: @input-padding-horizontal-sm + @font-size-base * 1.3;
-        }
-      }
-    }
-
-    &.@{form-item-prefix-cls} {
-      &-has-success,
-      &-has-warning,
-      &-has-error,
-      &-is-validating {
-        // ====================== Icon ======================
-        .@{form-item-prefix-cls}-children-icon {
-          &:dir(rtl) {
-            right: auto;
-            left: 0;
-          }
-        }
-      }
-    }
-  }
-}
-
-// inline
-.@{form-prefix-cls}-inline {
-  .@{form-prefix-cls}-item {
-    &:dir(rtl) {
-      margin-right: 0;
-      margin-left: 16px;
-    }
   }
 }
 

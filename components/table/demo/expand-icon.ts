@@ -17,7 +17,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
         </tr>
       </thead>
       <tbody>
-        @for (data of nzTable.data; track data) {
+        @for (data of nzTable.data; track data.id) {
           <tr>
             <td [nzExpand]="expandSet.has(data.id)" [nzExpandIcon]="expandIcon"></td>
             <td>{{ data.name }}</td>

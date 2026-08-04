@@ -37,7 +37,7 @@ interface RandomUser {
         </tr>
       </thead>
       <tbody>
-        @for (data of listOfRandomUser(); track data) {
+        @for (data of listOfRandomUser(); track data.email) {
           <tr>
             <td>{{ data.name.first }} {{ data.name.last }}</td>
             <td>{{ data.gender }}</td>

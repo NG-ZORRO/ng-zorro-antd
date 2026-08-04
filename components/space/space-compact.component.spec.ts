@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Directionality } from '@angular/cdk/bidi';
 import { Component, signal, type WritableSignal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -11,6 +12,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
+import { provideMockDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -212,6 +214,32 @@ describe('space compact direction', () => {
     expect(firstBtn.classList).toContain('ant-btn-compact-vertical-first-item');
     expect(lastBtn.classList).toContain('ant-btn-compact-vertical-item');
     expect(lastBtn.classList).toContain('ant-btn-compact-vertical-last-item');
+  });
+});
+
+describe('space compact RTL', () => {
+  let fixture: ComponentFixture<SpaceCompactDirectionTestComponent>;
+  let directionality: Directionality;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideNzNoAnimation(), provideMockDirectionality()]
+    });
+    directionality = TestBed.inject(Directionality);
+    fixture = TestBed.createComponent(SpaceCompactDirectionTestComponent);
+    fixture.detectChanges();
+  });
+
+  it('should add the RTL compact item class without replacing the base class', () => {
+    directionality.valueSignal.set('rtl');
+    fixture.detectChanges();
+
+    const buttons = fixture.nativeElement.querySelectorAll('button[nz-button]') as NodeListOf<HTMLButtonElement>;
+
+    buttons.forEach(button => {
+      expect(button.classList).toContain('ant-btn-compact-item');
+      expect(button.classList).toContain('ant-btn-compact-item-rtl');
+    });
   });
 });
 

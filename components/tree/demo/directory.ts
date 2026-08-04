@@ -50,13 +50,13 @@ import { NzFormatEmitEvent, NzTreeModule, NzTreeNode } from 'ng-zorro-antd/tree'
     .custom-node {
       cursor: pointer;
       line-height: 24px;
-      margin-left: 4px;
       display: inline-block;
     }
 
+    .custom-node,
     .file-name,
     .folder-name {
-      margin-left: 4px;
+      margin-inline-start: 4px;
     }
 
     .file-desc,
@@ -66,7 +66,7 @@ import { NzFormatEmitEvent, NzTreeModule, NzTreeNode } from 'ng-zorro-antd/tree'
       background: #87ceff;
       color: #ffffff;
       position: relative;
-      left: 12px;
+      inset-inline-start: 12px;
     }
   `
 })

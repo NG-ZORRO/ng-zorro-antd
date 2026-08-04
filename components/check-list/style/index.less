@@ -5,7 +5,7 @@
 
 .@{check-list-prefix-cls} {
   position: fixed;
-  right: 32px;
+  inset-inline-end: 32px;
   bottom: 32px;
   z-index: 999;
   font-size: @font-size-base;
@@ -34,7 +34,7 @@
   .@{check-list-prefix-cls}-trigger-dot {
     position: absolute;
     top: -12px;
-    right: -12px;
+    inset-inline-end: -12px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -114,8 +114,7 @@
     align-items: center;
     justify-content: space-between;
     height: 52px;
-    padding-right: @padding-sm;
-    padding-left: @padding-sm;
+    padding-inline: @padding-sm;
     border-radius: 6px;
     cursor: pointer;
 

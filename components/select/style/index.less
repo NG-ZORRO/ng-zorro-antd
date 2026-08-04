@@ -86,6 +86,10 @@
   display: inline-flex;
   cursor: pointer;
 
+  &-rtl {
+    direction: rtl;
+  }
+
   &:not(&-customize-input) &-selector {
     .select-selector();
     .select-search-input-without-border();
@@ -234,6 +238,10 @@
     border-radius: @border-radius-base;
     outline: none;
     box-shadow: @box-shadow-base;
+
+    &-rtl {
+      direction: rtl;
+    }
 
     &.@{ant-prefix}-slide-up-enter.@{ant-prefix}-slide-up-enter-active&-placement-bottomLeft,
     &.@{ant-prefix}-slide-up-appear.@{ant-prefix}-slide-up-appear-active&-placement-bottomLeft {

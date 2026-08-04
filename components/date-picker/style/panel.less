@@ -19,6 +19,20 @@
     }
   }
 
+  &-panel-rtl {
+    direction: rtl;
+
+    .@{picker-prefix-cls}-prev-icon,
+    .@{picker-prefix-cls}-super-prev-icon {
+      transform: rotate(135deg);
+    }
+
+    .@{picker-prefix-cls}-next-icon,
+    .@{picker-prefix-cls}-super-next-icon {
+      transform: rotate(-45deg);
+    }
+  }
+
   // ========================================================
   // =                     Shared Panel                     =
   // ========================================================

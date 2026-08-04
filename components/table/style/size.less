@@ -1,7 +1,3 @@
-@import (reference) '../../style/themes/index';
-
-@table-prefix-cls: ~'@{ant-prefix}-table';
-
 .table-size(@size, @padding-vertical, @padding-horizontal, @font-size) {
   .@{table-prefix-cls}.@{table-prefix-cls}-@{size} {
     font-size: @font-size;
@@ -16,7 +12,7 @@
     }
 
     .@{table-prefix-cls}-filter-trigger {
-      margin-right: -(@padding-horizontal / 2);
+      margin-inline-end: -(@padding-horizontal / 2);
     }
 
     .@{table-prefix-cls}-expanded-row-fixed {

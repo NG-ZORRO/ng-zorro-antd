@@ -15,6 +15,10 @@
   z-index: @zindex-dropdown;
   display: block;
 
+  &-rtl {
+    direction: rtl;
+  }
+
   &::before {
     position: absolute;
     inset-block: calc(@popover-arrow-width / 2 - @popover-distance);
