@@ -16,6 +16,7 @@ import {
   ViewContainerRef,
   ViewEncapsulation,
   inject,
+  signal,
   type AnimationCallbackEvent
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
@@ -44,16 +45,16 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
         class="ant-dropdown"
         [class.ant-dropdown-rtl]="dir() === 'rtl'"
         [class.ant-dropdown-show-arrow]="nzArrow"
-        [class.ant-dropdown-placement-bottomLeft]="placement === 'bottomLeft'"
-        [class.ant-dropdown-placement-bottomRight]="placement === 'bottomRight'"
-        [class.ant-dropdown-placement-bottom]="placement === 'bottom'"
-        [class.ant-dropdown-placement-topLeft]="placement === 'topLeft'"
-        [class.ant-dropdown-placement-topRight]="placement === 'topRight'"
-        [class.ant-dropdown-placement-top]="placement === 'top'"
+        [class.ant-dropdown-placement-bottomLeft]="placement() === 'bottomLeft'"
+        [class.ant-dropdown-placement-bottomRight]="placement() === 'bottomRight'"
+        [class.ant-dropdown-placement-bottom]="placement() === 'bottomCenter'"
+        [class.ant-dropdown-placement-topLeft]="placement() === 'topLeft'"
+        [class.ant-dropdown-placement-topRight]="placement() === 'topRight'"
+        [class.ant-dropdown-placement-top]="placement() === 'topCenter'"
         [class]="nzOverlayClassName"
         [style]="nzOverlayStyle"
-        [animate.enter]="dropdownAnimationEnter()"
-        [animate.leave]="dropdownAnimationLeave()"
+        [animate.enter]="slideAnimationEnter()"
+        [animate.leave]="slideAnimationLeave()"
         (animate.leave)="onAnimationEvent($event)"
         [nzNoAnimation]="!!noAnimation?.nzNoAnimation?.()"
         (mouseenter)="setMouseState(true)"
@@ -86,10 +87,14 @@ export class NzDropdownMenuComponent implements AfterContentInit {
   nzOverlayClassName: string = '';
   nzOverlayStyle: IndexableObject = {};
   nzArrow: boolean = false;
-  placement: NzPlacementType | 'bottom' | 'top' = 'bottomLeft';
 
-  protected readonly dropdownAnimationEnter = slideAnimationEnter();
-  protected readonly dropdownAnimationLeave = slideAnimationLeave();
+  readonly placement = signal<NzPlacementType>('bottomLeft');
+  protected readonly slideAnimationEnter = slideAnimationEnter(() =>
+    this.placement().startsWith('top') ? 'down' : 'up'
+  );
+  protected readonly slideAnimationLeave = slideAnimationLeave(() =>
+    this.placement().startsWith('top') ? 'down' : 'up'
+  );
 
   onAnimationEvent(event: AnimationCallbackEvent): void {
     const element = event.target as HTMLElement;
