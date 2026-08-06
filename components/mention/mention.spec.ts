@@ -449,6 +449,16 @@ describe('mention', () => {
       expect(mention.isOpen).toBe(true);
     });
 
+    it('should open the dropdown when the prefix follows a non-space character', () => {
+      dispatchFakeEvent(textarea, 'click');
+      fixture.detectChanges();
+      typeInElement('hello@', textarea);
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.mention.isOpen).toBe(true);
+      expect(spyNzOnSearch).toHaveBeenCalledTimes(1);
+    });
+
     it('should emit nzOnSearchChange when type in @ prefix', () => {
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
