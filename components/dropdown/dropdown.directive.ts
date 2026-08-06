@@ -49,17 +49,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'dropdown';
 
 const listOfPositions: POSITION_TYPE[] = ['bottomLeft', 'bottomRight', 'topRight', 'topLeft'];
 
-const normalizePlacementForClass = (p: NzPlacementType): NzDropdownMenuComponent['placement'] => {
-  // Map center placements to generic top/bottom classes for styling
-  if (p === 'topCenter') {
-    return 'top';
-  }
-  if (p === 'bottomCenter') {
-    return 'bottom';
-  }
-  return p as NzDropdownMenuComponent['placement'];
-};
-
 @Directive({
   selector: '[nz-dropdown]',
   exportAs: 'nzDropdown',
@@ -174,7 +163,7 @@ export class NzDropdownDirective implements AfterViewInit, OnChanges {
               )
               .subscribe(placement => {
                 if (placement) {
-                  this.setDropdownMenuValue('placement', normalizePlacementForClass(placement));
+                  this.nzDropdownMenu?.placement.set(this.nzPlacement);
                 }
               });
 
@@ -218,7 +207,7 @@ export class NzDropdownDirective implements AfterViewInit, OnChanges {
             }
             // Initialize arrow and placement on open
             this.setDropdownMenuValue('nzArrow', this.nzArrow);
-            this.setDropdownMenuValue('placement', normalizePlacementForClass(this.nzPlacement));
+            this.nzDropdownMenu?.placement.set(this.nzPlacement);
             this.overlayRef.attach(this.portal);
           } else {
             /** detach overlayRef if needed **/
@@ -263,7 +252,7 @@ export class NzDropdownDirective implements AfterViewInit, OnChanges {
       this.setDropdownMenuValue('nzArrow', this.nzArrow);
     }
     if (nzPlacement) {
-      this.setDropdownMenuValue('placement', normalizePlacementForClass(this.nzPlacement));
+      this.nzDropdownMenu?.placement.set(this.nzPlacement);
     }
   }
 }

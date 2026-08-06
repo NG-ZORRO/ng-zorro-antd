@@ -42,8 +42,7 @@ describe('dropdown', () => {
   beforeEach(() => vi.useFakeTimers());
   afterEach(() => vi.useRealTimers());
 
-  // TODO: why this works well with ChromeHeadless but fails with ChromeHeadlessCI?
-  describe.skip('placement and arrow', () => {
+  describe('placement and arrow', () => {
     let fixture: ComponentFixture<NzTestDropdownArrowComponent>;
 
     beforeEach(() => {
