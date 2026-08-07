@@ -7,11 +7,11 @@
   .reset-component();
 
   position: relative;
-  padding-left: @anchor-border-width;
+  padding-inline-start: @anchor-border-width;
 
   &-wrapper {
-    margin-left: -4px;
-    padding-left: 4px;
+    margin-inline-start: -4px;
+    padding-inline-start: 4px;
     overflow: auto;
     background-color: @anchor-bg;
   }
@@ -19,7 +19,7 @@
   &-ink {
     position: absolute;
     top: 0;
-    left: 0;
+    inset-inline-start: 0;
     height: 100%;
 
     &::before {
@@ -34,7 +34,7 @@
 
     &-ball {
       position: absolute;
-      left: 50%;
+      inset-inline-start: 50%;
       display: none;
       width: 8px;
       height: 8px;
@@ -47,6 +47,10 @@
       &.@{ant-prefix}-anchor-ink-ball-visible {
         display: inline-block;
       }
+
+      &:dir(rtl) {
+        transform: translateX(50%);
+      }
     }
   }
 
@@ -55,7 +59,8 @@
   }
 
   &-link {
-    padding: @anchor-link-padding;
+    padding-block: @anchor-link-padding-block;
+    padding-inline-start: @anchor-link-padding-inline-start;
 
     &-title {
       position: relative;
@@ -82,5 +87,3 @@
     padding-bottom: 2px;
   }
 }
-
-@import './rtl';

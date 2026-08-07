@@ -30,14 +30,14 @@
     border-color: @hoverBorderColor;
     box-shadow: @input-outline-offset @outline-blur-size @outline-width @outlineColor;
   }
-  border-right-width: @border-width-base;
+  border-inline-end-width: @border-width-base;
   outline: 0;
 }
 
 // == when hover
 .hover(@color: @input-hover-border-color) {
   border-color: @color;
-  border-right-width: @border-width-base;
+  border-inline-end-width: @border-width-base;
 }
 
 .disabled() {
@@ -167,15 +167,14 @@
   // Undo padding and float of grid classes
   &[class*='col-'] {
     float: none;
-    padding-right: 0;
-    padding-left: 0;
+    padding-inline: 0;
   }
 
   > [class*='col-'] {
-    padding-right: 8px;
+    padding-inline-end: 8px;
 
     &:last-child {
-      padding-right: 0;
+      padding-inline-end: 0;
     }
   }
 
@@ -201,19 +200,19 @@
   }
 
   .@{inputClass} {
-    float: left;
+    float: inline-start;
     width: 100%;
     margin-bottom: 0;
     text-align: inherit;
 
     &:focus {
       z-index: 1; // Fix https://gw.alipayobjects.com/zos/rmsportal/DHNpoqfMXSfrSnlZvhsJ.png
-      border-right-width: 1px;
+      border-inline-end-width: 1px;
     }
 
     &:hover {
       z-index: 1;
-      border-right-width: 1px;
+      border-inline-end-width: 1px;
       .@{ant-prefix}-input-search-with-button & {
         z-index: 0;
       }
@@ -256,7 +255,7 @@
       margin: -9px (-@control-padding-horizontal);
       background-color: transparent;
       .@{ant-prefix}-cascader-input {
-        text-align: left;
+        text-align: start;
         border: 0;
         box-shadow: none;
       }
@@ -266,45 +265,45 @@
   // Reset rounded corners
   > .@{inputClass}:first-child,
   &-addon:first-child {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
 
     // Reset Select's style in addon
     .@{ant-prefix}-select .@{ant-prefix}-select-selector {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
     }
   }
 
   > .@{inputClass}-affix-wrapper {
     &:not(:first-child) .@{inputClass} {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
     }
 
     &:not(:last-child) .@{inputClass} {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
     }
   }
 
   &-addon:first-child {
-    border-right: 0;
+    border-inline-end: 0;
   }
 
   &-addon:last-child {
-    border-left: 0;
+    border-inline-start: 0;
   }
 
   > .@{inputClass}:last-child,
   &-addon:last-child {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
 
     // Reset Select's style in addon
     .@{ant-prefix}-select .@{ant-prefix}-select-selector {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
     }
   }
 
@@ -330,18 +329,18 @@
 
   .@{inputClass}-affix-wrapper {
     &:not(:last-child) {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
       .@{ant-prefix}-input-search & {
-        border-top-left-radius: @control-border-radius;
-        border-bottom-left-radius: @control-border-radius;
+        border-start-start-radius: @control-border-radius;
+        border-end-start-radius: @control-border-radius;
       }
     }
 
     &:not(:first-child),
     .@{ant-prefix}-input-search &:not(:first-child) {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
     }
   }
 
@@ -353,7 +352,7 @@
     &-wrap,
     > .@{inputClass} {
       &:not(:first-child):not(:last-child) {
-        border-right-width: @border-width-base;
+        border-inline-end-width: @border-width-base;
 
         &:hover {
           z-index: 1;
@@ -379,8 +378,8 @@
     }
 
     & > *:not(:last-child) {
-      margin-right: -@border-width-base;
-      border-right-width: @border-width-base;
+      margin-inline-end: -@border-width-base;
+      border-inline-end-width: @border-width-base;
     }
 
     // Undo float for .ant-input-group .ant-input
@@ -393,7 +392,7 @@
     & > .@{ant-prefix}-select-auto-complete .@{ant-prefix}-input,
     & > .@{ant-prefix}-cascader-picker .@{ant-prefix}-input,
     & > .@{ant-prefix}-input-group-wrapper .@{ant-prefix}-input {
-      border-right-width: @border-width-base;
+      border-inline-end-width: @border-width-base;
       border-radius: 0;
 
       &:hover {
@@ -418,17 +417,17 @@
     & > .@{ant-prefix}-select:first-child > .@{ant-prefix}-select-selector,
     & > .@{ant-prefix}-select-auto-complete:first-child .@{ant-prefix}-input,
     & > .@{ant-prefix}-cascader-picker:first-child .@{ant-prefix}-input {
-      border-top-left-radius: @control-border-radius;
-      border-bottom-left-radius: @control-border-radius;
+      border-start-start-radius: @control-border-radius;
+      border-end-start-radius: @control-border-radius;
     }
 
     & > *:last-child,
     & > .@{ant-prefix}-select:last-child > .@{ant-prefix}-select-selector,
     & > .@{ant-prefix}-cascader-picker:last-child .@{ant-prefix}-input,
     & > .@{ant-prefix}-cascader-picker-focused:last-child .@{ant-prefix}-input {
-      border-right-width: @border-width-base;
-      border-top-right-radius: @control-border-radius;
-      border-bottom-right-radius: @control-border-radius;
+      border-inline-end-width: @border-width-base;
+      border-start-end-radius: @control-border-radius;
+      border-end-end-radius: @control-border-radius;
     }
 
     // https://github.com/ant-design/ant-design/issues/12493

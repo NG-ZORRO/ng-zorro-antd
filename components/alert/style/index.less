@@ -13,13 +13,17 @@
   overflow-wrap: break-word;
   border-radius: @border-radius-base;
 
+  &&-rtl {
+    direction: rtl;
+  }
+
   &-content {
     flex: 1;
     min-width: 0;
   }
 
   &-icon {
-    margin-right: @margin-xs;
+    margin-inline-end: @margin-xs;
   }
 
   &-description {
@@ -67,11 +71,11 @@
   }
 
   &-action {
-    margin-left: @margin-xs;
+    margin-inline-start: @margin-xs;
   }
 
   &-close-icon {
-    margin-left: @margin-xs;
+    margin-inline-start: @margin-xs;
     padding: 0;
     overflow: hidden;
     font-size: @font-size-sm;
@@ -110,7 +114,7 @@
   }
 
   &-with-description &-icon {
-    margin-right: @alert-with-description-padding-vertical;
+    margin-inline-end: @alert-with-description-padding-vertical;
     font-size: @alert-with-description-icon-size;
   }
 
@@ -151,5 +155,3 @@
     border-radius: 0;
   }
 }
-
-@import './rtl';

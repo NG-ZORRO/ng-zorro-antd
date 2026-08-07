@@ -28,7 +28,7 @@ description: Used to represent users or things, supporting the display of images
 
 ```html
 <nz-avatar-group>
-  <nz-avatar nzIcon="user"></nz-avatar>
+  <nz-avatar nzIcon="user" />
   <!--  ...  -->
 </nz-avatar-group>
 ```

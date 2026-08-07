@@ -30,7 +30,7 @@
     cursor: pointer;
 
     &:not(:last-child) {
-      margin-right: 8px;
+      margin-inline-end: 8px;
     }
 
     > div {
@@ -63,7 +63,7 @@
     &-first {
       position: absolute;
       top: 0;
-      left: 0;
+      inset-inline-start: 0;
       width: 50%;
       height: 100%;
       overflow: hidden;
@@ -87,5 +87,3 @@
     font-size: @font-size-base;
   }
 }
-
-@import './rtl';

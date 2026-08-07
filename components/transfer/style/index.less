@@ -37,8 +37,15 @@
     }
 
     &-search {
+      padding-inline-start: @control-padding-horizontal-sm;
+      padding-inline-end: 24px;
+
       .anticon-search {
         color: @disabled-color;
+      }
+
+      &-action {
+        inset-inline-end: 12px;
       }
     }
 
@@ -56,7 +63,7 @@
       border-radius: @border-radius-base @border-radius-base 0 0;
 
       > *:not(:last-child) {
-        margin-right: 4px;
+        margin-inline-end: 4px;
       }
 
       > * {
@@ -67,7 +74,7 @@
         flex: auto;
         overflow: hidden;
         white-space: nowrap;
-        text-align: right;
+        text-align: end;
         text-overflow: ellipsis;
       }
 
@@ -112,7 +119,7 @@
         transition: all 0.3s;
 
         > *:not(:last-child) {
-          margin-right: 8px;
+          margin-inline-end: 8px;
         }
 
         > * {
@@ -176,7 +183,7 @@
 
     &-pagination {
       padding: @padding-xs 0;
-      text-align: right;
+      text-align: end;
       border-top: @border-width-base @border-style-base @border-color-split;
     }
 
@@ -218,5 +225,3 @@
     max-height: (@transfer-header-height / 2) - 22;
   }
 }
-
-@import './rtl';

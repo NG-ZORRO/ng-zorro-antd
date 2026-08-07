@@ -31,34 +31,6 @@
 
   &-primary {
     .btn-primary();
-
-    .@{btn-prefix-cls}-group &:not(:first-child):not(:last-child) {
-      border-right-color: @btn-group-border;
-      border-left-color: @btn-group-border;
-
-      &:disabled {
-        border-color: @btn-default-border;
-      }
-    }
-
-    .@{btn-prefix-cls}-group &:first-child {
-      &:not(:last-child) {
-        border-right-color: @btn-group-border;
-
-        &[disabled] {
-          border-right-color: @btn-default-border;
-        }
-      }
-    }
-
-    .@{btn-prefix-cls}-group &:last-child:not(:first-child),
-    .@{btn-prefix-cls}-group & + & {
-      border-left-color: @btn-group-border;
-
-      &[disabled] {
-        border-left-color: @btn-default-border;
-      }
-    }
   }
 
   &-ghost {
@@ -136,9 +108,9 @@
   &::before {
     position: absolute;
     top: -@btn-border-width;
-    right: -@btn-border-width;
+    inset-inline-end: -@btn-border-width;
     bottom: -@btn-border-width;
-    left: -@btn-border-width;
+    inset-inline-start: -@btn-border-width;
     z-index: 1;
     display: none;
     background: @component-background;
@@ -175,17 +147,13 @@
     transition: width 0.3s @ease-in-out, opacity 0.3s @ease-in-out;
 
     .@{iconfont-css-prefix} {
-      padding-right: @padding-xs;
+      padding-inline-end: @padding-xs;
       animation: none;
       // for smooth button padding transition
       svg {
         animation: loadingCircle 1s infinite linear;
       }
     }
-  }
-
-  &-group {
-    .btn-group(@btn-prefix-cls);
   }
 
   // http://stackoverflow.com/a/21281554/3040605
@@ -197,7 +165,7 @@
   // To ensure that a space will be placed between character and `Icon`.
   > .@{iconfont-css-prefix} + span,
   > span + .@{iconfont-css-prefix} {
-    margin-left: @margin-xs;
+    margin-inline-start: @margin-xs;
   }
 
   &&-background-ghost {
@@ -250,7 +218,7 @@
   }
 
   &-two-chinese-chars > *:not(.@{iconfont-css-prefix}) {
-    margin-right: -0.34em;
+    margin-inline-end: -0.34em;
     letter-spacing: 0.34em;
   }
 
@@ -290,4 +258,3 @@ a.@{btn-prefix-cls} {
 }
 
 @import './space-compact';
-@import './rtl';
