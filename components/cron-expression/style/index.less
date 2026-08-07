@@ -7,15 +7,11 @@
   display: flex;
   flex-wrap: nowrap;
 
-  &-content{
+  &-content {
     width: 100%;
-
-    .@{cron-expression-prefix-cls}-input-group-error-focus {
-      box-shadow: 0 0 0 @outline-width @error-color-outline;
-    }
   }
 
-  nz-cron-expression-input{
+  nz-cron-expression-input {
     width: 20%;
   }
 
@@ -32,12 +28,6 @@
       outline: none;
       box-shadow: none !important;
     }
-  }
-
-  &-input-group-focus {
-    border-color: @primary-color;
-    outline: 0;
-    box-shadow: 0 0 0 @outline-width @primary-color-outline;
   }
 
   nz-cron-expression-label {
@@ -86,7 +76,8 @@
       padding-left: @padding-md;
     }
 
-    &-list, &-icon {
+    &-list,
+    &-icon {
       margin: 0;
       padding: 0;
       list-style: none;

@@ -28,6 +28,7 @@ npm install cron-parser@^5.5.0
 | `[nzDisabled]`        | Disable                              | `boolean`                     | `false`   |
 | `[nzBorderless]`      | Whether to hide the border           | `boolean`                     | `false`   |
 | `[nzSize]`            | The size of the input box.           | `'large'｜'small'｜'default'` | `default` |
+| `[nzStatus]`          | Set validation status                | `'error'｜'warning'`          | -         |
 | `[nzCollapseDisable]` | Hide collapse                        | `boolean`                     | `false`   |
 | `[nzExtra]`           | Render the content on the right      | `TemplateRef<void>`           | -         |
 | `[nzSemantic]`        | Custom rendering next execution time | `TemplateRef<void>`           | -         |

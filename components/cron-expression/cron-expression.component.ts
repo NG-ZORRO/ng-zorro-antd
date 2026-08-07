@@ -8,9 +8,11 @@ import {
   booleanAttribute,
   ChangeDetectorRef,
   Component,
+  computed,
   DestroyRef,
   forwardRef,
   inject,
+  input,
   Input,
   OnChanges,
   OnInit,
@@ -18,7 +20,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -30,10 +32,13 @@ import {
   ValidatorFn,
   Validators
 } from '@angular/forms';
+import { map } from 'rxjs/operators';
 
 import { CronExpressionParser } from 'cron-parser';
 
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzFormStatusService } from 'ng-zorro-antd/core/form';
+import { NzSafeAny, NzStatus } from 'ng-zorro-antd/core/types';
+import { getStatusClassNames } from 'ng-zorro-antd/core/util';
 import { NzCronExpressionI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzCronExpressionInputComponent } from './cron-expression-input.component';
@@ -57,12 +62,11 @@ function labelsOfType(type: NzCronExpressionType): TimeType[] {
       <div class="ant-cron-expression-content">
         <div
           class="ant-input ant-cron-expression-input-group"
+          [class]="statusClasses()"
           [class.ant-input-lg]="nzSize === 'large'"
           [class.ant-input-sm]="nzSize === 'small'"
           [class.ant-input-borderless]="nzBorderless"
-          [class.ant-cron-expression-input-group-focus]="focus && !nzBorderless"
-          [class.ant-input-status-error]="form.invalid && !nzBorderless"
-          [class.ant-cron-expression-input-group-error-focus]="form.invalid && focus && !nzBorderless"
+          [class.ant-input-focused]="focus"
           [class.ant-input-disabled]="nzDisabled"
         >
           @for (label of labels; track label) {
@@ -127,7 +131,9 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly i18n = inject(NzI18nService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly nzFormStatusService = inject(NzFormStatusService, { optional: true });
 
+  readonly nzStatus = input<NzStatus>('');
   @Input() nzSize: NzCronExpressionSize = 'default';
   @Input() nzType: NzCronExpressionType = 'linux';
   @Input({ transform: booleanAttribute }) nzCollapseDisable: boolean = false;
@@ -167,6 +173,16 @@ export class NzCronExpressionComponent implements OnInit, OnChanges, ControlValu
     },
     { validators: this.cronValidatorFn }
   );
+  private readonly inheritedStatus = this.nzFormStatusService
+    ? toSignal(this.nzFormStatusService.formStatusChanges.pipe(map(({ status }) => status)), {
+        initialValue: ''
+      })
+    : this.nzStatus;
+  private readonly internalFormStatus = toSignal(this.form.statusChanges, { initialValue: this.form.status });
+  private readonly finalStatus = computed(() =>
+    this.internalFormStatus() === 'INVALID' ? 'error' : this.inheritedStatus()
+  );
+  protected readonly statusClasses = computed(() => getStatusClassNames('ant-input', this.finalStatus()));
 
   onChange: NzSafeAny = () => {};
   onTouch: () => void = () => null;
