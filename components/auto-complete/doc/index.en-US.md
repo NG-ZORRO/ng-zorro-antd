@@ -37,6 +37,7 @@ When there is a need for autocomplete functionality.
 | Property                       | Description                                                                                    | Type                            | Default                         |
 | ------------------------------ | ---------------------------------------------------------------------------------------------- | ------------------------------- | ------------------------------- |
 | `[nzBackfill]`                 | backfill selected item the input when using keyboard                                           | `boolean`                       | `false`                         |
+| `[nzDropdownMatchSelectWidth]` | Whether dropdown's width is same width than select.                                            | `boolean`                       | `true`                          |
 | `[nzDataSource]`               | Data source for autocomplete                                                                   | `AutocompleteDataSource`        | -                               |
 | `[nzDefaultActiveFirstOption]` | Whether active first option by default                                                         | `boolean`                       | `true`                          |
 | `[nzWidth]`                    | Custom width, unit px                                                                          | `number`                        | trigger element width           |
