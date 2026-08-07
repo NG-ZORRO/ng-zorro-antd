@@ -1,3 +1,13 @@
+## [22.0.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/22.0.0...22.0.1) (2026-08-07)
+
+### Bug Fixes
+
+- **dropdown:** fix slide animations direction ([#9897](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9897)) ([af3ab06](https://github.com/NG-ZORRO/ng-zorro-antd/commit/af3ab0638d9ed578b6d8555cec35f74644ac0fe0))
+- **input:** support Signal Forms state ([#9891](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9891)) ([4c64359](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4c64359f2cb2365ca84ff05a1358cd91150c9123))
+- **mention:** allow mention triggers after non-space characters ([#9896](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9896)) ([5c5be2c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5c5be2c4aad3bc5ab8e5f0f8bf2a8266ee57f3b9))
+- **modal:** keep dragged position on close ([#9884](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9884)) ([86bd6b6](https://github.com/NG-ZORRO/ng-zorro-antd/commit/86bd6b6db751dae29478795cd4c37536fa681077))
+- **select:** scroll to initial selected option ([#9890](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9890)) ([4eb3dcc](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4eb3dccd11a41512e1d4106b1a467e009fd8040c)), closes [#9886](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9886)
+
 ## [22.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/21.3.3...22.0.0) (2026-07-21)
 
 ### Features
