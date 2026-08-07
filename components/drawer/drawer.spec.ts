@@ -6,7 +6,7 @@
 import { Directionality } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, Input, signal, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, Input, input, signal, TemplateRef, ViewChild, inject } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { vi } from 'vitest';
@@ -693,6 +693,19 @@ describe('NzDrawerService', () => {
     expect(drawerRef.getContentComponentRef()).toBeNull();
   });
 
+  it('should not replace an input signal with nzData', () => {
+    const drawerRef = drawerService.create({
+      nzContent: NzDrawerContentWithInputSignalComponent,
+      nzData: { text: 'Drawer data' }
+    });
+
+    fixture.detectChanges();
+
+    const contentComponent = drawerRef.getContentComponent();
+    expect(contentComponent?.text()).toBe('Default input');
+    expect(contentComponent?.nzData.text).toBe('Drawer data');
+  });
+
   it('should `nzOnCancel` work', async () => {
     let canClose = false;
     const openSpy = vi.fn();
@@ -860,4 +873,12 @@ export class NzDrawerCustomComponent {
   close(): void {
     this.drawerRef.close(this.value);
   }
+}
+
+@Component({
+  template: ''
+})
+class NzDrawerContentWithInputSignalComponent {
+  readonly nzData = inject<{ text: string }>(NZ_DRAWER_DATA);
+  readonly text = input('Default input');
 }
