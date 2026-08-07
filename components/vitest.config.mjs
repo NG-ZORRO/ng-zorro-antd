@@ -10,6 +10,7 @@ export default defineConfig({
     coverage: {
       reportsDirectory: 'coverage-report',
       reporter: ['html', 'text-summary', 'lcovonly', 'cobertura']
-    }
+    },
+    screenshotFailures: false
   }
 });

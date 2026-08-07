@@ -10,6 +10,7 @@ import 'zone.js/testing';
 
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { vi } from 'vitest';
@@ -99,7 +100,12 @@ const originalConsoleWarn = console.warn;
 
 beforeEach(() => {
   TestBed.configureTestingModule({
-    providers: [provideNzDateFnsAdapter()]
+    providers: [
+      provideNzDateFnsAdapter(),
+      // Since https://github.com/angular/angular-cli/pull/33478, library tests can
+      // fall back to Zone-based change detection. Specify zoneless mode explicitly.
+      provideZonelessChangeDetection()
+    ]
   });
 });
 
