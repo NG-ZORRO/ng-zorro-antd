@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, ElementRef, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, signal, viewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { form, FormField } from '@angular/forms/signals';
@@ -482,6 +482,7 @@ class InputCountSignalFormTestComponent {
 
 @Component({
   imports: [NzInputModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nz-input-wrapper #withPropAffixes nzPrefix="Prefix" nzSuffix="Suffix">
       <input nz-input [nzSize]="size()" [nzVariant]="variant()" [disabled]="disabled()" [readonly]="readonly()" />
@@ -537,6 +538,7 @@ class InputWithAffixesAndAddonsTestComponent {
 
 @Component({
   imports: [FormsModule, NzInputModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nz-input-wrapper #withShowCount [nzShowCount]="showCount()">
       <input nz-input [(ngModel)]="value" />
