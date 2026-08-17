@@ -27,7 +27,9 @@ export interface NzDrawerOptionsOfComponent<T = NzSafeAny, D = NzSafeAny> {
   nzExtra?: string | TemplateRef<{}>;
   nzFooter?: string | TemplateRef<{}>;
   nzContent?: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef }> | Type<T>;
-  /**@Deprecated**/
+  /**
+   * @deprecated will be removed in v23, please use `nzData` instead
+   */
   nzContentParams?: Partial<T & D>;
   nzData?: D;
   nzMaskStyle?: object;
