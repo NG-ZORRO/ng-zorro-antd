@@ -164,7 +164,10 @@ export class NzInputDirective implements OnInit {
     this.ngControl?.valueChanges
       ?.pipe(startWith(this.ngControl?.control?.value), takeUntilDestroyed(this.destroyRef))
       .subscribe(value => {
-        this.nativeValue.set(value ?? '');
+        // The control may hold a non-string value (e.g. a `FormControl<number>`
+        // behind `type="number"`); `nativeValue` must stay a string so that
+        // consumers such as the count suffix can rely on string semantics.
+        this.nativeValue.set(String(value ?? ''));
       });
   }
 
