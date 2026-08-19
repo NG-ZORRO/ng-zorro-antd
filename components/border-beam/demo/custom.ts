@@ -6,43 +6,22 @@ import { NzBorderBeamModule } from 'ng-zorro-antd/border-beam';
   selector: 'nz-demo-border-beam-custom',
   imports: [NzBorderBeamModule],
   template: `
-    <section
-      class="beam-card"
-      nzBorderBeam
-      [nzBorderBeamColor]="gradient"
-      [nzBorderBeamCount]="2"
-      [nzBorderBeamDuration]="4"
-      [nzBorderBeamLineWidth]="2"
-      [nzBorderBeamSize]="140"
-    >
-      <h3>Two gradient beams</h3>
-      <p>Use the inputs to control color, count, pace, line width, and size.</p>
+    <section class="beam-card" nzBorderBeam>
+      Review task status, deployment health, and recent automation activity in one custom container.
     </section>
   `,
   styles: `
     .beam-card {
       position: relative;
       width: 320px;
+      min-height: 160px;
       padding: 24px;
-      overflow: hidden;
-      border: 2px solid #d9d9d9;
-      border-radius: 12px;
-    }
-
-    h3 {
-      margin: 0 0 8px;
-    }
-
-    p {
-      margin: 0;
       color: rgba(0, 0, 0, 0.65);
+      line-height: 1.5715;
+      background: #fff;
+      border: 1px solid #f0f0f0;
+      border-radius: 8px;
     }
   `
 })
-export class NzDemoBorderBeamCustomComponent {
-  readonly gradient = [
-    { color: '#1677ff', percent: 0 },
-    { color: '#36cfc9', percent: 55 },
-    { color: '#95de64', percent: 100 }
-  ];
-}
+export class NzDemoBorderBeamCustomComponent {}

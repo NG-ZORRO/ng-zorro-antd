@@ -14,7 +14,7 @@ description: Add a decorative moving beam around a container border.
 
 ## API
 
-Import `NzBorderBeamDirective` or `NzBorderBeamModule`, then apply `nzBorderBeam` to the container to decorate. The host needs `position: relative` (or another positioning context).
+After importing the directive, apply `nzBorderBeam` to the container to decorate. The host needs `position: relative` (or another positioning context).
 
 | Property                | Description                                                                                                                                | Type                                   | Default |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------- | ------- |
@@ -39,6 +39,18 @@ Import `NzBorderBeamDirective` or `NzBorderBeamModule`, then apply `nzBorderBeam
 
 The beam is hidden when the browser has `prefers-reduced-motion: reduce` enabled.
 
+### What does `percent` mean in `nzBorderBeamColor`?
+
+`percent` is the authored stop position from `0` to `100`. BorderBeam maps the stops into the visible beam segment and reserves the trailing range for a transparent fade-out.
+
+### Are there size limits?
+
+The beam is a square gradient layer whose side length is `nzBorderBeamSize`. Keep it below twice the shorter side of the decorated element: `size < 2 × min(width, height)`. Otherwise the square can visibly overlap opposite edges.
+
 ### Why is the beam not visible?
 
 The host needs a positioning context because the beam is absolutely positioned. In most cases, add `position: relative` to the element that has `nzBorderBeam`.
+
+### How does the beam follow rounded corners?
+
+The effect inherits the host element's `border-radius`, so changes made through classes, responsive styles, or CSS variables stay aligned automatically.

@@ -4,11 +4,11 @@ import { NzBorderBeamModule } from 'ng-zorro-antd/border-beam';
 import { NzCardModule } from 'ng-zorro-antd/card';
 
 @Component({
-  selector: 'nz-demo-border-beam-basic',
+  selector: 'nz-demo-border-beam-multiple',
   imports: [NzBorderBeamModule, NzCardModule],
   template: `
-    <nz-card class="beam-card" nzBorderBeam nzTitle="Workspace overview">
-      Review task status, deployment health, and recent automation activity in one panel.
+    <nz-card class="beam-card" nzBorderBeam [nzBorderBeamCount]="3" nzTitle="Multiple beams">
+      Set count to distribute multiple beams evenly around the container border.
     </nz-card>
   `,
   styles: `
@@ -19,4 +19,4 @@ import { NzCardModule } from 'ng-zorro-antd/card';
     }
   `
 })
-export class NzDemoBorderBeamBasicComponent {}
+export class NzDemoBorderBeamMultipleComponent {}

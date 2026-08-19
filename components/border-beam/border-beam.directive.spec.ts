@@ -69,6 +69,32 @@ describe('border-beam', () => {
     expect(beam.style.getPropertyValue('--nz-border-beam-inset-offset')).toBe('-2px -2px -2px -2px');
   });
 
+  it('should update duration, size, line width, and outset', async () => {
+    component.duration.set(12);
+    component.size.set('12em');
+    component.lineWidth.set('0.25rem');
+    component.outset.set(4);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const beam = getHost(fixture).querySelector<HTMLElement>('.ant-border-beam')!;
+    expect(beam.style.getPropertyValue('--nz-border-beam-duration')).toBe('12s');
+    expect(beam.style.getPropertyValue('--nz-border-beam-size')).toBe('12em');
+    expect(beam.style.getPropertyValue('--nz-border-beam-line-width')).toBe('0.25rem');
+    expect(beam.style.getPropertyValue('--nz-border-beam-inset-offset')).toBe('-4px');
+  });
+
+  it('should normalize invalid count and duration values', async () => {
+    component.count.set(0);
+    component.duration.set(0);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const beams = getHost(fixture).querySelectorAll<HTMLElement>('.ant-border-beam');
+    expect(beams).toHaveLength(1);
+    expect(beams[0].style.getPropertyValue('--nz-border-beam-duration')).toBe('6s');
+  });
+
   it('should remove the beam when disabled', async () => {
     component.enabled.set(false);
     fixture.detectChanges();
@@ -91,6 +117,10 @@ function getHost(fixture: ComponentFixture<NzTestBorderBeamComponent>): HTMLElem
       [nzBorderBeam]="enabled()"
       [nzBorderBeamColor]="color()"
       [nzBorderBeamCount]="count()"
+      [nzBorderBeamDuration]="duration()"
+      [nzBorderBeamLineWidth]="lineWidth()"
+      [nzBorderBeamOutset]="outset()"
+      [nzBorderBeamSize]="size()"
       style="position: relative; border: 2px solid; border-radius: 8px"
     >
       content
@@ -101,4 +131,8 @@ class NzTestBorderBeamComponent {
   readonly enabled = signal(true);
   readonly color = signal<NzBorderBeamGradientStop[] | string | undefined>(undefined);
   readonly count = signal(1);
+  readonly duration = signal(6);
+  readonly lineWidth = signal<number | string>(1);
+  readonly outset = signal<number | string | undefined>(undefined);
+  readonly size = signal<number | string>(100);
 }
