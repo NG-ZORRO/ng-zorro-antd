@@ -5,7 +5,8 @@
 
 import { Component, ElementRef, signal, viewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { form, FormField } from '@angular/forms/signals';
 
 import { vi } from 'vitest';
 
@@ -212,6 +213,100 @@ describe('input-wrapper allow clear', () => {
   });
 });
 
+describe('input-wrapper allow clear with Signal Forms', () => {
+  let component: InputAllowClearSignalFormTestComponent;
+  let fixture: ComponentFixture<InputAllowClearSignalFormTestComponent>;
+  let clearIconElement: HTMLElement;
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(InputAllowClearSignalFormTestComponent);
+    component = fixture.componentInstance;
+    fixture.autoDetectChanges();
+    clearIconElement = fixture.nativeElement.querySelector('.ant-input-clear-icon');
+  });
+
+  it('should be clear input value when click clear icon', async () => {
+    component.model.set({ name: 'test' });
+    await stabilize(fixture);
+    expect(clearIconElement.classList).not.toContain('ant-input-clear-icon-hidden');
+
+    // A Signal Forms binding provides a read-only interop `NgControl`, so
+    // writing through `ngControl.control.setValue` threw and left the value
+    // in place.
+    clearIconElement.click();
+    await stabilize(fixture);
+
+    expect(component.model().name).toBe('');
+    expect(fixture.nativeElement.querySelector('input').value).toBe('');
+    expect(clearIconElement.classList).toContain('ant-input-clear-icon-hidden');
+  });
+
+  it('should be emit nzClear event when click clear icon', async () => {
+    vi.spyOn(component, 'onClear');
+    component.model.set({ name: 'test' });
+    await stabilize(fixture);
+
+    // The throw happened before the event was emitted, so nzClear never fired
+    // and callers could not work around the missing write themselves.
+    clearIconElement.click();
+    await stabilize(fixture);
+
+    expect(component.onClear).toHaveBeenCalled();
+  });
+
+  it('should be count the value as it changes', async () => {
+    const fixtureWithCount = TestBed.createComponent(InputCountSignalFormTestComponent);
+    fixtureWithCount.autoDetectChanges();
+    await stabilize(fixtureWithCount);
+
+    const count = (): string | undefined =>
+      fixtureWithCount.nativeElement.querySelector('.ant-input-show-count-suffix')?.textContent?.trim();
+    expect(count()).toBe('0/10');
+
+    // Counting used to read `ngControl.valueChanges`, which the interop object
+    // does not expose, so the count stayed at its initial value forever.
+    fixtureWithCount.componentInstance.model.set({ name: 'test' });
+    await stabilize(fixtureWithCount);
+
+    expect(count()).toBe('4/10');
+  });
+});
+
+describe('input-wrapper with count config and a number control', () => {
+  let fixture: ComponentFixture<InputCountNumberControlTestComponent>;
+  let component: InputCountNumberControlTestComponent;
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(InputCountNumberControlTestComponent);
+    component = fixture.componentInstance;
+    fixture.autoDetectChanges();
+  });
+
+  it('should count the stringified value and keep the control value numeric', async () => {
+    await stabilize(fixture);
+    const count = (): string | undefined =>
+      fixture.nativeElement.querySelector('.ant-input-show-count-suffix')?.textContent?.trim();
+    expect(count()).toBe('0/10');
+
+    // The count used to read the control's raw value, so a numeric control
+    // made `formattedValue.length` evaluate to `undefined` and the count
+    // effect wrote the stringified value back into the numeric control.
+    component.control.setValue(12345);
+    await stabilize(fixture);
+
+    expect(count()).toBe('5/10');
+    expect(component.control.value).toBe(12345);
+  });
+
+  it('should pass a string to exceedFormatter and clamp the value', async () => {
+    component.control.setValue(123456789012);
+    await stabilize(fixture);
+
+    expect(component.formatterValues.every(value => typeof value === 'string')).toBe(true);
+    expect(fixture.nativeElement.querySelector('input').value).toBe('1234567890');
+  });
+});
+
 describe('input-wrapper with count config', () => {
   let fixture: ComponentFixture<InputWithCountTestComponent>;
   let component: InputWithCountTestComponent;
@@ -390,6 +485,54 @@ class InputAllowClearTestComponent {
   readonly readonly = signal(false);
 
   onClear(): void {}
+}
+
+@Component({
+  imports: [NzInputModule, FormField],
+  template: `
+    <nz-input-wrapper nzAllowClear (nzClear)="onClear()">
+      <input nz-input [formField]="form.name" />
+    </nz-input-wrapper>
+  `
+})
+class InputAllowClearSignalFormTestComponent {
+  readonly model = signal({ name: '' });
+  readonly form = form(this.model);
+
+  onClear(): void {}
+}
+
+@Component({
+  imports: [NzInputModule, FormField],
+  template: `
+    <nz-input-wrapper nzShowCount [nzCount]="{ max: 10 }">
+      <input nz-input [formField]="form.name" />
+    </nz-input-wrapper>
+  `
+})
+class InputCountSignalFormTestComponent {
+  readonly model = signal({ name: '' });
+  readonly form = form(this.model);
+}
+
+@Component({
+  imports: [NzInputModule, ReactiveFormsModule],
+  template: `
+    <nz-input-wrapper nzShowCount [nzCount]="countConfig">
+      <input nz-input type="number" [formControl]="control" />
+    </nz-input-wrapper>
+  `
+})
+class InputCountNumberControlTestComponent {
+  readonly control = new FormControl<number | null>(null);
+  readonly formatterValues: string[] = [];
+  readonly countConfig: NzCountConfig = {
+    max: 10,
+    exceedFormatter: (value, { max }) => {
+      this.formatterValues.push(value);
+      return runes(value).slice(0, max).join('');
+    }
+  };
 }
 
 @Component({

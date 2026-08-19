@@ -164,12 +164,35 @@ export class NzInputDirective implements OnInit {
     this.ngControl?.valueChanges
       ?.pipe(startWith(this.ngControl?.control?.value), takeUntilDestroyed(this.destroyRef))
       .subscribe(value => {
-        this.nativeValue.set(value ?? '');
+        // The control may hold a non-string value (e.g. a `FormControl<number>`
+        // behind `type="number"`); `nativeValue` must stay a string so that
+        // consumers such as the count suffix can rely on string semantics.
+        this.nativeValue.set(String(value ?? ''));
       });
   }
 
   onInput(event: Event): void {
     this.nativeValue.set((event.target as HTMLInputElement | HTMLTextAreaElement).value);
+  }
+
+  /**
+   * Writes a value into whichever binding owns the input's value.
+   *
+   * Features that change the value from outside the control — `nzAllowClear`
+   * and `nzCount` — must go through here rather than through `ngControl`.
+   * A Signal Forms binding does provide an `NgControl`, but it is a read-only
+   * interop object: it has no `setValue`, so writing through it throws
+   * `setValue is not a function` and the value is left untouched.
+   *
+   * Mirrors the branching of {@link value}, which reads from the same bindings.
+   */
+  writeValue(value: string): void {
+    if (this.formField) {
+      this.formField.state().value.set(value);
+      return;
+    }
+
+    this.ngControl?.control?.setValue(value);
   }
 
   private renderFeedbackIcon(): void {
