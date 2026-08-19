@@ -359,7 +359,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   inputSize: number = 12;
   inputWidth?: number;
   prefixCls = PREFIX_CLASS;
-  inputValue!: NzSafeAny;
+  inputValue: NzSafeAny = this.isRange ? ['', ''] : '';
   activeBarStyle: object = {};
   overlayOpen: boolean = false; // Available when "nzOpen" = undefined
   overlayPositions: ConnectionPositionPair[] = [...DEFAULT_DATE_PICKER_POSITIONS];
@@ -730,7 +730,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
       this.close();
     });
 
-    this.inputValue = this.isRange ? ['', ''] : '';
     this.setModeAndFormat();
 
     this.datePickerService.valueChange$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {

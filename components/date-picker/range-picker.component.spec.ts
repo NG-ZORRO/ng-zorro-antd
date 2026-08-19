@@ -9,7 +9,8 @@ import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, DebugElement, TemplateRef, ViewChild, signal } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { form, FormField } from '@angular/forms/signals';
 import { By } from '@angular/platform-browser';
 
 import { differenceInDays, isSameDay } from 'date-fns';
@@ -1308,6 +1309,55 @@ describe('range-picker', () => {
   }
 });
 
+describe('Reactive Forms', () => {
+  it('should display the initial range value', async () => {
+    const fixture = TestBed.createComponent(NzTestRangePickerInReactiveFormComponent);
+
+    await fixture.whenStable();
+
+    expect(getRangeInputValues(fixture)).toEqual(['2020-04-08', '2020-04-09']);
+  });
+
+  it('should display an updated range value', async () => {
+    const fixture = TestBed.createComponent(NzTestRangePickerInReactiveFormComponent);
+    const range = [new Date('2020-04-10'), new Date('2020-04-11')];
+
+    fixture.componentInstance.range.setValue(range);
+    await fixture.whenStable();
+
+    expect(getRangeInputValues(fixture)).toEqual(['2020-04-10', '2020-04-11']);
+  });
+});
+
+describe('Signal Forms', () => {
+  it('should initialize an empty range', async () => {
+    const fixture = TestBed.createComponent(NzTestRangePickerInSignalFormComponent);
+    fixture.componentInstance.model.set({ range: [] });
+
+    await fixture.whenStable();
+
+    expect(getRangeInputValues(fixture)).toEqual(['', '']);
+  });
+
+  it('should display the initial range value', async () => {
+    const fixture = TestBed.createComponent(NzTestRangePickerInSignalFormComponent);
+
+    await fixture.whenStable();
+
+    expect(getRangeInputValues(fixture)).toEqual(['2020-04-08', '2020-04-09']);
+  });
+
+  it('should display an updated range value', async () => {
+    const fixture = TestBed.createComponent(NzTestRangePickerInSignalFormComponent);
+    const range = [new Date('2020-04-10'), new Date('2020-04-11')];
+
+    fixture.componentInstance.model.set({ range });
+    await fixture.whenStable();
+
+    expect(getRangeInputValues(fixture)).toEqual(['2020-04-10', '2020-04-11']);
+  });
+});
+
 @Component({
   imports: [FormsModule, NzDatePickerModule],
   template: `
@@ -1422,4 +1472,29 @@ class NzTestRangePickerComponent {
 })
 class NzTestRangePickerStatusComponent {
   readonly status = signal<NzStatus>('error');
+}
+
+@Component({
+  imports: [ReactiveFormsModule, NzDatePickerModule],
+  template: `<nz-range-picker [formControl]="range" />`
+})
+class NzTestRangePickerInReactiveFormComponent {
+  readonly range = new FormControl([new Date('2020-04-08'), new Date('2020-04-09')], { nonNullable: true });
+}
+
+@Component({
+  selector: 'nz-test-range-picker-in-signal-form',
+  imports: [FormField, NzDatePickerModule],
+  template: `<nz-range-picker [formField]="myForm.range" />`
+})
+class NzTestRangePickerInSignalFormComponent {
+  readonly model = signal({ range: [new Date('2020-04-08'), new Date('2020-04-09')] });
+  readonly myForm = form(this.model);
+}
+
+function getRangeInputValues(fixture: ComponentFixture<unknown>): [string, string] {
+  return [
+    getPickerInput(fixture.debugElement).value!.trim(),
+    getRangePickerRightInput(fixture.debugElement).value!.trim()
+  ];
 }
