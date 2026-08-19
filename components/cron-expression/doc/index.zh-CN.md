@@ -28,6 +28,7 @@ npm install cron-parser@^5.5.0
 | `[nzSize]`            | 设置输入框大小         | `'large'｜'small'｜'default'` | `default` |
 | `[nzDisabled]`        | 禁用                   | `boolean`                     | `false`   |
 | `[nzBorderless]`      | 是否隐藏边框           | `boolean`                     | `false`   |
+| `[nzStatus]`          | 设置校验状态           | `'error'｜'warning'`          | -         |
 | `[nzCollapseDisable]` | 隐藏折叠面板           | `boolean`                     | `false`   |
 | `[nzExtra]`           | 自定义渲染右侧的内容   | `TemplateRef<void>`           | -         |
 | `[nzSemantic]`        | 自定义渲染下次执行时间 | `TemplateRef<void>`           | -         |
