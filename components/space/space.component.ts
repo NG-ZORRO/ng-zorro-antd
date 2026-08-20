@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Directionality } from '@angular/cdk/bidi';
 import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterContentInit,
@@ -20,7 +21,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -54,6 +55,7 @@ const SPACE_SIZE: Record<NzSpaceType, number> = {
   `,
   host: {
     class: 'ant-space',
+    '[class.ant-space-rtl]': `dir() === 'rtl'`,
     '[class.ant-space-horizontal]': 'nzDirection === "horizontal"',
     '[class.ant-space-vertical]': 'nzDirection === "vertical"',
     '[class.ant-space-align-start]': 'mergedAlign === "start"',
@@ -69,9 +71,9 @@ const SPACE_SIZE: Record<NzSpaceType, number> = {
 export class NzSpaceComponent implements OnChanges, AfterContentInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  nzConfigService = inject(NzConfigService);
-  private cdr = inject(ChangeDetectorRef);
-  private destroyRef = inject(DestroyRef);
+  protected readonly dir = inject(Directionality).valueSignal;
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly destroyRef = inject(DestroyRef);
 
   @Input() nzDirection: NzSpaceDirection = 'horizontal';
   @Input() nzAlign?: NzSpaceAlign;

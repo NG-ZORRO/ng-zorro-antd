@@ -34,7 +34,7 @@
     &::after {
       position: absolute;
       top: -3px;
-      left: -6px;
+      inset-inline-start: -6px;
       width: 8px;
       height: 8px;
       background-color: transparent;
@@ -51,6 +51,10 @@
   background: @tree-bg;
   border-radius: @border-radius-base;
   transition: background-color 0.3s;
+
+  &-rtl {
+    direction: rtl;
+  }
 
   &-focused:not(:hover):not(&-active-focused) {
     background: @primary-1;
@@ -181,6 +185,10 @@
       .@{custom-tree-prefix-cls}-switcher-icon {
         svg {
           transform: rotate(-90deg);
+
+          .@{custom-tree-prefix-cls}-rtl & {
+            transform: rotate(90deg);
+          }
         }
       }
     }
@@ -219,7 +227,8 @@
   // >>> Checkbox
   &-checkbox {
     top: initial;
-    margin: ((@tree-title-height - @checkbox-size) / 2) 8px 0 0;
+    margin-block-start: ((@tree-title-height - @checkbox-size) / 2);
+    margin-inline-end: 8px;
   }
 
   // >>> Title

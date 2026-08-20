@@ -8,31 +8,31 @@
   display: inline-block;
   padding: @padding-sm;
 
-  &>canvas {
+  & > canvas {
     display: block;
   }
-}
 
-.@{qrcode-prefix-cls}-border {
-  border: @border-width-base @border-style-base @border-color-split;
-  border-radius: @border-radius-base;
-}
+  &-border {
+    border: @border-width-base @border-style-base @border-color-split;
+    border-radius: @border-radius-base;
+  }
 
-.@{qrcode-prefix-cls}-mask {
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  background-color: fade(@white, 96%);
-}
+  &-mask {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background-color: fade(@white, 96%);
+  }
 
-.@{qrcode-prefix-cls}-expired {
-  color: fade(@black, 85%);
+  &-expired {
+    color: fade(@black, 85%);
+  }
 }

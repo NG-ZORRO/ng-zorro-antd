@@ -73,8 +73,6 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
       .extra {
         width: 100%;
-        margin-left: 0;
-        text-align: left;
       }
     }
   `

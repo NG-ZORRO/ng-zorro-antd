@@ -30,7 +30,7 @@ interface ItemData {
         </tr>
       </thead>
       <tbody>
-        @for (data of editRowTable.data; track data) {
+        @for (data of editRowTable.data; track data.id) {
           <tr class="editable-row">
             <td>
               <div class="editable-cell" [hidden]="editId() === data.id" (click)="startEdit(data.id)">

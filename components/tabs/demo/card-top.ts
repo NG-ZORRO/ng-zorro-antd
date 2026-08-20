@@ -31,7 +31,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
     }
     .card-container ::ng-deep > .ant-tabs-card .ant-tabs-content {
       height: 120px;
-      margin-top: -16px;
+      margin-block-start: -16px;
     }
     .card-container ::ng-deep > .ant-tabs-card .ant-tabs-content > .ant-tabs-tabpane {
       background: #fff;

@@ -11,9 +11,13 @@
 
   position: absolute;
   top: -9999px;
-  left: -9999px;
+  inset-inline-start: -9999px;
   z-index: @zindex-dropdown;
   display: block;
+
+  &-rtl {
+    direction: rtl;
+  }
 
   &::before {
     position: absolute;
@@ -54,7 +58,7 @@
     position: relative;
     margin: 0;
     padding: @dropdown-edge-child-vertical-padding 0;
-    text-align: left;
+    text-align: start;
     list-style-type: none;
     background-color: @dropdown-menu-bg;
     background-clip: padding-box;
@@ -81,8 +85,7 @@
       }
 
       ul {
-        margin-right: 0.3em;
-        margin-left: 0.3em;
+      margin-inline: 0.3em;
       }
     }
 
@@ -95,7 +98,7 @@
 
     &-item-icon {
       min-width: 12px;
-      margin-right: 8px;
+      margin-inline-end: 8px;
       font-size: @font-size-sm;
     }
 
@@ -113,9 +116,9 @@
         &::after {
           position: absolute;
           top: 0;
-          right: 0;
+          inset-inline-end: 0;
           bottom: 0;
-          left: 0;
+          inset-inline-start: 0;
           content: '';
         }
       }
@@ -181,10 +184,10 @@
 
       .@{dropdown-prefix-cls}-menu-submenu-expand-icon {
         position: absolute;
-        right: @padding-xs;
+        inset-inline-end: @padding-xs;
 
         .@{dropdown-prefix-cls}-menu-submenu-arrow-icon {
-          margin-right: 0 !important;
+          margin-inline-end: 0 !important;
           color: @text-color-secondary;
           font-size: 10px;
           font-style: normal;
@@ -199,7 +202,7 @@
     }
 
     &-submenu-title {
-      padding-right: @control-padding-horizontal + @font-size-sm;
+      padding-inline-end: @control-padding-horizontal + @font-size-sm;
     }
 
     &-submenu-vertical {
@@ -209,9 +212,9 @@
     &-submenu-vertical > & {
       position: absolute;
       top: 0;
-      left: 100%;
+      inset-inline-start: 100%;
       min-width: 100%;
-      margin-left: 4px;
+      margin-inline-start: 4px;
       transform-origin: 0 0;
     }
 
@@ -285,8 +288,7 @@
     }
 
     &:last-child:not(:first-child):not(.@{ant-prefix}-btn-icon-only) {
-      padding-right: @padding-xs;
-      padding-left: @padding-xs;
+      padding-inline: @padding-xs;
     }
   }
 }
@@ -320,5 +322,3 @@
     }
   }
 }
-
-@import './rtl';

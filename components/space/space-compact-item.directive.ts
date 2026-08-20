@@ -38,7 +38,10 @@ export class NzSpaceCompactItemDirective {
 
     const items = this.items();
     const direction = this.spaceCompactCmp.nzDirection();
-    const classes = [compactItemClassOf(this.type, direction, this.dir() === 'rtl')];
+    const classes = [compactItemClassOf(this.type, direction)];
+    if (this.dir() === 'rtl') {
+      classes.push(compactItemRtlClassOf(this.type, direction));
+    }
     const index = items.indexOf(this);
     const firstIndex = items.findIndex(element => element);
     // Array [empty, item]
@@ -84,9 +87,12 @@ function generateCompactClass(
   return `ant-${type}-compact-${directionPrefix}${position}`;
 }
 
-function compactItemClassOf(type: string, direction: 'vertical' | 'horizontal', rtl?: boolean): string {
-  const rtlSuffix = rtl ? '-rtl' : '';
-  return `${generateCompactClass(type, direction, 'item')}${rtlSuffix}`;
+function compactItemClassOf(type: string, direction: 'vertical' | 'horizontal'): string {
+  return generateCompactClass(type, direction, 'item');
+}
+
+function compactItemRtlClassOf(type: string, direction: 'vertical' | 'horizontal'): string {
+  return `${compactItemClassOf(type, direction)}-rtl`;
 }
 
 function compactFirstItemClassOf(type: string, direction: 'vertical' | 'horizontal'): string {

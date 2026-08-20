@@ -18,7 +18,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
   `,
   styles: `
     nz-input-number {
-      margin-right: 8px;
+      margin-inline-end: 8px;
     }
   `
 })

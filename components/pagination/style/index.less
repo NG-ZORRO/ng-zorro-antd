@@ -39,7 +39,7 @@
   &-total-text {
     display: inline-block;
     height: @pagination-item-size;
-    margin-right: 8px;
+    margin-inline-end: 8px;
     line-height: @pagination-item-size - 2px;
     vertical-align: middle;
   }
@@ -48,7 +48,7 @@
     display: inline-block;
     min-width: @pagination-item-size;
     height: @pagination-item-size;
-    margin-right: 8px;
+    margin-inline-end: 8px;
     font-family: @pagination-font-family;
     line-height: @pagination-item-size - 2px;
     text-align: center;
@@ -133,20 +133,14 @@
         transition: all 0.2s;
 
         &-svg {
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
+          inset: 0;
           margin: auto;
         }
       }
 
       .@{pagination-prefix-cls}-item-ellipsis {
         position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
+        inset: 0;
         display: block;
         margin: auto;
         color: @disabled-color;
@@ -181,7 +175,7 @@
   &-prev,
   &-jump-prev,
   &-jump-next {
-    margin-right: 8px;
+    margin-inline-end: 8px;
   }
 
   &-prev,
@@ -264,12 +258,13 @@
   }
 
   &-slash {
-    margin: 0 10px 0 5px;
+    margin-block: 0;
+    margin-inline: 5px 10px;
   }
 
   &-options {
     display: inline-block;
-    margin-left: 16px;
+    margin-inline-start: 16px;
     vertical-align: middle;
 
     // IE11 css hack. `*::-ms-backdrop,` is a must have
@@ -288,7 +283,7 @@
     &-quick-jumper {
       display: inline-block;
       height: @input-height-base;
-      margin-left: @margin-xs;
+      margin-inline-start: @margin-xs;
       line-height: @input-height-base;
       vertical-align: top;
 
@@ -322,12 +317,12 @@
   &-simple &-simple-pager {
     display: inline-block;
     height: @pagination-item-size-sm;
-    margin-right: 8px;
+    margin-inline-end: 8px;
 
     input {
       box-sizing: border-box;
       height: 100%;
-      margin-right: 8px;
+      margin-inline-end: 8px;
       padding: 0 6px;
       text-align: center;
       background-color: @pagination-item-input-bg;
@@ -394,12 +389,12 @@
   &&-mini &-jump-prev,
   &&-mini &-jump-next {
     height: @pagination-item-size-sm;
-    margin-right: 0;
+    margin-inline-end: 0;
     line-height: @pagination-item-size-sm;
   }
 
   &&-mini &-options {
-    margin-left: 2px;
+    margin-inline-start: 2px;
 
     &-size-changer {
       top: @pagination-mini-options-size-changer-top;
@@ -481,5 +476,3 @@
     display: none;
   }
 }
-
-@import './rtl';

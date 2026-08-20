@@ -16,7 +16,7 @@ description: A dropdown menu for displaying choices.
 
 ```html
 <nz-select>
-  <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
+  <nz-option nzValue="lucy" nzLabel="Lucy" />
 </nz-select>
 ```
 
