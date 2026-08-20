@@ -97,6 +97,10 @@
       "less": "./badge/style/*.less",
       "style": "./badge/style/index.min.css"
     },
+    "./border-beam/style/*": {
+      "less": "./border-beam/style/*.less",
+      "style": "./border-beam/style/index.min.css"
+    },
     "./breadcrumb/style/*": {
       "less": "./breadcrumb/style/*.less",
       "style": "./breadcrumb/style/index.min.css"

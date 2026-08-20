@@ -1,0 +1,153 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { Component, signal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { NzBorderBeamGradientStop } from './border-beam.directive';
+import { NzBorderBeamModule } from './border-beam.module';
+
+describe('border-beam', () => {
+  let fixture: ComponentFixture<NzTestBorderBeamComponent>;
+  let component: NzTestBorderBeamComponent;
+
+  beforeEach(async () => {
+    fixture = TestBed.createComponent(NzTestBorderBeamComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    await fixture.whenStable();
+  });
+
+  it('should append an inaccessible decorative beam to its host', () => {
+    const host = getHost(fixture);
+    const beam = host.querySelector<HTMLElement>('.ant-border-beam');
+
+    expect(beam).toBeTruthy();
+    expect(beam?.getAttribute('aria-hidden')).toBe('true');
+    expect(beam?.parentElement).toBe(host);
+    expect(beam?.querySelector('.ant-border-beam-motion')).toBeTruthy();
+  });
+
+  it('should support multiple beams and distribute their delays evenly', async () => {
+    component.count.set(3);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const beams = getHost(fixture).querySelectorAll<HTMLElement>('.ant-border-beam');
+    expect(beams).toHaveLength(3);
+    expect(getMotionElement(beams[0]).style.animationDelay).toBe('0s');
+    expect(getMotionElement(beams[1]).style.animationDelay).toBe('-2s');
+    expect(getMotionElement(beams[2]).style.animationDelay).toBe('-4s');
+  });
+
+  it('should support solid and gradient colors', async () => {
+    component.color.set('#36cfc9');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const beam = getHost(fixture).querySelector<HTMLElement>('.ant-border-beam')!;
+    expect(getMotionElement(beam).style.backgroundImage).toBe(
+      'linear-gradient(to left, rgb(54, 207, 201) 0%, rgb(54, 207, 201) 70%, transparent)'
+    );
+
+    component.color.set([
+      { color: '#1677ff', percent: 0 },
+      { color: '#36cfc9', percent: 55 },
+      { color: '#95de64', percent: 100 }
+    ]);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(getMotionElement(beam).style.backgroundImage).toBe(
+      'linear-gradient(to left, rgb(22, 119, 255) 0%, rgb(54, 207, 201) 38.5%, rgb(149, 222, 100) 70%, transparent)'
+    );
+  });
+
+  it('should use the host border width as the default outset', () => {
+    const beam = getHost(fixture).querySelector<HTMLElement>('.ant-border-beam')!;
+    expect(beam.style.inset).toBe('-2px');
+  });
+
+  it('should update duration, size, line width, and outset', async () => {
+    component.duration.set(12);
+    component.size.set('12em');
+    component.lineWidth.set('0.25rem');
+    component.outset.set(4);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const beam = getHost(fixture).querySelector<HTMLElement>('.ant-border-beam')!;
+    const motionElement = getMotionElement(beam);
+    expect(motionElement.style.animationDuration).toBe('12s');
+    expect(motionElement.style.width).toBe('12em');
+    expect(motionElement.style.offsetPath).toBe('rect(0px auto auto 0px round 12em)');
+    expect(beam.style.padding).toBe('0.25rem');
+    expect(beam.style.inset).toBe('-4px');
+  });
+
+  it('should normalize invalid count and duration values', async () => {
+    component.count.set(0);
+    component.duration.set(0);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const beams = getHost(fixture).querySelectorAll<HTMLElement>('.ant-border-beam');
+    expect(beams).toHaveLength(1);
+    expect(getMotionElement(beams[0]).style.animationDuration).toBe('');
+  });
+
+  it('should not use CSS custom properties for its runtime styles', () => {
+    const beam = getHost(fixture).querySelector<HTMLElement>('.ant-border-beam')!;
+    const motionElement = getMotionElement(beam);
+
+    expect(beam.style.cssText).not.toContain('--nz-border-beam');
+    expect(motionElement.style.cssText).not.toContain('--nz-border-beam');
+  });
+
+  it('should remove the beam when disabled', async () => {
+    component.enabled.set(false);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(getHost(fixture).querySelector('.ant-border-beam')).toBeNull();
+  });
+});
+
+function getHost(fixture: ComponentFixture<NzTestBorderBeamComponent>): HTMLElement {
+  return (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('.beam-host')!;
+}
+
+function getMotionElement(beam: HTMLElement): HTMLElement {
+  return beam.querySelector<HTMLElement>('.ant-border-beam-motion')!;
+}
+
+@Component({
+  imports: [NzBorderBeamModule],
+  template: `
+    <div
+      class="beam-host"
+      nzBorderBeam
+      [nzBorderBeam]="enabled()"
+      [nzBorderBeamColor]="color()"
+      [nzBorderBeamCount]="count()"
+      [nzBorderBeamDuration]="duration()"
+      [nzBorderBeamLineWidth]="lineWidth()"
+      [nzBorderBeamOutset]="outset()"
+      [nzBorderBeamSize]="size()"
+      style="position: relative; border: 2px solid; border-radius: 8px"
+    >
+      content
+    </div>
+  `
+})
+class NzTestBorderBeamComponent {
+  readonly enabled = signal(true);
+  readonly color = signal<NzBorderBeamGradientStop[] | string | undefined>(undefined);
+  readonly count = signal(1);
+  readonly duration = signal(6);
+  readonly lineWidth = signal<number | string>(1);
+  readonly outset = signal<number | string | undefined>(undefined);
+  readonly size = signal<number | string>(100);
+}
