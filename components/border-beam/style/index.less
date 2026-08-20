@@ -16,8 +16,8 @@
   position: absolute;
   z-index: 1;
   display: none;
-  inset: var(--nz-border-beam-inset-offset, 0);
-  padding: var(--nz-border-beam-line-width, @border-width-base);
+  inset: 0;
+  padding: @border-width-base;
   overflow: hidden;
   border-radius: inherit;
   pointer-events: none;
@@ -36,24 +36,19 @@
     @supports (offset-path: rect(0 auto auto 0 round 1px)) {
       display: block;
 
-      &::before {
+      &-motion {
         position: absolute;
         top: 0;
         left: 0;
-        width: var(--nz-border-beam-size, 100px);
-        background-image: var(
-          --nz-border-beam-gradient,
-          linear-gradient(to left, @primary-color 0%, @primary-color-hover 70%, transparent)
-        );
+        width: 100px;
+        background-image: linear-gradient(to left, @primary-color 0%, @primary-color-hover 70%, transparent);
         opacity: 0.95;
-        animation: ant-border-beam-move var(--nz-border-beam-duration, 6s) linear var(--nz-border-beam-delay, 0s)
-          infinite;
-        content: '';
+        animation: ant-border-beam-move 6s linear 0s infinite;
         will-change: offset-distance;
         aspect-ratio: 1 / 1;
         offset-anchor: 90% 50%;
         offset-distance: 0%;
-        offset-path: rect(0 auto auto 0 round var(--nz-border-beam-size, 100px));
+        offset-path: rect(0 auto auto 0 round 100px);
         offset-rotate: auto;
       }
     }
@@ -62,7 +57,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .@{border-beam-prefix-cls}::before {
+  .@{border-beam-prefix-cls}-motion {
     display: none;
   }
 }

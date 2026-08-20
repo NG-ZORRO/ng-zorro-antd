@@ -16,6 +16,8 @@ import {
   PLATFORM_ID
 } from '@angular/core';
 
+import { generateClassName, toCssPixel } from 'ng-zorro-antd/core/util';
+
 export interface NzBorderBeamGradientStop {
   color: string;
   percent: number;
@@ -23,15 +25,17 @@ export interface NzBorderBeamGradientStop {
 
 export type NzBorderBeamColor = string | NzBorderBeamGradientStop[];
 
-const DEFAULT_DURATION = 6;
-const MAX_COLOR_STOP_PERCENT = 70;
-
-function toCssUnit(value: number | string): string {
-  return typeof value === 'number' ? `${value}px` : value;
+interface BeamElement {
+  element: HTMLSpanElement;
+  motionElement: HTMLSpanElement;
 }
 
+const DEFAULT_DURATION = 6;
+const MAX_COLOR_STOP_PERCENT = 70;
+const CLASS_NAME = 'ant-border-beam';
+
 function getInset(value: number | string): string {
-  return typeof value === 'number' ? `-${value}px` : `calc(-1 * ${value})`;
+  return typeof value === 'number' ? toCssPixel(-value) : `calc(-1 * ${value})`;
 }
 
 function getBorderInset(host: HTMLElement): string {
@@ -72,16 +76,15 @@ function getGradient(color: NzBorderBeamColor | undefined): string | undefined {
  */
 @Directive({
   selector: '[nzBorderBeam]',
-  exportAs: 'nzBorderBeam',
   host: {
     class: 'ant-border-beam-host'
   }
 })
 export class NzBorderBeamDirective {
-  private readonly host = inject(ElementRef<HTMLElement>).nativeElement;
+  private readonly host: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly destroyRef = inject(DestroyRef);
-  private readonly beamElements: HTMLSpanElement[] = [];
+  private readonly beamElements: BeamElement[] = [];
 
   readonly nzBorderBeam = input(true, { transform: booleanAttribute });
   readonly nzBorderBeamColor = input<NzBorderBeamColor>();
@@ -118,18 +121,16 @@ export class NzBorderBeamDirective {
     const inset = outset === undefined ? getBorderInset(this.host) : getInset(outset);
     const gradient = getGradient(this.nzBorderBeamColor());
 
-    this.beamElements.forEach((beam, index) => {
-      beam.style.setProperty('--nz-border-beam-inset-offset', inset);
-      beam.style.setProperty('--nz-border-beam-duration', `${mergedDuration}s`);
-      beam.style.setProperty('--nz-border-beam-line-width', toCssUnit(this.nzBorderBeamLineWidth()));
-      beam.style.setProperty('--nz-border-beam-size', toCssUnit(this.nzBorderBeamSize()));
-      beam.style.setProperty('--nz-border-beam-delay', `${(-mergedDuration * index) / count}s`);
+    this.beamElements.forEach(({ element, motionElement }, index) => {
+      element.style.inset = inset;
+      element.style.padding = this.nzBorderBeamLineWidth() === 1 ? '' : toCssPixel(this.nzBorderBeamLineWidth());
 
-      if (gradient) {
-        beam.style.setProperty('--nz-border-beam-gradient', gradient);
-      } else {
-        beam.style.removeProperty('--nz-border-beam-gradient');
-      }
+      motionElement.style.animationDuration = mergedDuration === DEFAULT_DURATION ? '' : `${mergedDuration}s`;
+      motionElement.style.animationDelay = count === 1 ? '' : `${(-mergedDuration * index) / count}s`;
+      motionElement.style.width = this.nzBorderBeamSize() === 100 ? '' : toCssPixel(this.nzBorderBeamSize());
+      motionElement.style.offsetPath =
+        this.nzBorderBeamSize() === 100 ? '' : `rect(0 auto auto 0 round ${toCssPixel(this.nzBorderBeamSize())})`;
+      motionElement.style.backgroundImage = gradient ?? '';
     });
   }
 
@@ -140,19 +141,22 @@ export class NzBorderBeamDirective {
 
   private syncBeamCount(count: number): void {
     while (this.beamElements.length > count) {
-      this.beamElements.pop()?.remove();
+      this.beamElements.pop()?.element.remove();
     }
 
     while (this.beamElements.length < count) {
       const beam = document.createElement('span');
-      beam.className = 'ant-border-beam';
+      beam.className = CLASS_NAME;
       beam.setAttribute('aria-hidden', 'true');
+      const motionElement = document.createElement('span');
+      motionElement.className = generateClassName(CLASS_NAME, 'motion');
+      beam.append(motionElement);
       this.host.append(beam);
-      this.beamElements.push(beam);
+      this.beamElements.push({ element: beam, motionElement });
     }
   }
 
   private removeBeams(): void {
-    this.beamElements.splice(0).forEach(beam => beam.remove());
+    this.beamElements.splice(0).forEach(({ element }) => element.remove());
   }
 }

@@ -3,6 +3,7 @@ category: Components
 type: Other
 title: BorderBeam
 tag: 22.1.0
+cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*uae3QbkNCm8AAAAAAAAAAAAADrJ8AQ/original
 description: Add a decorative moving beam around a container border.
 ---
 

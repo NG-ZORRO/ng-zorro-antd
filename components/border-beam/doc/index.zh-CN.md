@@ -4,6 +4,7 @@ type: 其他
 subtitle: 边框流光
 title: BorderBeam
 tag: 22.1.0
+cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*uae3QbkNCm8AAAAAAAAAAAAADrJ8AQ/original
 description: 在容器边缘添加装饰性的移动流光。
 ---
 
