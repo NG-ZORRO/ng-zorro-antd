@@ -69,6 +69,10 @@ export interface NzDatePickerLangI18nInterface extends NzCalendarI18nInterface {
   rangeQuarterPlaceholder?: string[];
   rangeMonthPlaceholder?: string[];
   rangeWeekPlaceholder?: string[];
+  /** Hijri month names, used by `nz-hijri-date-picker`. */
+  hijriMonths?: string[];
+  /** Abbreviated Hijri month names, used by `nz-hijri-date-picker`. */
+  shortHijriMonths?: string[];
 }
 
 export interface NzTimePickerI18nInterface {

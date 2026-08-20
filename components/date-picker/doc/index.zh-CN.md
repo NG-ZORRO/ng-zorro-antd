@@ -104,6 +104,80 @@ registerLocaleData(zh);
 > `nzShowTime` 中当前支持的 `nz-time-picker`
 > 参数有：`nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`
 
+### 伊斯兰历选择器
+
+`nz-hijri-date-picker` 是基于乌姆库拉（Umm al-Qura）伊斯兰历的日期选择器。面板中的年、月、日均为伊斯兰历，
+而绑定值仍然是原生 `Date`，因此可以直接替换 `nz-date-picker`，上述 API 全部通用。
+相关组件包含在 `NzDatePickerModule` 中，无需引入额外的模块。
+
+```typescript
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+```
+
+```html
+<nz-hijri-date-picker [(ngModel)]="date" />
+<nz-hijri-range-picker [(ngModel)]="range" />
+<nz-hijri-date-picker nzMode="month" [(ngModel)]="date" />
+```
+
+包含的组件有 `nz-hijri-date-picker`、`nz-hijri-range-picker`、`nz-hijri-month-picker`、
+`nz-hijri-quarter-picker`、`nz-hijri-week-picker` 和 `nz-hijri-year-picker`。
+
+#### 格式化
+
+`nzFormat` 与 `nz-date-picker` 使用同一套占位符，其中的日期部分会按伊斯兰历解析。
+星期和时间占位符（`E`、`HH`、`mm`、`ss`、`a`）与历法无关，仍由 date-fns 处理。
+
+| 占位符 | 输出                 | 示例   |
+| ------ | -------------------- | ------ |
+| `yyyy` | 四位伊斯兰历年份     | `1447` |
+| `yy`   | 两位伊斯兰历年份     | `47`   |
+| `MMMM` | 伊斯兰历月份全称     | رمضان  |
+| `MMM`  | 伊斯兰历月份简称     | Ram    |
+| `MM`   | 两位伊斯兰历月份数字 | `09`   |
+| `M`    | 伊斯兰历月份数字     | `9`    |
+| `dd`   | 两位伊斯兰历日期     | `03`   |
+| `d`    | 伊斯兰历日期         | `3`    |
+| `Q`    | 伊斯兰历季度         | `3`    |
+| `ww`   | 伊斯兰历年内周数     | `36`   |
+
+月份名称来自当前语言包的 `DatePicker.lang.hijriMonths` 与 `DatePicker.lang.shortHijriMonths`。
+尚未翻译的语言包会与其他缺失的翻译一样回退到 `en_US`。
+
+#### 月份修正
+
+各地实际观月的结果可能与乌姆库拉历表不同。通过 `NZ_HIJRI_MONTH_OVERRIDES` 可以修改单个月份的天数，
+其后的所有月份会顺延相同的天数。
+
+```typescript
+import { NZ_HIJRI_MONTH_OVERRIDES } from 'ng-zorro-antd/date-picker';
+
+providers: [{ provide: NZ_HIJRI_MONTH_OVERRIDES, useValue: [{ year: 1447, month: 9, days: 29 }] }];
+```
+
+如果修正值需要在运行时获取（例如来自后端配置），可以提供一个 signal 或任意取值函数。
+每次日期换算都会重新读取，因此下一次渲染即可生效。
+
+```typescript
+const overrides = signal<NzHijriMonthOverride[]>([]);
+
+providers: [{ provide: NZ_HIJRI_MONTH_OVERRIDES, useValue: overrides }];
+```
+
+支持的范围为伊斯兰历 1343 年至 1500 年（公历 1924 年至 2077 年）。
+
+#### 全局使用伊斯兰历
+
+如果希望所有日期相关组件都使用伊斯兰历，可以在应用级别提供日期适配器，而不使用上述组件：
+
+```typescript
+import { provideNzHijriDateAdapter } from 'ng-zorro-antd/date-picker';
+
+export const appConfig: ApplicationConfig = {
+  providers: [provideNzHijriDateAdapter()]
+};
+```
+
 ## FAQ
 
 ### 如何在 Date-Picker 中使用自定义日期库

@@ -19,4 +19,5 @@ export { NzRangePickerComponent } from './range-picker.component';
 export { NzWeekPickerComponent } from './week-picker.component';
 export { NzYearPickerComponent } from './year-picker.component';
 
+export * from './hijri/public-api';
 export * from './lib/public-api';

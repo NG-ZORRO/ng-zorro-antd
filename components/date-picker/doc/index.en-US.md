@@ -102,6 +102,86 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 > `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`,
 > `nzDefaultOpenValue`, `nzAddOn`
 
+### Hijri Picker
+
+`nz-hijri-date-picker` is the same picker on the Umm al-Qura Hijri calendar. Years, months and days
+in the panel are Hijri, while the bound value stays a native `Date`, so it is a drop-in replacement
+for `nz-date-picker` and shares every API listed above. It ships in `NzDatePickerModule`, there is no
+separate module to import.
+
+```typescript
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+```
+
+```html
+<nz-hijri-date-picker [(ngModel)]="date" />
+<nz-hijri-range-picker [(ngModel)]="range" />
+<nz-hijri-date-picker nzMode="month" [(ngModel)]="date" />
+```
+
+The components are `nz-hijri-date-picker`, `nz-hijri-range-picker`, `nz-hijri-month-picker`,
+`nz-hijri-quarter-picker`, `nz-hijri-week-picker` and `nz-hijri-year-picker`.
+
+#### Format
+
+`nzFormat` takes the same tokens as `nz-date-picker`, every calendar unit among them being read as a
+Hijri one. Weekday and time tokens (`E`, `HH`, `mm`, `ss`, `a`) are formatted by date-fns as usual,
+since they do not depend on the calendar.
+
+| Token  | Output                     | Example |
+| ------ | -------------------------- | ------- |
+| `yyyy` | 4 digit Hijri year         | `1447`  |
+| `yy`   | 2 digit Hijri year         | `47`    |
+| `MMMM` | full Hijri month name      | Ramadan |
+| `MMM`  | short Hijri month name     | Ram     |
+| `MM`   | 2 digit Hijri month number | `09`    |
+| `M`    | Hijri month number         | `9`     |
+| `dd`   | 2 digit Hijri day of month | `03`    |
+| `d`    | Hijri day of month         | `3`     |
+| `Q`    | Hijri quarter              | `3`     |
+| `ww`   | week of the Hijri year     | `36`    |
+
+Month names come from `DatePicker.lang.hijriMonths` and `DatePicker.lang.shortHijriMonths` of the
+active locale. Locales that do not translate them yet fall back to the `en_US` names, like any other
+missing translation.
+
+#### Month overrides
+
+Local moon sighting may differ from the tabular Umm al-Qura calendar. Provide
+`NZ_HIJRI_MONTH_OVERRIDES` to change the length of individual months; every following month is
+shifted by the same amount.
+
+```typescript
+import { NZ_HIJRI_MONTH_OVERRIDES } from 'ng-zorro-antd/date-picker';
+
+providers: [{ provide: NZ_HIJRI_MONTH_OVERRIDES, useValue: [{ year: 1447, month: 9, days: 29 }] }];
+```
+
+Overrides that are only known at runtime, for example loaded from a settings endpoint, can be
+provided as a signal or any other getter. It is read again on every conversion, so the next render
+picks up the new value.
+
+```typescript
+const overrides = signal<NzHijriMonthOverride[]>([]);
+
+providers: [{ provide: NZ_HIJRI_MONTH_OVERRIDES, useValue: overrides }];
+```
+
+The supported range is 1343 AH to 1500 AH (1924 CE to 2077 CE).
+
+#### Hijri everywhere
+
+To switch every date driven component to the Hijri calendar, provide the adapter application wide
+instead of using the Hijri components:
+
+```typescript
+import { provideNzHijriDateAdapter } from 'ng-zorro-antd/date-picker';
+
+export const appConfig: ApplicationConfig = {
+  providers: [provideNzHijriDateAdapter()]
+};
+```
+
 ## FAQ
 
 ### How to use custom date library in Date-Picker
