@@ -198,5 +198,32 @@ export default {
   },
   PageHeader: {
     back: 'عودة'
+  },
+  Image: {
+    preview: 'معاينة'
+  },
+  CronExpression: {
+    cronError: 'تعبير Cron غير صالح',
+    second: 'ثانية',
+    minute: 'دقيقة',
+    hour: 'ساعة',
+    day: 'يوم',
+    month: 'شهر',
+    week: 'أسبوع'
+  },
+  QRCode: {
+    expired: 'انتهت صلاحية رمز الاستجابة السريعة',
+    refresh: 'تحديث',
+    scanned: 'تم المسح'
+  },
+  CheckList: {
+    checkList: 'قائمة التحقق',
+    checkListFinish: 'لقد أكملت القائمة بنجاح!',
+    checkListClose: 'إغلاق',
+    checkListFooter: 'لم تعد قائمة التحقق مطلوبة',
+    checkListCheck: 'هل تريد إغلاق القائمة؟',
+    ok: 'تأكيد',
+    cancel: 'إلغاء',
+    checkListCheckOther: 'لا حاجة لعرضها مرة أخرى'
   }
 };
