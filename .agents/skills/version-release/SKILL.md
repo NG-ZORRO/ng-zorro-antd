@@ -1,5 +1,5 @@
 ---
-name: ng-zorro-version-release
+name: version-release
 description: NG-ZORRO/ng-zorro-antd repository release workflow. Use this skill whenever the user mentions 发版, 发布版本, release, release PR, stage-release, 升级版本号, changelog 发布准备, Azure publish, 部署官网, GitHub Release, or asks to prepare or execute an NG-ZORRO version release. This skill is project-specific and should be preferred over generic npm publish guidance.
 ---
 
