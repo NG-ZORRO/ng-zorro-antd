@@ -3,9 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, inject } from '@angular/core';
+import { Component, inject, Renderer2 } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Subject, Subscription } from 'rxjs';
+
+import { vi } from 'vitest';
 
 import {
   createMouseEvent,
@@ -21,12 +23,12 @@ import { NzDragService } from './drag';
   template: ''
 })
 export class NzTestDragServiceComponent {
-  public nzDragService = inject(NzDragService);
+  readonly dragService = inject(NzDragService);
   drag$ = new Subject<void>();
   complete$ = new Subject<void>();
 
   drag(event: MouseEvent | TouchEvent): void {
-    this.nzDragService.requestDraggingSequence(event).subscribe({
+    this.dragService.requestDraggingSequence(event).subscribe({
       next: () => this.drag$.next(),
       complete: () => this.complete$.next()
     });
@@ -46,9 +48,7 @@ describe('drag service', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestDragServiceComponent);
       component = fixture.debugElement.componentInstance;
-    });
 
-    beforeEach(() => {
       completed = false;
       dragged = false;
 
@@ -99,6 +99,42 @@ describe('drag service', () => {
       expect(dragged).toBeFalsy();
 
       dispatchMouseEvent(document, 'mouseup');
+      expect(completed).toBeTruthy();
+    });
+
+    it('should teardown document listeners after the dragging sequence ends', () => {
+      const service = component.dragService;
+      const renderer = service['renderer'];
+      const originalListen = renderer.listen.bind(renderer);
+      const teardown = vi.fn();
+
+      vi.spyOn(renderer, 'listen').mockImplementation((...args: Parameters<Renderer2['listen']>) => {
+        const removeEventListener = originalListen(...args);
+        return () => {
+          teardown();
+          removeEventListener();
+        };
+      });
+
+      component.drag(createMouseEvent('mousedown', 0, 0));
+      dispatchMouseEvent(document, 'mouseup');
+
+      expect(teardown).toHaveBeenCalledTimes(2);
+      expect(service['handleRegistry'].size).toBe(0);
+    });
+
+    it('should register handlers for a touch drag after a mouse drag ends', async () => {
+      component.drag(createMouseEvent('mousedown', 0, 0));
+      dispatchMouseEvent(document, 'mouseup');
+      completed = false;
+
+      component.drag(createTouchEvent('touchdown') as TouchEvent);
+      dispatchTouchEvent(document, 'touchmove', 100, 0);
+
+      await stabilize(fixture, 20);
+      expect(dragged).toBeTruthy();
+
+      dispatchTouchEvent(document, 'touchend');
       expect(completed).toBeTruthy();
     });
   });

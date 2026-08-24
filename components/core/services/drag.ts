@@ -44,24 +44,20 @@ export class NzDragService {
   private renderer = inject(RendererFactory2).createRenderer(null, null);
 
   requestDraggingSequence(event: MouseEvent | TouchEvent): Observable<Delta> {
-    if (!this.handleRegistry.size) {
-      this.registerDraggingHandler(isTouchEvent(event));
-    }
-
     // Complete last dragging sequence if a new target is dragged.
-    if (this.currentDraggingSequence) {
-      this.currentDraggingSequence.complete();
-    }
+    this.currentDraggingSequence?.complete();
+    this.teardownDraggingHandlers();
+    this.registerDraggingHandler(isTouchEvent(event));
 
     this.currentStartingPoint = getPagePosition(event);
     this.currentDraggingSequence = new Subject<MouseEvent | Touch>();
 
     return this.currentDraggingSequence.pipe(
-      map((e: MouseEvent | Touch) => ({
+      map(e => ({
         x: e.pageX - this.currentStartingPoint!.x,
         y: e.pageY - this.currentStartingPoint!.y
       })),
-      filter((e: Delta) => Math.abs(e.x) > this.draggingThreshold || Math.abs(e.y) > this.draggingThreshold),
+      filter(e => Math.abs(e.x) > this.draggingThreshold || Math.abs(e.y) > this.draggingThreshold),
       finalize(() => this.teardownDraggingSequence())
     );
   }
@@ -70,31 +66,23 @@ export class NzDragService {
     if (isTouch) {
       this.handleRegistry.add({
         teardown: this.renderer.listen('document', 'touchmove', (e: TouchEvent) => {
-          if (this.currentDraggingSequence) {
-            this.currentDraggingSequence.next(e.touches[0] || e.changedTouches[0]);
-          }
+          this.currentDraggingSequence?.next(e.touches[0] || e.changedTouches[0]);
         })
       });
       this.handleRegistry.add({
         teardown: this.renderer.listen('document', 'touchend', () => {
-          if (this.currentDraggingSequence) {
-            this.currentDraggingSequence.complete();
-          }
+          this.currentDraggingSequence?.complete();
         })
       });
     } else {
       this.handleRegistry.add({
         teardown: this.renderer.listen('document', 'mousemove', e => {
-          if (this.currentDraggingSequence) {
-            this.currentDraggingSequence.next(e);
-          }
+          this.currentDraggingSequence?.next(e);
         })
       });
       this.handleRegistry.add({
         teardown: this.renderer.listen('document', 'mouseup', () => {
-          if (this.currentDraggingSequence) {
-            this.currentDraggingSequence.complete();
-          }
+          this.currentDraggingSequence?.complete();
         })
       });
     }
@@ -102,5 +90,13 @@ export class NzDragService {
 
   private teardownDraggingSequence(): void {
     this.currentDraggingSequence = null;
+    this.teardownDraggingHandlers();
+  }
+
+  private teardownDraggingHandlers(): void {
+    for (const { teardown } of this.handleRegistry) {
+      teardown();
+    }
+    this.handleRegistry.clear();
   }
 }
