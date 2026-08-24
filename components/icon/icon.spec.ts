@@ -106,6 +106,23 @@ describe('nz-icon', () => {
       fixture.detectChanges();
       expect(icons[0].nativeElement.firstChild.style.transform).toBeFalsy();
     });
+
+    it('should not throw when firstChild is not an Element', async () => {
+      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
+      fixture.detectChanges();
+
+      const hostEl = icons[0].nativeElement as HTMLElement;
+      const svg = hostEl.firstChild!;
+      // Simulate the icon's firstChild being a non-Element node, which can
+      // happen before the SVG has been created or during rapid teardown/recreate.
+      hostEl.replaceChild(document.createComment(''), svg);
+
+      expect(() => {
+        testComponent.rotate.set(180);
+        fixture.detectChanges();
+      }).not.toThrow();
+    });
   });
 
   describe('custom', () => {
