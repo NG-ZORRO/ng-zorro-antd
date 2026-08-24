@@ -132,10 +132,8 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
     }
     this.result = result;
     this.state = NzModalState.CLOSING;
-    this.containerInstance._startLeaveAnimation(() => {
-      this.overlayRef.detachBackdrop();
-      this._finishDialogClose();
-    });
+    this.overlayRef.detachBackdrop();
+    this.containerInstance._startLeaveAnimation();
   }
 
   updateConfig(config: ModalOptions): void {

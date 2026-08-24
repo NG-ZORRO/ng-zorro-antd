@@ -327,12 +327,11 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
     }
   }
 
-  _startLeaveAnimation(callback?: () => void): void {
+  _startLeaveAnimation(): void {
     this.animationStateChanged.emit('leave-start');
 
     if (this.animationDisabled()) {
       this.restoreFocus();
-      callback?.();
       this.animationStateChanged.emit('leave-active');
     } else {
       this.setExitAnimationClass();
@@ -341,7 +340,6 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
         element.removeEventListener('animationend', onAnimationEnd);
         this.restoreFocus();
         this.cleanAnimationClass();
-        callback?.();
         this.animationStateChanged.emit('leave-active');
       };
 

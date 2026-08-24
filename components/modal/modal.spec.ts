@@ -99,10 +99,13 @@ describe('modal with animation', () => {
 
     animationDone(modalContentElement!, 'enter');
     await fixture.whenStable();
+
+    const backdropElement = modalRef.getBackdropElement()!;
     modalRef.close();
 
     expect(modalContentElement!.classList).toContain('ant-zoom-leave');
     expect(modalContentElement!.classList).toContain('ant-zoom-leave-active');
+    expect(backdropElement.classList).not.toContain('cdk-overlay-backdrop-showing');
   });
 
   it('should emit when modal opening animation is complete', async () => {
