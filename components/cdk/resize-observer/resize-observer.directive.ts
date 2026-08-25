@@ -18,24 +18,24 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { NzResizeObserver, NzResizeObserverFactory } from './resize-observer.service';
+import { NzResizeObserver } from './resize-observer.service';
 
 @Directive({
-  selector: '[nzResizeObserver]',
-  providers: [NzResizeObserverFactory]
+  selector: '[nzResizeObserver]'
 })
 export class NzResizeObserverDirective implements AfterContentInit, OnChanges {
-  private nzResizeObserver = inject(NzResizeObserver);
-  private elementRef = inject(ElementRef<HTMLElement>);
-  private destroyRef = inject(DestroyRef);
+  private readonly resizeObserver = inject(NzResizeObserver);
+  private readonly elementRef = inject(ElementRef<HTMLElement>);
+  private readonly destroyRef = inject(DestroyRef);
 
-  @Output() readonly nzResizeObserve = new EventEmitter<ResizeObserverEntry[]>();
   @Input({ transform: booleanAttribute }) nzResizeObserverDisabled = false;
+  @Output() readonly nzResizeObserve = new EventEmitter<ResizeObserverEntry[]>();
+
   private currentSubscription: Subscription | null = null;
 
   private subscribe(): void {
     this.unsubscribe();
-    this.currentSubscription = this.nzResizeObserver.observe(this.elementRef).subscribe(this.nzResizeObserve);
+    this.currentSubscription = this.resizeObserver.observe(this.elementRef).subscribe(this.nzResizeObserve);
   }
 
   private unsubscribe(): void {
@@ -51,9 +51,10 @@ export class NzResizeObserverDirective implements AfterContentInit, OnChanges {
       this.subscribe();
     }
   }
+
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzResizeObserve } = changes;
-    if (nzResizeObserve) {
+    const { nzResizeObserverDisabled } = changes;
+    if (nzResizeObserverDisabled) {
       if (this.nzResizeObserverDisabled) {
         this.unsubscribe();
       } else {
