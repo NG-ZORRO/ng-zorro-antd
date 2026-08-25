@@ -167,7 +167,7 @@ export class NzIconDirective extends IconBase implements AfterContentChecked {
   }
 
   private handleRotate(svg: SVGElement | null): void {
-    if (!svg) {
+    if (!svg || svg.nodeType !== Node.ELEMENT_NODE) {
       return;
     }
 
