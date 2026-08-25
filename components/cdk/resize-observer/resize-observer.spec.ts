@@ -9,12 +9,16 @@ import { Subscription } from 'rxjs';
 
 import { vi } from 'vitest';
 
-import { NzResizeObserverDirective } from 'ng-zorro-antd/cdk/resize-observer/resize-observer.directive';
+import { NzResizeObserverDirective, NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 describe('resize observer', () => {
   let fixture: ComponentFixture<TestHostComponent>;
   let directive: NzResizeObserverDirective;
+
+  function getResizeObserver(): NzResizeObserver {
+    return directive['resizeObserver'];
+  }
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);
@@ -54,9 +58,9 @@ describe('resize observer', () => {
     expect(directive['subscribe']).not.toHaveBeenCalled();
   });
 
-  it('should call unsubscribe when nzResizeObserve is changed and nzResizeObserverDisabled is true', () => {
+  it('should call unsubscribe when nzResizeObserverDisabled changes to true', () => {
     const change = {
-      nzResizeObserve: {}
+      nzResizeObserverDisabled: {}
     };
     vi.spyOn(directive as NzSafeAny, 'unsubscribe');
     directive.nzResizeObserverDisabled = true;
@@ -64,9 +68,9 @@ describe('resize observer', () => {
     expect(directive['unsubscribe']).toHaveBeenCalled();
   });
 
-  it('should call subscribe when nzResizeObserve is changed and nzResizeObserverDisabled is false', () => {
+  it('should call subscribe when nzResizeObserverDisabled changes to false', () => {
     const change = {
-      nzResizeObserve: {}
+      nzResizeObserverDisabled: {}
     };
     vi.spyOn(directive as NzSafeAny, 'subscribe');
     directive.nzResizeObserverDisabled = false;
@@ -82,17 +86,18 @@ describe('resize observer', () => {
 
   it('should destroy the observedElements', () => {
     const element = document.createElement('div');
-    directive['nzResizeObserver'].observe(element);
+    const resizeObserver = getResizeObserver();
+    resizeObserver.observe(element);
     fixture.detectChanges();
-    vi.spyOn(directive['nzResizeObserver'] as NzSafeAny, 'cleanupObserver');
+    vi.spyOn(resizeObserver as NzSafeAny, 'cleanupObserver');
     fixture.destroy();
-    expect(directive['nzResizeObserver']['cleanupObserver']).toHaveBeenCalled();
+    expect(resizeObserver['cleanupObserver']).toHaveBeenCalled();
   });
 
   it('should return correct resizeObserver if it is supported', () => {
     // eslint-disable-next-line no-global-assign
     ResizeObserver = undefined as NzSafeAny;
-    const result = directive['nzResizeObserver']['nzResizeObserverFactory'].create(vi.fn());
+    const result = directive['resizeObserver']['nzResizeObserverFactory'].create(vi.fn());
     expect(result).toEqual(null);
   });
 });
