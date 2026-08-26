@@ -436,6 +436,18 @@ describe('input-number', () => {
     expect(component.value).toBe(0);
   });
 
+  it('should not step by keyboard when readonly', () => {
+    component.value = 5;
+    component.readonly.set(true);
+    fixture.detectChanges();
+
+    upStepByKeyboard();
+    expect(component.value).toBe(5);
+
+    downStepByKeyboard();
+    expect(component.value).toBe(5);
+  });
+
   it('should be set mouse wheel', () => {
     const input = hostElement.querySelector('input')!;
     component.value = 0;

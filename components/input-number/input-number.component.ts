@@ -408,6 +408,11 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   }
 
   private step(event: MouseEvent | KeyboardEvent, up: boolean, emitter: NzInputNumberStepEmitter): void {
+    // Ignore step since field is readonly
+    if (this.nzReadOnly()) {
+      return;
+    }
+
     // Ignore step since out of range
     if ((up && this.upDisabled()) || (!up && this.downDisabled())) {
       return;
