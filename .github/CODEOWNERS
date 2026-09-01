@@ -6,6 +6,7 @@ components/upload/**                      @cipchk
 components/auto-complete/**               @hsuanxyz
 components/avatar/**                      @hsuanxyz
 components/badge/**                       @hsuanxyz
+components/border-beam/**                 @laffery
 components/comment/**                     @hsuanxyz
 components/drawer/**                      @hsuanxyz
 components/mention/**                     @hsuanxyz
