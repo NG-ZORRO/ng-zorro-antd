@@ -63,8 +63,9 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
       width: 120px;
       height: 31px;
       background: rgba(255, 255, 255, 0.2);
-      margin: 16px 30px 16px 0;
-      float: left;
+      margin-block: 16px;
+      margin-inline-end: 24px;
+      float: inline-start;
     }
 
     .header-menu {

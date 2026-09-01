@@ -15,6 +15,10 @@
   border-radius: @border-radius-base;
   transition: all 0.3s @ease-in-out;
 
+  &-rtl {
+    direction: rtl;
+  }
+
   &-group {
     position: relative;
     display: flex;
@@ -97,13 +101,13 @@
 
     // syntactic sugar to add `icon` for Segmented Item
     &-icon + * {
-      margin-left: (@margin-sm / 2);
+      margin-inline-start: (@margin-sm / 2);
     }
 
     &-input {
       position: absolute;
       top: 0;
-      left: 0;
+      inset-inline-start: 0;
       width: 0;
       height: 0;
       opacity: 0;
@@ -150,5 +154,3 @@
     will-change: transform, width;
   }
 }
-
-@import './rtl';

@@ -5,12 +5,12 @@
   > .@{steps-prefix-cls}-item {
     display: block;
     flex: 1 0 auto;
-    padding-left: 0;
+    padding-inline-start: 0;
     overflow: visible;
 
     .@{steps-prefix-cls}-item-icon {
-      float: left;
-      margin-right: @steps-vertical-icon-width;
+      float: inline-start;
+      margin-inline-end: @steps-vertical-icon-width;
     }
 
     .@{steps-prefix-cls}-item-content {
@@ -33,7 +33,7 @@
     > .@{steps-prefix-cls}-item-tail {
     position: absolute;
     top: 0;
-    left: @steps-vertical-tail-width - 1; // line width
+    inset-inline-start: @steps-vertical-tail-width - 1; // line width
     width: 1px;
     height: 100%;
     padding: @steps-icon-size + 6px 0 6px;
@@ -63,7 +63,7 @@
     .@{steps-prefix-cls}-item-tail {
       position: absolute;
       top: 0;
-      left: @steps-vertical-tail-width-sm - 1; // line width
+      inset-inline-start: @steps-vertical-tail-width-sm - 1; // line width
       padding: @steps-small-icon-size + 6px 0 6px;
     }
     .@{steps-prefix-cls}-item-title {

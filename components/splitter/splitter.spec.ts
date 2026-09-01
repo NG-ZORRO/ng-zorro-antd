@@ -624,5 +624,22 @@ describe('nz-splitter', () => {
       expect(component.onResize).toHaveBeenCalledWith([90, 10]);
       expect(component.onResizeEnd).toHaveBeenCalledWith([90, 10]);
     });
+
+    it('should move the lazy preview in the pointer direction', async () => {
+      component.lazy.set(true);
+      component.panels.set([
+        { defaultSize: '50%', min: '20%', max: '80%' },
+        { defaultSize: '50%', min: '20%', max: '80%' }
+      ]);
+      await fixture.whenStable();
+
+      const { dragger, x, y } = getDraggerAndPos();
+      dispatchMouseEvent(dragger, 'mousedown', x, y);
+      dispatchMouseEvent(document, 'mousemove', x - 40, y);
+      fixture.detectChanges();
+
+      const preview = container.query(By.css('.ant-splitter-bar-preview'))!.nativeElement as HTMLElement;
+      expect(preview.style.transform).toBe('translateX(-30px)');
+    });
   });
 });

@@ -167,7 +167,7 @@
     }
 
     & + & {
-      margin-left: 8px;
+      margin-inline-start: 8px;
     }
 
     &&-in-form-item {
@@ -179,8 +179,7 @@
   }
 
   .@{checkbox-prefix-cls} + span {
-    padding-right: 8px;
-    padding-left: 8px;
+    padding-inline: 8px;
   }
 
   .@{checkbox-prefix-cls}-group {
@@ -188,15 +187,15 @@
     display: inline-block;
 
     &-item {
-      margin-right: @checkbox-group-item-margin-right;
+      margin-inline-end: @checkbox-group-item-margin-right;
 
       &:last-child {
-        margin-right: 0;
+        margin-inline-end: 0;
       }
     }
 
     &-item + &-item {
-      margin-left: 0;
+      margin-inline-start: 0;
     }
   }
 

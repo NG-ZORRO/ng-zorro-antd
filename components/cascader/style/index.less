@@ -12,7 +12,7 @@
 
   &-checkbox {
     top: 0;
-    margin-right: @padding-xs;
+    margin-inline-end: @padding-xs;
   }
 
   &-menus {
@@ -88,7 +88,7 @@
 
       &-expand &-expand-icon,
       &-loading-icon {
-        margin-left: @padding-xss;
+        margin-inline-start: @padding-xss;
         color: @text-color-secondary;
         font-size: 10px;
 
@@ -106,5 +106,3 @@
   // ===================== Compact Item Styles =====================
   .compact-item(@cascader-prefix-cls);
 }
-
-@import './rtl';

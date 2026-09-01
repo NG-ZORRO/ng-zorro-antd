@@ -4,6 +4,10 @@
 @descriptions-prefix-cls: ~'@{ant-prefix}-descriptions';
 
 .@{descriptions-prefix-cls} {
+  &-rtl {
+    direction: rtl;
+  }
+
   &-header {
     display: flex;
     align-items: center;
@@ -22,7 +26,7 @@
   }
 
   &-extra {
-    margin-left: auto;
+    margin-inline-start: auto;
     color: @descriptions-extra-color;
     font-size: @font-size-base;
   }
@@ -65,8 +69,9 @@
 
       position: relative;
       top: -0.5px;
-      margin: 0 @descriptions-item-label-colon-margin-right 0
-        @descriptions-item-label-colon-margin-left;
+      margin-block: 0;
+      margin-inline: @descriptions-item-label-colon-margin-left
+        @descriptions-item-label-colon-margin-right;
     }
 
     &.@{descriptions-prefix-cls}-item-no-colon::after {
@@ -136,10 +141,10 @@
     .@{descriptions-prefix-cls}-item-label,
     .@{descriptions-prefix-cls}-item-content {
       padding: @descriptions-default-padding;
-      border-right: 1px solid @border-color-split;
+      border-inline-end: 1px solid @border-color-split;
 
       &:last-child {
-        border-right: none;
+        border-inline-end: none;
       }
     }
 
@@ -174,5 +179,3 @@
     }
   }
 }
-
-@import './rtl';

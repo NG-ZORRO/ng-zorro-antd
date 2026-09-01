@@ -67,7 +67,7 @@
   .@{number-prefix-cls}-custom-component {
     position: absolute;
     top: 0;
-    right: 0;
+    inset-inline-end: 0;
     transform: translate(50%, -50%);
     transform-origin: 100% 0%;
 
@@ -101,7 +101,7 @@
       &::after {
         position: absolute;
         top: 0;
-        left: 0;
+        inset-inline-start: 0;
         width: 100%;
         height: 100%;
         border: 1px solid @processing-color;
@@ -135,7 +135,7 @@
     .make-color-classes();
 
     &-text {
-      margin-left: @margin-xs;
+      margin-inline-start: @margin-xs;
       color: @text-color;
       font-size: @font-size-base;
     }
@@ -203,7 +203,6 @@
 
 .@{number-prefix-cls} {
   overflow: hidden;
-  direction: ltr;
 
   &-only {
     position: relative;

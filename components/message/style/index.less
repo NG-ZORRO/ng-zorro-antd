@@ -13,6 +13,10 @@
   width: 100%;
   pointer-events: none;
 
+  &-rtl {
+    direction: rtl;
+  }
+
   &-notice {
     padding: 8px;
     text-align: center;
@@ -47,10 +51,9 @@
   .@{iconfont-css-prefix} {
     position: relative;
     top: 1px;
-    margin-right: 8px;
+    margin-inline-end: 8px;
     font-size: @font-size-lg;
   }
 }
 
-@import './rtl';
 @import './animation';

@@ -1,12 +1,13 @@
 @import '../../style/themes/index';
 @import '../../style/mixins/index';
 @import './size';
-@import './rtl';
+
+@tab-prefix-cls: ~'@{ant-prefix}-tabs';
+
 @import './position';
 @import './dropdown';
 @import './card';
 
-@tab-prefix-cls: ~'@{ant-prefix}-tabs';
 
 .@{tab-prefix-cls} {
   .reset-component();
@@ -68,9 +69,8 @@
 
       &::after {
         position: absolute;
-        right: 0;
         bottom: 0;
-        left: 0;
+        inset-inline: 0;
         height: 5px;
         transform: translateY(100%);
         content: '';
@@ -79,7 +79,7 @@
 
     .@{tab-prefix-cls}-nav-add {
       min-width: @tabs-card-height;
-      margin-left: @tabs-card-gutter;
+      margin-inline-start: @tabs-card-gutter;
       padding: 0 @padding-xs;
       background: @tabs-card-head-background;
       border: @border-width-base @border-style-base @border-color-split;
@@ -148,8 +148,8 @@
 
     &-remove {
       flex: none;
-      margin-right: -@margin-xss;
-      margin-left: @margin-xs;
+      margin-inline-start: @margin-xs;
+      margin-inline-end: -@margin-xss;
       color: @text-color-secondary;
       font-size: @font-size-sm;
       background: transparent;
@@ -190,12 +190,12 @@
     }
 
     .@{iconfont-css-prefix} {
-      margin-right: @margin-sm;
+      margin-inline-end: @margin-sm;
     }
   }
 
   &-tab + &-tab {
-    margin: @tabs-horizontal-margin;
+    margin-inline-start: @tabs-horizontal-gutter;
   }
 
   // =========================== TabPanes ===========================

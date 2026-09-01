@@ -9,8 +9,8 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
   template: `
     <button
       nz-button
-      nz-popover
       nzType="primary"
+      nz-popover
       nzPopoverTitle="Title"
       nzPopoverTrigger="click"
       [nzPopoverContent]="contentTemplate"
@@ -20,9 +20,8 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
     >
       Click me
     </button>
-    >
     <ng-template #contentTemplate>
-      <button nz-button nzSize="small" nzType="primary" (click)="visibleChange(false)"> Close me </button>
+      <button nz-button nzSize="small" nzType="primary" (click)="visibleChange(false)">Close me</button>
     </ng-template>
   `
 })

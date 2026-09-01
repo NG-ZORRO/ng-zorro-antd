@@ -8,13 +8,13 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
   selector: 'nz-demo-float-button-open',
   imports: [FormsModule, NzFloatButtonModule, NzSwitchModule],
   template: `
-    <div class="open">
+    <div class="container">
       <nz-float-button-group
         nzIcon="customer-service"
         [nzOpen]="isOpen()"
         nzType="primary"
         nzTrigger="click"
-        style="right: 24px"
+        style="inset-inline-end: 24px"
         (nzOpenChange)="onOpenChange($event)"
       >
         <nz-float-button />
@@ -24,7 +24,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
     </div>
   `,
   styles: `
-    .open {
+    .container {
       height: 300px;
       position: relative;
     }
