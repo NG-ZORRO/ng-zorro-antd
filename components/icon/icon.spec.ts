@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement, NgModule, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, NgModule, inject, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -320,6 +320,7 @@ export class NzTestIconExtensionsComponent {
 
 @Component({
   imports: [NzIconDirective],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nz-icon [nzType]="type()" aria-label="Help" />
     <span nz-icon [nzType]="type()" aria-label="Help"></span>
