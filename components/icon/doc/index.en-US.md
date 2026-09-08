@@ -24,6 +24,16 @@ We keep in syncing with [antd](https://ant.design/components/icon/).
 | `[nzIconfont]`     | Type of the icon from iconfont      | `string`                       | -           | -             |
 | `[nzRotate]`       | Rotate degrees                      | `number`                       | -           | -             |
 
+### Accessibility
+
+Set `aria-label` to give an icon a custom accessible name. Use `[aria-label]` when the label changes dynamically.
+
+```html
+<nz-icon nzType="question-circle" aria-label="Help" /> <nz-icon nzType="question-circle" [aria-label]="helpLabel" />
+```
+
+When `aria-label` is omitted, `null`, or `undefined`, the icon uses `nzType` as its label. An explicitly empty string is preserved.
+
 ### NzIconService
 
 | Methods                | Description                                                                   | Parameters               |

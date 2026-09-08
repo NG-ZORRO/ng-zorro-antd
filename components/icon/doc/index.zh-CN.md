@@ -25,6 +25,16 @@ description: 语义化的矢量图形。
 | `[nzIconfont]`     | 指定来自 IconFont 的图标类型                                 | string                         | -           | -            |
 | `[nzRotate]`       | 图标旋转角度                                                 | `number`                       | -           | -            |
 
+### 无障碍
+
+通过 `aria-label` 为图标设置自定义无障碍名称。需要动态更新名称时，使用 `[aria-label]` 绑定。
+
+```html
+<nz-icon nzType="question-circle" aria-label="帮助" /> <nz-icon nzType="question-circle" [aria-label]="helpLabel" />
+```
+
+未设置 `aria-label` 或其值为 `null`、`undefined` 时，图标使用 `nzType` 作为名称。显式设置的空字符串会被保留。
+
 ### NzIconService
 
 | 方法                   | 说明                                                                               | 参数                     |
