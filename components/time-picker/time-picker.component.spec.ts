@@ -129,7 +129,7 @@ describe('time-picker', () => {
       expect(timeElement.nativeElement.classList).toContain('ant-picker-disabled');
       expect(timeElement.componentInstance.nzDisabled).toBeTruthy();
       testComponent.nzTimePickerComponent.focus();
-      fixture.detectChanges();
+      await stabilize(fixture);
       expect(input === document.activeElement).toBe(false);
     });
 

@@ -92,7 +92,8 @@ describe('watermark', () => {
     await fixture.whenStable();
 
     const view = resultEl.nativeElement.querySelector('.watermark > div');
-    expect(view?.style.backgroundSize).toBe('600px');
+    // Some browser engines normalize the single-value `background-size` shorthand to `600px auto`.
+    expect(['600px', '600px auto']).toContain(view?.style.backgroundSize);
   });
 
   it('should MutationObserver work', async () => {
