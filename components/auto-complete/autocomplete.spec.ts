@@ -876,15 +876,15 @@ describe('auto-complete', () => {
     });
 
     it('should use the custom origin as the dropdown target', () => {
-      const customOriginFixture = TestBed.createComponent(NzTestAutocompleteWithCustomOriginComponent);
-      customOriginFixture.detectChanges();
-      const componentInstance = customOriginFixture.componentInstance;
+      const componentInstance = fixture.componentInstance;
+      componentInstance.connectedToOrigin.set(true);
+      fixture.detectChanges();
       vi.spyOn(componentInstance.origin.elementRef.nativeElement, 'getBoundingClientRect').mockReturnValue(
         new DOMRect(0, 0, 320, 32)
       );
 
       componentInstance.trigger.openPanel();
-      customOriginFixture.detectChanges();
+      fixture.detectChanges();
 
       expect(componentInstance.trigger['getConnectedElement']()).toBe(componentInstance.origin.elementRef);
       const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
@@ -1098,8 +1098,15 @@ class NzTestAutocompleteWithObjectOptionComponent {
 @Component({
   imports: [NzAutocompleteModule, NzInputModule],
   template: `
-    <nz-input-wrapper #inputGroupComponent>
-      <input #input placeholder="input here" nz-input nzSize="large" [nzAutocomplete]="auto" />
+    <nz-input-wrapper nzAutocompleteOrigin #origin="nzAutocompleteOrigin">
+      <input
+        #input
+        placeholder="input here"
+        nz-input
+        nzSize="large"
+        [nzAutocomplete]="auto"
+        [nzAutocompleteConnectedTo]="connectedToOrigin() ? origin : undefined"
+      />
       <nz-autocomplete #auto>
         <nz-auto-option nzValue="value">label</nz-auto-option>
       </nz-autocomplete>
@@ -1107,24 +1114,10 @@ class NzTestAutocompleteWithObjectOptionComponent {
   `
 })
 class NzTestAutocompleteWithGroupInputComponent {
-  @ViewChild(NzAutocompleteTriggerDirective, { static: true }) trigger!: NzAutocompleteTriggerDirective;
-  @ViewChild('input', { static: true, read: ElementRef }) inputRef!: ElementRef;
-}
-
-@Component({
-  imports: [NzAutocompleteModule, NzInputModule],
-  template: `
-    <nz-input-wrapper nzAutocompleteOrigin #origin="nzAutocompleteOrigin" style="width: 320px">
-      <input nz-input [nzAutocomplete]="auto" [nzAutocompleteConnectedTo]="origin" />
-    </nz-input-wrapper>
-    <nz-autocomplete #auto>
-      <nz-auto-option nzValue="value">label</nz-auto-option>
-    </nz-autocomplete>
-  `
-})
-class NzTestAutocompleteWithCustomOriginComponent {
+  readonly connectedToOrigin = signal(false);
   @ViewChild(NzAutocompleteOriginDirective, { static: true }) origin!: NzAutocompleteOriginDirective;
   @ViewChild(NzAutocompleteTriggerDirective, { static: true }) trigger!: NzAutocompleteTriggerDirective;
+  @ViewChild('input', { static: true, read: ElementRef }) inputRef!: ElementRef;
 }
 
 describe('auto-complete', () => {
