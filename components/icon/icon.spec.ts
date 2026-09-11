@@ -126,12 +126,23 @@ describe('nz-icon', () => {
   });
 
   describe('aria-label', () => {
-    let fixture: ComponentFixture<NzTestIconAriaLabelComponent>;
-    let testComponent: NzTestIconAriaLabelComponent;
+    let fixture: ComponentFixture<NzTestIconExtensionsComponent>;
+    let testComponent: NzTestIconExtensionsComponent;
     let icons: DebugElement[];
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestIconAriaLabelComponent);
+      TestBed.overrideComponent(NzTestIconExtensionsComponent, {
+        set: {
+          imports: [NzIconDirective],
+          template: `
+            <nz-icon [nzType]="type()" aria-label="Help" />
+            <span nz-icon [nzType]="type()" aria-label="Help"></span>
+            <nz-icon [nzType]="type()" [aria-label]="label()" />
+            <nz-icon [nzType]="type()" />
+          `
+        }
+      });
+      fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
       testComponent = fixture.componentInstance;
       icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
     });
@@ -312,24 +323,11 @@ describe('nz-icon injection', () => {
 export class NzTestIconExtensionsComponent {
   public readonly iconService = inject(NzIconService);
 
-  readonly type = signal('question');
+  readonly type = signal<string | undefined>('question');
+  readonly label = signal<string | null | undefined>('Help');
   readonly theme = signal<'fill' | 'outline' | 'twotone'>('outline');
   readonly spin = signal(true);
   readonly rotate = signal(0);
-}
-
-@Component({
-  imports: [NzIconDirective],
-  template: `
-    <nz-icon [nzType]="type()" aria-label="Help" />
-    <span nz-icon [nzType]="type()" aria-label="Help"></span>
-    <nz-icon [nzType]="type()" [aria-label]="label()" />
-    <nz-icon [nzType]="type()" />
-  `
-})
-class NzTestIconAriaLabelComponent {
-  readonly type = signal<string | undefined>('question');
-  readonly label = signal<string | null | undefined>('Help');
 }
 
 @Component({
