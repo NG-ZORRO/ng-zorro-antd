@@ -28,9 +28,14 @@ When there is a need for autocomplete functionality.
 
 ### [nzAutocomplete]
 
-| Property           | Description                              | Type                      | Default |
-| ------------------ | ---------------------------------------- | ------------------------- | ------- |
-| `[nzAutocomplete]` | used to bind `nzAutocomplete` components | `NzAutocompleteComponent` | -       |
+| Property                      | Description                                                    | Type                            | Default              |
+| ----------------------------- | -------------------------------------------------------------- | ------------------------------- | -------------------- |
+| `[nzAutocomplete]`            | used to bind `nzAutocomplete` components                       | `NzAutocompleteComponent`       | -                    |
+| `[nzAutocompleteConnectedTo]` | element relative to which the autocomplete panel is positioned | `NzAutocompleteOriginDirective` | autocomplete trigger |
+
+### [nzAutocompleteOrigin]
+
+Directive applied to an element to make it usable as the origin of an autocomplete panel.
 
 ### nz-autocomplete
 

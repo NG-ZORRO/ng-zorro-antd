@@ -40,6 +40,7 @@ import {
   NzAutocompleteComponent,
   NzAutocompleteModule,
   NzAutocompleteOptionComponent,
+  NzAutocompleteOriginDirective,
   NzAutocompleteTriggerDirective,
   NzOptionSelectionChange
 } from './index';
@@ -873,6 +874,22 @@ describe('auto-complete', () => {
       fixture.detectChanges();
       expect(componentInstance.trigger['elementRef'].nativeElement).toEqual(componentInstance.inputRef.nativeElement);
     });
+
+    it('should use the custom origin as the dropdown target', () => {
+      const customOriginFixture = TestBed.createComponent(NzTestAutocompleteWithCustomOriginComponent);
+      customOriginFixture.detectChanges();
+      const componentInstance = customOriginFixture.componentInstance;
+      vi.spyOn(componentInstance.origin.elementRef.nativeElement, 'getBoundingClientRect').mockReturnValue(
+        new DOMRect(0, 0, 320, 32)
+      );
+
+      componentInstance.trigger.openPanel();
+      customOriginFixture.detectChanges();
+
+      expect(componentInstance.trigger['getConnectedElement']()).toBe(componentInstance.origin.elementRef);
+      const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
+      expect(Math.ceil(parseFloat(overlayPane.style.width))).toBe(320);
+    });
   });
 });
 
@@ -1092,6 +1109,22 @@ class NzTestAutocompleteWithObjectOptionComponent {
 class NzTestAutocompleteWithGroupInputComponent {
   @ViewChild(NzAutocompleteTriggerDirective, { static: true }) trigger!: NzAutocompleteTriggerDirective;
   @ViewChild('input', { static: true, read: ElementRef }) inputRef!: ElementRef;
+}
+
+@Component({
+  imports: [NzAutocompleteModule, NzInputModule],
+  template: `
+    <nz-input-wrapper nzAutocompleteOrigin #origin="nzAutocompleteOrigin" style="width: 320px">
+      <input nz-input [nzAutocomplete]="auto" [nzAutocompleteConnectedTo]="origin" />
+    </nz-input-wrapper>
+    <nz-autocomplete #auto>
+      <nz-auto-option nzValue="value">label</nz-auto-option>
+    </nz-autocomplete>
+  `
+})
+class NzTestAutocompleteWithCustomOriginComponent {
+  @ViewChild(NzAutocompleteOriginDirective, { static: true }) origin!: NzAutocompleteOriginDirective;
+  @ViewChild(NzAutocompleteTriggerDirective, { static: true }) trigger!: NzAutocompleteTriggerDirective;
 }
 
 describe('auto-complete', () => {
