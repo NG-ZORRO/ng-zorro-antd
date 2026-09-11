@@ -114,10 +114,48 @@ describe('auto-complete', () => {
       expect(overlayContainerElement.textContent).toContain('Burns Bay Road');
     });
 
+    it('should expose the combobox, listbox and option relationships', () => {
+      expect(input.getAttribute('role')).toBe('combobox');
+      expect(input.getAttribute('aria-autocomplete')).toBe('list');
+      expect(input.getAttribute('aria-expanded')).toBe('false');
+      expect(input.hasAttribute('aria-controls')).toBe(false);
+
+      dispatchFakeEvent(input, 'focusin');
+      fixture.detectChanges();
+
+      const panel = getPanel();
+      const options = getOptions();
+      expect(panel.getAttribute('role')).toBe('listbox');
+      expect(input.getAttribute('aria-haspopup')).toBe('listbox');
+      expect(input.getAttribute('aria-expanded')).toBe('true');
+      expect(input.getAttribute('aria-controls')).toBe(panel.id);
+      expect(input.getAttribute('aria-activedescendant')).toBe(options[0].id);
+      expect(options[0].getAttribute('role')).toBe('option');
+
+      fixture.componentInstance.trigger.closePanel();
+      fixture.detectChanges();
+
+      expect(input.getAttribute('aria-expanded')).toBe('false');
+      expect(input.hasAttribute('aria-controls')).toBe(false);
+      expect(input.hasAttribute('aria-activedescendant')).toBe(false);
+    });
+
     it('should open the panel when type', () => {
       expect(fixture.componentInstance.trigger.panelOpen).toBe(false);
       typeInElement('value', input);
       fixture.detectChanges();
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(true);
+    });
+
+    it('should open the panel on ArrowDown using the Angular Aria behavior', async () => {
+      input.focus();
+      fixture.detectChanges();
+      fixture.componentInstance.trigger.closePanel();
+      fixture.detectChanges();
+
+      input.dispatchEvent(createKeyboardEvent('keydown', DOWN_ARROW, input, 'ArrowDown'));
+      await stabilize(fixture);
+
       expect(fixture.componentInstance.trigger.panelOpen).toBe(true);
     });
 

@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Combobox } from '@angular/aria/combobox';
 import { DOWN_ARROW, ENTER, ESCAPE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   ConnectionPositionPair,
@@ -41,6 +42,7 @@ import { getNzAutocompleteMissingPanelError } from './error';
 @Directive({
   selector: `input[nzAutocomplete], textarea[nzAutocomplete]`,
   exportAs: 'nzAutocompleteTrigger',
+  hostDirectives: [Combobox],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -50,7 +52,13 @@ import { getNzAutocompleteMissingPanelError } from './error';
   ],
   host: {
     autocomplete: 'off',
-    'aria-autocomplete': 'list',
+    '[attr.aria-autocomplete]': "'list'",
+    '[attr.aria-haspopup]': "'listbox'",
+    '[attr.aria-expanded]': 'panelOpen',
+    '[attr.aria-controls]': 'panelOpen ? nzAutocomplete.panelId : null',
+    '[attr.aria-activedescendant]': 'panelOpen ? activeOption?.id : null',
+    '[attr.aria-disabled]': 'isDisabled',
+    '[attr.aria-readonly]': 'isReadonly',
     '(focusin)': 'handleFocus()',
     '(blur)': 'handleBlur()',
     '(input)': 'handleInput($any($event))',
@@ -59,6 +67,7 @@ import { getNzAutocompleteMissingPanelError } from './error';
   }
 })
 export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlValueAccessor {
+  private readonly ariaCombobox = inject(Combobox);
   private readonly injector = inject(Injector);
   private readonly ngZone = inject(NgZone);
   private readonly elementRef = inject(ElementRef<HTMLElement>);
@@ -96,6 +105,14 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
     });
   }
 
+  get isDisabled(): boolean {
+    return (this.elementRef.nativeElement as HTMLInputElement).disabled;
+  }
+
+  get isReadonly(): boolean {
+    return (this.elementRef.nativeElement as HTMLInputElement).readOnly;
+  }
+
   ngAfterViewInit(): void {
     if (this.nzAutocomplete) {
       this.nzAutocomplete.animationStateChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(event => {
@@ -130,6 +147,7 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
 
   openPanel(): void {
     this.previousValue = this.elementRef.nativeElement.value;
+    this.ariaCombobox.expanded.set(true);
     this.attachOverlay();
     this.updateStatus();
   }
@@ -137,6 +155,9 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   closePanel(): void {
     if (this.panelOpen) {
       this.nzAutocomplete.isOpen = this.panelOpen = false;
+      if (!this.destroyRef.destroyed) {
+        this.ariaCombobox.expanded.set(false);
+      }
 
       if (this.overlayRef && this.overlayRef.hasAttached()) {
         this.overlayRef.detach();
@@ -151,6 +172,12 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   handleKeydown(event: KeyboardEvent): void {
     const keyCode = event.keyCode;
     const isArrowKey = keyCode === UP_ARROW || keyCode === DOWN_ARROW;
+
+    if (!this.panelOpen && keyCode === DOWN_ARROW && this.canOpen()) {
+      event.preventDefault();
+      this.openPanel();
+      return;
+    }
 
     if (keyCode === ESCAPE) {
       event.preventDefault();
@@ -346,6 +373,7 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
     const option = this.nzAutocomplete.getOption(value);
     const displayValue = option ? option.getLabel() : value;
     this.elementRef.nativeElement.value = displayValue != null ? displayValue : '';
+    this.ariaCombobox.value.set(displayValue != null ? String(displayValue) : '');
     if (!this.nzAutocomplete.nzBackfill) {
       this.previousValue = displayValue;
     }
