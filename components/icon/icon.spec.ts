@@ -125,6 +125,86 @@ describe('nz-icon', () => {
     });
   });
 
+  describe('aria-label', () => {
+    let fixture: ComponentFixture<NzTestIconExtensionsComponent>;
+    let testComponent: NzTestIconExtensionsComponent;
+    let icons: DebugElement[];
+
+    beforeEach(() => {
+      TestBed.overrideComponent(NzTestIconExtensionsComponent, {
+        set: {
+          imports: [NzIconDirective],
+          template: `
+            <nz-icon [nzType]="type()" aria-label="Help" />
+            <span nz-icon [nzType]="type()" aria-label="Help"></span>
+            <nz-icon [nzType]="type()" [aria-label]="label()" />
+            <nz-icon [nzType]="type()" />
+          `
+        }
+      });
+      fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
+      testComponent = fixture.componentInstance;
+      icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
+    });
+
+    it.each([0, 1])('should preserve a static custom label on icon %i when the type changes', index => {
+      fixture.detectChanges();
+      expect(icons[index].nativeElement.getAttribute('aria-label')).toBe('Help');
+
+      testComponent.type.set('question-circle');
+      fixture.detectChanges();
+      expect(icons[index].nativeElement.getAttribute('aria-label')).toBe('Help');
+    });
+
+    it('should update a bound custom label and preserve it when the type changes', () => {
+      fixture.detectChanges();
+      expect(icons[2].nativeElement.getAttribute('aria-label')).toBe('Help');
+
+      testComponent.label.set('More information');
+      fixture.detectChanges();
+      expect(icons[2].nativeElement.getAttribute('aria-label')).toBe('More information');
+
+      testComponent.type.set('question-circle');
+      fixture.detectChanges();
+      expect(icons[2].nativeElement.getAttribute('aria-label')).toBe('More information');
+    });
+
+    it('should preserve an explicitly empty label', () => {
+      fixture.detectChanges();
+      testComponent.label.set('');
+      fixture.detectChanges();
+      expect(icons[2].nativeElement.getAttribute('aria-label')).toBe('');
+
+      testComponent.type.set('question-circle');
+      fixture.detectChanges();
+      expect(icons[2].nativeElement.getAttribute('aria-label')).toBe('');
+    });
+
+    it.each([null, undefined])('should fall back to the type when the custom label becomes %s', label => {
+      fixture.detectChanges();
+      testComponent.label.set(label);
+      fixture.detectChanges();
+      expect(icons[2].nativeElement.getAttribute('aria-label')).toBe('question');
+
+      testComponent.type.set('question-circle');
+      fixture.detectChanges();
+      expect(icons[2].nativeElement.getAttribute('aria-label')).toBe('question-circle');
+    });
+
+    it('should use the current type when no custom label is provided', () => {
+      fixture.detectChanges();
+      expect(icons[3].nativeElement.getAttribute('aria-label')).toBe('question');
+
+      testComponent.type.set('question-circle');
+      fixture.detectChanges();
+      expect(icons[3].nativeElement.getAttribute('aria-label')).toBe('question-circle');
+
+      testComponent.type.set(undefined);
+      fixture.detectChanges();
+      expect(icons[3].nativeElement.hasAttribute('aria-label')).toBe(false);
+    });
+  });
+
   describe('custom', () => {
     let fixture: ComponentFixture<NzTestIconCustomComponent>;
     let icons: DebugElement[];
@@ -243,7 +323,8 @@ describe('nz-icon injection', () => {
 export class NzTestIconExtensionsComponent {
   public readonly iconService = inject(NzIconService);
 
-  readonly type = signal('question');
+  readonly type = signal<string | undefined>('question');
+  readonly label = signal<string | null | undefined>('Help');
   readonly theme = signal<'fill' | 'outline' | 'twotone'>('outline');
   readonly spin = signal(true);
   readonly rotate = signal(0);

@@ -37,7 +37,7 @@ import { NzIconPatchService, NzIconService } from './icon.service';
   host: {
     role: 'img',
     '[class]': `hostClass()`,
-    '[attr.aria-label]': 'nzType()'
+    '[attr.aria-label]': 'ariaLabel() ?? nzType()'
   }
 })
 export class NzIconDirective extends IconBase implements AfterContentChecked {
@@ -56,6 +56,7 @@ export class NzIconDirective extends IconBase implements AfterContentChecked {
   readonly nzSpin = input(false, { transform: booleanAttribute });
   readonly nzRotate = input(0, { transform: numberAttribute });
   readonly nzIconfont = input<string>();
+  readonly ariaLabel = input<string | null>(undefined, { alias: 'aria-label' });
 
   protected readonly hostClass = computed(() => {
     const type = this.nzType();
