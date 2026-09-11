@@ -2254,6 +2254,16 @@ describe('cascader', () => {
       fixture.detectChanges();
     });
 
+    it('should not warn about the internal ngModel control', () => {
+      const warnSpy = vi.spyOn(console, 'warn');
+
+      fixture = TestBed.createComponent(NzDemoCascaderInFormComponent);
+      fixture.detectChanges();
+
+      expect(warnSpy.mock.calls.some(([message]) => String(message).includes('NG01354'))).toBe(false);
+      warnSpy.mockRestore();
+    });
+
     it('should className correct', () => {
       expect(cascader.nativeElement.className).not.toContain('ant-select-status-error');
       expect(cascader.nativeElement.querySelector('nz-form-item-feedback-icon')).toBeNull();

@@ -1604,6 +1604,16 @@ describe('select', () => {
       fixture.detectChanges();
     });
 
+    it('should not warn about the internal ngModel control', () => {
+      const warnSpy = vi.spyOn(console, 'warn');
+
+      fixture = TestBed.createComponent(TestSelectInFormComponent);
+      fixture.detectChanges();
+
+      expect(warnSpy.mock.calls.some(([message]) => String(message).includes('NG01354'))).toBe(false);
+      warnSpy.mockRestore();
+    });
+
     it('should classname correct and be disable initially', () => {
       const selectElement = fixture.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
       const inputElement = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
