@@ -152,6 +152,47 @@ describe('descriptions', () => {
       expect(componentElement.classList).not.toContain('ant-descriptions-rtl');
     });
   });
+
+  // fix #9927
+  describe('resize', () => {
+    let fixture: ComponentFixture<NzTestDescriptionsResponsiveContentComponent>;
+    let componentElement: HTMLElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestDescriptionsResponsiveContentComponent);
+      componentElement = fixture.debugElement.nativeElement;
+      fixture.detectChanges();
+    });
+
+    it('should keep item content after resizing down and back up', async () => {
+      const getContents = (): Array<string | undefined> =>
+        Array.from(componentElement.querySelectorAll('.ant-descriptions-item-content')).map(item =>
+          item.textContent?.trim()
+        );
+
+      viewport.set(1200, 1000);
+      window.dispatchEvent(new Event('resize'));
+      fixture.detectChanges();
+      await updateNonSignalsInput(fixture, 1000);
+      fixture.detectChanges();
+
+      viewport.set(320, 600);
+      window.dispatchEvent(new Event('resize'));
+      fixture.detectChanges();
+      await updateNonSignalsInput(fixture, 1000);
+      fixture.detectChanges();
+
+      viewport.set(1200, 1000);
+      window.dispatchEvent(new Event('resize'));
+      fixture.detectChanges();
+      await updateNonSignalsInput(fixture, 1000);
+      fixture.detectChanges();
+
+      viewport.reset();
+
+      expect(getContents()).toEqual(['UserName content', 'Telephone content', 'Live content']);
+    });
+  });
 });
 
 @Component({
@@ -172,3 +213,16 @@ export class NzTestDescriptionsComponent {
   readonly title = signal('Title');
   readonly itemTitle = signal('Item Title ');
 }
+
+@Component({
+  imports: [NzDescriptionsModule],
+  selector: 'nz-test-descriptions-responsive-content',
+  template: `
+    <nz-descriptions>
+      <nz-descriptions-item nzTitle="UserName">UserName content</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Telephone">Telephone content</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Live">Live content</nz-descriptions-item>
+    </nz-descriptions>
+  `
+})
+export class NzTestDescriptionsResponsiveContentComponent {}
