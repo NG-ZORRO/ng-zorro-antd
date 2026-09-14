@@ -116,6 +116,28 @@ describe('NgxColorPickerComponent', () => {
     expect(component.complete).toBe('hue');
   });
 
+  it('color-picker slide hue preserves selection for grayscale colors on ngModel round trip (#9929)', () => {
+    component.value.set('#ffffff');
+    fixture.detectChanges();
+    const element = fixture.debugElement.nativeElement.querySelector('.ant-color-picker-slider-hue');
+    const { x, y } = {
+      x: element.offsetLeft + 230,
+      y: element.offsetTop + 4
+    };
+    const event = new MouseEvent('mousedown', { clientX: x, clientY: y });
+    const closeEvent = new MouseEvent('mouseup');
+    element.dispatchEvent(event);
+    element.dispatchEvent(closeEvent);
+    fixture.detectChanges();
+    const emittedHue = component.changeColor!.toHsb().h;
+
+    component.value.set(component.changeColor!.toRgbString());
+    fixture.detectChanges();
+
+    const internalColor = (resultEl.componentInstance as NgAntdColorPickerComponent).colorValue!;
+    expect(internalColor.toHsb().h).toBe(emittedHue);
+  });
+
   it('color-picker slide alpha', () => {
     fixture.detectChanges();
     const element = fixture.debugElement.nativeElement.querySelector('.ant-color-picker-slider-alpha');

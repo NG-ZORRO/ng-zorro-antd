@@ -130,6 +130,20 @@ export class NgAntdColorPickerComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const { value, defaultValue } = changes;
     if (value || defaultValue) {
+      /**
+       * `value` is an RGBA string, which loses hue/saturation for grayscale colors (e.g. white,black).
+       * If it only echoes back the current `colorValue`'s RGBA (round-tripped through a
+       * controlling ngModel), skip rebuilding `colorValue` so that hue isn't discarded.
+       */
+
+      if (
+        value &&
+        this.colorValue &&
+        this.hasValue(this.value) &&
+        generateColor(this.value).toRgbString() === this.colorValue.toRgbString()
+      ) {
+        return;
+      }
       this.setColorValue(this.value);
     }
   }
