@@ -26,7 +26,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { filter } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 
 import { withAnimationCheck } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, WithConfig } from 'ng-zorro-antd/core/config';
@@ -135,9 +135,8 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
         const nextStyle = this.calcThumbStyle(element);
 
         if (prevStyle && nextStyle) {
-          // Trigger animation to end position
           requestAnimationFrame(() => {
-            this.thumbStyle.set(this.getThumbStyle(nextStyle));
+            this.thumbStyle.set(this.getThumbStyle(this.calcThumbStyle(element) ?? nextStyle));
           });
         } else if (nextStyle) {
           return this.getThumbStyle(nextStyle);
@@ -181,7 +180,7 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzName, nzOptions, nzDisabled } = changes;
+    const { nzName, nzOptions, nzDisabled, nzVertical } = changes;
     if (nzName) {
       this.service.setName(this.nzName);
     }
@@ -190,6 +189,19 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
     }
     if (nzDisabled) {
       this.service.disabled$.next(nzDisabled.currentValue);
+    }
+    if (nzVertical && !nzVertical.firstChange) {
+      afterNextRender(
+        () => {
+          this.service.activated$.pipe(take(1)).subscribe(element => {
+            const style = this.calcThumbStyle(element);
+            if (style) {
+              this.thumbStyle.set(this.getThumbStyle(style));
+            }
+          });
+        },
+        { injector: this.injector }
+      );
     }
   }
 
