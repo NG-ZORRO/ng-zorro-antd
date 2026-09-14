@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { EnvironmentProviders, inject, InjectionToken, makeEnvironmentProviders, Type } from '@angular/core';
+import { EnvironmentProviders, InjectionToken, makeEnvironmentProviders, Type } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -28,10 +28,6 @@ export interface NzDateAdapterConfig<TLocale = unknown> extends NzDateConfig {
 /** Factory for creating a date adapter configuration in an injection context. */
 export type NzDateAdapterConfigFactory<TLocale = unknown> = () => NzDateAdapterConfig<TLocale>;
 
-const NZ_DATE_ADAPTER_CONFIG = new InjectionToken<NzDateAdapterConfig>(
-  typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-date-adapter-config' : ''
-);
-
 /**
  * Provides a custom NzDateAdapter implementation.
  * Use this when you want to provide your own adapter implementation.
@@ -53,19 +49,18 @@ export function provideNzDateAdapter<TDate, TLocale, TAdapter extends NzDateAdap
 ): EnvironmentProviders {
   if (typeof config === 'function') {
     return makeEnvironmentProviders([
-      { provide: NZ_DATE_ADAPTER_CONFIG, useFactory: config },
       adapterClass,
       { provide: NzDateAdapter, useExisting: adapterClass },
       {
         provide: NZ_DATE_CONFIG,
         useFactory: (): NzDateConfig => {
-          const { locale: _locale, ...dateConfig } = inject(NZ_DATE_ADAPTER_CONFIG);
+          const { locale: _locale, ...dateConfig } = config();
           return { ...NZ_DATE_CONFIG_DEFAULT, ...dateConfig };
         }
       },
       {
         provide: NZ_DATE_LOCALE,
-        useFactory: (): unknown => inject(NZ_DATE_ADAPTER_CONFIG).locale
+        useFactory: (): TLocale | undefined => config().locale
       }
     ]);
   }

@@ -7,7 +7,6 @@ import { inject, LOCALE_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { enUS, zhCN } from 'date-fns/locale';
-import { vi } from 'vitest';
 
 import { NzDateAdapter } from './date-adapter';
 import { NZ_DATE_LOCALE } from './date-config';
@@ -54,20 +53,21 @@ describe('DateFnsDateAdapter', () => {
       expect(a.format(new Date(2024, 10, 1), 'MMM')).toBe('11月');
     });
 
-    it('should configure the adapter once from a factory in an injection context', () => {
+    it('should configure the adapter from a factory in an injection context', () => {
       TestBed.resetTestingModule();
-      const configFactory = vi.fn(() => ({
-        locale: inject(LOCALE_ID) === 'zh-CN' ? zhCN : enUS,
-        firstDayOfWeek: 4 as const
-      }));
       TestBed.configureTestingModule({
-        providers: [{ provide: LOCALE_ID, useValue: 'zh-CN' }, provideNzDateFnsAdapter(configFactory)]
+        providers: [
+          { provide: LOCALE_ID, useValue: 'zh-CN' },
+          provideNzDateFnsAdapter(() => ({
+            locale: inject(LOCALE_ID) === 'zh-CN' ? zhCN : enUS,
+            firstDayOfWeek: 4
+          }))
+        ]
       });
 
       const a = TestBed.inject(NzDateAdapter) as DateFnsDateAdapter;
       expect(a.format(new Date(2024, 10, 1), 'MMM')).toBe('11月');
       expect(a.getFirstDayOfWeek()).toBe(4);
-      expect(configFactory).toHaveBeenCalledOnce();
     });
   });
 
