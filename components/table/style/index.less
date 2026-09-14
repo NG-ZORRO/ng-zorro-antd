@@ -18,7 +18,6 @@
   clear: both;
   max-width: 100%;
   .clearfix();
-
 }
 
 .@{table-prefix-cls} {
@@ -317,9 +316,9 @@
     position: relative;
     display: flex;
     align-items: center;
-    margin-block: -4px;
-    margin-inline: (-@table-padding-horizontal / 2) 4px;
-    padding: 0 4px;
+    margin-block: -@padding-xss;
+    margin-inline: @padding-xss (-@table-padding-horizontal / 2);
+    padding: 0 @padding-xss;
     color: @table-header-icon-color;
     font-size: @font-size-sm;
     border-radius: @border-radius-base;

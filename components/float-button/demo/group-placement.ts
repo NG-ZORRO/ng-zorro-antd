@@ -10,7 +10,7 @@ import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
       <div class="box">
         @for (placement of placements; track placement) {
           <nz-float-button-group
-            class="{{ placement }}"
+            [class]="placement"
             [nzIcon]="icons[$index]"
             nzType="primary"
             nzTrigger="click"

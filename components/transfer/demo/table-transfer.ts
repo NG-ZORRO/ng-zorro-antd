@@ -13,7 +13,7 @@ import { NzTransferModule, TransferChange, TransferItem, TransferSelectChange } 
     <nz-transfer
       [nzDataSource]="list()"
       [nzDisabled]="disabled()"
-      nzShowSearch
+      [nzShowSearch]="showSearch()"
       [nzShowSelectAll]="false"
       [nzRenderList]="[renderList, renderList]"
       (nzSelectChange)="select($event)"
@@ -67,6 +67,7 @@ import { NzTransferModule, TransferChange, TransferItem, TransferSelectChange } 
     </nz-transfer>
     <br />
     <nz-switch [(ngModel)]="disabled" nzCheckedChildren="disabled" nzUnCheckedChildren="disabled" />
+    <nz-switch [(ngModel)]="showSearch" nzCheckedChildren="showSearch" nzUnCheckedChildren="showSearch" />
   `
 })
 export class NzDemoTransferTableTransferComponent {
@@ -82,6 +83,7 @@ export class NzDemoTransferTableTransferComponent {
     }))
   );
   readonly disabled = signal(false);
+  readonly showSearch = signal(false);
 
   select(ret: TransferSelectChange): void {
     console.log('nzSelectChange', ret);
