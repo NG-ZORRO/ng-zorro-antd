@@ -35,6 +35,26 @@ export const appConfig: ApplicationConfig = {
 
 `NZ_I18N` 控制 NG-ZORRO 组件文案；adapter 的 `locale` 控制日期库的格式化和周规则，例如月份名称、星期名称和周起始日。如果运行时切换语言，也需要用当前 adapter 期望的 locale 值调用 `dateAdapter.setLocale(...)`。
 
+Provider helper 也支持传入在 Angular 注入上下文中执行的 factory，适用于多语言构建共用同一份应用配置的场景：
+
+```ts
+import { ApplicationConfig, inject, LOCALE_ID } from '@angular/core';
+import { enUS, zhCN } from 'date-fns/locale';
+
+import { provideNzDateFnsAdapter } from 'ng-zorro-antd/core/time';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideNzDateFnsAdapter(() => {
+      const localeId = inject(LOCALE_ID);
+      return { locale: localeId.startsWith('zh') ? zhCN : enUS };
+    })
+  ]
+};
+```
+
+`provideNzNativeDateAdapter` 与 `provideNzDateAdapter` 同样支持 factory 形式。
+
 ## 使用自定义 Adapter
 
 自定义 adapter 需要继承 `NzDateAdapter<TDate, TLocale>`，其中 `TDate` 是组件使用的日期值类型，`TLocale` 是 locale 类型。为了保持现有组件 API 与表单值兼容，推荐让 `TDate` 继续使用 `Date`，只把格式化、解析和日期计算委托给第三方日期库。

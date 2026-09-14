@@ -30,7 +30,7 @@ import {
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-import { NzDateAdapter, NzDateAdapterConfig, provideNzDateAdapter } from './date-adapter';
+import { NzDateAdapter, NzDateAdapterConfig, NzDateAdapterConfigFactory, provideNzDateAdapter } from './date-adapter';
 import { NZ_DATE_CONFIG, NZ_DATE_LOCALE } from './date-config';
 
 /** Configuration for date-fns date adapter. */
@@ -38,6 +38,9 @@ export interface NzDateFnsAdapterConfig extends NzDateAdapterConfig<Locale> {
   /** Locale object from date-fns. */
   locale?: Locale;
 }
+
+/** Factory for creating date-fns adapter configuration in an injection context. */
+export type NzDateFnsAdapterConfigFactory = NzDateAdapterConfigFactory<Locale>;
 
 /**
  * Date adapter for date-fns.
@@ -309,7 +312,7 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
  * Provides the DateFnsDateAdapter as the NzDateAdapter implementation.
  * DateFnsDateAdapter uses date-fns library for date operations.
  *
- * @param config Optional configuration for the adapter
+ * @param config Optional configuration or configuration factory for the adapter
  * @returns EnvironmentProviders for the DateFnsDateAdapter
  *
  * @example
@@ -319,8 +322,15 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
  * };
  * ```
  *
+ * The factory form runs in an injection context:
+ * ```typescript
+ * providers: [provideNzDateFnsAdapter(() => ({ locale: inject(DATE_FNS_LOCALE) }))]
+ * ```
+ *
  * @note Requires date-fns as a peer dependency.
  */
-export function provideNzDateFnsAdapter(config?: NzDateFnsAdapterConfig): EnvironmentProviders {
+export function provideNzDateFnsAdapter(
+  config?: NzDateFnsAdapterConfig | NzDateFnsAdapterConfigFactory
+): EnvironmentProviders {
   return provideNzDateAdapter(DateFnsDateAdapter, config);
 }
