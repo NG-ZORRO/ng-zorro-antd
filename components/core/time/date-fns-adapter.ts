@@ -324,7 +324,14 @@ export class DateFnsDateAdapter extends NzDateAdapter<Date, Locale> {
  *
  * The factory form runs in an injection context:
  * ```typescript
- * providers: [provideNzDateFnsAdapter(() => ({ locale: inject(DATE_FNS_LOCALE) }))]
+ * import { inject, LOCALE_ID } from '@angular/core';
+ * import { enUS, zhCN } from 'date-fns/locale';
+ *
+ * providers: [
+ *   provideNzDateFnsAdapter(() => ({
+ *     locale: inject(LOCALE_ID).startsWith('zh') ? zhCN : enUS
+ *   }))
+ * ]
  * ```
  *
  * @note Requires date-fns as a peer dependency.
