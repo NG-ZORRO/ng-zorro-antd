@@ -16,7 +16,7 @@ import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/tes
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 import { NzPlacementType } from './dropdown-menu.component';
-import { NzDropdownDirective } from './dropdown.directive';
+import { NzDropdownDirective, TriggerDelay } from './dropdown.directive';
 import { NzDropdownModule } from './dropdown.module';
 
 describe('dropdown', () => {
@@ -184,6 +184,58 @@ describe('dropdown', () => {
     expect(overlayContainerElement.querySelector<HTMLElement>('.ant-dropdown')!.style.color).toBe('rgb(0, 0, 0)');
   });
 
+  it('should nzTriggerDelay work', async () => {
+    const fixture = TestBed.createComponent(NzTestDropdownComponent);
+    fixture.componentInstance.triggerDelay.set(1000);
+    fixture.detectChanges();
+    const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
+    dispatchFakeEvent(dropdownElement, 'mouseenter');
+    await stabilize(fixture, 500);
+    expect(overlayContainerElement.textContent).toBe('');
+    await stabilize(fixture, 600);
+    expect(overlayContainerElement.textContent).toContain('1st menu item');
+  });
+
+  it('should re-evaluate auditTime when nzTriggerDelay changes at runtime', async () => {
+    const fixture = TestBed.createComponent(NzTestDropdownComponent);
+    fixture.componentInstance.triggerDelay.set(1000);
+    fixture.detectChanges();
+    const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
+
+    // Change the delay to a much shorter value after the directive has already subscribed.
+    fixture.componentInstance.triggerDelay.set(100);
+    fixture.detectChanges();
+
+    dispatchFakeEvent(dropdownElement, 'mouseenter');
+    await stabilize(fixture, 150);
+    // If the stale 1000ms auditTime were still in effect, nothing would show yet.
+    expect(overlayContainerElement.textContent).toContain('1st menu item');
+  });
+
+  it('should nzTriggerDelay support a per-trigger-type delay object', async () => {
+    const fixture = TestBed.createComponent(NzTestDropdownComponent);
+    fixture.componentInstance.trigger.set('click');
+    fixture.componentInstance.triggerDelay.set({ click: 1000, hover: 100 });
+    fixture.detectChanges();
+    const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
+    dispatchFakeEvent(dropdownElement, 'click');
+    await stabilize(fixture, 500);
+    expect(overlayContainerElement.textContent).toBe('');
+    await stabilize(fixture, 600);
+    expect(overlayContainerElement.textContent).toContain('1st menu item');
+  });
+
+  it('should nzTriggerDelay fall back to the default when the matching trigger key is missing', async () => {
+    const fixture = TestBed.createComponent(NzTestDropdownComponent);
+    fixture.componentInstance.trigger.set('hover');
+    fixture.componentInstance.triggerDelay.set({ click: 1000 });
+    fixture.detectChanges();
+    const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
+    dispatchFakeEvent(dropdownElement, 'mouseenter');
+    await stabilize(fixture, 200);
+    expect(overlayContainerElement.textContent).toContain('1st menu item');
+  });
+
   it('should nzVisible & nzClickHide work', async () => {
     const fixture = TestBed.createComponent(NzTestDropdownVisibleComponent);
     fixture.detectChanges();
@@ -228,6 +280,7 @@ async function stabilize<T>(fixture: ComponentFixture<T>, ms?: number): Promise<
       [nzBackdrop]="backdrop()"
       [nzOverlayClassName]="className()"
       [nzOverlayStyle]="overlayStyle()"
+      [nzTriggerDelay]="triggerDelay()"
     >
       Trigger
     </a>
@@ -247,6 +300,7 @@ export class NzTestDropdownComponent {
   readonly disabled = signal(false);
   readonly className = signal('custom-class');
   readonly overlayStyle = signal({ color: '#000' });
+  readonly triggerDelay = signal<TriggerDelay>(500);
 }
 
 @Component({
@@ -257,6 +311,7 @@ export class NzTestDropdownComponent {
       [nzDropdownMenu]="menu"
       [nzClickHide]="false"
       [(nzVisible)]="visible"
+      [nzTriggerDelay]="150"
       (nzVisibleChange)="triggerVisible($event)"
     >
       Hover me
