@@ -11,7 +11,7 @@ import { vi } from 'vitest';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzElementPatchDirective } from 'ng-zorro-antd/core/element-patch';
-import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import { dispatchMouseEvent, dispatchTouchEvent } from 'ng-zorro-antd/core/testing';
 
 import { NzTooltipBaseDirective, NzTooltipTrigger } from './base';
 import { NzTooltipDirective } from './tooltip';
@@ -323,6 +323,79 @@ describe('tooltip', () => {
       const triggerElement = component.inBtnGroup.nativeElement;
       // There's a <!--container--> element created by Ivy.
       expect(triggerElement.nextSibling.nextSibling.tagName).toBe('BUTTON');
+    });
+  });
+
+  describe('touch devices', () => {
+    it('should not show tooltip when a tap fires touchend immediately before mouseenter', () => {
+      const title = 'title-string';
+      const triggerElement = component.titleString.nativeElement;
+
+      dispatchTouchEvent(triggerElement, 'touchend');
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      waitingForTooltipToggling();
+
+      expect(overlayContainerElement.textContent).not.toContain(title);
+    });
+
+    it('should not show tooltip after a long press (touchstart held before touchend)', () => {
+      const title = 'title-string';
+      const triggerElement = component.titleString.nativeElement;
+
+      dispatchTouchEvent(triggerElement, 'touchstart');
+      vi.advanceTimersByTime(700); // Hold well past the old touchstart-anchored window.
+      dispatchTouchEvent(triggerElement, 'touchend');
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      waitingForTooltipToggling();
+
+      expect(overlayContainerElement.textContent).not.toContain(title);
+    });
+
+    it('should still show tooltip on a genuine mouseenter with no preceding touch', () => {
+      const title = 'title-string';
+      const triggerElement = component.titleString.nativeElement;
+
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      waitingForTooltipToggling();
+
+      expect(overlayContainerElement.textContent).toContain(title);
+    });
+
+    it('should show tooltip on mouseenter once the touch-suppression window has elapsed (hybrid device)', () => {
+      const title = 'title-string';
+      const triggerElement = component.titleString.nativeElement;
+
+      dispatchTouchEvent(triggerElement, 'touchend');
+      vi.advanceTimersByTime(600); // Past the 500ms suppression window.
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      waitingForTooltipToggling();
+
+      expect(overlayContainerElement.textContent).toContain(title);
+    });
+
+    it('should reset the suppression timer on repeated taps rather than stacking timers', () => {
+      const title = 'title-string';
+      const triggerElement = component.titleString.nativeElement;
+
+      dispatchTouchEvent(triggerElement, 'touchend');
+      vi.advanceTimersByTime(300);
+      dispatchTouchEvent(triggerElement, 'touchend'); // Second tap resets the window.
+      vi.advanceTimersByTime(300); // 300+300=600 total, but only 300 since the reset.
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      waitingForTooltipToggling();
+
+      expect(overlayContainerElement.textContent).not.toContain(title);
+    });
+
+    it('should leave click trigger unaffected by touch suppression', () => {
+      const featureKey = 'title-template';
+      const triggerElement = component.titleTemplate.nativeElement;
+
+      dispatchTouchEvent(triggerElement, 'touchend');
+      dispatchMouseEvent(triggerElement, 'click');
+      waitingForTooltipToggling();
+
+      expect(overlayContainerElement.textContent).toContain(featureKey);
     });
   });
 });
