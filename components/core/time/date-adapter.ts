@@ -51,32 +51,24 @@ export function provideNzDateAdapter<TDate, TLocale, TAdapter extends NzDateAdap
   adapterClass: Type<TAdapter>,
   config?: NzDateAdapterConfig<TLocale> | NzDateAdapterConfigFactory<TLocale>
 ): EnvironmentProviders {
-  if (typeof config === 'function') {
-    return makeEnvironmentProviders([
-      { provide: NZ_DATE_ADAPTER_CONFIG, useFactory: config },
-      adapterClass,
-      { provide: NzDateAdapter, useExisting: adapterClass },
-      {
-        provide: NZ_DATE_CONFIG,
-        useFactory: (): NzDateConfig => {
-          const { locale: _locale, ...dateConfig } = inject(NZ_DATE_ADAPTER_CONFIG);
-          return { ...NZ_DATE_CONFIG_DEFAULT, ...dateConfig };
-        }
-      },
-      {
-        provide: NZ_DATE_LOCALE,
-        useFactory: (): unknown => inject(NZ_DATE_ADAPTER_CONFIG).locale
-      }
-    ]);
-  }
-
-  const { locale, ...dateConfig } = config ?? {};
-
   return makeEnvironmentProviders([
+    {
+      provide: NZ_DATE_ADAPTER_CONFIG,
+      useFactory: typeof config === 'function' ? config : () => config ?? {}
+    },
     adapterClass,
     { provide: NzDateAdapter, useExisting: adapterClass },
-    { provide: NZ_DATE_CONFIG, useValue: { ...NZ_DATE_CONFIG_DEFAULT, ...dateConfig } },
-    ...(locale !== undefined ? [{ provide: NZ_DATE_LOCALE, useValue: locale }] : [])
+    {
+      provide: NZ_DATE_CONFIG,
+      useFactory: (): NzDateConfig => {
+        const { locale: _locale, ...dateConfig } = inject(NZ_DATE_ADAPTER_CONFIG);
+        return { ...NZ_DATE_CONFIG_DEFAULT, ...dateConfig };
+      }
+    },
+    {
+      provide: NZ_DATE_LOCALE,
+      useFactory: (): unknown => inject(NZ_DATE_ADAPTER_CONFIG).locale
+    }
   ]);
 }
 
