@@ -7,7 +7,7 @@ import { EnvironmentProviders, Injectable, inject } from '@angular/core';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-import { NzDateAdapter, NzDateAdapterConfig, provideNzDateAdapter } from './date-adapter';
+import { NzDateAdapter, NzDateAdapterConfig, NzDateAdapterConfigFactory, provideNzDateAdapter } from './date-adapter';
 import { NZ_DATE_CONFIG, NZ_DATE_LOCALE } from './date-config';
 
 /** Configuration for native date adapter. */
@@ -15,6 +15,9 @@ export interface NzNativeDateAdapterConfig extends NzDateAdapterConfig<string> {
   /** Locale string used by Intl.DateTimeFormat. */
   locale?: string;
 }
+
+/** Factory for creating native adapter configuration in an injection context. */
+export type NzNativeDateAdapterConfigFactory = NzDateAdapterConfigFactory<string>;
 
 /** Matches strings that look like ISO 8601 dates (e.g. 2024-01-15, 2024-01-15T10:30:00). */
 const ISO_8601_REGEX = /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|(?:(?:\+|-)\d{2}:\d{2}))?)?$/;
@@ -627,7 +630,7 @@ export class NativeDateAdapter extends NzDateAdapter<Date, string> {
  * Provides the NativeDateAdapter as the NzDateAdapter implementation.
  * NativeDateAdapter uses native Date and Intl.DateTimeFormat.
  *
- * @param config Optional configuration for the adapter
+ * @param config Optional configuration or configuration factory for the adapter
  * @returns EnvironmentProviders for the NativeDateAdapter
  *
  * @example
@@ -637,6 +640,8 @@ export class NativeDateAdapter extends NzDateAdapter<Date, string> {
  * };
  * ```
  */
-export function provideNzNativeDateAdapter(config?: NzNativeDateAdapterConfig): EnvironmentProviders {
+export function provideNzNativeDateAdapter(
+  config?: NzNativeDateAdapterConfig | NzNativeDateAdapterConfigFactory
+): EnvironmentProviders {
   return provideNzDateAdapter(NativeDateAdapter, config);
 }

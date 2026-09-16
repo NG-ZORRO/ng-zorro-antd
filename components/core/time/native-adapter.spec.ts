@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { inject, LOCALE_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { NzDateAdapter } from './date-adapter';
@@ -29,6 +30,20 @@ describe('NativeDateAdapter', () => {
       });
       const a = TestBed.inject(NzDateAdapter) as NativeDateAdapter;
       expect(a.format(new Date(2024, 10, 1), 'MMM')).toBe('11月');
+    });
+
+    it('should configure the adapter from a factory in an injection context', () => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        providers: [
+          { provide: LOCALE_ID, useValue: 'zh-CN' },
+          provideNzNativeDateAdapter(() => ({ locale: inject(LOCALE_ID), firstDayOfWeek: 4 }))
+        ]
+      });
+
+      const a = TestBed.inject(NzDateAdapter) as NativeDateAdapter;
+      expect(a.format(new Date(2024, 10, 1), 'MMM')).toBe('11月');
+      expect(a.getFirstDayOfWeek()).toBe(4);
     });
   });
 
