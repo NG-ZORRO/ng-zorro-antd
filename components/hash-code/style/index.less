@@ -19,14 +19,14 @@
 }
 
 .@{hash-code-prefix-cls}-header-copy {
-  margin-left: @margin-xs;
+  margin-inline-start: @margin-xs;
   cursor: pointer;
   opacity: 0.45;
 }
 
 .@{hash-code-prefix-cls}-header {
   display: flex;
-  justify-content: left;
+  justify-content: flex-start;
   width: 100%;
   height: 22px;
   padding-bottom: @padding-xs;
@@ -41,7 +41,7 @@
   .@{hash-code-prefix-cls}-header-logo {
     display: flex;
     flex: 1;
-    justify-content: right;
+    justify-content: flex-end;
   }
 }
 

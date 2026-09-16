@@ -52,7 +52,9 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     }
 
     .login-form-forgot {
-      float: right;
+      display: inline-flex;
+      width: 100%;
+      justify-content: flex-end;
     }
 
     .login-form-button {

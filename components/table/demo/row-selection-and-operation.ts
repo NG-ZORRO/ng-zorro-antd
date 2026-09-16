@@ -48,7 +48,7 @@ export interface Data {
         </tr>
       </thead>
       <tbody>
-        @for (data of rowSelectionTable.data; track data) {
+        @for (data of rowSelectionTable.data; track data.id) {
           <tr>
             <td
               [nzChecked]="setOfCheckedId().has(data.id)"
@@ -70,7 +70,7 @@ export interface Data {
     }
 
     .send-request span {
-      margin-left: 8px;
+      margin-inline-start: 8px;
     }
   `
 })

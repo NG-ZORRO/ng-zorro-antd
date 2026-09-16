@@ -14,9 +14,13 @@
   display: table;
   width: 100%;
 
+  &-rtl {
+    direction: rtl;
+  }
+
   &-header {
     display: table-cell;
-    padding-right: @padding-md;
+    padding-inline-end: @padding-md;
     vertical-align: top;
 
     // Avatar
@@ -262,10 +266,8 @@
 
   &::after {
     position: absolute;
-    top: 0;
-    right: -150%;
-    bottom: 0;
-    left: -150%;
+    inset-block: 0;
+    inset-inline: -150%;
     background: linear-gradient(
       90deg,
       @skeleton-color 25%,
@@ -286,5 +288,3 @@
     transform: translateX(37.5%);
   }
 }
-
-@import './rtl';

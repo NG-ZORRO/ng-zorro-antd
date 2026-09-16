@@ -166,11 +166,11 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
       overflow: auto;
       height: 100%;
       position: fixed;
-      left: 0;
+      inset-inline-start: 0;
     }
 
     .right-layout {
-      margin-left: 200px;
+      margin-inline-start: 200px;
     }
 
     nz-header {

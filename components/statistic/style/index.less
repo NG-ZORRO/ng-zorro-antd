@@ -6,6 +6,10 @@
 .@{statistic-prefix-cls} {
   .reset-component();
 
+  &-rtl {
+    direction: rtl;
+  }
+
   &-title {
     margin-bottom: @margin-xss;
     color: @text-color-secondary;
@@ -32,13 +36,11 @@
     }
 
     &-prefix {
-      margin-right: 4px;
+      margin-inline-end: 4px;
     }
 
     &-suffix {
-      margin-left: 4px;
+      margin-inline-start: 4px;
     }
   }
 }
-
-@import './rtl';

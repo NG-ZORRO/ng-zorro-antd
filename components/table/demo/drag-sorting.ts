@@ -16,7 +16,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
         </tr>
       </thead>
       <tbody cdkDropList (cdkDropListDropped)="drop($event)">
-        @for (data of listOfData; track data) {
+        @for (data of listOfData; track data.key) {
           <tr cdkDrag>
             <td>{{ data.name }}</td>
             <td>{{ data.age }}</td>

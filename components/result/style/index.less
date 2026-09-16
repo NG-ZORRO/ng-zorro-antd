@@ -5,6 +5,11 @@
 
 .@{result-prefix-cls} {
   padding: 48px 32px;
+
+  &-rtl {
+    direction: rtl;
+  }
+
   // status color
   &-success &-icon > .@{iconfont-css-prefix} {
     color: @success-color;
@@ -57,10 +62,10 @@
     text-align: center;
 
     > * {
-      margin-right: 8px;
+      margin-inline-end: 8px;
 
       &:last-child {
-        margin-right: 0;
+        margin-inline-end: 0;
       }
     }
   }
@@ -71,5 +76,3 @@
     background-color: @background-color-light;
   }
 }
-
-@import './rtl';

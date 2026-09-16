@@ -28,7 +28,7 @@ import { NzTransferModule, TransferChange, TransferItem, TransferSelectChange } 
         let-onItemSelectAll="onItemSelectAll"
         let-onItemSelect="onItemSelect"
       >
-        <nz-table #t [nzData]="$asTransferItems(items)" nzSize="small">
+        <nz-table #t [nzData]="items" nzSize="small">
           <thead>
             <tr>
               <th
@@ -82,7 +82,6 @@ export class NzDemoTransferTableTransferComponent {
       direction: [2, 3].includes(i) ? 'right' : undefined
     }))
   );
-  readonly $asTransferItems = (data: unknown): TransferItem[] => data as TransferItem[];
   readonly disabled = signal(false);
   readonly showSearch = signal(false);
 

@@ -13,13 +13,17 @@
     outline: none;
   }
 
+  &-rtl {
+    direction: rtl;
+  }
+
   &-pagination {
     margin-top: @margin-lg;
-    text-align: right;
+    text-align: end;
 
     // https://github.com/ant-design/ant-design/issues/20037
     .@{ant-prefix}-pagination-options {
-      text-align: left;
+      text-align: start;
     }
   }
 
@@ -28,8 +32,7 @@
     text-align: center;
 
     button {
-      padding-right: 32px;
-      padding-left: 32px;
+      padding-inline: 32px;
     }
   }
 
@@ -65,7 +68,7 @@
       max-width: 100%;
 
       &-avatar {
-        margin-right: @list-item-meta-avatar-margin-right;
+        margin-inline-end: @list-item-meta-avatar-margin-right;
       }
 
       &-content {
@@ -99,7 +102,7 @@
 
     &-action {
       flex: 0 0 auto;
-      margin-left: 48px;
+      margin-inline-start: 48px;
       padding: 0;
       font-size: 0;
       list-style: none;
@@ -114,14 +117,14 @@
         text-align: center;
 
         &:first-child {
-          padding-left: 0;
+          padding-inline-start: 0;
         }
       }
 
       &-split {
         position: absolute;
         top: 50%;
-        right: 0;
+        inset-inline-end: 0;
         width: 1px;
         height: 14px;
         margin-top: -7px;
@@ -192,7 +195,7 @@
     }
 
     &-extra {
-      margin-left: 40px;
+      margin-inline-start: 40px;
     }
 
     &-meta {
@@ -208,13 +211,13 @@
 
     &-action {
       margin-top: @padding-md;
-      margin-left: auto;
+      margin-inline-start: auto;
 
       > li {
         padding: 0 @padding-md;
 
         &:first-child {
-          padding-left: 0;
+          padding-inline-start: 0;
         }
       }
     }
@@ -238,7 +241,7 @@
   &:not(.@{list-prefix-cls}-vertical) {
     .@{list-prefix-cls}-item-no-flex {
       .@{list-prefix-cls}-item-action {
-        float: right;
+        float: inline-end;
       }
     }
   }
@@ -246,4 +249,3 @@
 
 @import './bordered';
 @import './responsive';
-@import './rtl';

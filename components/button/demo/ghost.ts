@@ -20,7 +20,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     }
 
     [nz-button] {
-      margin-right: 8px;
+      margin-inline-end: 8px;
     }
   `
 })

@@ -15,9 +15,9 @@ When a given task is complicated or has a certain sequence in the series of subt
 
 ```html
 <nz-steps>
-  <nz-step nzTitle="first step"></nz-step>
-  <nz-step nzTitle="second step"></nz-step>
-  <nz-step nzTitle="third step"></nz-step>
+  <nz-step nzTitle="first step" />
+  <nz-step nzTitle="second step" />
+  <nz-step nzTitle="third step" />
 </nz-steps>
 ```
 

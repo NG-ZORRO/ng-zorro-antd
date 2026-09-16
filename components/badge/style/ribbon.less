@@ -2,9 +2,8 @@
 @import '../../style/mixins/index';
 
 @ribbon-prefix-cls: ~'@{ant-prefix}-ribbon';
-@ribbon-wrapper-prefix-cls: ~'@{ant-prefix}-ribbon-wrapper';
 
-.@{ribbon-wrapper-prefix-cls} {
+.@{ribbon-prefix-cls}-wrapper {
   position: relative;
 }
 
@@ -52,20 +51,27 @@
 
   // placement
   &.@{ribbon-prefix-cls}-placement-end {
-    right: -8px;
-    border-bottom-right-radius: 0;
+    inset-inline-end: -8px;
+    border-end-end-radius: 0;
     .@{ribbon-prefix-cls}-corner {
-      right: 0;
-      border-color: currentcolor transparent transparent currentcolor;
+      inset-inline-end: 0;
+      border-inline-end-color: transparent;
+      border-block-end-color: transparent;
     }
   }
 
   &.@{ribbon-prefix-cls}-placement-start {
-    left: -8px;
-    border-bottom-left-radius: 0;
+    inset-inline-start: -8px;
+    border-end-start-radius: 0;
     .@{ribbon-prefix-cls}-corner {
-      left: 0;
-      border-color: currentcolor currentcolor transparent transparent;
+      inset-inline-start: 0;
+      border-inline-start-color: transparent;
+      border-block-end-color: transparent;
     }
+  }
+
+  // ====================== RTL =======================
+  &-rtl {
+    direction: rtl;
   }
 }

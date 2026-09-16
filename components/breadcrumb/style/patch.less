@@ -1,7 +1,7 @@
 .@{breadcrumb-prefix-cls} {
   &-link {
     .@{iconfont-css-prefix} + span {
-      margin-left: 4px;
+      margin-inline-start: 4px;
     }
   }
 
@@ -16,7 +16,7 @@
 
   &-rtl {
     > nz-breadcrumb-item {
-      float: right;
+      unicode-bidi: isolate;
     }
   }
 }

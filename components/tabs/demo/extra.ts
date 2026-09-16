@@ -28,10 +28,10 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
     <nz-tabs>
       @if (positions().includes('start')) {
-        <button *nzTabBarExtraContent="'start'" nz-button [style.margin-right.px]="16">Start Extra Action</button>
+        <button *nzTabBarExtraContent="'start'" nz-button style="margin-inline-end: 16px;">Start Extra Action</button>
       }
       @if (positions().includes('end')) {
-        <button *nzTabBarExtraContent="'end'" nz-button [style.margin-left.px]="16">End Extra Action</button>
+        <button *nzTabBarExtraContent="'end'" nz-button style="margin-inline-start: 16px;">End Extra Action</button>
       }
 
       @for (tab of tabs; track tab) {

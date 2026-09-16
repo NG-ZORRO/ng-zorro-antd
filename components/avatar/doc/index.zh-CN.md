@@ -29,7 +29,7 @@ description: 用来代表用户或事物，支持图片、图标或字符展示�
 
 ```html
 <nz-avatar-group>
-  <nz-avatar nzIcon="user"></nz-avatar>
+  <nz-avatar nzIcon="user" />
   <!--  ...  -->
 </nz-avatar-group>
 ```

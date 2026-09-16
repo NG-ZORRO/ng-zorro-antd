@@ -24,7 +24,7 @@ interface Person {
         </tr>
       </thead>
       <tbody>
-        @for (data of basicTable.data; track data) {
+        @for (data of basicTable.data; track data.key) {
           <tr>
             <td>{{ data.name }}</td>
             <td>{{ data.age }}</td>

@@ -1,7 +1,3 @@
-@import './size';
-@import (reference) '../../style/themes/index';
-@table-prefix-cls: ~'@{ant-prefix}-table';
-
 @table-border: @border-width-base @border-style-base @table-border-color;
 
 .@{table-prefix-cls}.@{table-prefix-cls}-bordered {
@@ -13,7 +9,7 @@
 
   > .@{table-prefix-cls}-container {
     // ============================ Content ============================
-    border-left: @table-border;
+    border-inline-start: @table-border;
 
     > .@{table-prefix-cls}-content,
     > .@{table-prefix-cls}-header,
@@ -25,7 +21,7 @@
         > tbody > tr > td,
         > tfoot > tr > th,
         > tfoot > tr > td {
-          border-right: @table-border;
+          border-inline-end: @table-border;
         }
         // ============================ Header ============================
         > thead {

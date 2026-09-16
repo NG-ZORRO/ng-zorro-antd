@@ -14,6 +14,7 @@ import {
 } from 'ng-zorro-antd/table';
 
 interface ItemData {
+  id: number;
   name: string;
   age: number | string;
   address: string;
@@ -115,7 +116,7 @@ interface Setting {
         }
       </thead>
       <tbody>
-        @for (data of dynamicTable.data; track data) {
+        @for (data of dynamicTable.data; track data.id) {
           <tr>
             @if (settingValue().expandable) {
               <td [nzLeft]="fixedColumn()" [(nzExpand)]="data.expand"></td>
@@ -143,7 +144,7 @@ interface Setting {
   `,
   styles: `
     form nz-form-item {
-      margin-right: 16px;
+      margin-inline-end: 16px;
       margin-bottom: 8px;
     }
   `
@@ -266,6 +267,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
     const data: ItemData[] = [];
     for (let i = 1; i <= 100; i++) {
       data.push({
+        id: i,
         name: 'John Brown',
         age: `${i}2`,
         address: `New York No. ${i} Lake Park`,

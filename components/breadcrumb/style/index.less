@@ -9,6 +9,10 @@
   color: @breadcrumb-base-color;
   font-size: @breadcrumb-font-size;
 
+  &-rtl {
+    direction: rtl;
+  }
+
   .@{iconfont-css-prefix} {
     font-size: @breadcrumb-icon-font-size;
   }
@@ -50,15 +54,13 @@
   &-link {
     > .@{iconfont-css-prefix} + span,
     > .@{iconfont-css-prefix} + a {
-      margin-left: 4px;
+      margin-inline-start: 4px;
     }
   }
 
   &-overlay-link {
     > .@{iconfont-css-prefix} {
-      margin-left: 4px;
+      margin-inline-start: 4px;
     }
   }
 }
-
-@import './rtl';

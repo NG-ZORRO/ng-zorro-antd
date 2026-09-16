@@ -8,6 +8,10 @@
   color: @text-color;
   overflow-wrap: break-word;
 
+  &-rtl {
+    direction: rtl;
+  }
+
   &&-secondary {
     color: @text-color-secondary;
   }
@@ -185,7 +189,7 @@
   &-copy {
     .operation-unit();
 
-    margin-left: 4px;
+    margin-inline-start: 4px;
   }
 
   &-copy-success {
@@ -201,14 +205,14 @@
     position: relative;
 
     div& {
-      left: -@input-padding-horizontal - 1px;
+      inset-inline-start: -@input-padding-horizontal - 1px;
       margin-top: -@input-padding-vertical-base - 1px;
       margin-bottom: calc(1em - @input-padding-vertical-base - 1px);
     }
 
     &-confirm {
       position: absolute;
-      right: 10px;
+      inset-inline-end: 10px;
       bottom: 8px;
       color: @text-color-secondary;
       // default style
@@ -235,8 +239,8 @@
     padding: 0;
 
     li {
-      margin: 0 0 0 20px;
-      padding: 0 0 0 4px;
+      margin-inline-start: 20px;
+      padding-inline-start: 4px;
     }
   }
 
@@ -279,8 +283,8 @@
   }
 
   blockquote {
-    padding: 0 0 0 0.6em;
-    border-left: 4px solid rgba(100, 100, 100, 0.2);
+    padding-inline-start: 0.6em;
+    border-inline-start: 4px solid rgba(100, 100, 100, 0.2);
     opacity: 0.85;
   }
 
@@ -310,5 +314,3 @@
     -webkit-box-orient: vertical;
   }
 }
-
-@import './rtl';

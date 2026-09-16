@@ -13,6 +13,10 @@
   cursor: pointer;
   touch-action: none;
 
+  &-rtl {
+    direction: rtl;
+  }
+
   .vertical();
 
   &-with-marks {
@@ -70,9 +74,9 @@
     &::after {
       position: absolute;
       top: -6px;
-      right: -6px;
+      inset-inline-end: -6px;
       bottom: -6px;
-      left: -6px;
+      inset-inline-start: -6px;
       content: '';
     }
   }
@@ -92,7 +96,7 @@
   &-mark {
     position: absolute;
     top: 14px;
-    left: 0;
+    inset-inline-start: 0;
     width: 100%;
     font-size: @font-size-base;
   }
@@ -178,18 +182,18 @@
 
     .@{slider-prefix-cls}-handle {
       margin-top: -6px; // we chould consider border width as well: (10 + 2 ) / 2
-      margin-left: @slider-handle-margin-left;
+      margin-inline-start: @slider-handle-margin-left;
     }
 
     .@{slider-prefix-cls}-mark {
       top: 0;
-      left: 12px;
+      inset-inline-start: 12px;
       width: 18px;
       height: 100%;
     }
 
     .@{slider-prefix-cls}-mark-text {
-      left: 4px;
+      inset-inline-start: 4px;
       white-space: nowrap;
     }
 
@@ -200,7 +204,7 @@
 
     .@{slider-prefix-cls}-dot {
       top: auto;
-      margin-left: -2px;
+      margin-inline-start: -2px;
     }
   }
 
@@ -211,5 +215,3 @@
     }
   }
 }
-
-@import './rtl';

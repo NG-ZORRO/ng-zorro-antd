@@ -17,7 +17,7 @@ description: 下拉选择器。
 
 ```html
 <nz-select>
-  <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
+  <nz-option nzValue="lucy" nzLabel="Lucy" />
 </nz-select>
 ```
 
