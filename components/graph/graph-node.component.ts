@@ -31,7 +31,9 @@ interface Info {
   height: number;
 }
 
-const translate = (x: number, y: number): string => `translate(${coerceCssPixelValue(x)}, ${coerceCssPixelValue(y)})`;
+const cssTranslate = (x: number, y: number): string =>
+  `translate(${coerceCssPixelValue(x)}, ${coerceCssPixelValue(y)})`;
+const svgTranslate = (x: number, y: number): string => `translate(${x}, ${y})`;
 
 @Component({
   selector: '[nz-graph-node]',
@@ -90,7 +92,7 @@ export class NzGraphNodeComponent implements OnInit {
 
     if (this.initialState) {
       // Initial state: directly set position without animation
-      this.renderer.setAttribute(this.el, 'transform', translate(cur.x, cur.y));
+      this.renderer.setAttribute(this.el, 'transform', svgTranslate(cur.x, cur.y));
       if (group) {
         this.renderer.setStyle(group, 'width', coerceCssPixelValue(cur.width));
         this.renderer.setStyle(group, 'height', coerceCssPixelValue(cur.height));
@@ -101,7 +103,7 @@ export class NzGraphNodeComponent implements OnInit {
       return new Promise(resolve => {
         // Animate parent element (transform)
         const parentAnimation = this.el.animate(
-          [{ transform: translate(pre.x, pre.y) }, { transform: translate(cur.x, cur.y) }],
+          [{ transform: cssTranslate(pre.x, pre.y) }, { transform: cssTranslate(cur.x, cur.y) }],
           {
             duration: 150,
             easing: 'ease-out',
@@ -127,7 +129,7 @@ export class NzGraphNodeComponent implements OnInit {
         // Wait for animations to complete
         parentAnimation.onfinish = () => {
           // Need this for canvas for now.
-          this.renderer.setAttribute(this.el, 'transform', translate(cur.x, cur.y));
+          this.renderer.setAttribute(this.el, 'transform', svgTranslate(cur.x, cur.y));
           if (group) {
             this.renderer.setStyle(group, 'width', coerceCssPixelValue(cur.width));
             this.renderer.setStyle(group, 'height', coerceCssPixelValue(cur.height));
@@ -143,7 +145,7 @@ export class NzGraphNodeComponent implements OnInit {
   makeNoAnimation(): void {
     const cur = this.getAnimationInfo();
     // Need this for canvas for now.
-    this.renderer.setAttribute(this.el, 'transform', translate(cur.x, cur.y));
+    this.renderer.setAttribute(this.el, 'transform', svgTranslate(cur.x, cur.y));
   }
 
   getAnimationInfo(): Info {
