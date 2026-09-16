@@ -18,7 +18,7 @@ description: 通过鼠标或键盘，输入范围内的数值。
 
 | 参数                | 说明                                                           | 类型                                                     | 默认值                                                                                                                              | 版本   |
 | ------------------- | -------------------------------------------------------------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| `[ngModel]`         | 当前值，可双向绑定                                             | `number`                                                 | -                                                                                                                                   |
+| `[ngModel]`         | 当前值，可双向绑定                                             | `number \| string`                                       | -                                                                                                                                   |
 | `[nzId]`            | 输入框的 ID                                                    | `string`                                                 | -                                                                                                                                   |
 | `[nzPlaceHolder]`   | 占位符                                                         | `string`                                                 | -                                                                                                                                   |
 | `[nzAutoFocus]`     | 自动获取焦点                                                   | `boolean`                                                | `false`                                                                                                                             |
@@ -36,6 +36,7 @@ description: 通过鼠标或键盘，输入范围内的数值。
 | `[nzStatus]`        | 状态，可选 `error` `warning`                                   | `'error' \| 'warning'`                                   | -                                                                                                                                   |
 | `[nzSize]`          | 输入框大小，可选 `large` `default` `small`                     | `'large' \| 'small' \| 'default'`                        | `'default'`                                                                                                                         |
 | `[nzStep]`          | 每次改变步数，可以是小数                                       | `number`                                                 | `1`                                                                                                                                 |
+| `[nzStringMode]`    | 开启后 `ngModelChange` 将返回 `string` 类型的高精度小数        | `boolean`                                                | `false`                                                                                                                             |        |
 | `[nzAddonBefore]`   | 带标签的 input-number，设置前置标签                            | `string`                                                 | -                                                                                                                                   |
 | `[nzAddonAfter]`    | 带标签的 input-number，设置后置标签                            | `string`                                                 | -                                                                                                                                   |
 | `[nzPrefix]`        | 带有前缀图标的 input-number                                    | `string`                                                 | -                                                                                                                                   |
@@ -43,14 +44,14 @@ description: 通过鼠标或键盘，输入范围内的数值。
 | `(nzOnStep)`        | 点击上下箭头的回调                                             | `EventEmitter<NzInputNumberStepEvent>`                   | -                                                                                                                                   |
 | `(nzFocus)`         | focus 时回调                                                   | `OutputRef<void>`                                        | -                                                                                                                                   |
 | `(nzBlur)`          | blur 时回调                                                    | `OutputRef<void>`                                        | -                                                                                                                                   |
-| `(ngModelChange)`   | 值变化时的回调函数                                             | `EventEmitter<number>`                                   | -                                                                                                                                   |
+| `(ngModelChange)`   | 值变化时的回调函数                                             | `EventEmitter<number \| string>`                         | -                                                                                                                                   |
 
 #### NzInputNumberStepEvent
 
 ```ts
 export type NzInputNumberStepEmitter = 'wheel' | 'handler' | 'keyboard';
 export interface NzInputNumberStepEvent {
-  value: number;
+  value: number | string;
   offset: number;
   type: 'up' | 'down';
   emitter: NzInputNumberStepEmitter;
