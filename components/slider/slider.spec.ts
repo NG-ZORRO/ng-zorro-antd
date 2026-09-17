@@ -8,7 +8,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormField, form } from '@angular/forms/signals';
+import { form, FormField } from '@angular/forms/signals';
 import { By } from '@angular/platform-browser';
 
 import { vi } from 'vitest';
@@ -895,9 +895,11 @@ describe('slider', () => {
       fixture = TestBed.createComponent(NzTestSliderInSignalFormComponent);
       fixture.detectChanges();
       const slider = fixture.debugElement.query(By.directive(NzSliderComponent)).componentInstance;
+      const handle = fixture.nativeElement.querySelector('.ant-slider-handle') as HTMLElement;
       expect(slider.value).toBe(1200);
       expect(slider.handles[0].offset).toBe(100);
       expect(slider.handles[0].value).toBe(1200);
+      expect(handle.style.left).toBe('100%');
     });
   });
 
