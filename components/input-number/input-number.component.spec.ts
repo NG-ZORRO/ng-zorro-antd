@@ -909,3 +909,73 @@ class TestInputNumberFinalSizeComponent {
 class TestInputNumberFinalVariantComponent {
   readonly variant = signal<NzVariant | undefined>(undefined);
 }
+
+describe('input-number stringMode', () => {
+  let component: InputNumberStringModeTestComponent;
+  let fixture: ComponentFixture<InputNumberStringModeTestComponent>;
+  let hostElement: HTMLElement;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideNzIconsTesting()]
+    });
+    fixture = TestBed.createComponent(InputNumberStringModeTestComponent);
+    component = fixture.componentInstance;
+    hostElement = fixture.nativeElement.querySelector('nz-input-number');
+    fixture.autoDetectChanges();
+  });
+
+  it('should keep high precision decimals beyond float precision', async () => {
+    component.value = '1.0000000000000000000001';
+    fixture.detectChanges();
+    await updateNonSignalsInput(fixture);
+    expect(component.displayValue).toBe('1.0000000000000000000001');
+  });
+
+  it('should emit a string on step without floating point error', async () => {
+    component.min.set(0);
+    component.max.set(10);
+    component.step.set(0.00000000000001);
+    component.value = '0.00000000000001';
+    fixture.detectChanges();
+    await updateNonSignalsInput(fixture);
+
+    const handler = hostElement.querySelector('.ant-input-number-handler-up')!;
+    handler.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+    handler.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
+
+    expect(component.value).toBe('0.00000000000002');
+    expect(typeof component.value).toBe('string');
+  });
+
+  it('should keep exact decimal addition when typing', () => {
+    const input = fixture.nativeElement.querySelector('input')!;
+    input.value = '0.1';
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    expect(component.value).toBe('0.1');
+
+    component.step.set(0.2);
+    fixture.detectChanges();
+    const handler = hostElement.querySelector('.ant-input-number-handler-up')!;
+    handler.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+    handler.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
+    expect(component.value).toBe('0.3');
+  });
+});
+
+@Component({
+  imports: [NzInputNumberModule, FormsModule],
+  template: ` <nz-input-number nzStringMode [nzMin]="min()" [nzMax]="max()" [nzStep]="step()" [(ngModel)]="value" /> `
+})
+class InputNumberStringModeTestComponent {
+  readonly min = signal(Number.MIN_SAFE_INTEGER);
+  readonly max = signal(Number.MAX_SAFE_INTEGER);
+  readonly step = signal(1);
+  value: string | null = null;
+  inputNumber = viewChild.required(NzInputNumberComponent);
+
+  get displayValue(): string {
+    return this.inputNumber()['displayValue']();
+  }
+}
