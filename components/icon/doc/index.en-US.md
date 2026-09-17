@@ -11,6 +11,8 @@ description: Semantic vector graphics.
 
 We keep in syncing with [antd](https://ant.design/components/icon/).
 
+22.1.0 adds brand icons for Anthropic, Claude, DeepSeek, ElevenLabs, Gemini, Hugging Face, Mastodon, Meta, Mistral, Netflix, Ollama, Perplexity, Qwen, Replicate, Snapchat, Telegram, and Threads. Search for them in the icon list above.
+
 ## API
 
 ### nz-icon, [nz-icon]

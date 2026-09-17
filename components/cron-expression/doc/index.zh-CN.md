@@ -22,16 +22,18 @@ npm install cron-parser@^5.5.0
 
 ### nz-cron-expression
 
-| 参数                  | 说明                   | 类型                          | 默认值    |
-| --------------------- | ---------------------- | ----------------------------- | --------- |
-| `[nzType]`            | cron 规则类型          | `'linux'｜'spring'`           | `linux`   |
-| `[nzSize]`            | 设置输入框大小         | `'large'｜'small'｜'default'` | `default` |
-| `[nzDisabled]`        | 禁用                   | `boolean`                     | `false`   |
-| `[nzBorderless]`      | 是否隐藏边框           | `boolean`                     | `false`   |
-| `[nzStatus]`          | 设置校验状态           | `'error'｜'warning'`          | -         |
-| `[nzCollapseDisable]` | 隐藏折叠面板           | `boolean`                     | `false`   |
-| `[nzExtra]`           | 自定义渲染右侧的内容   | `TemplateRef<void>`           | -         |
-| `[nzSemantic]`        | 自定义渲染下次执行时间 | `TemplateRef<void>`           | -         |
+| 参数                  | 说明                   | 类型                          | 默认值    | 版本   |
+| --------------------- | ---------------------- | ----------------------------- | --------- | ------ |
+| `[nzType]`            | cron 规则类型          | `'linux'｜'spring'`           | `linux`   |        |
+| `[nzSize]`            | 设置输入框大小         | `'large'｜'small'｜'default'` | `default` |        |
+| `[nzDisabled]`        | 禁用                   | `boolean`                     | `false`   |        |
+| `[nzBorderless]`      | 是否隐藏边框           | `boolean`                     | `false`   |        |
+| `[nzStatus]`          | 设置校验状态           | `'error'｜'warning'`          | -         | 22.1.0 |
+| `[nzCollapseDisable]` | 隐藏折叠面板           | `boolean`                     | `false`   |        |
+| `[nzExtra]`           | 自定义渲染右侧的内容   | `TemplateRef<void>`           | -         |        |
+| `[nzSemantic]`        | 自定义渲染下次执行时间 | `TemplateRef<void>`           | -         |        |
+
+自 22.1.0 起，在 `nz-form-control` 内使用时会同步表单校验状态，无需手动绑定 `nzStatus`。
 
 ## 注意
 

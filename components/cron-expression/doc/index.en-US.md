@@ -22,16 +22,18 @@ npm install cron-parser@^5.5.0
 
 ### nz-cron-expression
 
-| Parameter             | Description                          | Type                          | Default   |
-| --------------------- | ------------------------------------ | ----------------------------- | --------- |
-| `[nzType]`            | Cron rule type                       | `'linux'｜'spring'`           | `linux`   |
-| `[nzDisabled]`        | Disable                              | `boolean`                     | `false`   |
-| `[nzBorderless]`      | Whether to hide the border           | `boolean`                     | `false`   |
-| `[nzSize]`            | The size of the input box.           | `'large'｜'small'｜'default'` | `default` |
-| `[nzStatus]`          | Set validation status                | `'error'｜'warning'`          | -         |
-| `[nzCollapseDisable]` | Hide collapse                        | `boolean`                     | `false`   |
-| `[nzExtra]`           | Render the content on the right      | `TemplateRef<void>`           | -         |
-| `[nzSemantic]`        | Custom rendering next execution time | `TemplateRef<void>`           | -         |
+| Parameter             | Description                          | Type                          | Default   | Version |
+| --------------------- | ------------------------------------ | ----------------------------- | --------- | ------- |
+| `[nzType]`            | Cron rule type                       | `'linux'｜'spring'`           | `linux`   |         |
+| `[nzDisabled]`        | Disable                              | `boolean`                     | `false`   |         |
+| `[nzBorderless]`      | Whether to hide the border           | `boolean`                     | `false`   |         |
+| `[nzSize]`            | The size of the input box.           | `'large'｜'small'｜'default'` | `default` |         |
+| `[nzStatus]`          | Set validation status                | `'error'｜'warning'`          | -         | 22.1.0  |
+| `[nzCollapseDisable]` | Hide collapse                        | `boolean`                     | `false`   |         |
+| `[nzExtra]`           | Render the content on the right      | `TemplateRef<void>`           | -         |         |
+| `[nzSemantic]`        | Custom rendering next execution time | `TemplateRef<void>`           | -         |         |
+
+Since 22.1.0, the component synchronizes validation status with its enclosing `nz-form-control`, without requiring an explicit `nzStatus` binding.
 
 ## Note
 

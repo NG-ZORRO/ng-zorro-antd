@@ -35,7 +35,9 @@ export const appConfig: ApplicationConfig = {
 
 `NZ_I18N` 控制 NG-ZORRO 组件文案；adapter 的 `locale` 控制日期库的格式化和周规则，例如月份名称、星期名称和周起始日。如果运行时切换语言，也需要用当前 adapter 期望的 locale 值调用 `dateAdapter.setLocale(...)`。
 
-Provider helper 也支持传入在 Angular 注入上下文中执行的 factory，适用于多语言构建共用同一份应用配置的场景：
+### 配置工厂（22.1.0）
+
+自 22.1.0 起，Provider 辅助函数支持传入在 Angular 注入上下文中执行的配置工厂，可在其中使用 `inject()`。这适用于多语言构建共用同一份应用配置的场景：
 
 ```ts
 import { ApplicationConfig, inject, LOCALE_ID } from '@angular/core';

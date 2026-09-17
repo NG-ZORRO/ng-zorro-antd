@@ -1,5 +1,6 @@
 ---
 order: 8
+version: 22.1.0
 title:
   zh-CN: 自定义状态
   en-US: Status
