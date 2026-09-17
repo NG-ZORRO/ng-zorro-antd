@@ -29,9 +29,14 @@ description: 输入框自动完成功能。
 
 ### [nzAutocomplete]
 
-| 属性               | 说明                         | 类型                      | 默认值 |
-| ------------------ | ---------------------------- | ------------------------- | ------ |
-| `[nzAutocomplete]` | 用于绑定 nzAutocomplete 组件 | `NzAutocompleteComponent` | -      |
+| 属性                          | 说明                             | 类型                            | 默认值         |
+| ----------------------------- | -------------------------------- | ------------------------------- | -------------- |
+| `[nzAutocomplete]`            | 用于绑定 nzAutocomplete 组件     | `NzAutocompleteComponent`       | -              |
+| `[nzAutocompleteConnectedTo]` | 自动完成浮层相对于该元素进行定位 | `NzAutocompleteOriginDirective` | 自动完成触发器 |
+
+### [nzAutocompleteOrigin]
+
+应用在元素上，使该元素可作为自动完成浮层的定位锚点。
 
 ### nz-autocomplete
 

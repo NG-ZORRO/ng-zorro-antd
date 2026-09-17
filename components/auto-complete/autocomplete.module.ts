@@ -7,6 +7,7 @@ import { NgModule } from '@angular/core';
 
 import { NzAutocompleteOptgroupComponent } from './autocomplete-optgroup.component';
 import { NzAutocompleteOptionComponent } from './autocomplete-option.component';
+import { NzAutocompleteOriginDirective } from './autocomplete-origin.directive';
 import { NzAutocompleteTriggerDirective } from './autocomplete-trigger.directive';
 import { NzAutocompleteComponent } from './autocomplete.component';
 
@@ -14,12 +15,14 @@ import { NzAutocompleteComponent } from './autocomplete.component';
   exports: [
     NzAutocompleteComponent,
     NzAutocompleteOptionComponent,
+    NzAutocompleteOriginDirective,
     NzAutocompleteTriggerDirective,
     NzAutocompleteOptgroupComponent
   ],
   imports: [
     NzAutocompleteComponent,
     NzAutocompleteOptionComponent,
+    NzAutocompleteOriginDirective,
     NzAutocompleteTriggerDirective,
     NzAutocompleteOptgroupComponent
   ]

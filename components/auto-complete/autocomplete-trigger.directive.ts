@@ -35,6 +35,7 @@ import { delay, filter, tap } from 'rxjs/operators';
 import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 
 import { NzAutocompleteOptionComponent } from './autocomplete-option.component';
+import { NzAutocompleteOriginDirective } from './autocomplete-origin.directive';
 import { NzAutocompleteComponent } from './autocomplete.component';
 import { getNzAutocompleteMissingPanelError } from './error';
 
@@ -68,6 +69,8 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
 
   /** Bind nzAutocomplete component */
   @Input() nzAutocomplete!: NzAutocompleteComponent;
+  /** Element that the autocomplete panel should be positioned relative to. */
+  @Input() nzAutocompleteConnectedTo?: NzAutocompleteOriginDirective;
 
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
@@ -247,7 +250,15 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
 
   private subscribeOverlayOutsideClick(): Subscription {
     return this.overlayRef!.outsidePointerEvents()
-      .pipe(filter((e: MouseEvent) => !this.elementRef.nativeElement.contains(e.target)))
+      .pipe(
+        filter((e: MouseEvent) => {
+          const target = e.target as Node;
+          return (
+            !this.elementRef.nativeElement.contains(target) &&
+            !this.getConnectedElement().nativeElement.contains(target)
+          );
+        })
+      )
       .subscribe(() => {
         this.closePanel();
       });
@@ -293,6 +304,7 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
     if (this.overlayRef) {
       const dropdownMatchSelectWidth = this.nzAutocomplete.nzDropdownMatchSelectWidth;
       const width = this.nzAutocomplete.nzWidth || this.getHostWidth();
+      this.positionStrategy.setOrigin(this.getConnectedElement());
       this.overlayRef.updateSize({ width: dropdownMatchSelectWidth ? width : undefined });
     }
     this.nzAutocomplete.setVisibility();
@@ -309,7 +321,7 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   }
 
   private getOverlayPosition(): PositionStrategy {
-    return (this.positionStrategy = createFlexibleConnectedPositionStrategy(this.injector, this.elementRef)
+    return (this.positionStrategy = createFlexibleConnectedPositionStrategy(this.injector, this.getConnectedElement())
       .withFlexibleDimensions(false)
       .withPush(false)
       .withPositions([
@@ -320,7 +332,11 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   }
 
   private getHostWidth(): number {
-    return this.elementRef.nativeElement.getBoundingClientRect().width;
+    return this.getConnectedElement().nativeElement.getBoundingClientRect().width;
+  }
+
+  private getConnectedElement(): ElementRef<HTMLElement> {
+    return this.nzAutocompleteConnectedTo?.elementRef ?? this.elementRef;
   }
 
   private resetActiveItem(): void {
