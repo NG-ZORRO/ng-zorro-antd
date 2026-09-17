@@ -31,15 +31,17 @@ import {
   ViewChild,
   booleanAttribute,
   computed,
+  effect,
   forwardRef,
   inject,
+  input,
   numberAttribute,
   signal
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject, combineLatest, merge, of as observableOf } from 'rxjs';
-import { distinctUntilChanged, filter, startWith, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, skip, startWith, tap } from 'rxjs/operators';
 
 import { NzNoAnimationDirective, slideAnimationEnter, slideAnimationLeave } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, WithConfig, onConfigChangeEventForComponent } from 'ng-zorro-antd/core/config';
@@ -238,6 +240,9 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
         [search]="nzOpen && nzShowSearch"
         [suffixIcon]="nzSuffixIcon"
         [feedbackIcon]="feedbackIconTpl"
+        [isMaxMultipleCountSet]="isMaxCountSet"
+        [nzMaxMultipleCount]="nzMaxCount()"
+        [listOfValue]="maxCountValues"
       >
         <ng-template #feedbackIconTpl>
           @if (hasFeedback && !!status) {
@@ -350,6 +355,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() nzDisplayWith: (node: NzTreeNode) => string | undefined = (node: NzTreeNode) => node.title;
   @Input({ transform: numberAttribute }) nzMaxTagCount!: number;
   @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzTreeNode[] }> | null = null;
+  readonly nzMaxCount = input(Infinity, { transform: numberAttribute });
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
   @Output() readonly nzCleared = new EventEmitter<void>();
   @Output() readonly nzRemoved = new EventEmitter<NzTreeNode>();
@@ -385,6 +391,8 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   selectedNodes: NzTreeNode[] = [];
   expandedKeys: string[] = [];
   value: string[] = [];
+  private lastMaxCountEntriesCount = 0;
+  private wasMaxCountSet = false;
   protected readonly dir = inject(Directionality).valueSignal;
   positions: ConnectionPositionPair[] = [];
 
@@ -426,6 +434,11 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   constructor() {
     super(inject(NzTreeSelectService));
 
+    effect(() => {
+      this.nzMaxCount();
+      this.updateMaxCountDisabledState();
+    });
+
     this.destroyRef.onDestroy(() => {
       this.closeDropdown();
     });
@@ -449,6 +462,12 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       });
 
     this.subscribeSelectionChange();
+
+    // Nodes added asynchronously (e.g. via `NzTreeNode.addChildren()`) bypass `updateSelectedNodes()`,
+    // so re-check the max-count state whenever the flattened tree changes.
+    this.nzTreeService.flattenNodes$
+      .pipe(skip(1), takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.updateMaxCountDisabledState());
 
     this.focusMonitor
       .monitor(this.elementRef, true)
@@ -548,6 +567,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       this.value = [];
       this.clearSelectedNodes();
       this.selectedNodes = [];
+      this.updateMaxCountDisabledState();
     }
     this.cdr.markForCheck();
   }
@@ -636,7 +656,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     node.isSelected = false;
     node.isChecked = false;
     if (this.nzCheckable) {
-      this.nzTreeService.conduct(node, this.nzCheckStrictly);
+      this.conductCheckedState(node);
     } else {
       this.nzTreeService.setSelectedNodeList(node, this.nzMultiple);
     }
@@ -644,6 +664,15 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     if (emit) {
       this.nzRemoved.emit(node);
     }
+  }
+
+  // An ancestor disabled by the max-count limit is skipped by `conduct`, so its own checked/
+  // half-checked state can go stale once this removal drops the count. Refresh the disabled flags
+  // and conduct a second time so that ancestor gets recomputed too.
+  private conductCheckedState(node: NzTreeNode): void {
+    this.nzTreeService.conduct(node, this.nzCheckStrictly);
+    this.updateMaxCountDisabledState();
+    this.nzTreeService.conduct(node, this.nzCheckStrictly);
   }
 
   focusOnInput(): void {
@@ -679,7 +708,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     )
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
-        this.updateSelectedNodes();
+        if (this.updateSelectedNodes()) {
+          return;
+        }
         const value = this.selectedNodes.map(node => node.key!);
         this.value = [...value];
         if (this.nzShowSearch || this.isMultiple) {
@@ -697,17 +728,17 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       });
   }
 
-  updateSelectedNodes(init: boolean = false): void {
+  updateSelectedNodes(init: boolean = false): boolean {
+    let rejected = false;
     if (init) {
       const nodes = this.coerceTreeNodes(this.nzNodes);
       this.nzTreeService.isMultiple = this.isMultiple;
       this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
       this.nzTreeService.initTree(nodes);
-      if (this.nzCheckable) {
-        this.nzTreeService.conductCheck(this.value, this.nzCheckStrictly);
-      } else {
-        this.nzTreeService.conductSelectedKeys(this.value, this.isMultiple);
-      }
+      this.applyCheckedOrSelectedKeys(this.value);
+    } else if (this.hasExceededMaxCount()) {
+      this.applyCheckedOrSelectedKeys(this.value);
+      rejected = true;
     }
 
     this.selectedNodes = [...(this.nzCheckable ? this.getCheckedNodeList() : this.getSelectedNodeList())].sort(
@@ -726,6 +757,101 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
         return 0;
       }
     );
+
+    this.updateMaxCountDisabledState();
+    return rejected;
+  }
+
+  private applyCheckedOrSelectedKeys(keys: string[]): void {
+    if (this.nzCheckable) {
+      this.nzTreeService.conductCheck(keys, this.nzCheckStrictly);
+    } else {
+      this.nzTreeService.conductSelectedKeys(keys, this.isMultiple);
+    }
+  }
+
+  private forEachTreeNode(nodes: NzTreeNode[], fn: (node: NzTreeNode) => void): void {
+    nodes.forEach(node => {
+      fn(node);
+      if (node.children.length > 0) {
+        this.forEachTreeNode(node.children, fn);
+      }
+    });
+  }
+
+  maxCountValues: NzTreeNode[] = [];
+
+  private computeMaxCountValues(): NzTreeNode[] {
+    if (!this.isMaxCountSet) {
+      return this.selectedNodes;
+    }
+    if (!this.nzCheckable) {
+      return this.getSelectedNodeList();
+    }
+    if (this.nzCheckStrictly) {
+      return this.nzTreeService.checkedNodeList;
+    }
+    return this.collectDeepestCheckedNodes(this.nzTreeService.rootNodes);
+  }
+
+  get isMaxCountSet(): boolean {
+    return this.isMultiple && Number.isFinite(this.nzMaxCount());
+  }
+
+  private hasExceededMaxCount(): boolean {
+    if (!this.isMaxCountSet) {
+      return false;
+    }
+    const currentCount = this.computeMaxCountValues().length;
+    return currentCount > this.nzMaxCount() && currentCount > this.lastMaxCountEntriesCount;
+  }
+
+  private collectDeepestCheckedNodes(nodes: NzTreeNode[]): NzTreeNode[] {
+    const result: NzTreeNode[] = [];
+    const visit = (node: NzTreeNode): boolean => {
+      let hasCheckedDescendant = false;
+      node.children.forEach(child => {
+        if (visit(child)) {
+          hasCheckedDescendant = true;
+        }
+      });
+      if (node.isChecked && !hasCheckedDescendant) {
+        result.push(node);
+      }
+      return node.isChecked || hasCheckedDescendant;
+    };
+    nodes.forEach(visit);
+    return result;
+  }
+
+  private updateMaxCountDisabledState(): void {
+    const isSet = this.isMaxCountSet;
+    if (!isSet && !this.wasMaxCountSet) {
+      return;
+    }
+    this.wasMaxCountSet = isSet;
+
+    this.maxCountValues = this.computeMaxCountValues();
+    const currentCount = this.maxCountValues.length;
+    const reached = isSet && currentCount >= this.nzMaxCount();
+    this.lastMaxCountEntriesCount = currentCount;
+
+    this.forEachTreeNode(this.nzTreeService.rootNodes, node =>
+      this.nzCheckable ? this.updateCheckboxDisabledState(node, reached) : this.updateSelectableState(node, reached)
+    );
+  }
+
+  // A half-checked node isn't itself counted, but clicking it cascades a full check onto every
+  // descendant, so it must be disabled too once the limit is reached - only a fully checked node
+  // (safe to uncheck) stays clickable.
+  private updateCheckboxDisabledState(node: NzTreeNode, reached: boolean): void {
+    node.isDisableCheckbox = (reached && !node.isChecked) || !!node.origin.disableCheckbox;
+  }
+
+  private updateSelectableState(node: NzTreeNode, reached: boolean): void {
+    const blocked = reached && !node.isSelected;
+    node.isSelectable = !blocked && (node.origin.disabled || node.origin.selectable !== false);
+    node.isDisabled = blocked || !!node.origin.disabled;
   }
 
   updatePosition(): void {
