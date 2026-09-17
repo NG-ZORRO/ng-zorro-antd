@@ -36,9 +36,7 @@ export const appConfig: ApplicationConfig = {
 The adapter `locale` controls date-library formatting and week rules, such as month names, weekday names and the first day of week.
 If the language changes at runtime, also call `dateAdapter.setLocale(...)` with the locale value expected by the current adapter.
 
-### Configuration factories (22.1.0)
-
-Since 22.1.0, the provider helpers accept a configuration factory that runs in an Angular injection context and can use `inject()`. This is useful when multiple localized builds share one application configuration:
+The provider helpers also accept a factory that runs in an Angular injection context. This is useful when multiple localized builds share one application configuration:
 
 ```ts
 import { ApplicationConfig, inject, LOCALE_ID } from '@angular/core';

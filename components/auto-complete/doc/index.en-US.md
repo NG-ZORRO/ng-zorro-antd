@@ -35,20 +35,20 @@ When there is a need for autocomplete functionality.
 
 ### [nzAutocompleteOrigin]
 
-Available since 22.1.0. Apply this directive to an element and export it with `#origin="nzAutocompleteOrigin"`. Pass `origin` to the input's `[nzAutocompleteConnectedTo]` to use that element for the panel position and default width.
+Directive applied to an element to make it usable as the origin of an autocomplete panel.
 
 ### nz-autocomplete
 
-| Property                       | Description                                                                                                                                                      | Type                            | Default                         | Version |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | ------------------------------- | ------- |
-| `[nzBackfill]`                 | backfill selected item the input when using keyboard                                                                                                             | `boolean`                       | `false`                         |         |
-| `[nzDropdownMatchSelectWidth]` | Whether to fix the dropdown width. When `false`, `nzWidth` or the origin element width is used as the minimum width, allowing the panel to grow with its content | `boolean`                       | `true`                          | 22.1.0  |
-| `[nzDataSource]`               | Data source for autocomplete                                                                                                                                     | `AutocompleteDataSource`        | -                               |         |
-| `[nzDefaultActiveFirstOption]` | Whether active first option by default                                                                                                                           | `boolean`                       | `true`                          |         |
-| `[nzWidth]`                    | Custom width, unit px                                                                                                                                            | `number`                        | origin element width            |         |
-| `[nzOverlayClassName]`         | Class name of the dropdown root element                                                                                                                          | `string`                        | -                               |         |
-| `[nzOverlayStyle]`             | Style of the dropdown root element                                                                                                                               | `object`                        | -                               |         |
-| `[compareWith]`                | Same as [SelectControlValueAccessor](https://angular.dev/api/forms/SelectControlValueAccessor)                                                                   | `(o1: any, o2: any) => boolean` | `(o1: any, o2: any) => o1===o2` |         |
+| Property                       | Description                                                                                    | Type                            | Default                         | Version |
+| ------------------------------ | ---------------------------------------------------------------------------------------------- | ------------------------------- | ------------------------------- | ------- |
+| `[nzBackfill]`                 | backfill selected item the input when using keyboard                                           | `boolean`                       | `false`                         |         |
+| `[nzDropdownMatchSelectWidth]` | Whether dropdown's width is same width than select.                                            | `boolean`                       | `true`                          | 22.1.0  |
+| `[nzDataSource]`               | Data source for autocomplete                                                                   | `AutocompleteDataSource`        | -                               |         |
+| `[nzDefaultActiveFirstOption]` | Whether active first option by default                                                         | `boolean`                       | `true`                          |         |
+| `[nzWidth]`                    | Custom width, unit px                                                                          | `number`                        | trigger element width           |         |
+| `[nzOverlayClassName]`         | Class name of the dropdown root element                                                        | `string`                        | -                               |         |
+| `[nzOverlayStyle]`             | Style of the dropdown root element                                                             | `object`                        | -                               |         |
+| `[compareWith]`                | Same as [SelectControlValueAccessor](https://angular.dev/api/forms/SelectControlValueAccessor) | `(o1: any, o2: any) => boolean` | `(o1: any, o2: any) => o1===o2` |         |
 
 ### nz-auto-option
 

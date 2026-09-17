@@ -33,8 +33,6 @@ npm install cron-parser@^5.5.0
 | `[nzExtra]`           | 自定义渲染右侧的内容   | `TemplateRef<void>`           | -         |        |
 | `[nzSemantic]`        | 自定义渲染下次执行时间 | `TemplateRef<void>`           | -         |        |
 
-自 22.1.0 起，在 `nz-form-control` 内使用时会同步表单校验状态，无需手动绑定 `nzStatus`。
-
 ## 注意
 
 ### 支持格式

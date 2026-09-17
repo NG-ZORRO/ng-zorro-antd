@@ -33,8 +33,6 @@ npm install cron-parser@^5.5.0
 | `[nzExtra]`           | Render the content on the right      | `TemplateRef<void>`           | -         |         |
 | `[nzSemantic]`        | Custom rendering next execution time | `TemplateRef<void>`           | -         |         |
 
-Since 22.1.0, the component synchronizes validation status with its enclosing `nz-form-control`, without requiring an explicit `nzStatus` binding.
-
 ## Note
 
 ### Supported format

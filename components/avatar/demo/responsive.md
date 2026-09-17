@@ -8,8 +8,8 @@ title:
 
 ## zh-CN
 
-通过 `nzSize` 传入断点对象，为 `xs`、`sm`、`md`、`lg`、`xl`、`xxl`、`xxxl` 分别设置像素尺寸。调整浏览器宽度即可查看头像大小变化。
+头像大小可以根据屏幕尺寸自动调整。
 
 ## en-US
 
-Pass a breakpoint object to `nzSize` to set sizes in pixels for `xs`, `sm`, `md`, `lg`, `xl`, `xxl`, and `xxxl`. Resize the browser to see the avatar size change.
+Avatar size can be automatically adjusted based on the screen size.

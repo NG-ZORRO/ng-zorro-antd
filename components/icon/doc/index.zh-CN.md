@@ -12,8 +12,6 @@ description: 语义化的矢量图形。
 
 新版图标可能略有缺失，我们将与 [Ant Design](https://ant.design/components/icon-cn/) 同步保持图标的更新。
 
-22.1.0 新增 Anthropic、Claude、DeepSeek、ElevenLabs、Gemini、Hugging Face、Mastodon、Meta、Mistral、Netflix、Ollama、Perplexity、Qwen、Replicate、Snapchat、Telegram 和 Threads 品牌图标，可在上方图标列表中搜索。
-
 ## API
 
 ### nz-icon, [nz-icon]
