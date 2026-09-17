@@ -18,7 +18,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Observable, combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { debounceTime, map, startWith, switchMap } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
@@ -54,7 +54,12 @@ export class NzTrMeasureComponent implements AfterViewInit {
               list.toArray().map((item: ElementRef) =>
                 this.nzResizeObserver.observe(item).pipe(
                   map(([entry]) => {
-                    const { width } = entry.target.getBoundingClientRect();
+                    /**
+                     * https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserverEntry/contentRect
+                     * contentRect measures only the inner content area of an element (excluding padding and borders)
+                     * means it's not impacted by ancestor CSS transforms (e.g. a modal's open animation)
+                     */
+                    const { width } = entry.contentRect;
                     return Math.floor(width);
                   })
                 )
