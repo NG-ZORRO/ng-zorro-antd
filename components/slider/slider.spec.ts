@@ -8,6 +8,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { form, FormField } from '@angular/forms/signals';
 import { By } from '@angular/platform-browser';
 
 import { vi } from 'vitest';
@@ -887,6 +888,21 @@ describe('slider', () => {
     });
   });
 
+  describe('signal forms (formField)', () => {
+    let fixture: ComponentFixture<NzTestSliderInSignalFormComponent>;
+
+    it('should display the initial value provided via [formField]', () => {
+      fixture = TestBed.createComponent(NzTestSliderInSignalFormComponent);
+      fixture.detectChanges();
+      const slider = fixture.debugElement.query(By.directive(NzSliderComponent)).componentInstance;
+      const handle = fixture.nativeElement.querySelector('.ant-slider-handle') as HTMLElement;
+      expect(slider.value).toBe(1200);
+      expect(slider.handles[0].offset).toBe(100);
+      expect(slider.handles[0].value).toBe(1200);
+      expect(handle.style.left).toBe('100%');
+    });
+  });
+
   describe('support keyboard event', () => {
     let fixture: ComponentFixture<NzTestSliderKeyboardComponent>;
     let testComponent: NzTestSliderKeyboardComponent;
@@ -1136,6 +1152,15 @@ class SliderWithFormControlComponent {
   enable(): void {
     this.formControl.enable();
   }
+}
+
+@Component({
+  imports: [FormField, NzSliderModule],
+  template: `<nz-slider [formField]="myForm.width" [nzMin]="500" [nzMax]="1200" />`
+})
+class NzTestSliderInSignalFormComponent {
+  readonly model = signal({ width: 1200 });
+  readonly myForm = form(this.model);
 }
 
 @Component({
