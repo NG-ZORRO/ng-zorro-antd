@@ -16,6 +16,45 @@ tag: '{{version}}'
 
 ---
 
+## 22.1.0
+
+`2026-09-17`
+
+### Features
+
+- **auto-complete:** 支持自定义浮层定位元素 ([#9946](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9946)) ([ae7c405](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ae7c405674fac3d23848f6f751170638195fef36))
+- **auto-complete:** 支持 `nzDropdownMatchSelectWidth` 配置下拉框宽度 ([#9879](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9879)) ([909e499](https://github.com/NG-ZORRO/ng-zorro-antd/commit/909e499b62b9273935281d317833e11f5a552235))
+- **avatar:** 支持响应式尺寸 ([#9801](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9801)) ([584928e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/584928e8dae2bc485d3b22d247070c70e16b26f3))
+- **core-time:** 支持在注入上下文中使用日期适配器配置工厂 ([#9952](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9952)) ([0108fb7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0108fb70aa8c9d43e6955af7000fc4fef6e4effc))
+- **cron-expression:** 支持 `nzStatus` 并同步表单校验状态 ([#9895](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9895)) ([9408016](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9408016a38f380500c9e01f4b8cc99588fd045c3))
+- **icon:** 新增 Anthropic、Claude、DeepSeek、Gemini、Qwen 等品牌图标 ([#9909](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9909)) ([73401ac](https://github.com/NG-ZORRO/ng-zorro-antd/commit/73401ac7a6338d1352bc10de675eabc5ddda7505))
+
+### Bug Fixes
+
+- **cdk:** 响应尺寸观察器禁用状态的变化 ([#9923](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9923)) ([4ef7d34](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4ef7d34430506a687c3ebab2925b0eb9eb609161))
+- **color-picker:** 重复设置等效灰度值时保留色相 ([#9938](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9938)) ([eea2bb4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/eea2bb4f4d5be404a42467bbcebc0815ec6c3f39))
+- **core:** 清理拖拽事件监听器 ([#9922](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9922)) ([68ea6c8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/68ea6c89203da31a7ed360d44a64a11f06372581))
+- **date-picker:** 支持范围选择器与 Signal Forms 配合使用 ([#9911](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9911)) ([991645f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/991645f9a05a4fbd801eef7ed6fdb86a3893213a))
+- **descriptions:** 修复调整尺寸时数据丢失的问题 ([#9942](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9942)) ([bcf0ee0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bcf0ee0ea1e2403494d37cfad9dc638bba94e1e8))
+- **drawer:** 避免抽屉数据覆盖信号输入 ([#9889](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9889)) ([1ea1bd8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1ea1bd8de610ebb5b3fbb23fe4e1dd93c5c666c6))
+- **graph:** 移除 SVG 变换中的无效单位 ([#9950](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9950)) ([b3ddf73](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b3ddf739138f77c38f610ee6fba2b7b6b68eda27))
+- **i18n:** 补充 `en_GB`、`en_AU` 和默认语言缺失的翻译区块 ([#9913](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9913)) ([ffa75af](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ffa75af0b658c775df4ec65d0793f3eea73b3790))
+- **i18n:** 补充 `ar_EG` 缺失的翻译 ([#9912](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9912)) ([b3eadd4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b3eadd4e6ef57ddac079d273bbc752314ad9ddbc))
+- **icon:** 保留自定义 `aria-label` 值 ([#9934](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9934)) ([929d16e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/929d16e86f90f8419b531ef48415926dbd03b2cd))
+- **icon:** 避免首个子节点不是元素时旋转报错 ([#9921](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9921)) ([6d3169b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6d3169bead57ea8d7ee307b988e1b7da485ddd91))
+- **input:** 支持通过 Signal Forms 写入值 ([#9908](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9908)) ([753a714](https://github.com/NG-ZORRO/ng-zorro-antd/commit/753a71459da1daf15d5fec8e6f782c4e359e8b71))
+- **input-number:** 只读时禁止通过键盘调整数值 ([#9925](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9925)) ([a6a1c9c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a6a1c9c1c0557156fbde1e0a095781e82efb9b8b))
+- **modal:** 关闭时播放遮罩动画 ([#9920](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9920)) ([9f1e6ae](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9f1e6aecfbb06eeb7e21667b18540b4c6fed0382))
+- **segmented:** 切换排列方向时重新计算滑块样式 ([#9937](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9937)) ([8419827](https://github.com/NG-ZORRO/ng-zorro-antd/commit/84198271c4e10ce6ba4a929abc2c7a09728eebc3))
+- **select:** 避免在父表单中触发 `ngModel` 警告 ([#9945](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9945)) ([a2a6837](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a2a6837dcc46abc08102d5cba404b3472b907d94))
+- **select:** 防止下拉选项溢出 ([#9849](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9849)) ([#9957](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9957)) ([844ac55](https://github.com/NG-ZORRO/ng-zorro-antd/commit/844ac55b512666042bcf52371fc5b01c34979afc))
+
+### 样式与升级说明
+
+- **style:** 使用 CSS 逻辑属性合并 LTR 与 RTL 样式，并移除独立的 RTL 样式文件。直接导入已移除 `style/rtl.less` 文件的项目需改为使用组件样式入口。 ([#9892](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9892)) ([8cfb6be](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8cfb6be3bf6f0f8aeec3e1a6a9619aaf85c94f28))
+- **anchor:** 自定义主题需将 `@anchor-link-top` 迁移为 `@anchor-link-padding-block`，将 `@anchor-link-left` 迁移为 `@anchor-link-padding-inline-start`；`@anchor-link-padding` 已移除，请分别配置这两个新变量。 ([#9892](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9892)) ([8cfb6be](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8cfb6be3bf6f0f8aeec3e1a6a9619aaf85c94f28))
+- **tabs:** 标签间距统一使用 `@tabs-horizontal-gutter`，自定义主题需迁移 `@tabs-horizontal-margin` 和已移除的 `@tabs-horizontal-margin-rtl` 配置。 ([#9892](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9892)) ([8cfb6be](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8cfb6be3bf6f0f8aeec3e1a6a9619aaf85c94f28))
+
 ## 22.0.1
 
 `2026-08-07`

@@ -1,3 +1,40 @@
+## [22.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/22.0.1...22.1.0) (2026-09-17)
+
+### Features
+
+- **auto-complete:** support custom overlay origins ([#9946](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9946)) ([ae7c405](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ae7c405674fac3d23848f6f751170638195fef36))
+- **auto-complete:** support `nzDropdownMatchSelectWidth` ([#9879](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9879)) ([909e499](https://github.com/NG-ZORRO/ng-zorro-antd/commit/909e499b62b9273935281d317833e11f5a552235))
+- **avatar:** support responsive sizes ([#9801](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9801)) ([584928e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/584928e8dae2bc485d3b22d247070c70e16b26f3))
+- **core-time:** support date adapter configuration factories in an injection context ([#9952](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9952)) ([0108fb7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0108fb70aa8c9d43e6955af7000fc4fef6e4effc))
+- **cron-expression:** support `nzStatus` and synchronize form validation status ([#9895](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9895)) ([9408016](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9408016a38f380500c9e01f4b8cc99588fd045c3))
+- **icon:** add new brand icons, including Anthropic, Claude, DeepSeek, Gemini, and Qwen ([#9909](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9909)) ([73401ac](https://github.com/NG-ZORRO/ng-zorro-antd/commit/73401ac7a6338d1352bc10de675eabc5ddda7505))
+
+### Bug Fixes
+
+- **cdk:** respond to changes in the resize observer disabled state ([#9923](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9923)) ([4ef7d34](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4ef7d34430506a687c3ebab2925b0eb9eb609161))
+- **color-picker:** preserve hue when reapplying equivalent grayscale values ([#9938](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9938)) ([eea2bb4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/eea2bb4f4d5be404a42467bbcebc0815ec6c3f39))
+- **core:** clean up drag event listeners ([#9922](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9922)) ([68ea6c8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/68ea6c89203da31a7ed360d44a64a11f06372581))
+- **date-picker:** support range pickers with Signal Forms ([#9911](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9911)) ([991645f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/991645f9a05a4fbd801eef7ed6fdb86a3893213a))
+- **descriptions:** prevent data loss when resizing ([#9942](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9942)) ([bcf0ee0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bcf0ee0ea1e2403494d37cfad9dc638bba94e1e8))
+- **drawer:** avoid overwriting signal inputs with drawer data ([#9889](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9889)) ([1ea1bd8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1ea1bd8de610ebb5b3fbb23fe4e1dd93c5c666c6))
+- **graph:** remove invalid units from SVG transforms ([#9950](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9950)) ([b3ddf73](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b3ddf739138f77c38f610ee6fba2b7b6b68eda27))
+- **i18n:** add missing sections to `en_GB`, `en_AU`, and the default locale ([#9913](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9913)) ([ffa75af](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ffa75af0b658c775df4ec65d0793f3eea73b3790))
+- **i18n:** add missing translations to `ar_EG` ([#9912](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9912)) ([b3eadd4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b3eadd4e6ef57ddac079d273bbc752314ad9ddbc))
+- **icon:** preserve custom `aria-label` values ([#9934](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9934)) ([929d16e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/929d16e86f90f8419b531ef48415926dbd03b2cd))
+- **icon:** avoid rotation errors when the first child is not an element ([#9921](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9921)) ([6d3169b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6d3169bead57ea8d7ee307b988e1b7da485ddd91))
+- **input:** support writing values with Signal Forms ([#9908](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9908)) ([753a714](https://github.com/NG-ZORRO/ng-zorro-antd/commit/753a71459da1daf15d5fec8e6f782c4e359e8b71))
+- **input-number:** prevent keyboard stepping when read-only ([#9925](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9925)) ([a6a1c9c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a6a1c9c1c0557156fbde1e0a095781e82efb9b8b))
+- **modal:** animate the mask when closing ([#9920](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9920)) ([9f1e6ae](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9f1e6aecfbb06eeb7e21667b18540b4c6fed0382))
+- **segmented:** recompute thumb styles when switching orientation ([#9937](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9937)) ([8419827](https://github.com/NG-ZORRO/ng-zorro-antd/commit/84198271c4e10ce6ba4a929abc2c7a09728eebc3))
+- **select:** prevent `ngModel` warnings in parent forms ([#9945](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9945)) ([a2a6837](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a2a6837dcc46abc08102d5cba404b3472b907d94))
+- **select:** prevent dropdown options from overflowing ([#9849](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9849)) ([#9957](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9957)) ([844ac55](https://github.com/NG-ZORRO/ng-zorro-antd/commit/844ac55b512666042bcf52371fc5b01c34979afc))
+
+### Styles and upgrade notes
+
+- **style:** consolidate LTR and RTL styles using CSS logical properties and remove standalone RTL style files. Applications importing removed `style/rtl.less` files directly should use the component style entry points instead. ([#9892](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9892)) ([8cfb6be](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8cfb6be3bf6f0f8aeec3e1a6a9619aaf85c94f28))
+- **anchor:** migrate custom theme overrides from `@anchor-link-top` to `@anchor-link-padding-block` and from `@anchor-link-left` to `@anchor-link-padding-inline-start`. `@anchor-link-padding` has been removed; configure the two new variables separately. ([#9892](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9892)) ([8cfb6be](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8cfb6be3bf6f0f8aeec3e1a6a9619aaf85c94f28))
+- **tabs:** tab spacing now uses `@tabs-horizontal-gutter`. Migrate custom overrides of `@tabs-horizontal-margin` and the removed `@tabs-horizontal-margin-rtl` variable. ([#9892](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9892)) ([8cfb6be](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8cfb6be3bf6f0f8aeec3e1a6a9619aaf85c94f28))
+
 ## [22.0.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/22.0.0...22.0.1) (2026-08-07)
 
 ### Bug Fixes
