@@ -29,10 +29,10 @@ description: 输入框自动完成功能。
 
 ### [nzAutocomplete]
 
-| 属性                          | 说明                             | 类型                            | 默认值         |
-| ----------------------------- | -------------------------------- | ------------------------------- | -------------- |
-| `[nzAutocomplete]`            | 用于绑定 nzAutocomplete 组件     | `NzAutocompleteComponent`       | -              |
-| `[nzAutocompleteConnectedTo]` | 自动完成浮层相对于该元素进行定位 | `NzAutocompleteOriginDirective` | 自动完成触发器 |
+| 属性                          | 说明                             | 类型                            | 默认值         | 版本   |
+| ----------------------------- | -------------------------------- | ------------------------------- | -------------- | ------ |
+| `[nzAutocomplete]`            | 用于绑定 nzAutocomplete 组件     | `NzAutocompleteComponent`       | -              |        |
+| `[nzAutocompleteConnectedTo]` | 自动完成浮层相对于该元素进行定位 | `NzAutocompleteOriginDirective` | 自动完成触发器 | 22.1.0 |
 
 ### [nzAutocompleteOrigin]
 
@@ -40,16 +40,16 @@ description: 输入框自动完成功能。
 
 ### nz-autocomplete
 
-| 属性                           | 说明                                                                                          | 类型                            | 默认值                          |
-| ------------------------------ | --------------------------------------------------------------------------------------------- | ------------------------------- | ------------------------------- |
-| `[nzBackfill]`                 | 使用键盘选择选项的时候，会把当前高亮项的值即时回填到输入框中                                  | `boolean`                       | `false`                         |
-| `[nzDropdownMatchSelectWidth]` | 下拉菜单和选择器同宽                                                                          | `boolean`                       | `true`                          |
-| `[nzDataSource]`               | 自动完成的数据源                                                                              | `AutocompleteDataSource`        | -                               |
-| `[nzDefaultActiveFirstOption]` | 是否默认高亮第一个选项。                                                                      | `boolean`                       | `true`                          |
-| `[nzWidth]`                    | 自定义宽度单位 px                                                                             | `number`                        | 触发元素宽度                    |
-| `[nzOverlayClassName]`         | 下拉根元素的类名称                                                                            | `string`                        | -                               |
-| `[nzOverlayStyle]`             | 下拉根元素的样式                                                                              | `object`                        | -                               |
-| `[compareWith]`                | 与 [SelectControlValueAccessor](https://angular.cn/api/forms/SelectControlValueAccessor) 相同 | `(o1: any, o2: any) => boolean` | `(o1: any, o2: any) => o1===o2` |
+| 属性                           | 说明                                                                                          | 类型                            | 默认值                          | 版本   |
+| ------------------------------ | --------------------------------------------------------------------------------------------- | ------------------------------- | ------------------------------- | ------ |
+| `[nzBackfill]`                 | 使用键盘选择选项的时候，会把当前高亮项的值即时回填到输入框中                                  | `boolean`                       | `false`                         |        |
+| `[nzDropdownMatchSelectWidth]` | 下拉菜单和选择器同宽                                                                          | `boolean`                       | `true`                          | 22.1.0 |
+| `[nzDataSource]`               | 自动完成的数据源                                                                              | `AutocompleteDataSource`        | -                               |        |
+| `[nzDefaultActiveFirstOption]` | 是否默认高亮第一个选项。                                                                      | `boolean`                       | `true`                          |        |
+| `[nzWidth]`                    | 自定义宽度单位 px                                                                             | `number`                        | 触发元素宽度                    |        |
+| `[nzOverlayClassName]`         | 下拉根元素的类名称                                                                            | `string`                        | -                               |        |
+| `[nzOverlayStyle]`             | 下拉根元素的样式                                                                              | `object`                        | -                               |        |
+| `[compareWith]`                | 与 [SelectControlValueAccessor](https://angular.cn/api/forms/SelectControlValueAccessor) 相同 | `(o1: any, o2: any) => boolean` | `(o1: any, o2: any) => o1===o2` |        |
 
 ### nz-auto-option
 

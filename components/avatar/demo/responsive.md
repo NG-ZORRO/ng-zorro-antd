@@ -1,5 +1,6 @@
 ---
 order: 5
+version: 22.1.0
 title:
   zh-CN: 响应式尺寸
   en-US: Responsive Size

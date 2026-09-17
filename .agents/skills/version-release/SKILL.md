@@ -162,7 +162,33 @@ Review each release entry carefully:
 Do not mark the changelog step complete until the English and Chinese release notes have both been
 reviewed.
 
-### 4. Commit And Create The Release PR
+### 4. API And Demo Version Tags
+
+For every minor or major release, this is a required step after changelog review and before the
+release commit and PR. Review features introduced in the release range and add missing version
+tags to their existing API and demo documentation. Patch releases skip this step unless version-tag
+corrections are explicitly requested.
+
+- In `components/<component>/doc/index.en-US.md` and `index.zh-CN.md`, use the API table's `Version`
+  / `版本` column. Add the column when absent, leaving unrelated rows empty and preserving existing
+  version values. Keep table cells aligned, including empty global-config cells.
+- Mark a new API with its introduction version, for example `22.1.0`. When only a new capability of
+  an existing API is introduced, qualify the version: `responsive object: 22.1.0` /
+  `响应式对象：22.1.0`. Do not imply the whole API is new.
+- In `components/<component>/demo/<demo>.md`, add `version: <version>` to the YAML frontmatter of
+  demos introducing or newly demonstrating the feature. This is the demo version badge; preserve
+  the existing order, titles, bilingual descriptions, and demo source code.
+- Use the actual introduction version from the release history. Preserve earlier version tags;
+  bug fixes and unchanged APIs or demos do not receive a new feature version tag.
+- Keep this step limited to version columns and demo frontmatter. Preserve descriptions, types,
+  defaults, examples, and general guide content. Additional explanations, API rewrites, or new
+  demos belong to a separately requested documentation change.
+
+Complete this step when each new feature's applicable API rows and demos have been checked, the
+English and Chinese version labels agree, and the diff contains only the intended tags and any
+necessary table formatting. Features without an applicable API row or demo need no new prose.
+
+### 5. Commit And Create The Release PR
 
 Create a release branch:
 
@@ -177,6 +203,7 @@ Stage only the release files that belong in the PR. Usually these are:
 - `docs/changelog.zh-CN.md`
 - `components/package.json`
 - `components/version/version.ts`
+- Component API and demo Markdown files changed by the version-tagging step above
 
 Use this commit message:
 
@@ -194,7 +221,7 @@ The PR base must match the `--base` value used during prepare. For example, if p
 For the normal public release train, the PR target is usually `master`. For a maintenance release,
 use the matching maintenance branch only when explicitly requested.
 
-### 5. Leave Build, Publish, And Deploy To Azure
+### 6. Leave Build, Publish, And Deploy To Azure
 
 Do not run local `Build release`, `Push library release`, or `Push site release` as the default agent
 flow. The local script contains these stages, but the expected project workflow is that Azure handles:
@@ -257,9 +284,10 @@ When assisting with an NG-ZORRO release:
 3. Run `npm run stage-release -- prepare --version <version> --base <branch>`.
 4. Verify `components/package.json`, `components/version/version.ts`, `CHANGELOG.md`,
    `docs/changelog.en-US.md`, and `docs/changelog.zh-CN.md`.
-5. Commit the release files on `release/<version>`.
-6. Create the release PR with `.github/PULL_REQUEST_TEMPLATE.md`, using the same base branch passed to
+5. For minor and major releases, complete the required API and demo version-tag review above.
+6. Commit the release files on `release/<version>`.
+7. Create the release PR with `.github/PULL_REQUEST_TEMPLATE.md`, using the same base branch passed to
    `prepare --base`.
-7. Stop after PR creation unless the user explicitly asks to proceed with Azure publishing.
-8. For official publishing, use Azure `Publish` and `Deploy`; do not default to local `npm publish`.
-9. Complete post-release GitHub Release, blog, and announcement tasks when applicable.
+8. Stop after PR creation unless the user explicitly asks to proceed with Azure publishing.
+9. For official publishing, use Azure `Publish` and `Deploy`; do not default to local `npm publish`.
+10. Complete post-release GitHub Release, blog, and announcement tasks when applicable.
