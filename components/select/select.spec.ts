@@ -14,6 +14,7 @@ import { vi } from 'vitest';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
+import { NzTypeHintDirective } from 'ng-zorro-antd/core/outlet';
 import {
   dispatchFakeEvent,
   dispatchKeyboardEvent,
@@ -35,6 +36,7 @@ import {
   NzSelectItemInterface,
   NzSelectModeType,
   NzSelectOptionInterface,
+  NzSelectOptionLabelContext,
   NzSelectPlacementType
 } from './select.types';
 
@@ -1903,10 +1905,6 @@ describe('option container scroll', () => {
   });
 });
 
-interface TestSelectOption extends NzSelectOptionInterface {
-  icon?: string;
-}
-
 @Component({
   imports: [FormsModule, NzSelectModule],
   template: `
@@ -2079,8 +2077,12 @@ export class TestSelectTemplateTagsComponent {
   readonly nzMaxTagPlaceholder = signal<TemplateRef<{ $implicit: NzSafeAny[] }> | undefined>(undefined);
 }
 
+interface TestSelectOption extends NzSelectOptionInterface {
+  icon?: string;
+}
+
 @Component({
-  imports: [FormsModule, NzSelectModule],
+  imports: [FormsModule, NzSelectModule, NzTypeHintDirective],
   template: `
     <nz-select
       nzMode="default"
@@ -2112,10 +2114,10 @@ export class TestSelectTemplateTagsComponent {
     <ng-template #dropdownTemplate><div class="dropdown-render">dropdownRender</div></ng-template>
     <ng-template #customTemplate let-selected>selected: {{ selected.nzLabel }}</ng-template>
     <ng-template #suffixIconTemplate>icon</ng-template>
-    <ng-template #optionTemplate let-option>
+    <ng-template #optionTemplate [nzTypeHint]="optionContext" let-option>
       option: {{ option.value }}{{ option.icon ? ' ' + option.icon : '' }}
     </ng-template>
-    <ng-template #nzPrefixedOptionTemplate let-option>
+    <ng-template #nzPrefixedOptionTemplate [nzTypeHint]="optionContext" let-option>
       option: {{ option.nzValue }} {{ option.nzLabel }} {{ option.nzDisabled }}
     </ng-template>
   `
@@ -2126,6 +2128,7 @@ export class TestSelectReactiveDefaultComponent {
   @ViewChild('suffixIconTemplate') suffixIconTemplate!: TemplateRef<NzSafeAny>;
   @ViewChild('optionTemplate', { static: true }) optionTemplate!: TemplateRef<NzSafeAny>;
   @ViewChild('nzPrefixedOptionTemplate', { static: true }) nzPrefixedOptionTemplate!: TemplateRef<NzSafeAny>;
+  protected readonly optionContext!: NzSelectOptionLabelContext<TestSelectOption>;
   readonly value = signal<NzSafeAny | null>(null);
   readonly nzOpen = signal(false);
   valueChange = vi.fn<(value: NzSafeAny) => void>();
