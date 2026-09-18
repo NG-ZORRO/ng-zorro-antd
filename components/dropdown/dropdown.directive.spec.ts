@@ -174,6 +174,31 @@ describe('dropdown', () => {
     expect(nullBackdrop).toBeNull();
   });
 
+  it('should disappear if Escape pressed after a click triggered submenu is closed', async () => {
+    const fixture = TestBed.createComponent(NzTestDropdownSubmenuComponent);
+    fixture.detectChanges();
+    const dropdownElement = fixture.debugElement.query(By.directive(NzDropdownDirective)).nativeElement;
+
+    dispatchFakeEvent(dropdownElement, 'click');
+    await stabilize(fixture, 1000);
+    expect(overlayContainerElement.querySelector('.ant-dropdown')).not.toBeNull();
+
+    const submenuTitle = overlayContainerElement.querySelector('.ant-dropdown-menu-submenu-title')!;
+    dispatchFakeEvent(submenuTitle, 'click');
+    await stabilize(fixture, 1000);
+    expect(overlayContainerElement.querySelector('.sub-menu-item')).not.toBeNull();
+
+    /** the first Escape detaches the submenu overlay **/
+    dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
+    await stabilize(fixture, 1000);
+    expect(overlayContainerElement.querySelector('.sub-menu-item')).toBeNull();
+
+    /** the second Escape should close the dropdown itself **/
+    dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
+    await stabilize(fixture, 1000);
+    expect(overlayContainerElement.querySelector('.ant-dropdown')).toBeNull();
+  });
+
   it('should nzOverlayClassName and nzOverlayStyle work', async () => {
     const fixture = TestBed.createComponent(NzTestDropdownComponent);
     fixture.detectChanges();
@@ -292,3 +317,20 @@ export class NzTestDropdownArrowComponent {
   readonly arrow = signal(false);
   readonly placement = signal<NzPlacementType>('bottomLeft');
 }
+
+@Component({
+  imports: [NzDropdownModule, NzMenuModule],
+  template: `
+    <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click">Trigger</a>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-submenu nzTitle="Submenu" nzTriggerSubMenuAction="click">
+          <ul>
+            <li nz-menu-item class="sub-menu-item">Sub menu item</li>
+          </ul>
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+  `
+})
+export class NzTestDropdownSubmenuComponent {}

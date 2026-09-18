@@ -4,6 +4,7 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
+import { ESCAPE } from '@angular/cdk/keycodes';
 import { ConnectedOverlayPositionChange, OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, ElementRef, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
@@ -13,7 +14,12 @@ import { vi } from 'vitest';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
-import { dispatchFakeEvent, provideMockDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
+import {
+  dispatchFakeEvent,
+  dispatchKeyboardEvent,
+  provideMockDirectionality,
+  updateNonSignalsInput
+} from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -341,6 +347,24 @@ describe('menu', () => {
         title.click();
         fixture.detectChanges();
         expect(mouseenterCallback).toHaveBeenCalledTimes(1);
+      });
+
+      it('should reopen after the overlay is detached by Escape', async () => {
+        testComponent.nzTriggerSubMenuAction.set('click');
+        fixture.detectChanges();
+        const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
+
+        title.click();
+        await stabilize(fixture, 500);
+        expect(testComponent.subs.first.nzOpen).toBe(true);
+
+        dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
+        await stabilize(fixture, 500);
+        expect(testComponent.subs.first.nzOpen).toBe(false);
+
+        title.click();
+        await stabilize(fixture, 500);
+        expect(testComponent.subs.first.nzOpen).toBe(true);
       });
 
       it('should submenu mouseleave work', () => {
