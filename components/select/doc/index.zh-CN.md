@@ -88,6 +88,14 @@ description: 下拉选择器。
 | ----------- | ---- | --------------------------------------- | ------ |
 | `[nzLabel]` | 组名 | `string \| number \| TemplateRef<void>` | -      |
 
+### 选项标签模板
+
+作为 `nzOptions` 选项 `label` 的模板，会以 `$implicit` 及各个属性接收该选项，同时包含 `nzCustomTemplate` 所使用的 `nz` 前缀字段（`nzValue`、`nzLabel`、`nzDisabled` 等），因此同一个模板可以在两处复用。其类型为 `NzSelectOptionLabelContext`，可将其传给 `nzTypeHint` 以获得模板的类型检查：
+
+```html
+<ng-template #labelTemplate [nzTypeHint]="labelContext" let-option>{{ option.value }}</ng-template>
+```
+
 ## 方法
 
 ### nz-select

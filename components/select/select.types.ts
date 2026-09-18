@@ -31,6 +31,19 @@ export interface NzSelectOptionInterface {
   key?: string | number;
 }
 
+/**
+ * The option as it is handed to a template used as `label` of an option: the option itself, plus the normalized
+ * `nz`-prefixed fields that `nzCustomTemplate` is rendered with.
+ */
+export type NzSelectOptionLabel<T extends NzSelectOptionInterface = NzSelectOptionInterface> = T &
+  NzSelectItemInterface;
+
+/** Context handed to a template used as `label` of an option. */
+export type NzSelectOptionLabelContext<T extends NzSelectOptionInterface = NzSelectOptionInterface> =
+  NzSelectOptionLabel<T> & {
+    $implicit: NzSelectOptionLabel<T>;
+  };
+
 export type NzSelectTopControlItemType = Partial<NzSelectItemInterface> & {
   contentTemplateOutlet: TemplateRef<NzSafeAny> | null;
   contentTemplateOutletContext: NzSafeAny;
