@@ -963,6 +963,42 @@ describe('select', () => {
       expect(component.onClear).toHaveBeenCalled();
     });
 
+    it('should pass the option as template context when label is a template', async () => {
+      component.listOfOption.set([
+        { value: 'test_01', label: component.optionTemplate },
+        { value: 'test_02', label: component.optionTemplate }
+      ]);
+      component.nzOpen.set(true);
+      await flushChanges();
+      const listOfContainerItem = document.querySelectorAll('nz-option-item');
+      expect(listOfContainerItem[0].textContent?.trim()).toBe('option: test_01');
+      expect(listOfContainerItem[1].textContent?.trim()).toBe('option: test_02');
+    });
+
+    it('should expose custom option properties to the label template', async () => {
+      component.listOfOption.set([{ value: 'test_01', label: component.optionTemplate, icon: 'star' }]);
+      component.nzOpen.set(true);
+      await flushChanges();
+      expect(document.querySelector('nz-option-item')!.textContent?.trim()).toBe('option: test_01 star');
+    });
+
+    it('should expose the same nz-prefixed fields as nzCustomTemplate to the label template', async () => {
+      component.listOfOption.set([{ value: 'test_01', label: component.nzPrefixedOptionTemplate, disabled: true }]);
+      component.nzOpen.set(true);
+      await flushChanges();
+      expect(document.querySelector('nz-option-item')!.textContent?.trim()).toBe('option: test_01  true');
+    });
+
+    it('should display the label in the top control when a string label is provided', async () => {
+      component.listOfOption.set([
+        { value: 'test_01', label: 'label 1' },
+        { value: 'test_02', label: 'label 2' }
+      ]);
+      component.value.set('test_02');
+      await flushChanges();
+      expect(selectElement.querySelector('nz-select-item')!.textContent?.trim()).toBe('label 2');
+    });
+
     it('should nzCustomTemplate works', async () => {
       component.listOfOption.set([{ value: 'value', label: 'label' }]);
       fixture.detectChanges();
@@ -1867,6 +1903,10 @@ describe('option container scroll', () => {
   });
 });
 
+interface TestSelectOption extends NzSelectOptionInterface {
+  icon?: string;
+}
+
 @Component({
   imports: [FormsModule, NzSelectModule],
   template: `
@@ -2072,12 +2112,20 @@ export class TestSelectTemplateTagsComponent {
     <ng-template #dropdownTemplate><div class="dropdown-render">dropdownRender</div></ng-template>
     <ng-template #customTemplate let-selected>selected: {{ selected.nzLabel }}</ng-template>
     <ng-template #suffixIconTemplate>icon</ng-template>
+    <ng-template #optionTemplate let-option>
+      option: {{ option.value }}{{ option.icon ? ' ' + option.icon : '' }}
+    </ng-template>
+    <ng-template #nzPrefixedOptionTemplate let-option>
+      option: {{ option.nzValue }} {{ option.nzLabel }} {{ option.nzDisabled }}
+    </ng-template>
   `
 })
 export class TestSelectReactiveDefaultComponent {
   @ViewChild('dropdownTemplate') dropdownTemplate!: TemplateRef<NzSafeAny>;
   @ViewChild('customTemplate') customTemplate!: TemplateRef<NzSafeAny>;
   @ViewChild('suffixIconTemplate') suffixIconTemplate!: TemplateRef<NzSafeAny>;
+  @ViewChild('optionTemplate', { static: true }) optionTemplate!: TemplateRef<NzSafeAny>;
+  @ViewChild('nzPrefixedOptionTemplate', { static: true }) nzPrefixedOptionTemplate!: TemplateRef<NzSafeAny>;
   readonly value = signal<NzSafeAny | null>(null);
   readonly nzOpen = signal(false);
   valueChange = vi.fn<(value: NzSafeAny) => void>();
@@ -2086,7 +2134,7 @@ export class TestSelectReactiveDefaultComponent {
 
   onClear = vi.fn<() => void>();
   searchValueChange = vi.fn<(value: NzSafeAny) => void>();
-  readonly listOfOption = signal<NzSelectOptionInterface[]>([]);
+  readonly listOfOption = signal<TestSelectOption[]>([]);
   readonly nzSize = signal<NzSelectSizeType>('default');
   nzDropdownMatchSelectWidth = true;
   readonly nzPlaceHolder = signal<string | TemplateRef<NzSafeAny> | null>(null);
