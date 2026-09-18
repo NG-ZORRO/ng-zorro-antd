@@ -589,6 +589,12 @@ describe('NzDatePickerComponent', () => {
       expect(debugElement.query(By.css(`.anticon-clock-circle`))).toBeDefined();
     });
 
+    it('should suport custom prefix', () => {
+      fixtureInstance.nzPrefix.set('star');
+      fixture.detectChanges();
+      expect(debugElement.query(By.css(`.anticon-star`))).toBeDefined();
+    });
+
     describe('should variant work', () => {
       it('outlined', () => {
         fixtureInstance.nzVariant.set('outlined');
@@ -1755,6 +1761,7 @@ class NzTestDatePickerComponent {
   readonly nzShowNow = signal(false);
   readonly nzMode = signal<string>('date');
   readonly nzSuffixIcon = signal<string | undefined>(undefined);
+  readonly nzPrefix = signal<string | undefined>(undefined);
   readonly nzVariant = signal<NzVariant>('outlined');
   readonly nzInline = signal(false);
   readonly nzBackdrop = signal(false);
