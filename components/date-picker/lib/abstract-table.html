@@ -22,6 +22,8 @@
           <td
             [title]="cell.title"
             role="gridcell"
+            [attr.aria-selected]="cell.isSelected"
+            [attr.aria-disabled]="cell.isDisabled"
             [class]="cell.classMap!"
             (click)="cell.isDisabled ? null : cell.onClick()"
             (mouseenter)="cell.onMouseEnter()"
@@ -36,11 +38,7 @@
                     {{ cell.cellRender }}
                   </ng-template>
                 } @else {
-                  <div
-                    class="{{ prefixCls }}-cell-inner"
-                    [attr.aria-selected]="cell.isSelected"
-                    [attr.aria-disabled]="cell.isDisabled"
-                  >
+                  <div class="{{ prefixCls }}-cell-inner">
                     {{ cell.content }}
                   </div>
                 }

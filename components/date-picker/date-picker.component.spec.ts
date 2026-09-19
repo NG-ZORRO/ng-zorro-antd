@@ -436,6 +436,22 @@ describe('NzDatePickerComponent', () => {
       expect(getPickerContainer()).toBeNull();
     });
 
+    it('should put aria-selected and aria-disabled on the gridcell', async () => {
+      fixture.detectChanges();
+      fixtureInstance.nzValue.set(new Date('2018-11-11 12:12:12'));
+      fixtureInstance.nzDisabledDate.set((current: Date) => isSameDay(current, new Date('2018-11-15 00:00:00')));
+      await stabilize(10000);
+      openPickerByClickTrigger();
+      const selectedCell = queryFromOverlay(`td.${PREFIX_CLASS}-cell-selected`);
+      const disabledCell = queryFromOverlay(`td.${PREFIX_CLASS}-cell-disabled`);
+      expect(selectedCell.getAttribute('role')).toBe('gridcell');
+      expect(selectedCell.getAttribute('aria-selected')).toBe('true');
+      expect(disabledCell.getAttribute('role')).toBe('gridcell');
+      expect(disabledCell.getAttribute('aria-disabled')).toBe('true');
+      expect(queryFromOverlay(`.${PREFIX_CLASS}-cell-inner[aria-selected]`)).toBeNull();
+      expect(queryFromOverlay(`.${PREFIX_CLASS}-cell-inner[aria-disabled]`)).toBeNull();
+    });
+
     // #5633
     it('should support disable year and month right', () => {
       fixtureInstance.nzLocale.set({
