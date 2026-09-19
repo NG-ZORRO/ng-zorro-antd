@@ -251,12 +251,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'cascader';
           </ul>
         } @else {
           @for (options of cascaderService.columns; track options; let i = $index) {
-            <ul
-              class="ant-cascader-menu"
-              role="menuitemcheckbox"
-              [class]="nzColumnClassName"
-              [style.height]="dropdownHeightStyle"
-            >
+            <ul class="ant-cascader-menu" [class]="nzColumnClassName" [style.height]="dropdownHeightStyle">
               @for (option of options; track option) {
                 <li
                   nz-cascader-option
