@@ -104,6 +104,14 @@ describe('rate', () => {
       expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
     });
 
+    it('should keep the list in the natural tab order', () => {
+      const rateElement = rate.nativeElement.querySelector('ul') as HTMLElement;
+      expect(rateElement.getAttribute('tabindex')).toBe('0');
+      testComponent.disabled.set(true);
+      fixture.detectChanges();
+      expect(rateElement.getAttribute('tabindex')).toBe('-1');
+    });
+
     it('should count work', () => {
       fixture.detectChanges();
       expect(rate.nativeElement.firstElementChild.children.length).toBe(5);

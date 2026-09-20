@@ -51,7 +51,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
       [class]="classMap"
       (keydown)="onKeyDown($event); $event.preventDefault()"
       (mouseleave)="onRateLeave(); $event.stopPropagation()"
-      [tabindex]="nzDisabled ? -1 : 1"
+      [tabindex]="nzDisabled ? -1 : 0"
     >
       @for (star of starArray; track star) {
         <li
