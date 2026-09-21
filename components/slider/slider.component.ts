@@ -174,6 +174,8 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
 
     if (this.getValue() === null) {
       this.setValue(this.formatValue(null));
+    } else {
+      this.updateTrackAndHandles();
     }
   }
 
