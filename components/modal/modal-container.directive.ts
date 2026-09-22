@@ -336,14 +336,23 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
     } else {
       this.setExitAnimationClass();
       const element = this.modalElementRef.nativeElement;
+      const backdropElement = this.overlayRef.backdropElement;
+      /** We need to wait for the backdrop's own fade-out animation too, otherwise the overlay is
+       * disposed as soon as the modal panel finishes animating, cutting the mask
+       * animation short.
+       */
+      let pendingAnimations = backdropElement ? 2 : 1;
       const onAnimationEnd = (): void => {
-        element.removeEventListener('animationend', onAnimationEnd);
+        if (--pendingAnimations > 0) {
+          return;
+        }
         this.restoreFocus();
         this.cleanAnimationClass();
         this.animationStateChanged.emit('leave-active');
       };
 
-      element.addEventListener('animationend', onAnimationEnd);
+      element.addEventListener('animationend', onAnimationEnd, { once: true });
+      backdropElement?.addEventListener('animationend', onAnimationEnd, { once: true });
     }
   }
 
