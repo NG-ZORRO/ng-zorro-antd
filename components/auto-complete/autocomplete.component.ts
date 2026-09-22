@@ -61,6 +61,8 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
   });
 }
 
+let nextUniqueId = 0;
+
 @Component({
   selector: 'nz-autocomplete',
   exportAs: 'nzAutocomplete',
@@ -70,6 +72,8 @@ function normalizeDataSource(value: AutocompleteDataSource): AutocompleteDataSou
     <ng-template>
       <div
         #panel
+        role="listbox"
+        [attr.id]="panelId"
         class="ant-select-dropdown ant-select-dropdown-placement-bottomLeft"
         [class.ant-select-dropdown-hidden]="!showPanel"
         [class.ant-select-dropdown-rtl]="dir() === 'rtl'"
@@ -123,6 +127,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   activeItem: NzAutocompleteOptionComponent | null = null;
   normalizedDataSource: AutocompleteDataSourceItem[] = [];
   animationStateChange = new EventEmitter<AnimationCallbackEvent>();
+  readonly panelId = `nz-autocomplete-panel-${nextUniqueId++}`;
 
   /**
    * Options accessor, its source may be content or dataSource
