@@ -6,9 +6,10 @@
 import { NgModule } from '@angular/core';
 
 import { NzStringTemplateOutletDirective } from './string-template-outlet.directive';
+import { NzTypeHintDirective } from './type-hint.directive';
 
 @NgModule({
-  imports: [NzStringTemplateOutletDirective],
-  exports: [NzStringTemplateOutletDirective]
+  imports: [NzStringTemplateOutletDirective, NzTypeHintDirective],
+  exports: [NzStringTemplateOutletDirective, NzTypeHintDirective]
 })
 export class NzOutletModule {}
