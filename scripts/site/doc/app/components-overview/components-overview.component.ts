@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   afterNextRender,
   Component,
@@ -15,6 +16,8 @@ import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 import { NzAffixModule } from 'ng-zorro-antd/affix';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzBorderBeamModule } from 'ng-zorro-antd/border-beam';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -31,7 +34,10 @@ import { ROUTER_LIST } from '../router';
   selector: 'app-components-overview',
   imports: [
     RouterLink,
+    NgTemplateOutlet,
     NzAffixModule,
+    NzBadgeModule,
+    NzBorderBeamModule,
     NzCardModule,
     NzButtonModule,
     NzTagModule,
