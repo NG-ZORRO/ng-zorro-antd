@@ -342,7 +342,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
        * animation short.
        */
       let pendingAnimations = backdropElement ? 2 : 1;
-      const onAnimationEnd = (): void => {
+      const finish = (): void => {
         if (--pendingAnimations > 0) {
           return;
         }
@@ -351,8 +351,26 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
         this.animationStateChanged.emit('leave-active');
       };
 
-      element.addEventListener('animationend', onAnimationEnd, { once: true });
-      backdropElement?.addEventListener('animationend', onAnimationEnd, { once: true });
+      // avoid bubbling events (animation bubbles)
+      const onModalAnimationEnd = (event: AnimationEvent): void => {
+        if (event.target !== element) {
+          return;
+        }
+        element.removeEventListener('animationend', onModalAnimationEnd);
+        finish();
+      };
+      element.addEventListener('animationend', onModalAnimationEnd);
+
+      if (backdropElement) {
+        const onBackdropAnimationEnd = (event: AnimationEvent): void => {
+          if (event.target !== backdropElement) {
+            return;
+          }
+          backdropElement.removeEventListener('animationend', onBackdropAnimationEnd);
+          finish();
+        };
+        backdropElement.addEventListener('animationend', onBackdropAnimationEnd);
+      }
     }
   }
 

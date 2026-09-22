@@ -108,6 +108,51 @@ describe('modal with animation', () => {
     expect(backdropElement.classList).not.toContain('cdk-overlay-backdrop-showing');
   });
 
+  it('should wait for both the panel and the backdrop animations before disposing on close', async () => {
+    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
+    const modalContentElement = overlayContainerElement.querySelector('.ant-modal')!;
+
+    animationDone(modalContentElement, 'enter');
+    await fixture.whenStable();
+
+    const backdropElement = modalRef.getBackdropElement()!;
+    modalRef.close();
+
+    animationDone(modalContentElement, 'leave');
+    await fixture.whenStable();
+    expect(modalRef.getState()).toBe(NzModalState.CLOSING);
+    expect(overlayContainerElement.querySelector('nz-modal-container')).not.toBeNull();
+
+    animationDone(backdropElement, 'leave');
+    await fixture.whenStable();
+    expect(modalRef.getState()).toBe(NzModalState.CLOSED);
+    expect(overlayContainerElement.querySelector('nz-modal-container')).toBeNull();
+  });
+
+  it('should ignore animationend events bubbling from projected modal content when closing', async () => {
+    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
+    const modalContentElement = overlayContainerElement.querySelector('.ant-modal')!;
+
+    animationDone(modalContentElement, 'enter');
+    await fixture.whenStable();
+
+    const backdropElement = modalRef.getBackdropElement()!;
+    modalRef.close();
+
+    const projectedElement = modalContentElement.querySelector('.modal-content')!;
+    dispatchEvent(
+      projectedElement,
+      new AnimationEvent('animationend', { animationName: 'someChildAnimation', bubbles: true })
+    );
+    await fixture.whenStable();
+    expect(modalRef.getState()).toBe(NzModalState.CLOSING);
+
+    animationDone(modalContentElement, 'leave');
+    animationDone(backdropElement, 'leave');
+    await fixture.whenStable();
+    expect(modalRef.getState()).toBe(NzModalState.CLOSED);
+  });
+
   it('should emit when modal opening animation is complete', async () => {
     const modalRef = modalService.create({
       nzContent: TestWithModalContentComponent
@@ -136,6 +181,7 @@ describe('modal with animation', () => {
     expect(modalRef.getState()).toBe(NzModalState.CLOSING);
 
     animationDone(modalContentElement!, 'leave');
+    animationDone(modalRef.getBackdropElement()!, 'leave');
     await fixture.whenStable();
     expect(modalRef.getState()).toBe(NzModalState.CLOSED);
   });
@@ -167,6 +213,7 @@ describe('modal with animation', () => {
       expect(onCancel).toHaveBeenCalledTimes(0);
 
       animationDone(modalContentElement!, 'leave');
+      animationDone(modalRef.getBackdropElement()!, 'leave');
       await fixture.whenStable();
       expect(overlayContainerElement.querySelector('nz-modal-container')).toBeNull();
     });
