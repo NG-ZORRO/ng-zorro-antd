@@ -16,6 +16,19 @@ tag: '{{version}}'
 
 ---
 
+## 22.1.1
+
+`2026-09-22`
+
+### Bug Fixes
+
+- **date-picker:** apply `aria-selected` and `aria-disabled` to grid cells ([#9968](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9968)) ([e07388b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e07388bb550baeb3da87881a42a2617f9444a6e2))
+- **input:** correct search button border radius ([#9972](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9972)) ([6a44eff](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6a44eff4be805797a3794de196d888ee69ba6fac))
+- **menu:** reset submenu state when its overlay detaches ([#9966](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9966)) ([6058afa](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6058afa2d3fea67c0db8d8bdf5d3fae47659f5c5))
+- **rate:** use `tabindex="0"` to preserve document focus order ([#9970](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9970)) ([52682e5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/52682e5371dfbf3b5af8d0665052ff51a394f5b0))
+- **slider:** initialize correctly with Signal Forms ([#9961](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9961)) ([9f42b30](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9f42b3012452317e3a1ceb7a3fbbda84017e0317))
+- **table:** measure column widths correctly during modal animations ([#9960](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9960)) ([cfe390e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cfe390e18430d834928ec4f263f2925a0771d58e))
+
 ## 22.1.0
 
 `2026-09-17`

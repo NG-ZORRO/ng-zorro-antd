@@ -16,6 +16,19 @@ tag: '{{version}}'
 
 ---
 
+## 22.1.1
+
+`2026-09-22`
+
+### Bug Fixes
+
+- **date-picker:** 将 `aria-selected` 和 `aria-disabled` 应用于网格单元格 ([#9968](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9968)) ([e07388b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e07388bb550baeb3da87881a42a2617f9444a6e2))
+- **input:** 修复搜索按钮的边框圆角 ([#9972](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9972)) ([6a44eff](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6a44eff4be805797a3794de196d888ee69ba6fac))
+- **menu:** 浮层移除时重置子菜单状态 ([#9966](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9966)) ([6058afa](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6058afa2d3fea67c0db8d8bdf5d3fae47659f5c5))
+- **rate:** 使用 `tabindex="0"` 保持文档焦点顺序 ([#9970](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9970)) ([52682e5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/52682e5371dfbf3b5af8d0665052ff51a394f5b0))
+- **slider:** 修复与 Signal Forms 配合使用时的初始化问题 ([#9961](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9961)) ([9f42b30](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9f42b3012452317e3a1ceb7a3fbbda84017e0317))
+- **table:** 修复模态框动画期间列宽测量不正确的问题 ([#9960](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9960)) ([cfe390e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cfe390e18430d834928ec4f263f2925a0771d58e))
+
 ## 22.1.0
 
 `2026-09-17`
