@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
+import { LEFT_ARROW, RIGHT_ARROW, TAB } from '@angular/cdk/keycodes';
 import { Component, DebugElement, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -110,6 +110,26 @@ describe('rate', () => {
       testComponent.disabled.set(true);
       fixture.detectChanges();
       expect(rateElement.getAttribute('tabindex')).toBe('-1');
+    });
+
+    it('should only swallow the keys it handles', async () => {
+      const list = rate.nativeElement.firstElementChild as HTMLElement;
+      const tabEvent = dispatchKeyboardEvent(list, 'keydown', TAB);
+      fixture.detectChanges();
+      expect(tabEvent.defaultPrevented).toBe(false);
+      expect(testComponent.value()).toBe(0);
+      expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
+
+      const arrowEvent = dispatchKeyboardEvent(list, 'keydown', RIGHT_ARROW);
+      fixture.detectChanges();
+      expect(arrowEvent.defaultPrevented).toBe(true);
+      expect(testComponent.value()).toBe(1);
+
+      testComponent.value.set(5);
+      await stabilize(fixture);
+      const atLimitEvent = dispatchKeyboardEvent(list, 'keydown', RIGHT_ARROW);
+      fixture.detectChanges();
+      expect(atLimitEvent.defaultPrevented).toBe(true);
     });
 
     it('should count work', () => {

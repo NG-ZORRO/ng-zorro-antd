@@ -15,6 +15,11 @@
   list-style: none;
   outline: none;
 
+  &:focus-visible {
+    outline: @line-width-focus solid @border-color-primary;
+    outline-offset: 1px;
+  }
+
   &-rtl {
     direction: rtl;
   }
