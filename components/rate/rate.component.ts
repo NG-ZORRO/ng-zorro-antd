@@ -49,7 +49,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
       [class.ant-rate-disabled]="nzDisabled"
       [class.ant-rate-rtl]="dir() === 'rtl'"
       [class]="classMap"
-      (keydown)="onKeyDown($event); $event.preventDefault()"
+      (keydown)="onKeyDown($event)"
       (mouseleave)="onRateLeave(); $event.stopPropagation()"
       [tabindex]="nzDisabled ? -1 : 0"
     >
@@ -223,6 +223,13 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
   }
 
   onKeyDown(e: KeyboardEvent): void {
+    if (e.keyCode !== LEFT_ARROW && e.keyCode !== RIGHT_ARROW) {
+      return;
+    }
+
+    // Swallow only the keys the rating acts on, so Tab still takes focus out of the list.
+    e.preventDefault();
+
     const oldVal = this.nzValue;
 
     if (e.keyCode === RIGHT_ARROW && this.nzValue < this.nzCount) {
