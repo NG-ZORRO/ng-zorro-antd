@@ -164,6 +164,7 @@ import { PREFIX_CLASS } from './util';
         <nz-time-picker-panel
           [nzInDatePicker]="true"
           [ngModel]="value?.nativeDate"
+          [ngModelOptions]="{ standalone: true }"
           (ngModelChange)="onSelectTime($event)"
           [format]="$any(timeOptions.nzFormat)"
           [nzHourStep]="$any(timeOptions.nzHourStep)"
