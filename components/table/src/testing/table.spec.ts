@@ -12,7 +12,14 @@ import { vi } from 'vitest';
 import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import en_US from 'ng-zorro-antd/i18n/languages/en_US';
-import { NzTableComponent, NzTableModule, NzTableSize } from 'ng-zorro-antd/table';
+import {
+  NzTableComponent,
+  NzTableFilterList,
+  NzTableModule,
+  NzTableQueryParams,
+  NzTableSize,
+  NzTableSortOrder
+} from 'ng-zorro-antd/table';
 
 describe('nz-table', () => {
   describe('basic nz-table', () => {
@@ -282,6 +289,114 @@ describe('nz-table', () => {
     });
   });
 
+  describe('nzQueryParams', () => {
+    let fixture: ComponentFixture<NzTestTableQueryParamsComponent>;
+    let testComponent: NzTestTableQueryParamsComponent;
+    let table: DebugElement;
+
+    // nzQueryParams goes through `delay(0)` in thead and then `debounceTime(0)` in the data service,
+    // and zoneless `whenStable()` does not wait for timers, so wait explicitly.
+    const waitForQueryParams = (): Promise<void> => updateNonSignalsInput(fixture, 50);
+
+    beforeEach(async () => {
+      fixture = TestBed.createComponent(NzTestTableQueryParamsComponent);
+      testComponent = fixture.componentInstance;
+      table = fixture.debugElement.query(By.directive(NzTableComponent));
+      fixture.detectChanges();
+      await waitForQueryParams();
+    });
+
+    // Test for #9703
+    it('should not emit when columns change without changing sort or filter', async () => {
+      expect(testComponent.queryParams).toHaveBeenCalledTimes(1);
+
+      testComponent.columns.set([{ key: 'age', type: 'key' }]);
+      fixture.detectChanges();
+      await waitForQueryParams();
+      expect(testComponent.queryParams).toHaveBeenCalledTimes(1);
+
+      testComponent.columns.set([
+        { key: 'age', type: 'key' },
+        { key: 'address', type: 'sort' },
+        { key: 'gender', type: 'filter' }
+      ]);
+      fixture.detectChanges();
+      await waitForQueryParams();
+      expect(testComponent.queryParams).toHaveBeenCalledTimes(1);
+
+      testComponent.columns.set([]);
+      fixture.detectChanges();
+      await waitForQueryParams();
+      expect(testComponent.queryParams).toHaveBeenCalledTimes(1);
+    });
+
+    it('should emit when the sort order changes or the sorted column is removed', async () => {
+      testComponent.columns.set([{ key: 'address', type: 'sort' }]);
+      fixture.detectChanges();
+      await waitForQueryParams();
+      expect(testComponent.queryParams).toHaveBeenCalledTimes(1);
+
+      table.nativeElement.querySelectorAll('.ant-table-column-has-sorters')[1].click();
+      fixture.detectChanges();
+      await waitForQueryParams();
+      expect(testComponent.queryParams).toHaveBeenCalledTimes(2);
+      expect(testComponent.queryParams).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          sort: [
+            { key: 'name', value: null },
+            { key: 'address', value: 'ascend' }
+          ]
+        })
+      );
+
+      testComponent.columns.set([]);
+      fixture.detectChanges();
+      await waitForQueryParams();
+      expect(testComponent.queryParams).toHaveBeenCalledTimes(3);
+      expect(testComponent.queryParams).toHaveBeenLastCalledWith(
+        expect.objectContaining({ sort: [{ key: 'name', value: null }] })
+      );
+    });
+
+    it('should emit when the priority of an active sort changes', async () => {
+      testComponent.columns.set([
+        { key: 'age', type: 'sort', sortOrder: 'ascend', sortPriority: 1 },
+        { key: 'address', type: 'sort', sortOrder: 'descend', sortPriority: 2 }
+      ]);
+      fixture.detectChanges();
+      await waitForQueryParams();
+      expect(testComponent.queryParams).toHaveBeenCalledTimes(2);
+
+      testComponent.columns.set([
+        { key: 'age', type: 'sort', sortOrder: 'ascend', sortPriority: 2 },
+        { key: 'address', type: 'sort', sortOrder: 'descend', sortPriority: 1 }
+      ]);
+      fixture.detectChanges();
+      await waitForQueryParams();
+      expect(testComponent.queryParams).toHaveBeenCalledTimes(3);
+    });
+
+    it('should not emit when nzFilters is replaced with the same default selection', async () => {
+      testComponent.columns.set([{ key: 'gender', type: 'filter' }]);
+      fixture.detectChanges();
+      await waitForQueryParams();
+      expect(testComponent.queryParams).toHaveBeenCalledTimes(1);
+
+      testComponent.filters.set([{ text: 'male', value: 'male', byDefault: true }]);
+      fixture.detectChanges();
+      await waitForQueryParams();
+      expect(testComponent.queryParams).toHaveBeenCalledTimes(2);
+      expect(testComponent.queryParams).toHaveBeenLastCalledWith(
+        expect.objectContaining({ filter: [{ key: 'gender', value: ['male'] }] })
+      );
+
+      testComponent.filters.set([{ text: 'male', value: 'male', byDefault: true }]);
+      fixture.detectChanges();
+      await waitForQueryParams();
+      expect(testComponent.queryParams).toHaveBeenCalledTimes(2);
+    });
+  });
+
   testDirectionality(() => NzTestTableBasicComponent, By.directive(NzTableComponent), 'ant-table-wrapper');
 });
 
@@ -501,4 +616,50 @@ export class NzTableSpecCrashComponent {
       );
     }, 1000);
   }
+}
+
+interface QueryParamsTestColumn {
+  key: string;
+  type: 'key' | 'sort' | 'filter';
+  sortOrder?: NzTableSortOrder;
+  sortPriority?: number;
+}
+
+/** https://github.com/NG-ZORRO/ng-zorro-antd/issues/9703 **/
+@Component({
+  imports: [NzTableModule],
+  template: `
+    <nz-table [nzFrontPagination]="false" (nzQueryParams)="queryParams($event)">
+      <thead>
+        <tr>
+          <th nzColumnKey="name" [nzSortFn]="true">Name</th>
+          @for (col of columns(); track col.key) {
+            @switch (col.type) {
+              @case ('sort') {
+                <th
+                  [nzColumnKey]="col.key"
+                  [nzSortFn]="true"
+                  [nzSortOrder]="col.sortOrder ?? null"
+                  [nzSortPriority]="col.sortPriority ?? false"
+                >
+                  {{ col.key }}
+                </th>
+              }
+              @case ('filter') {
+                <th [nzColumnKey]="col.key" [nzFilters]="filters()" [nzFilterFn]="true">{{ col.key }}</th>
+              }
+              @default {
+                <th [nzColumnKey]="col.key">{{ col.key }}</th>
+              }
+            }
+          }
+        </tr>
+      </thead>
+    </nz-table>
+  `
+})
+export class NzTestTableQueryParamsComponent {
+  queryParams = vi.fn<(params: NzTableQueryParams) => void>();
+  readonly columns = signal<QueryParamsTestColumn[]>([]);
+  readonly filters = signal<NzTableFilterList>([{ text: 'male', value: 'male' }]);
 }
