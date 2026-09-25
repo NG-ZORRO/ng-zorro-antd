@@ -86,7 +86,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
     onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => this.updateMaskClassname());
 
     this.destroyRef.onDestroy(() => {
-      this.setMaskExitAnimationClass(true);
+      this.setMaskExitAnimationClass(this.overlayRef.backdropElement, true);
     });
   }
 
@@ -219,17 +219,16 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
     }
   }
 
-  private setExitAnimationClass(): void {
+  private setExitAnimationClass(backdropElement: HTMLElement | null): void {
     const modalElement = this.modalElementRef.nativeElement;
 
     modalElement.classList.add(ZOOM_CLASS_NAME_MAP.leave);
     modalElement.classList.add(ZOOM_CLASS_NAME_MAP.leaveActive);
 
-    this.setMaskExitAnimationClass();
+    this.setMaskExitAnimationClass(backdropElement);
   }
 
-  private setMaskExitAnimationClass(force: boolean = false): void {
-    const backdropElement = this.overlayRef.backdropElement;
+  private setMaskExitAnimationClass(backdropElement: HTMLElement | null, force: boolean = false): void {
     if (backdropElement) {
       if (this.animationDisabled() || force) {
         // https://github.com/angular/components/issues/18645
@@ -327,23 +326,57 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
     }
   }
 
-  _startLeaveAnimation(): void {
+  _startLeaveAnimation(backdropElement: HTMLElement | null): void {
     this.animationStateChanged.emit('leave-start');
 
     if (this.animationDisabled()) {
       this.restoreFocus();
       this.animationStateChanged.emit('leave-active');
     } else {
-      this.setExitAnimationClass();
+      this.setExitAnimationClass(backdropElement);
       const element = this.modalElementRef.nativeElement;
-      const onAnimationEnd = (): void => {
-        element.removeEventListener('animationend', onAnimationEnd);
+      let pendingAnimations = backdropElement ? 2 : 1;
+      const finish = (): void => {
+        if (--pendingAnimations > 0) {
+          return;
+        }
         this.restoreFocus();
         this.cleanAnimationClass();
         this.animationStateChanged.emit('leave-active');
       };
 
-      element.addEventListener('animationend', onAnimationEnd);
+      const onModalAnimationEnd = (event: AnimationEvent): void => {
+        if (event.target !== element || event.animationName !== 'antZoomOut') {
+          return;
+        }
+        element.removeEventListener('animationend', onModalAnimationEnd);
+        finish();
+      };
+      element.addEventListener('animationend', onModalAnimationEnd);
+
+      if (backdropElement) {
+        const backdropParent = backdropElement.parentNode;
+        const observer = new MutationObserver(() => {
+          if (!backdropElement.isConnected) {
+            finishBackdrop();
+          }
+        });
+        const finishBackdrop = (): void => {
+          backdropElement.removeEventListener('animationend', onBackdropAnimationEnd);
+          observer.disconnect();
+          finish();
+        };
+        const onBackdropAnimationEnd = (event: AnimationEvent): void => {
+          if (event.target !== backdropElement || event.animationName !== 'antFadeOut') {
+            return;
+          }
+          finishBackdrop();
+        };
+        backdropElement.addEventListener('animationend', onBackdropAnimationEnd);
+        if (backdropParent) {
+          observer.observe(backdropParent, { childList: true });
+        }
+      }
     }
   }
 

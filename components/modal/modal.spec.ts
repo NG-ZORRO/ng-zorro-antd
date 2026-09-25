@@ -62,12 +62,8 @@ describe('modal with animation', () => {
     overlayContainer.ngOnDestroy();
   });
 
-  // mock animationend events
-  function animationDone(element: Element, action: 'enter' | 'leave'): void {
-    dispatchEvent(
-      element,
-      new AnimationEvent('animationend', { animationName: action === 'enter' ? 'antZoomIn' : 'antZoomOut' })
-    );
+  function animationDone(element: Element, animationName: 'antZoomIn' | 'antZoomOut' | 'antFadeOut'): void {
+    dispatchEvent(element, new AnimationEvent('animationend', { animationName }));
   }
 
   it('should apply enter class immediately to prevent flicker', () => {
@@ -97,7 +93,7 @@ describe('modal with animation', () => {
     expect(modalContentElement!.classList).toContain('ant-zoom-enter');
     expect(modalContentElement!.classList).toContain('ant-zoom-enter-active');
 
-    animationDone(modalContentElement!, 'enter');
+    animationDone(modalContentElement!, 'antZoomIn');
     await fixture.whenStable();
 
     const backdropElement = modalRef.getBackdropElement()!;
@@ -105,7 +101,83 @@ describe('modal with animation', () => {
 
     expect(modalContentElement!.classList).toContain('ant-zoom-leave');
     expect(modalContentElement!.classList).toContain('ant-zoom-leave-active');
+    expect(backdropElement.classList).toContain('ant-fade-leave');
+    expect(backdropElement.classList).toContain('ant-fade-leave-active');
     expect(backdropElement.classList).not.toContain('cdk-overlay-backdrop-showing');
+  });
+
+  it('should wait for both the panel and the backdrop animations before disposing on close', async () => {
+    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
+    const modalContentElement = overlayContainerElement.querySelector('.ant-modal')!;
+
+    animationDone(modalContentElement, 'antZoomIn');
+    await fixture.whenStable();
+
+    const backdropElement = modalRef.getBackdropElement()!;
+    modalRef.close();
+    const afterClose = vi.fn();
+    modalRef.afterClose.subscribe(afterClose);
+
+    animationDone(backdropElement, 'antFadeOut');
+    await fixture.whenStable();
+    expect(modalRef.getState()).toBe(NzModalState.CLOSING);
+    expect(afterClose).not.toHaveBeenCalled();
+
+    animationDone(modalContentElement, 'antZoomOut');
+    await fixture.whenStable();
+    expect(modalRef.getState()).toBe(NzModalState.CLOSED);
+    expect(afterClose).toHaveBeenCalledOnce();
+    expect(overlayContainerElement.querySelector('nz-modal-container')).toBeNull();
+  });
+
+  it('should close when the backdrop is removed without a fade animation', async () => {
+    const modalRef = modalService.create({
+      nzContent: TestWithModalContentComponent,
+      nzMaskStyle: { animation: 'none' }
+    });
+    const modalContentElement = overlayContainerElement.querySelector('.ant-modal')!;
+
+    animationDone(modalContentElement, 'antZoomIn');
+    await fixture.whenStable();
+
+    const backdropElement = modalRef.getBackdropElement()!;
+    modalRef.close();
+    animationDone(modalContentElement, 'antZoomOut');
+    await fixture.whenStable();
+    expect(modalRef.getState()).toBe(NzModalState.CLOSING);
+
+    dispatchEvent(backdropElement, new Event('transitionend'));
+    await fixture.whenStable();
+    expect(modalRef.getState()).toBe(NzModalState.CLOSED);
+  });
+
+  it('should ignore animationend events bubbling from projected modal content when closing', async () => {
+    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
+    const modalContentElement = overlayContainerElement.querySelector('.ant-modal')!;
+
+    animationDone(modalContentElement, 'antZoomIn');
+    await fixture.whenStable();
+
+    const backdropElement = modalRef.getBackdropElement()!;
+    modalRef.close();
+
+    animationDone(modalContentElement, 'antFadeOut');
+    animationDone(backdropElement, 'antZoomOut');
+    await fixture.whenStable();
+    expect(modalRef.getState()).toBe(NzModalState.CLOSING);
+
+    const projectedElement = modalContentElement.querySelector('.modal-content')!;
+    dispatchEvent(
+      projectedElement,
+      new AnimationEvent('animationend', { animationName: 'someChildAnimation', bubbles: true })
+    );
+    await fixture.whenStable();
+    expect(modalRef.getState()).toBe(NzModalState.CLOSING);
+
+    animationDone(modalContentElement, 'antZoomOut');
+    animationDone(backdropElement, 'antFadeOut');
+    await fixture.whenStable();
+    expect(modalRef.getState()).toBe(NzModalState.CLOSED);
   });
 
   it('should emit when modal opening animation is complete', async () => {
@@ -118,7 +190,7 @@ describe('modal with animation', () => {
     expect(spy).not.toHaveBeenCalled();
 
     const modalContentElement = overlayContainerElement.querySelector('.ant-modal');
-    animationDone(modalContentElement!, 'enter');
+    animationDone(modalContentElement!, 'antZoomIn');
 
     await fixture.whenStable();
     expect(spy).toHaveBeenCalled();
@@ -129,13 +201,15 @@ describe('modal with animation', () => {
     const modalContentElement = overlayContainerElement.querySelector('.ant-modal');
 
     expect(modalRef.getState()).toBe(NzModalState.OPEN);
-    animationDone(modalContentElement!, 'enter');
+    animationDone(modalContentElement!, 'antZoomIn');
     await fixture.whenStable();
 
+    const backdropElement = modalRef.getBackdropElement()!;
     modalRef.close();
     expect(modalRef.getState()).toBe(NzModalState.CLOSING);
 
-    animationDone(modalContentElement!, 'leave');
+    animationDone(modalContentElement!, 'antZoomOut');
+    animationDone(backdropElement, 'antFadeOut');
     await fixture.whenStable();
     expect(modalRef.getState()).toBe(NzModalState.CLOSED);
   });
@@ -151,10 +225,11 @@ describe('modal with animation', () => {
       });
       const modalContentElement = overlayContainerElement.querySelector('.ant-modal');
 
-      animationDone(modalContentElement!, 'enter');
+      animationDone(modalContentElement!, 'antZoomIn');
       await fixture.whenStable();
 
       expect(overlayContainerElement.querySelector('nz-modal-container')).not.toBeNull();
+      const backdropElement = modalRef.getBackdropElement()!;
       await modalRef.triggerOk();
       expect(onOk).toHaveBeenCalledTimes(1);
       expect(modalRef.getState()).toBe(NzModalState.CLOSING);
@@ -166,7 +241,8 @@ describe('modal with animation', () => {
       expect(onOk).toHaveBeenCalledTimes(1);
       expect(onCancel).toHaveBeenCalledTimes(0);
 
-      animationDone(modalContentElement!, 'leave');
+      animationDone(modalContentElement!, 'antZoomOut');
+      animationDone(backdropElement, 'antFadeOut');
       await fixture.whenStable();
       expect(overlayContainerElement.querySelector('nz-modal-container')).toBeNull();
     });
