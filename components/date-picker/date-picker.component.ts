@@ -106,6 +106,13 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
   exportAs: 'nzDatePicker',
   encapsulation: ViewEncapsulation.None,
   template: `
+    @if (nzPrefix) {
+      <div class="{{ prefixCls }}-prefix">
+        <ng-container *nzStringTemplateOutlet="nzPrefix; let prefix">
+          <nz-icon [nzType]="prefix" nzTheme="fill" />
+        </ng-container>
+      </div>
+    }
     @if (!nzInline()) {
       @if (!isRange) {
         <div class="{{ prefixCls }}-input">
@@ -328,6 +335,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
   @Input() nzDefaultPickerValue: CompatibleDate | null = null;
   @Input() @WithConfig() nzSeparator?: string | TemplateRef<NzSafeAny> = undefined;
   @Input() @WithConfig() nzSuffixIcon: string | TemplateRef<NzSafeAny> = 'calendar';
+  @Input() nzPrefix: string | TemplateRef<NzSafeAny> = '';
   @Input() @WithConfig() nzBackdrop = false;
   @Input() nzId: string | null = null;
   @Input() nzPlacement: NzPlacement = 'bottomLeft';
