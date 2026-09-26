@@ -195,6 +195,14 @@ describe('input-wrapper allow clear', () => {
     expect(clearIconElement.classList).toContain('ant-input-clear-icon-hidden');
   });
 
+  it('should be named for assistive technology', () => {
+    expect(clearIconElement.getAttribute('role')).toEqual('button');
+    expect(clearIconElement.getAttribute('aria-label')).toEqual('Clear');
+    // Clearing already has a keyboard alternative, so the icon stays out of the
+    // tab order.
+    expect(clearIconElement.getAttribute('tabindex')).toEqual('-1');
+  });
+
   it('should be not show clear icon when nzAllowClear is false', async () => {
     component.value.set('test');
     component.allowClear.set(false);
