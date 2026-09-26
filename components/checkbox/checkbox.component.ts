@@ -52,6 +52,7 @@ import { NZ_CHECKBOX_GROUP } from './tokens';
         [attr.name]="nzName || checkboxGroupComponent?.nzName()"
         [checked]="nzChecked"
         [ngModel]="nzChecked"
+        [ngModelOptions]="{ standalone: true }"
         [disabled]="nzDisabled || (checkboxGroupComponent?.finalDisabled() ?? false)"
         (ngModelChange)="innerCheckedChange($event)"
       />
