@@ -3,7 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement, signal, viewChild, WritableSignal } from '@angular/core';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { Component, DebugElement, signal, viewChild, ViewEncapsulation, WritableSignal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { disabled, form, FormField } from '@angular/forms/signals';
@@ -406,6 +407,99 @@ describe('input', () => {
       expect(inputElement.classList).not.toContain('ant-input-underlined');
     });
   });
+
+  describe('textarea with cdkTextareaAutosize', () => {
+    let fixture: ComponentFixture<NzTestInputAutosizeTextareaComponent>;
+    let textarea: HTMLTextAreaElement;
+
+    const render = (size: NzSizeLDSType = 'default'): void => {
+      fixture = TestBed.createComponent(NzTestInputAutosizeTextareaComponent);
+      fixture.componentInstance.size.set(size);
+      fixture.detectChanges();
+      textarea = fixture.nativeElement.querySelector('textarea');
+    };
+
+    const setValue = (value: string): void => {
+      textarea.value = value;
+      textarea.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+    };
+
+    const lines = (count: number): string => Array.from({ length: count }, (_, i) => `line ${i + 1}`).join('\n');
+
+    const inlinePadding = (element: Element): string => {
+      const { paddingInlineStart, paddingInlineEnd } = getComputedStyle(element);
+      return `${paddingInlineStart} ${paddingInlineEnd}`;
+    };
+
+    it('should size min rows from the line height', () => {
+      render();
+      const lineHeight = parseFloat(getComputedStyle(textarea).lineHeight);
+      expect(parseFloat(getComputedStyle(textarea).height)).toBeCloseTo(2 * lineHeight, 0);
+    });
+
+    it('should not scroll before max rows are reached', () => {
+      render();
+      setValue(lines(3));
+      expect(textarea.scrollHeight).toBeLessThanOrEqual(textarea.clientHeight);
+
+      setValue(lines(8));
+      expect(textarea.scrollHeight).toBeGreaterThan(textarea.clientHeight);
+    });
+
+    it('should not scroll before max rows are reached with nzSize small', () => {
+      render('small');
+      setValue(lines(3));
+      expect(textarea.scrollHeight).toBeLessThanOrEqual(textarea.clientHeight);
+    });
+
+    it('should measure with the horizontal padding of the textarea', () => {
+      render();
+      const resting = inlinePadding(textarea);
+      const seen = new Set<string>();
+      Object.defineProperty(textarea, 'scrollHeight', {
+        configurable: true,
+        get(this: HTMLTextAreaElement): number {
+          seen.add(inlinePadding(this));
+          return Object.getOwnPropertyDescriptor(Element.prototype, 'scrollHeight')!.get!.call(this);
+        }
+      });
+      setValue(lines(3));
+      Reflect.deleteProperty(textarea, 'scrollHeight');
+      expect([...seen]).toEqual([resting]);
+    });
+
+    for (const size of ['small', 'default', 'large'] as const) {
+      it(`should keep the horizontal padding under the measuring classes with nzSize ${size}`, () => {
+        render(size);
+        for (const element of fixture.nativeElement.querySelectorAll('textarea')) {
+          const resting = inlinePadding(element);
+          for (const measuringClass of ['cdk-textarea-autosize-measuring', 'cdk-textarea-autosize-measuring-firefox']) {
+            element.classList.add(measuringClass);
+            expect(inlinePadding(element)).toBe(resting);
+            element.classList.remove(measuringClass);
+          }
+        }
+      });
+    }
+
+    it('should keep the padding after measuring', async () => {
+      render();
+      // let any transition started by the initial measurement settle
+      await new Promise(resolve => setTimeout(resolve, 400));
+      const { paddingTop, paddingLeft } = getComputedStyle(textarea);
+      setValue(lines(3));
+      expect([getComputedStyle(textarea).paddingTop, getComputedStyle(textarea).paddingLeft]).toEqual([
+        paddingTop,
+        paddingLeft
+      ]);
+    });
+
+    it('should keep the border box at the container width', () => {
+      render();
+      expect(textarea.offsetWidth).toBe(textarea.parentElement!.clientWidth);
+    });
+  });
 });
 
 @Component({
@@ -502,4 +596,27 @@ export class TestInputFinalSizeComponent {
 })
 export class TestInputFinalVariantComponent {
   readonly variant = signal<NzVariant | undefined>(undefined);
+}
+
+@Component({
+  imports: [NzFormModule, NzInputModule, CdkTextareaAutosize],
+  template: `
+    <div style="width: 300px">
+      <textarea nz-input cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="6" [nzSize]="size()"></textarea>
+      <form nz-form>
+        <nz-form-item>
+          <nz-form-control nzHasFeedback nzValidateStatus="error">
+            <textarea nz-input cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="6"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </div>
+  `,
+  encapsulation: ViewEncapsulation.None,
+  styles: `
+    @import './style/testing.less';
+  `
+})
+export class NzTestInputAutosizeTextareaComponent {
+  readonly size = signal<NzSizeLDSType>('default');
 }
