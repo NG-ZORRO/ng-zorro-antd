@@ -8,6 +8,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, skip, switchMap } from 'rxjs/operators';
 
+import { arraysEqual } from 'ng-zorro-antd/core/util';
+
 import {
   NzCustomColumn,
   NzTableFilterFn,
@@ -16,6 +18,63 @@ import {
   NzTableSortFn,
   NzTableSortOrder
 } from './table.types';
+
+/** The fields of a `listOfCalcOperator$` item that `nzQueryParams` depends on. */
+interface CalcOperator {
+  key?: string;
+  sortFn: unknown;
+  sortOrder: NzTableSortOrder;
+  sortPriority: number | boolean;
+  filterFn: unknown;
+  filterValue: NzTableFilterValue;
+}
+
+function isResetFilterValue(value: NzTableFilterValue): boolean {
+  return value === null || value === undefined || (Array.isArray(value) && value.length === 0);
+}
+
+function isSameFilterValue(previous: NzTableFilterValue, current: NzTableFilterValue): boolean {
+  return previous === current || (Array.isArray(previous) && Array.isArray(current) && arraysEqual(previous, current));
+}
+
+function isActiveSort(item: CalcOperator): boolean {
+  return !!item.sortFn && item.sortOrder !== null;
+}
+
+function isActiveFilter(item: CalcOperator): boolean {
+  return !!item.filterFn && !isResetFilterValue(item.filterValue);
+}
+
+/**
+ * Only what a server-side query depends on is compared: page, active sort orders with their priority,
+ * and non-reset filter values. Showing or hiding a column without an active sort or filter is therefore
+ * not a change and does not emit `nzQueryParams`.
+ */
+function isSameQuery(
+  [previousPageIndex, previousPageSize, previousListOfCalc]: [number, number, CalcOperator[]],
+  [pageIndex, pageSize, listOfCalc]: [number, number, CalcOperator[]]
+): boolean {
+  const previousSort = previousListOfCalc.filter(isActiveSort);
+  const currentSort = listOfCalc.filter(isActiveSort);
+  const previousFilter = previousListOfCalc.filter(isActiveFilter);
+  const currentFilter = listOfCalc.filter(isActiveFilter);
+  return (
+    previousPageIndex === pageIndex &&
+    previousPageSize === pageSize &&
+    previousSort.length === currentSort.length &&
+    previousSort.every(
+      (item, index) =>
+        item.key === currentSort[index].key &&
+        item.sortOrder === currentSort[index].sortOrder &&
+        item.sortPriority === currentSort[index].sortPriority
+    ) &&
+    previousFilter.length === currentFilter.length &&
+    previousFilter.every(
+      (item, index) =>
+        item.key === currentFilter[index].key && isSameFilterValue(item.filterValue, currentFilter[index].filterValue)
+    )
+  );
+}
 
 @Injectable()
 export class NzTableDataService<T> {
@@ -44,6 +103,7 @@ export class NzTableDataService<T> {
   ]).pipe(
     debounceTime(0),
     skip(1),
+    distinctUntilChanged(isSameQuery),
     map(([pageIndex, pageSize, listOfCalc]) => ({
       pageIndex,
       pageSize,
@@ -64,14 +124,9 @@ export class NzTableDataService<T> {
   private listOfDataAfterCalc$ = combineLatest([this.listOfData$, this.listOfCalcOperator$]).pipe(
     map(([listOfData, listOfCalcOperator]) => {
       let listOfDataAfterCalc = [...listOfData];
-      const listOfFilterOperator = listOfCalcOperator.filter(item => {
-        const { filterValue, filterFn } = item;
-        const isReset =
-          filterValue === null ||
-          filterValue === undefined ||
-          (Array.isArray(filterValue) && filterValue!.length === 0);
-        return !isReset && typeof filterFn === 'function';
-      });
+      const listOfFilterOperator = listOfCalcOperator.filter(
+        item => !isResetFilterValue(item.filterValue) && typeof item.filterFn === 'function'
+      );
       for (const item of listOfFilterOperator) {
         const { filterFn, filterValue } = item;
         listOfDataAfterCalc = listOfDataAfterCalc.filter(data => (filterFn as NzTableFilterFn<T>)(filterValue, data));
