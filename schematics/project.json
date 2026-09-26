@@ -17,10 +17,13 @@
       },
       "inputs": [
         "{projectRoot}/**/*",
-        "{workspaceRoot}/components/**/demo/**/*",
         "{workspaceRoot}/components/package.json",
         "{workspaceRoot}/scripts/schematics/**/*",
-        "sharedGlobals"
+        "sharedGlobals",
+        "{workspaceRoot}/scripts/tasks/generate-schematics.ts",
+        "{workspaceRoot}/scripts/tasks/copy-schematics-resources.ts",
+        "{workspaceRoot}/scripts/tasks/clean-schematics.ts",
+        "{workspaceRoot}/scripts/build-config.ts"
       ],
       "outputs": ["{workspaceRoot}/dist/schematics"],
       "cache": true
@@ -30,7 +33,6 @@
       "dependsOn": ["build"],
       "inputs": [
         "{projectRoot}/**/*",
-        "{workspaceRoot}/components/**/demo/**/*",
         "{workspaceRoot}/components/package.json",
         "{workspaceRoot}/scripts/schematics/**/*",
         "sharedGlobals"

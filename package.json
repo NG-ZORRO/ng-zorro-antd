@@ -11,7 +11,7 @@
     "start": "cross-env NODE_ENV=development nx run ng-zorro-antd-doc:start",
     "test": "nx run ng-zorro-antd-lib:test --watch=false --coverage",
     "test:watch": "nx run ng-zorro-antd-lib:test --watch --coverage",
-    "test:schematics": "nx run schematics:test",
+    "test:schematics": "nx run-many -t test -p schematics schematics-demo",
     "build:schematics": "nx run schematics:build",
     "build": "nx run ng-zorro-antd-doc:build-site",
     "build:lib": "nx run ng-zorro-antd-lib:build-lib",
@@ -27,7 +27,9 @@
     "lint-fix:script": "npm run lint:script -- --fix",
     "lint-fix:style": "npm run lint:style -- --fix",
     "pre-commit": "tsc -p components/tsconfig.json --noEmit && lint-staged",
-    "prepare": "husky"
+    "prepare": "husky",
+    "build:schematics-demo": "nx run schematics-demo:build",
+    "test:schematics-demo": "nx run schematics-demo:test"
   },
   "dependencies": {
     "@angular/cdk": "^22.1.0",
