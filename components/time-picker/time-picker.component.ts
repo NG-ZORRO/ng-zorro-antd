@@ -85,6 +85,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
         autocomplete="off"
         [placeholder]="nzPlaceHolder || (i18nPlaceHolder$ | async)"
         [(ngModel)]="inputValue"
+        [ngModelOptions]="{ standalone: true }"
         [disabled]="nzDisabled"
         [readOnly]="nzInputReadOnly"
         (focus)="onFocus(true)"
@@ -147,6 +148,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
               [nzOkText]="nzOkText"
               [nzAllowEmpty]="nzAllowEmpty"
               [(ngModel)]="value"
+              [ngModelOptions]="{ standalone: true }"
               (ngModelChange)="onPanelValueChange($event)"
               (closePanel)="closePanel()"
             />
