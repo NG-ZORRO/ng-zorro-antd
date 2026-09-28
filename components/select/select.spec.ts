@@ -33,6 +33,7 @@ import { NzSelectModule } from './select.module';
 import {
   NzFilterOptionType,
   NzSelectItemInterface,
+  NzSelectMaxTagCount,
   NzSelectModeType,
   NzSelectOptionInterface,
   NzSelectPlacementType
@@ -887,6 +888,35 @@ describe('select', () => {
       component.nzMaxTagPlaceholder.set(component.tagTemplate);
       fixture.detectChanges();
       expect(listOfItem[2].textContent?.trim()).toBe('and 2 more selected');
+    });
+
+    it('should nzMaxTagCount="responsive" works', async () => {
+      component.listOfOption.set([
+        { nzValue: 'test_01', nzLabel: 'label_01' },
+        { nzValue: 'test_02', nzLabel: 'label_02' },
+        { nzValue: 'test_03', nzLabel: 'label_03' },
+        { nzValue: 'test_04', nzLabel: 'label_04' }
+      ]);
+      component.value.set(['test_01', 'test_02', 'test_03', 'test_04']);
+      component.nzMaxTagCount.set('responsive');
+      await flushChanges();
+      const listOfItem = selectElement.querySelectorAll('nz-select-item');
+      expect(listOfItem.length).toBeGreaterThanOrEqual(1);
+
+      const topControl = fixture.debugElement.query(By.directive(NzSelectTopControlComponent))
+        .componentInstance as NzSelectTopControlComponent;
+      const hostEl = topControl['elementRef'].nativeElement;
+      Object.defineProperty(hostEl, 'clientWidth', { value: 60, configurable: true });
+      topControl['calculateFitCount']();
+      fixture.detectChanges();
+      const truncatedItems = selectElement.querySelectorAll('nz-select-item');
+      expect(truncatedItems.length).toBeLessThan(4);
+
+      Object.defineProperty(hostEl, 'clientWidth', { value: 600, configurable: true });
+      topControl['calculateFitCount']();
+      fixture.detectChanges();
+      const expandedItems = selectElement.querySelectorAll('nz-select-item');
+      expect(expandedItems.length).toBe(4);
     });
   });
 
@@ -2031,7 +2061,7 @@ export class TestSelectTemplateMultipleComponent {
 export class TestSelectTemplateTagsComponent {
   @ViewChild('tagTemplate') tagTemplate!: TemplateRef<NzSafeAny>;
   readonly nzSize = signal<NzSelectSizeType>('default');
-  readonly nzMaxTagCount = signal(Infinity);
+  readonly nzMaxTagCount = signal<NzSelectMaxTagCount>(Infinity);
   readonly value = signal<NzSafeAny[]>([]);
   readonly listOfOption = signal<NzSelectItemInterface[]>([]);
   valueChange = vi.fn();
@@ -2167,7 +2197,7 @@ export class TestSelectReactiveMultipleComponent {
 export class TestSelectReactiveTagsComponent {
   @ViewChild('tagTemplate') tagTemplate?: TemplateRef<NzSafeAny>;
   readonly nzSize = signal<NzSelectSizeType>('default');
-  readonly nzMaxTagCount = signal(Infinity);
+  readonly nzMaxTagCount = signal<NzSelectMaxTagCount>(Infinity);
   readonly value = signal<NzSafeAny[]>([]);
   readonly listOfOption = signal<NzSelectOptionInterface[]>([]);
   valueChange = vi.fn();
