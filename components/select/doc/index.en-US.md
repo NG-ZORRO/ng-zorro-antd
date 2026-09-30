@@ -87,6 +87,17 @@ description: A dropdown menu for displaying choices.
 | ----------- | ----------- | --------------------------------------- | ------- |
 | `[nzLabel]` | Group label | `string \| number \| TemplateRef<void>` | -       |
 
+### Option label template
+
+A template used as `label` of an option passed through `nzOptions` is rendered with the option as `$implicit` and as
+separate properties, alongside the normalized `nz`-prefixed fields (`nzValue`, `nzLabel`, `nzDisabled`, ...) that
+`nzCustomTemplate` is rendered with, so the same template can be used for both. Its type is `NzSelectOptionLabelContext`,
+which can be handed to `nzTypeHint` to type-check the template:
+
+```html
+<ng-template #labelTemplate [nzTypeHint]="labelContext" let-option>{{ option.value }}</ng-template>
+```
+
 ## Methods
 
 ### nz-select
