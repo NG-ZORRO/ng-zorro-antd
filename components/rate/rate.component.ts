@@ -223,13 +223,6 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
   }
 
   onKeyDown(e: KeyboardEvent): void {
-    if (e.keyCode !== LEFT_ARROW && e.keyCode !== RIGHT_ARROW) {
-      return;
-    }
-
-    // Swallow only the keys the rating acts on, so Tab still takes focus out of the list.
-    e.preventDefault();
-
     const oldVal = this.nzValue;
 
     if (e.keyCode === RIGHT_ARROW && this.nzValue < this.nzCount) {
@@ -239,6 +232,9 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
     }
 
     if (oldVal !== this.nzValue) {
+      // Swallow the key only when it moved the rating, the way rc-rate does. Tab, Enter and an
+      // arrow at either end of the scale stay with the browser.
+      e.preventDefault();
       this.onChange(this.nzValue);
       this.nzOnKeyDown.emit(e);
       this.updateStarStyle();

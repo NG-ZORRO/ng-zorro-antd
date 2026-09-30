@@ -129,7 +129,8 @@ describe('rate', () => {
       await stabilize(fixture);
       const atLimitEvent = dispatchKeyboardEvent(list, 'keydown', RIGHT_ARROW);
       fixture.detectChanges();
-      expect(atLimitEvent.defaultPrevented).toBe(true);
+      expect(atLimitEvent.defaultPrevented).toBe(false);
+      expect(testComponent.value()).toBe(5);
     });
 
     it('should count work', () => {
