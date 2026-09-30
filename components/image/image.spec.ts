@@ -27,6 +27,7 @@ import {
   NzImageDirective,
   NzImageGroupComponent,
   NzImageModule,
+  NzImagePreviewOptions,
   NzImagePreviewRef,
   NzImageService
 } from 'ng-zorro-antd/image';
@@ -473,6 +474,20 @@ describe('image preview', () => {
 
         expect(previewInstance.onClose).toHaveBeenCalled();
       });
+
+      it('should not close image preview when escape is pressed and nzKeyboard is false', () => {
+        context.images = [{ src: QUICK_SRC }];
+        context.createByService({ nzKeyboard: false });
+        const previewInstance = context.previewRef!.previewInstance;
+        tickChanges();
+        vi.spyOn(previewInstance, 'onClose');
+
+        dispatchKeyboardEvent(overlayContainerElement, 'keydown', ESCAPE);
+        vi.advanceTimersByTime(0);
+
+        expect(previewInstance.onClose).not.toHaveBeenCalled();
+        expect(getPreviewRootElement()).not.toBeNull();
+      });
     });
 
     it('should container click work', async () => {
@@ -807,8 +822,8 @@ export class TestImagePreviewGroupComponent {
   @ViewChild(NzImageGroupComponent) nzImageGroup!: NzImageGroupComponent;
   @ViewChild(NzImageDirective) nzImage!: NzImageDirective;
 
-  createByService(): void {
-    this.previewRef = this.nzImageService.preview(this.images, { nzZoom: 1.5, nzRotate: 0 });
+  createByService(options?: NzImagePreviewOptions): void {
+    this.previewRef = this.nzImageService.preview(this.images, { nzZoom: 1.5, nzRotate: 0, ...options });
   }
 
   triggerPreview(): void {
