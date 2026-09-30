@@ -963,7 +963,7 @@ describe('select', () => {
       expect(component.onClear).toHaveBeenCalled();
     });
 
-    it('should expose normalized option fields through implicit and named template contexts', async () => {
+    it('should expose raw option fields through implicit and named template contexts', async () => {
       component.listOfOption.set([{ value: 'test_01', label: component.optionTemplate, disabled: true }]);
       component.nzOpen.set(true);
       await flushChanges();
@@ -1885,7 +1885,6 @@ describe('option container scroll', () => {
   });
 });
 
-
 @Component({
   imports: [FormsModule, NzSelectModule],
   template: `
@@ -2091,8 +2090,8 @@ export class TestSelectTemplateTagsComponent {
     <ng-template #dropdownTemplate><div class="dropdown-render">dropdownRender</div></ng-template>
     <ng-template #customTemplate let-selected>selected: {{ selected.nzLabel }}</ng-template>
     <ng-template #suffixIconTemplate>icon</ng-template>
-    <ng-template #optionTemplate let-option let-value="nzValue" let-disabled="nzDisabled">
-      option: {{ option.nzValue }} {{ value }} {{ disabled }}
+    <ng-template #optionTemplate let-option let-value="value" let-disabled="disabled">
+      option: {{ option.value }} {{ value }} {{ disabled }}
     </ng-template>
   `
 })
