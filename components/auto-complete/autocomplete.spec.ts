@@ -166,6 +166,18 @@ describe('auto-complete', () => {
       // The important check is that the panel state is closed, not the DOM cleanup timing
     });
 
+    it('should not dispose the overlay when a stale leave animation completes after the panel reopens', () => {
+      const trigger = fixture.componentInstance.trigger;
+      trigger.openPanel();
+      fixture.detectChanges();
+
+      const overlayRef = trigger['overlayRef'];
+      trigger.nzAutocomplete.showPanel = true;
+      trigger.nzAutocomplete.animationStateChange.emit({ animationComplete: vi.fn() } as never);
+
+      expect(trigger['overlayRef']).toBe(overlayRef);
+    });
+
     it('should close the panel when the user clicks away', () => {
       dispatchFakeEvent(input, 'focusin');
       fixture.detectChanges();

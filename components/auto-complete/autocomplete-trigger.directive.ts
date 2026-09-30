@@ -102,7 +102,9 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   ngAfterViewInit(): void {
     if (this.nzAutocomplete) {
       this.nzAutocomplete.animationStateChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(event => {
-        if (this.overlayRef) {
+        // A leave animation can finish after a subsequent input makes the panel visible again.
+        // In that case, disposing the current overlay races with its next attachment.
+        if (this.overlayRef && !this.nzAutocomplete.showPanel) {
           this.overlayRef.dispose();
           this.overlayRef = null;
           event.animationComplete();
