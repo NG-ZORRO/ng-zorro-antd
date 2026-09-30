@@ -49,7 +49,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
       [class.ant-rate-disabled]="nzDisabled"
       [class.ant-rate-rtl]="dir() === 'rtl'"
       [class]="classMap"
-      (keydown)="onKeyDown($event); $event.preventDefault()"
+      (keydown)="onKeyDown($event)"
       (mouseleave)="onRateLeave(); $event.stopPropagation()"
       [tabindex]="nzDisabled ? -1 : 0"
     >
@@ -232,6 +232,9 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges 
     }
 
     if (oldVal !== this.nzValue) {
+      // Swallow the key only when it moved the rating, the way rc-rate does. Tab, Enter and an
+      // arrow at either end of the scale stay with the browser.
+      e.preventDefault();
       this.onChange(this.nzValue);
       this.nzOnKeyDown.emit(e);
       this.updateStarStyle();
