@@ -702,8 +702,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       this.isReactiveDriven = true;
       const listOfOptions = this.nzOptions || [];
       const listOfTransformedItem = listOfOptions.map(item => {
-        const mapped = {
+        return {
           template: item.label instanceof TemplateRef ? item.label : null,
+          templateContext: { ...item },
           nzTitle: this.getTitle(item.title, item.label),
           nzLabel: typeof item.label === 'string' || typeof item.label === 'number' ? item.label : null,
           nzValue: item.value,
@@ -713,10 +714,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
           groupLabel: item.groupLabel || null,
           type: 'item',
           key: item.key === undefined ? item.value : item.key
-        };
-        return {
-          ...mapped,
-          templateContext: { ...item }
         };
       });
       this.listOfTemplateItem$.next(listOfTransformedItem);
