@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { TemplateRef } from '@angular/core';
+import { numberAttribute, TemplateRef } from '@angular/core';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -39,3 +39,12 @@ export type NzSelectTopControlItemType = Partial<NzSelectItemInterface> & {
 export type NzFilterOptionType = (input: string, option: NzSelectItemInterface) => boolean;
 
 export type NzSelectPlacementType = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
+
+export type NzSelectMaxTagCount = number | 'responsive';
+
+export function maxTagCountAttribute(value: unknown): NzSelectMaxTagCount {
+  if (value === 'responsive') {
+    return 'responsive';
+  }
+  return numberAttribute(value, Infinity);
+}
