@@ -12,10 +12,11 @@ import { delay, of, Observable } from 'rxjs';
 import { vi } from 'vitest';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
-import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import { dispatchMouseEvent, dispatchTouchEvent } from 'ng-zorro-antd/core/testing';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NzAutoFocusType } from 'ng-zorro-antd/popconfirm/popconfirm';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm/popconfirm.module';
+import { NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
 
 import { NzPopConfirmButtonProps } from './popconfirm-option';
 
@@ -310,6 +311,31 @@ describe('popconfirm', () => {
 
     expect(overlayContainerElement.querySelector('.testClass1.testClass2')).not.toBeNull();
   });
+
+  describe('touch devices', () => {
+    it('should not show popconfirm on a tap when trigger is hover', () => {
+      component.popconfirmTrigger.set('hover');
+      fixture.detectChanges();
+      const triggerElement = component.stringTemplate.nativeElement;
+
+      dispatchTouchEvent(triggerElement, 'touchend');
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      waitingForTooltipToggling();
+
+      expect(getTitleText()).toBeNull();
+    });
+
+    it('should still show popconfirm on genuine mouseenter when trigger is hover', () => {
+      component.popconfirmTrigger.set('hover');
+      fixture.detectChanges();
+      const triggerElement = component.stringTemplate.nativeElement;
+
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      waitingForTooltipToggling();
+
+      expect(getTitleText()!.textContent).toContain('title-string');
+    });
+  });
 });
 
 @Component({
@@ -319,6 +345,7 @@ describe('popconfirm', () => {
       nz-popconfirm
       #stringTemplate
       nzPopconfirmTitle="title-string"
+      [nzPopconfirmTrigger]="popconfirmTrigger()"
       nzOkText="ok-text"
       [nzOkType]="nzOkType()"
       [nzOkDisabled]="nzOkDisabled()"
@@ -358,6 +385,7 @@ export class NzPopconfirmTestNewComponent {
   readonly condition = signal(false);
   readonly nzOkType = signal<string>('default');
   readonly nzOkDisabled = signal<boolean>(false);
+  readonly popconfirmTrigger = signal<NzTooltipTrigger>('click');
   nzCancelText = 'Cancel';
   nzOkText = 'Ok';
   nzOkButtonProps = signal<NzPopConfirmButtonProps>({ nzDisabled: false });
