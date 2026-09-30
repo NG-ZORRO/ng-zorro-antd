@@ -15,12 +15,14 @@ import { TemplatePortal } from '@angular/cdk/portal';
 import {
   AfterViewInit,
   booleanAttribute,
+  computed,
   DestroyRef,
   Directive,
   ElementRef,
   EventEmitter,
   inject,
   Injector,
+  input,
   Input,
   OnChanges,
   Output,
@@ -29,7 +31,7 @@ import {
   ViewContainerRef,
   type AnimationCallbackEvent
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, combineLatest, EMPTY, fromEvent, merge, Subject } from 'rxjs';
 import { auditTime, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 
@@ -46,8 +48,12 @@ import { IndexableObject } from 'ng-zorro-antd/core/types';
 import { NzDropdownMenuComponent, NzPlacementType } from './dropdown-menu.component';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'dropdown';
+const DEFAULT_TRIGGER = 150;
 
 const listOfPositions: POSITION_TYPE[] = ['bottomLeft', 'bottomRight', 'topRight', 'topLeft'];
+
+export type TriggerType = 'click' | 'hover';
+export type TriggerDelay = Partial<{ [key in TriggerType]: number }> | number;
 
 @Directive({
   selector: '[nz-dropdown]',
@@ -70,10 +76,20 @@ export class NzDropdownDirective implements AfterViewInit, OnChanges {
   private overlayRef: OverlayRef | null = null;
 
   private inputVisible$ = new BehaviorSubject<boolean>(false);
-  private nzTrigger$ = new BehaviorSubject<'click' | 'hover'>('hover');
   private overlayClose$ = new Subject<boolean>();
+
+  public readonly nzTriggerDelay = input<TriggerDelay>(DEFAULT_TRIGGER);
+  public readonly nzTrigger = input<TriggerType>('hover');
+
+  private readonly delayAuditTime = computed(() => {
+    const triggerDelay = this.nzTriggerDelay();
+    if (typeof triggerDelay === 'number') {
+      return triggerDelay;
+    }
+    return triggerDelay[this.nzTrigger()] ?? DEFAULT_TRIGGER;
+  });
+
   @Input() nzDropdownMenu: NzDropdownMenuComponent | null = null;
-  @Input() nzTrigger: 'click' | 'hover' = 'hover';
   @Input() nzMatchWidthElement: ElementRef | null = null;
   @Input({ transform: booleanAttribute }) @WithConfig() nzBackdrop = false;
   @Input({ transform: booleanAttribute }) nzClickHide = true;
@@ -111,7 +127,7 @@ export class NzDropdownDirective implements AfterViewInit, OnChanges {
       /** host click state **/
       const hostClickState$ = fromEvent(nativeElement, 'click').pipe(map(() => !this.nzVisible));
       /** visible state switch by nzTrigger **/
-      const visibleStateByTrigger$ = this.nzTrigger$.pipe(
+      const visibleStateByTrigger$ = toObservable(this.nzTrigger, { injector: this.injector }).pipe(
         switchMap(trigger => {
           if (trigger === 'hover') {
             return mergedMouseState$;
@@ -130,10 +146,14 @@ export class NzDropdownDirective implements AfterViewInit, OnChanges {
         filter(() => !this.nzDisabled)
       );
       const visible$ = merge(this.inputVisible$, domTriggerVisible$);
-      combineLatest([visible$, this.nzDropdownMenu.isChildSubMenuOpen$])
+      toObservable(this.delayAuditTime, { injector: this.injector })
         .pipe(
-          map(([visible, sub]) => visible || sub),
-          auditTime(150),
+          switchMap(triggerDelay =>
+            combineLatest([visible$, this.nzDropdownMenu!.isChildSubMenuOpen$]).pipe(
+              map(([visible, sub]) => visible || sub),
+              auditTime(triggerDelay)
+            )
+          ),
           distinctUntilChanged(),
           filter(() => this.platform.isBrowser),
           takeUntilDestroyed(this.destroyRef)
@@ -174,7 +194,7 @@ export class NzDropdownDirective implements AfterViewInit, OnChanges {
                 positionStrategy,
                 minWidth: triggerWidth,
                 disposeOnNavigation: true,
-                hasBackdrop: this.nzBackdrop && this.nzTrigger === 'click',
+                hasBackdrop: this.nzBackdrop && this.nzTrigger() === 'click',
                 scrollStrategy: createRepositionScrollStrategy(this.injector)
               });
               merge(
@@ -226,10 +246,8 @@ export class NzDropdownDirective implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzVisible, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger, nzArrow, nzPlacement } = changes;
-    if (nzTrigger) {
-      this.nzTrigger$.next(this.nzTrigger);
-    }
+    const { nzVisible, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzArrow, nzPlacement } = changes;
+
     if (nzVisible) {
       this.inputVisible$.next(this.nzVisible);
     }
