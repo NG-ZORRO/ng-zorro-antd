@@ -124,6 +124,7 @@ export interface NzCountConfig {
               [class.ant-input-clear-icon-hidden]="!inputDir().value() || disabled() || readOnly()"
               role="button"
               tabindex="-1"
+              aria-label="Clear"
               (click)="clear(); inputSearchDir?.search($event, 'clear')"
             >
               <ng-content select="[nzInputClearIcon]">
@@ -138,8 +139,13 @@ export interface NzCountConfig {
             <span
               class="ant-input-password-icon"
               role="button"
-              tabindex="-1"
-              (click)="inputPasswordDir.toggleVisible()"
+              aria-label="Show password"
+              [attr.tabindex]="disabled() ? -1 : 0"
+              [attr.aria-disabled]="disabled() ? true : null"
+              [attr.aria-pressed]="inputPasswordDir.nzVisible()"
+              (click)="togglePasswordVisible()"
+              (keydown.enter)="onPasswordIconKeydown($any($event))"
+              (keydown.space)="onPasswordIconKeydown($any($event))"
             >
               @if (inputPasswordIconTmpl(); as tmpl) {
                 <ng-template
@@ -346,5 +352,20 @@ export class NzInputWrapperComponent {
   clear(): void {
     this.inputDir().writeValue('');
     this.nzClear.emit();
+  }
+
+  protected togglePasswordVisible(): void {
+    if (this.disabled()) {
+      return;
+    }
+    this.inputPasswordDir?.toggleVisible();
+  }
+
+  // The toggle is a `span`, so Enter and Space never reach it as a click the
+  // way they would on a `button`.
+  protected onPasswordIconKeydown(event: KeyboardEvent): void {
+    // Space would otherwise scroll the page.
+    event.preventDefault();
+    this.togglePasswordVisible();
   }
 }
