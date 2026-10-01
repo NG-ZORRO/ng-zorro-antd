@@ -12,6 +12,7 @@ import {
   Component,
   computed,
   contentChildren,
+  DestroyRef,
   DOCUMENT,
   ElementRef,
   inject,
@@ -21,12 +22,11 @@ import {
   signal,
   ViewEncapsulation
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { map, merge, Subject, takeUntil } from 'rxjs';
 import { pairwise, startWith } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
-import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { getEventWithPoint } from 'ng-zorro-antd/resizable';
 
@@ -107,7 +107,6 @@ const passiveEventListenerOptions = normalizePassiveListenerOptions({ passive: t
     }
   `,
   imports: [NgTemplateOutlet, NzSplitterBarComponent],
-  providers: [NzDestroyService],
   host: {
     class: 'ant-splitter',
     '[class.ant-splitter-horizontal]': 'nzLayout() === "horizontal"',
@@ -124,7 +123,7 @@ export class NzSplitterComponent {
   readonly nzResize = output<number[]>();
   readonly nzResizeEnd = output<number[]>();
 
-  protected readonly destroy$ = inject(NzDestroyService);
+  private readonly destroyRef = inject(DestroyRef);
   protected readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
   protected readonly resizeObserver = inject(NzResizeObserver);
   protected readonly document = inject(DOCUMENT);
@@ -393,7 +392,8 @@ export class NzSplitterComponent {
         map(offset => (this.nzLayout() === 'horizontal' && this.dir() === 'rtl' ? -offset : offset)),
         startWith(0),
         pairwise(),
-        takeUntil(merge(end$, this.destroy$))
+        takeUntil(end$),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(([prev, next]) => {
         if (this.nzLazy() && next !== 0) {
@@ -412,7 +412,7 @@ export class NzSplitterComponent {
       fromEventOutsideAngular<MouseEvent>(this.document, 'mouseup'),
       fromEventOutsideAngular<TouchEvent>(this.document, 'touchend')
     )
-      .pipe(takeUntil(merge(end$, this.destroy$)))
+      .pipe(takeUntil(end$), takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         if (this.nzLazy()) {
           handleLazyEnd();

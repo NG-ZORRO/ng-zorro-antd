@@ -6,6 +6,9 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 
+/**
+ * @deprecated Will be removed in v24. Use `DestroyRef` from `@angular/core` instead.
+ */
 @Injectable()
 export class NzDestroyService extends Subject<void> implements OnDestroy {
   ngOnDestroy(): void {
