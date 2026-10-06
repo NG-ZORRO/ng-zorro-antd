@@ -397,6 +397,53 @@ describe('tooltip', () => {
 
       expect(overlayContainerElement.textContent).toContain(featureKey);
     });
+
+    it('should cancel a pending hover-open timer when a touch occurs (hybrid device)', () => {
+      const title = 'title-string';
+      const triggerElement = component.titleString.nativeElement;
+
+      component.mouseEnterDelay.set(0.75);
+      fixture.detectChanges();
+
+      dispatchMouseEvent(triggerElement, 'mouseenter'); // schedules the delayed show
+      vi.advanceTimersByTime(400);
+      dispatchTouchEvent(triggerElement, 'touchend'); // tap before the delay elapses
+      waitingForTooltipToggling(); // advances well past 750ms
+
+      expect(overlayContainerElement.textContent).not.toContain(title);
+      expect(component.visibilityTogglingCount).toBe(0);
+    });
+
+    it('should still close on mouseleave within the suppression window after a touch', () => {
+      const title = 'title-string';
+      const triggerElement = component.titleString.nativeElement;
+
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      waitingForTooltipToggling();
+      expect(overlayContainerElement.textContent).toContain(title);
+
+      dispatchTouchEvent(triggerElement, 'touchend');
+      vi.advanceTimersByTime(100); // still inside the 500ms window
+      dispatchMouseEvent(triggerElement, 'mouseleave');
+      waitingForTooltipToggling();
+
+      expect(overlayContainerElement.textContent).not.toContain(title);
+    });
+
+    it('should not cancel a pending hide when a touch occurs', () => {
+      const title = 'title-string';
+      const triggerElement = component.titleString.nativeElement;
+
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      waitingForTooltipToggling();
+      expect(overlayContainerElement.textContent).toContain(title);
+
+      dispatchMouseEvent(triggerElement, 'mouseleave'); // schedules the delayed hide
+      dispatchTouchEvent(triggerElement, 'touchend'); // must not cancel it
+      waitingForTooltipToggling();
+
+      expect(overlayContainerElement.textContent).not.toContain(title);
+    });
   });
 });
 

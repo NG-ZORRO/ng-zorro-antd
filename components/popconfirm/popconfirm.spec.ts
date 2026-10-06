@@ -335,6 +335,36 @@ describe('popconfirm', () => {
 
       expect(getTitleText()!.textContent).toContain('title-string');
     });
+
+    it('should cancel a pending hover-open timer when a touch occurs (hybrid device)', () => {
+      component.popconfirmTrigger.set('hover');
+      fixture.detectChanges();
+      const triggerElement = component.stringTemplate.nativeElement;
+
+      dispatchMouseEvent(triggerElement, 'mouseenter'); // schedules the delayed show (default 0.15s)
+      vi.advanceTimersByTime(50);
+      dispatchTouchEvent(triggerElement, 'touchend'); // tap before the delay elapses
+      waitingForTooltipToggling();
+
+      expect(getTitleText()).toBeNull();
+    });
+
+    it('should still close on mouseleave within the touch suppression window', () => {
+      component.popconfirmTrigger.set('hover');
+      fixture.detectChanges();
+      const triggerElement = component.stringTemplate.nativeElement;
+
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      waitingForTooltipToggling();
+      expect(getTitleText()!.textContent).toContain('title-string');
+
+      dispatchTouchEvent(triggerElement, 'touchend');
+      vi.advanceTimersByTime(100); // still inside the 500ms window
+      dispatchMouseEvent(triggerElement, 'mouseleave');
+      waitingForTooltipToggling();
+
+      expect(getTitleText()).toBeNull();
+    });
   });
 });
 
