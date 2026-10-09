@@ -16,6 +16,23 @@ tag: '{{version}}'
 
 ---
 
+## 22.1.2
+
+`2026-10-09`
+
+### Bug Fixes
+
+- **\*:** 将内部 `ngModel` 控件设为独立控件，避免 `NG01354` 错误 ([#9986](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9986)) ([5ac745b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5ac745b2ecdfa4bd197e34d4f8441ec80b39589d))
+- **i18n:** 补充 `ro_RO` 缺失的翻译 ([#10002](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10002)) ([54c7573](https://github.com/NG-ZORRO/ng-zorro-antd/commit/54c7573d97ee6842017e4407dd056c0196e8c234))
+- **icon:** 通过 CSSOM 设置旋转样式，以兼容严格的 CSP ([#9990](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9990)) ([e95d13f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e95d13f784d22ae8dc7073d3ab7767c947126886))
+- **image:** 使用 Escape 关闭预览时遵循 `nzKeyboard` 配置 ([#9983](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9983)) ([10a07e4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/10a07e40308a097d3e5636d3dc1ca9fe39815939)), 修复 [#9980](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9980)
+- **modal:** 确保关闭前遮罩淡出动画播放完成 ([#9967](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9967)) ([fb93d6b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fb93d6b6fca3349f28bff5d85946e5dc5686be4e))
+- **tooltip,popover,popconfirm:** 避免触摸操作后合成的鼠标事件误触发悬浮显示 ([#9881](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9881)) ([58fc4bb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/58fc4bb58a5095c7f11b305375b92c32d382297b))
+
+### Documentation
+
+- **table,collapse,space:** 修正 Table、Collapse 的 API 文档及紧凑布局示例的输入属性大小写 ([#9989](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9989)) ([9111740](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9111740ecd86349538a4ef2bc7e28d840122e893))
+
 ## 22.1.1
 
 `2026-09-22`

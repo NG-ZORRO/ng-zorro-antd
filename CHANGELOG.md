@@ -1,3 +1,18 @@
+## [22.1.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/22.1.1...22.1.2) (2026-10-09)
+
+### Bug Fixes
+
+- **\*:** isolate internal `ngModel` controls to avoid `NG01354` errors ([#9986](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9986)) ([5ac745b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5ac745b2ecdfa4bd197e34d4f8441ec80b39589d))
+- **i18n:** add missing translations to `ro_RO` ([#10002](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10002)) ([54c7573](https://github.com/NG-ZORRO/ng-zorro-antd/commit/54c7573d97ee6842017e4407dd056c0196e8c234))
+- **icon:** apply rotation through CSSOM for compatibility with strict CSP ([#9990](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9990)) ([e95d13f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e95d13f784d22ae8dc7073d3ab7767c947126886))
+- **image:** respect `nzKeyboard` when closing previews with Escape ([#9983](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9983)) ([10a07e4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/10a07e40308a097d3e5636d3dc1ca9fe39815939)), closes [#9980](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9980)
+- **modal:** allow the mask fade-out animation to complete before closing ([#9967](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9967)) ([fb93d6b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fb93d6b6fca3349f28bff5d85946e5dc5686be4e))
+- **tooltip,popover,popconfirm:** suppress synthetic hover activation after touch interactions ([#9881](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9881)) ([58fc4bb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/58fc4bb58a5095c7f11b305375b92c32d382297b))
+
+### Documentation
+
+- **table,collapse,space:** correct table and collapse API documentation and compact demo input casing ([#9989](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9989)) ([9111740](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9111740ecd86349538a4ef2bc7e28d840122e893))
+
 ## [22.1.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/22.1.0...22.1.1) (2026-09-22)
 
 ### Bug Fixes
