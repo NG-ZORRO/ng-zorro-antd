@@ -9,10 +9,6 @@
 - **modal:** allow the mask fade-out animation to complete before closing ([#9967](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9967)) ([fb93d6b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fb93d6b6fca3349f28bff5d85946e5dc5686be4e))
 - **tooltip,popover,popconfirm:** suppress synthetic hover activation after touch interactions ([#9881](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9881)) ([58fc4bb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/58fc4bb58a5095c7f11b305375b92c32d382297b))
 
-### Documentation
-
-- **table,collapse,space:** correct table and collapse API documentation and compact demo input casing ([#9989](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9989)) ([9111740](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9111740ecd86349538a4ef2bc7e28d840122e893))
-
 ## [22.1.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/22.1.0...22.1.1) (2026-09-22)
 
 ### Bug Fixes
