@@ -58,6 +58,22 @@ registerLocaleData(zh);
 | `(nzOnOpenChange)`       | 弹出日历和关闭日历的回调                                      | `EventEmitter<boolean>`                                    | -                                                                                                           | -        |
 | `(nzOnPanelChange)`      | 改变模式或日期的回调                                          | `EventEmitter<NzPanelChangeType>`                          | -                                                                                                           | -        |
 
+### 自定义清除图标
+
+在子元素上添加静态属性 `nzDatePickerClearIcon` 即可替换清除图标，使用方式与 Input 的 `nzInputClearIcon` 内容投影一致。适用于 `nz-date-picker` 和 `nz-range-picker` 的所有选择模式，无需额外导入指令。
+
+未提供自定义内容时，使用默认的实心 `close-circle` 图标。`nzAllowClear` 仍控制是否允许清除；禁用或值为空时隐藏清除图标。点击和清除操作由日期选择框处理，自定义内容无需绑定点击事件，请使用 `nz-icon`、`span` 或 `svg` 等非交互元素。
+
+```html
+<nz-date-picker [(ngModel)]="date">
+  <nz-icon nzDatePickerClearIcon nzType="close" />
+</nz-date-picker>
+
+<nz-range-picker [(ngModel)]="range">
+  <nz-icon nzDatePickerClearIcon nzType="close" />
+</nz-range-picker>
+```
+
 ### 共同的方法
 
 | 名称      | 描述         |

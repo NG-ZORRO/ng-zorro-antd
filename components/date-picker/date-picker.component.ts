@@ -175,7 +175,9 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
       <div class="{{ prefixCls }}-active-bar" [style]="activeBarStyle"></div>
       @if (showClear) {
         <span class="{{ prefixCls }}-clear" (click)="onClickClear($event)">
-          <nz-icon nzType="close-circle" nzTheme="fill" />
+          <ng-content select="[nzDatePickerClearIcon]">
+            <nz-icon nzType="close-circle" nzTheme="fill" />
+          </ng-content>
         </span>
       }
 

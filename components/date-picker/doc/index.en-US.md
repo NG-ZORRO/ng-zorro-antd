@@ -55,6 +55,22 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 | `(nzOnOpenChange)`       | a callback emitter, can be executed whether the popup calendar is popped up or closed                                              | `EventEmitter<boolean>`                                    | -                                                                                                          | -             |
 | `(nzOnPanelChange)`      | a callback emitter, can be executed when the panel changes                                                                         | `EventEmitter<NzPanelChangeType>`                          | -                                                                                                          | -             |
 
+### Custom clear icon
+
+Mark a child element with the static `nzDatePickerClearIcon` attribute to replace the clear icon, following the same content projection pattern as Input’s `nzInputClearIcon`. This works with both `nz-date-picker` and `nz-range-picker`, including all picker modes. No additional directive import is needed.
+
+If no custom content is provided, the filled `close-circle` icon is used. `nzAllowClear` still controls whether clearing is allowed; the clear icon is hidden when the picker is disabled or empty. The picker handles the click and clears the value, so the custom content does not need its own click handler. Use a non-interactive element such as `nz-icon`, `span` or `svg`.
+
+```html
+<nz-date-picker [(ngModel)]="date">
+  <nz-icon nzDatePickerClearIcon nzType="close" />
+</nz-date-picker>
+
+<nz-range-picker [(ngModel)]="range">
+  <nz-icon nzDatePickerClearIcon nzType="close" />
+</nz-range-picker>
+```
+
 ### Common Methods
 
 | Name      | Description          |
