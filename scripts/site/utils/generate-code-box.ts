@@ -30,6 +30,6 @@ export function generateCodeBox(
   output = output.replace(/{{iframe}}/g, iframe ? 'true' : 'false');
   output = output.replace(/{{iframeSource}}/g, iframe?.source ?? '');
   output = output.replace(/{{iframeHeight}}/g, String(iframe?.height ?? null));
-  output = output.replace(/{{nzGenerateCommand}}/g, `ng g ng-zorro-antd:${component}-${key} <name>`);
+  output = output.replace(/{{nzGenerateCommand}}/g, `ng g @ng-zorro/schematics:${component}-${key} <name>`);
   return output;
 }
