@@ -62,9 +62,13 @@ import {
 } from 'ng-zorro-antd/input';
 import { NZ_SPACE_COMPACT_ITEM_TYPE, NZ_SPACE_COMPACT_SIZE, NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
 
+import { getMiniDecimal, MiniDecimal, toFixed, type NzInputNumberValueType } from './mini-decimal';
+
+export type { NzInputNumberValueType } from './mini-decimal';
+
 export type NzInputNumberStepEmitter = 'wheel' | 'handler' | 'keyboard';
 export interface NzInputNumberStepEvent {
-  value: number;
+  value: NzInputNumberValueType;
   offset: number;
   type: 'up' | 'down';
   emitter: NzInputNumberStepEmitter;
@@ -205,6 +209,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   readonly nzSize = input<NzSizeLDSType>('default');
   readonly nzPlaceHolder = input<string | null>(null);
   readonly nzStatus = input<NzStatus>('');
+  readonly nzStringMode = input<boolean>(false, { transform: booleanAttribute });
   readonly nzVariant = input<NzVariant>();
   readonly nzStep = input(1, { transform: numberAttribute });
   readonly nzMin = input(Number.MIN_SAFE_INTEGER, { transform: numberAttribute });
@@ -240,15 +245,15 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   private directionality = inject(Directionality);
   private nzFormStatusService = inject(NzFormStatusService, { optional: true });
   private autoStepTimer: ReturnType<typeof setTimeout> | null = null;
-  private defaultFormatter = (value: number): string => {
+  private defaultFormatter = (decimal: MiniDecimal): string => {
     const precision = this.nzPrecision();
     if (isNotNil(precision)) {
-      return value.toFixed(precision);
+      return toFixed(decimal.toString(), precision);
     }
-    return value.toString();
+    return decimal.toString();
   };
 
-  protected readonly value = signal<number | null>(null);
+  protected readonly value = signal<NzInputNumberValueType | null>(null);
   protected readonly displayValue = signal('');
 
   private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
@@ -291,7 +296,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
       'ant-input-number-focused': this.focused(),
       'ant-input-number-rtl': this.dir() === 'rtl',
       'ant-input-number-in-form-item': !!this.nzFormStatusService,
-      'ant-input-number-out-of-range': this.value() !== null && !isInRange(this.value()!, this.nzMin(), this.nzMax()),
+      'ant-input-number-out-of-range': this.value() !== null && !this.isInRange(getMiniDecimal(this.value())),
       ...getVariantClassNames('ant-input-number', this.finalVariant()),
       ...getStatusClassNames('ant-input-number', this.finalStatus(), this.hasFeedback())
     };
@@ -329,10 +334,10 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   protected readonly finalVariant = computed(() => this.nzVariant() || this.formVariant?.() || 'outlined');
 
   protected readonly upDisabled = computed(() => {
-    return !isNil(this.value()) && this.value()! >= this.nzMax();
+    return !isNil(this.value()) && getMiniDecimal(this.nzMax()).lessEquals(getMiniDecimal(this.value()));
   });
   protected readonly downDisabled = computed(() => {
-    return !isNil(this.value()) && this.value()! <= this.nzMin();
+    return !isNil(this.value()) && getMiniDecimal(this.value()).lessEquals(getMiniDecimal(this.nzMin()));
   });
 
   constructor() {
@@ -376,7 +381,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  writeValue(value: number | null | undefined): void {
+  writeValue(value: NzInputNumberValueType | null | undefined): void {
     if (isNil(value)) value = null;
     untracked(() => {
       this.value.set(value);
@@ -419,21 +424,20 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     }
 
     // When hold the shift key, the step is 10 times
-    let step = event.shiftKey ? this.nzStep() * 10 : this.nzStep();
+    const rawStep = event.shiftKey ? getMiniDecimal(this.nzStep()).multi(10).toString() : this.nzStep();
+    let stepDecimal = getMiniDecimal(rawStep);
     if (!up) {
-      step = -step;
+      stepDecimal = stepDecimal.negate();
     }
 
-    const places = getDecimalPlaces(step);
-    const multiple = 10 ** places;
-    const nextValue = getRangeValue(
-      // Convert floating point numbers to integers to avoid floating point math errors
-      (Math.round((this.value() || 0) * multiple) + Math.round(step * multiple)) / multiple,
-      this.nzMin(),
-      this.nzMax(),
+    const target = getMiniDecimal(this.value() ?? 0).add(stepDecimal.toString());
+    const nextValue = getRangeDecimal(
+      target,
+      getMiniDecimal(this.nzMin()),
+      getMiniDecimal(this.nzMax()),
       this.nzPrecision()
     );
-    this.setValue(nextValue);
+    this.setValue(nextValue.isEmpty() ? null : nextValue.toString());
 
     this.nzOnStep.emit({
       type: up ? 'up' : 'down',
@@ -445,17 +449,22 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     this.focus();
   }
 
-  private setValue(value: number | null): void {
-    const formatter = this.nzFormatter() ?? this.defaultFormatter;
+  private setValue(value: NzInputNumberValueType | null): void {
+    let decimal = getMiniDecimal(value);
     const precision = this.nzPrecision();
 
-    if (isNotNil(precision)) {
-      value &&= +value.toFixed(precision);
+    if (isNotNil(precision) && !decimal.isInvalidate()) {
+      decimal = getMiniDecimal(toFixed(decimal.toString(), precision));
     }
 
-    const formattedValue = isNil(value) ? '' : formatter(value);
+    const formatter = this.nzFormatter();
+    const formattedValue = decimal.isEmpty()
+      ? ''
+      : formatter
+        ? formatter(decimal.toNumber())
+        : this.defaultFormatter(decimal);
     this.displayValue.set(formattedValue);
-    this.updateValue(value);
+    this.updateValue(this.getOutputValue(decimal));
   }
 
   private setValueByTyping(value: string): void {
@@ -466,10 +475,13 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
       return;
     }
 
-    const parser = this.nzParser() ?? defaultParser;
-    const parsedValue = parser(value);
+    if (isNotCompleteNumber(value)) {
+      return;
+    }
 
-    if (isNotCompleteNumber(value) || Number.isNaN(parsedValue)) {
+    const decimal = this.parseTyped(value);
+
+    if (decimal.isNaN()) {
       return;
     }
 
@@ -477,18 +489,17 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     // Otherwise, formatting is only called when the input blurs.
     const formatter = this.nzFormatter();
     if (formatter) {
-      const formattedValue = formatter(parsedValue);
-      this.displayValue.set(formattedValue);
+      this.displayValue.set(formatter(decimal.toNumber()));
     }
 
-    if (!isInRange(parsedValue, this.nzMin(), this.nzMax())) {
+    if (!this.isInRange(decimal)) {
       return;
     }
 
-    this.updateValue(parsedValue);
+    this.updateValue(this.getOutputValue(decimal));
   }
 
-  private updateValue(value: number | null): void {
+  private updateValue(value: NzInputNumberValueType | null): void {
     if (this.value() !== value) {
       this.value.set(value);
       this.onChange(value);
@@ -502,26 +513,45 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
       return;
     }
 
-    const parser = this.nzParser() ?? defaultParser;
-    let fixedValue: number | null = parser(displayValue);
+    let decimal = this.parseTyped(displayValue);
 
     // If parsing fails, revert to the previous value
-    if (Number.isNaN(fixedValue)) {
-      fixedValue = this.value();
-    } else {
-      const precision = this.nzPrecision();
-      // fix precision
-      if (isNotNil(precision) && getDecimalPlaces(fixedValue) !== precision) {
-        fixedValue = +fixedValue.toFixed(precision);
-      }
-
-      // fix range
-      if (!isInRange(fixedValue, this.nzMin(), this.nzMax())) {
-        fixedValue = getRangeValue(fixedValue, this.nzMin(), this.nzMax(), precision);
-      }
+    if (decimal.isNaN()) {
+      this.setValue(this.value());
+      return;
     }
 
-    this.setValue(fixedValue);
+    const precision = this.nzPrecision();
+    if (isNotNil(precision)) {
+      decimal = getMiniDecimal(toFixed(decimal.toString(), precision));
+    }
+
+    if (!this.isInRange(decimal)) {
+      decimal = getRangeDecimal(decimal, getMiniDecimal(this.nzMin()), getMiniDecimal(this.nzMax()), precision);
+    }
+
+    this.setValue(decimal.isEmpty() ? null : decimal.toString());
+  }
+
+  /** Parses raw typed input, treating a value that cleans down to an empty string as invalid. */
+  private parseTyped(raw: string): MiniDecimal {
+    const customParser = this.nzParser();
+    if (customParser) {
+      return getMiniDecimal(customParser(cleanTypedValue(raw)));
+    }
+    const cleaned = cleanTypedValue(raw);
+    return cleaned.length ? getMiniDecimal(cleaned) : getMiniDecimal(NaN);
+  }
+
+  private getOutputValue(decimal: MiniDecimal): NzInputNumberValueType | null {
+    if (decimal.isEmpty() || decimal.isInvalidate()) {
+      return null;
+    }
+    return this.nzStringMode() ? decimal.toString() : decimal.toNumber();
+  }
+
+  private isInRange(decimal: MiniDecimal): boolean {
+    return isInRangeDecimal(decimal, getMiniDecimal(this.nzMin()), getMiniDecimal(this.nzMax()));
   }
 
   protected stopAutoStep(): void {
@@ -587,17 +617,36 @@ const STEP_INTERVAL = 200;
  */
 const STEP_DELAY = 600;
 
-function defaultParser(value: string): number {
-  const parsedValue = value.trim().replace(/,/g, '').replace(/。/g, '.');
-  // `+'' === 0`, so we need to check if parsedValue is empty
-  if (parsedValue.length) {
-    return +parsedValue;
-  }
-  return NaN;
+// `+'' === 0`, so trimming to an empty string must stay distinguishable from `0`.
+function cleanTypedValue(value: string): string {
+  return value.trim().replace(/,/g, '').replace(/。/g, '.');
 }
 
-function isInRange(value: number, min: number, max: number): boolean {
-  return value >= min && value <= max;
+function isInRangeDecimal(decimal: MiniDecimal, min: MiniDecimal, max: MiniDecimal): boolean {
+  return min.lessEquals(decimal) && decimal.lessEquals(max);
+}
+
+// Smallest representable unit for a given precision, e.g. `2` => `0.01`.
+function precisionUnit(precision: number): string {
+  return precision > 0 ? `0.${'0'.repeat(precision - 1)}1` : '1';
+}
+
+// Smallest value >= `decimal` at `precision`. Truncating toward zero already yields this for negative numbers
+function ceilPrecision(decimal: MiniDecimal, precision: number): MiniDecimal {
+  const truncated = getMiniDecimal(toFixed(decimal.toString(), precision, true));
+  if (truncated.equals(decimal) || decimal.toString().startsWith('-')) {
+    return truncated;
+  }
+  return truncated.add(precisionUnit(precision));
+}
+
+//Largest value <= `decimal` at `precision`. Truncating toward zero already yields this for positive numbers.
+function floorPrecision(decimal: MiniDecimal, precision: number): MiniDecimal {
+  const truncated = getMiniDecimal(toFixed(decimal.toString(), precision, true));
+  if (truncated.equals(decimal) || !decimal.toString().startsWith('-')) {
+    return truncated;
+  }
+  return truncated.add(`-${precisionUnit(precision)}`);
 }
 
 /**
@@ -606,35 +655,33 @@ function isInRange(value: number, min: number, max: number): boolean {
  * if min > 0, round up   with precision. Example: input= 3.5, min= 3.5, precision=0; output= 4
  * if min < 0, round down with precision. Example: input=-3.5, min=-3.5, precision=0; output=-3
  */
-function getRangeValue(value: number, min: number, max: number, precision: number | null = null): number {
-  if (precision === null) {
-    if (value < min) {
+function getRangeDecimal(
+  decimal: MiniDecimal,
+  min: MiniDecimal,
+  max: MiniDecimal,
+  precision: number | null
+): MiniDecimal {
+  if (isNil(precision)) {
+    if (!min.lessEquals(decimal)) {
       return min;
     }
-
-    if (value > max) {
+    if (!decimal.lessEquals(max)) {
       return max;
     }
-
-    return value;
+    return decimal;
   }
 
-  const fixedValue = +value.toFixed(precision);
-  const multiple = Math.pow(10, precision);
+  const fixedDecimal = getMiniDecimal(toFixed(decimal.toString(), precision));
 
-  if (fixedValue < min) {
-    return Math.ceil(min * multiple) / multiple;
+  if (!min.lessEquals(fixedDecimal)) {
+    return ceilPrecision(min, precision);
   }
 
-  if (fixedValue > max) {
-    return Math.floor(max * multiple) / multiple;
+  if (!fixedDecimal.lessEquals(max)) {
+    return floorPrecision(max, precision);
   }
 
-  return fixedValue;
-}
-
-function getDecimalPlaces(num: number): number {
-  return num.toString().split('.')[1]?.length || 0;
+  return fixedDecimal;
 }
 
 function isNotCompleteNumber(value: string | number): boolean {
