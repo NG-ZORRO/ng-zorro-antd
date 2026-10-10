@@ -5,3 +5,4 @@
 
 export { NzOutletModule } from './outlet.module';
 export { NzStringTemplateOutletDirective } from './string-template-outlet.directive';
+export { NzTypeHintDirective } from './type-hint.directive';
