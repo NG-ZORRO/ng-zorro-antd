@@ -45,10 +45,21 @@
     > th,
     > td {
       padding-bottom: @descriptions-item-padding-bottom;
+      padding-inline-end: @padding-md;
+    }
+
+    > th:last-child,
+    > td:last-child {
+      padding-inline-end: 0;
     }
 
     &:last-child {
       border-bottom: none;
+
+      > th,
+      > td {
+        padding-bottom: 0;
+      }
     }
   }
 
@@ -136,15 +147,23 @@
         table-layout: auto;
         border-collapse: collapse;
       }
-    }
 
-    .@{descriptions-prefix-cls}-item-label,
-    .@{descriptions-prefix-cls}-item-content {
-      padding: @descriptions-default-padding;
-      border-inline-end: 1px solid @border-color-split;
+      .@{descriptions-prefix-cls}-row {
+        border-bottom: 1px solid @border-color-split;
 
-      &:last-child {
-        border-inline-end: none;
+        &:last-child {
+          border-bottom: none;
+        }
+
+        > .@{descriptions-prefix-cls}-item-label,
+        > .@{descriptions-prefix-cls}-item-content {
+          padding: @descriptions-default-padding;
+          border-inline-end: 1px solid @border-color-split;
+
+          &:last-child {
+            border-inline-end: none;
+          }
+        }
       }
     }
 
@@ -156,24 +175,16 @@
       }
     }
 
-    .@{descriptions-prefix-cls}-row {
-      border-bottom: 1px solid @border-color-split;
-
-      &:last-child {
-        border-bottom: none;
-      }
-    }
-
     &.@{descriptions-prefix-cls}-middle {
-      .@{descriptions-prefix-cls}-item-label,
-      .@{descriptions-prefix-cls}-item-content {
+      .@{descriptions-prefix-cls}-view .@{descriptions-prefix-cls}-row > .@{descriptions-prefix-cls}-item-label,
+      .@{descriptions-prefix-cls}-view .@{descriptions-prefix-cls}-row > .@{descriptions-prefix-cls}-item-content {
         padding: @descriptions-middle-padding;
       }
     }
 
     &.@{descriptions-prefix-cls}-small {
-      .@{descriptions-prefix-cls}-item-label,
-      .@{descriptions-prefix-cls}-item-content {
+      .@{descriptions-prefix-cls}-view .@{descriptions-prefix-cls}-row > .@{descriptions-prefix-cls}-item-label,
+      .@{descriptions-prefix-cls}-view .@{descriptions-prefix-cls}-row > .@{descriptions-prefix-cls}-item-content {
         padding: @descriptions-small-padding;
       }
     }
