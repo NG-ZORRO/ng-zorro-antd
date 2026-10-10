@@ -4,6 +4,7 @@
  */
 
 import { Directionality } from '@angular/cdk/bidi';
+import { ENTER, SPACE } from '@angular/cdk/keycodes';
 import { Component, DebugElement, signal, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -11,7 +12,7 @@ import { By } from '@angular/platform-browser';
 import { vi } from 'vitest';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
-import { provideMockDirectionality } from 'ng-zorro-antd/core/testing';
+import { dispatchKeyboardEvent, provideMockDirectionality } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -138,6 +139,30 @@ describe('collapse', () => {
       expect(panels[0].nativeElement.querySelector('.ant-collapse-header').innerText).toBe('string');
     });
 
+    it('should keyboard work', () => {
+      const header = panels[0].nativeElement.querySelector('.ant-collapse-header') as HTMLElement;
+      expect(header.getAttribute('role')).toBe('button');
+      expect(header.getAttribute('tabindex')).toBe('0');
+      expect(header.getAttribute('aria-expanded')).toBe('false');
+
+      dispatchKeyboardEvent(header, 'keydown', ENTER);
+      fixture.detectChanges();
+      expect(testComponent.active01()).toBe(true);
+      expect(header.getAttribute('aria-expanded')).toBe('true');
+      expect(testComponent.active01Change).toHaveBeenCalledTimes(1);
+
+      dispatchKeyboardEvent(header, 'keydown', SPACE);
+      fixture.detectChanges();
+      expect(testComponent.active01()).toBe(false);
+      expect(testComponent.active01Change).toHaveBeenCalledTimes(2);
+    });
+
+    it('should prevent the page from scrolling on space', () => {
+      const header = panels[0].nativeElement.querySelector('.ant-collapse-header') as HTMLElement;
+      expect(dispatchKeyboardEvent(header, 'keydown', SPACE).defaultPrevented).toBe(true);
+      expect(dispatchKeyboardEvent(header, 'keydown', ENTER).defaultPrevented).toBe(true);
+    });
+
     it('should extra work', () => {
       fixture.detectChanges();
       expect(panels[0].nativeElement.querySelector('.ant-collapse-extra')).toBeFalsy();
@@ -219,6 +244,42 @@ describe('collapse', () => {
       expect(panel.nativeElement.classList).not.toContain('ant-collapse-item-active');
     });
 
+    it('should hand the button role and the tab stop to the icon when nzCollapsible is "icon"', () => {
+      const headerEl = panel.nativeElement.querySelector('.ant-collapse-header') as HTMLElement;
+      const iconEl = panel.nativeElement.querySelector('.ant-collapse-expand-icon') as HTMLElement;
+      const titleEl = panel.nativeElement.querySelector('.ant-collapse-title') as HTMLElement;
+
+      // The header cannot be activated in this mode, so it is not a button and
+      // not a tab stop.
+      expect(headerEl.hasAttribute('role')).toBe(false);
+      expect(headerEl.hasAttribute('tabindex')).toBe(false);
+      expect(headerEl.hasAttribute('aria-expanded')).toBe(false);
+
+      expect(iconEl.getAttribute('role')).toBe('button');
+      expect(iconEl.getAttribute('tabindex')).toBe('0');
+      expect(iconEl.getAttribute('aria-expanded')).toBe('false');
+      expect(titleEl.id).toBeTruthy();
+      expect(iconEl.getAttribute('aria-labelledby')).toBe(titleEl.id);
+    });
+
+    it('should only toggle by keyboard on the icon when nzCollapsible is "icon"', () => {
+      const headerEl = panel.nativeElement.querySelector('.ant-collapse-header') as HTMLElement;
+      const iconEl = panel.nativeElement.querySelector('.ant-collapse-expand-icon') as HTMLElement;
+
+      dispatchKeyboardEvent(headerEl, 'keydown', ENTER);
+      fixture.detectChanges();
+      expect(panel.nativeElement.classList).not.toContain('ant-collapse-item-active');
+
+      dispatchKeyboardEvent(iconEl, 'keydown', ENTER);
+      fixture.detectChanges();
+      expect(panel.nativeElement.classList).toContain('ant-collapse-item-active');
+      expect(iconEl.getAttribute('aria-expanded')).toBe('true');
+
+      dispatchKeyboardEvent(iconEl, 'keydown', SPACE);
+      fixture.detectChanges();
+      expect(panel.nativeElement.classList).not.toContain('ant-collapse-item-active');
+    });
+
     it('should not toggle when nzCollapsible is "disabled"', () => {
       fixture.componentInstance.collapsible.set('disabled');
       fixture.detectChanges();
@@ -230,6 +291,22 @@ describe('collapse', () => {
 
       const icon = panel.nativeElement.querySelector('.ant-collapse-expand-icon') as HTMLElement;
       icon.click();
+      fixture.detectChanges();
+      expect(panel.nativeElement.classList).not.toContain('ant-collapse-item-active');
+    });
+
+    it('should not toggle by keyboard when nzCollapsible is "disabled"', () => {
+      fixture.componentInstance.collapsible.set('disabled');
+      fixture.detectChanges();
+
+      const headerEl = panel.nativeElement.querySelector('.ant-collapse-header') as HTMLElement;
+      const iconEl = panel.nativeElement.querySelector('.ant-collapse-expand-icon') as HTMLElement;
+      expect(headerEl.getAttribute('tabindex')).toBe('-1');
+
+      dispatchKeyboardEvent(headerEl, 'keydown', ENTER);
+      dispatchKeyboardEvent(iconEl, 'keydown', ENTER);
+      dispatchKeyboardEvent(headerEl, 'keydown', SPACE);
+      dispatchKeyboardEvent(iconEl, 'keydown', SPACE);
       fixture.detectChanges();
       expect(panel.nativeElement.classList).not.toContain('ant-collapse-item-active');
     });
@@ -259,6 +336,13 @@ describe('collapse', () => {
       (localPanel.nativeElement.querySelector('.ant-collapse-expand-icon') as HTMLElement).click();
       localFixture.detectChanges();
       expect(localPanel.nativeElement.classList).toContain('ant-collapse-item-active');
+
+      // the header stays the button, so it keeps the tab stop and the keyboard
+      expect(header.getAttribute('role')).toBe('button');
+      expect(header.getAttribute('tabindex')).toBe('0');
+      dispatchKeyboardEvent(header, 'keydown', ENTER);
+      localFixture.detectChanges();
+      expect(localPanel.nativeElement.classList).not.toContain('ant-collapse-item-active');
     });
   });
 
