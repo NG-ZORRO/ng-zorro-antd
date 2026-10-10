@@ -31,6 +31,7 @@ import { NzSelectTopControlComponent } from './select-top-control.component';
 import { NzSelectComponent, NzSelectSizeType } from './select.component';
 import { NzSelectModule } from './select.module';
 import {
+  maxTagCountAttribute,
   NzFilterOptionType,
   NzSelectItemInterface,
   NzSelectMaxTagCount,
@@ -917,6 +918,188 @@ describe('select', () => {
       fixture.detectChanges();
       const expandedItems = selectElement.querySelectorAll('nz-select-item');
       expect(expandedItems.length).toBe(4);
+    });
+
+    it('should nzMaxTagCount="responsive" handle calculation branches and edge cases', async () => {
+      component.listOfOption.set([
+        { nzValue: 'val_01', nzLabel: 'label_01' },
+        { nzValue: 'val_02', nzLabel: null },
+        { nzValue: 'val_03', nzLabel: '标签三_宽字符' },
+        { nzValue: null as NzSafeAny, nzLabel: null }
+      ]);
+      component.value.set(['val_01', 'val_02', 'val_03', '']);
+      component.nzMaxTagCount.set('responsive');
+      await flushChanges();
+
+      const topControl = fixture.debugElement.query(By.directive(NzSelectTopControlComponent))
+        .componentInstance as NzSelectTopControlComponent;
+      const hostEl = topControl['elementRef'].nativeElement;
+
+      // 1. isBrowser = false
+      (topControl as NzSafeAny).isBrowser = false;
+      topControl['calculateFitCount']();
+      expect(topControl.calculatedMaxTagCount).toBe(Infinity);
+      (topControl as NzSafeAny).isBrowser = true;
+
+      // 2. mode = 'default'
+      topControl.mode = 'default';
+      topControl['calculateFitCount']();
+      expect(topControl.calculatedMaxTagCount).toBe(Infinity);
+      topControl.mode = 'tags';
+
+      // 3. listOfTopItem = []
+      const originalListOfTopItem = topControl.listOfTopItem;
+      topControl.listOfTopItem = [];
+      topControl['calculateFitCount']();
+      expect(topControl.calculatedMaxTagCount).toBe(Infinity);
+      topControl.listOfTopItem = originalListOfTopItem;
+
+      // 4. containerWidth <= 0 (e.g. clientWidth = 0)
+      Object.defineProperty(hostEl, 'clientWidth', { value: 0, configurable: true });
+      topControl['calculateFitCount']();
+      expect(topControl.calculatedMaxTagCount).toBe(Infinity);
+
+      // 5. prefix element present
+      const prefixEl = document.createElement('span');
+      prefixEl.className = 'ant-select-prefix';
+      Object.defineProperty(prefixEl, 'offsetWidth', { value: 40, configurable: true });
+      hostEl.appendChild(prefixEl);
+
+      Object.defineProperty(hostEl, 'clientWidth', { value: 120, configurable: true });
+      topControl['calculateFitCount']();
+      fixture.detectChanges();
+      expect(topControl.calculatedMaxTagCount).toBeGreaterThanOrEqual(1);
+
+      // 6. Very narrow container (fitCount === 0 -> finalCount Math.max(1, 0) === 1)
+      Object.defineProperty(hostEl, 'clientWidth', { value: 45, configurable: true });
+      topControl['calculateFitCount']();
+      fixture.detectChanges();
+      expect(topControl.calculatedMaxTagCount).toBe(1);
+
+      hostEl.removeChild(prefixEl);
+    });
+
+    it('should measureTextWidth and getComputedFont fallbacks work', () => {
+      const topControl = fixture.debugElement.query(By.directive(NzSelectTopControlComponent))
+        .componentInstance as NzSelectTopControlComponent;
+      const hostEl = topControl['elementRef'].nativeElement;
+
+      const w1 = topControl['measureTextWidth']('test', '14px sans-serif');
+      expect(w1).toBeGreaterThan(0);
+
+      const w2 = topControl['measureTextWidth']('中文测试', '14px sans-serif');
+      expect(w2).toBeGreaterThan(0);
+
+      const origCanvas = topControl['canvas'];
+      topControl['canvas'] = {
+        getContext: () => null
+      } as NzSafeAny;
+      const fallbackNull = topControl['measureTextWidth']('abc中文', '14px sans-serif');
+      expect(fallbackNull).toBeGreaterThan(0);
+
+      topControl['canvas'] = {
+        getContext: () => {
+          throw new Error('Canvas error');
+        }
+      } as NzSafeAny;
+      const fallbackThrow = topControl['measureTextWidth']('abc', '14px sans-serif');
+      expect(fallbackThrow).toBeGreaterThan(0);
+      // Minimum bound Math.max(16, estimated)
+      const fallbackShort = topControl['measureTextWidth']('a', '14px sans-serif');
+      expect(fallbackShort).toBe(16);
+
+      topControl['canvas'] = origCanvas;
+
+      const font = topControl['getComputedFont'](hostEl);
+      expect(font).toContain('px');
+
+      const fontCatch = topControl['getComputedFont'](null as NzSafeAny);
+      expect(fontCatch).toBe('400 14px sans-serif');
+
+      const fontEmpty = topControl['getComputedFont']({} as HTMLElement);
+      expect(fontEmpty).toBe('400 14px sans-serif');
+
+      // Test style fallback properties when empty
+      const origGetComputedStyle = window.getComputedStyle;
+      (window as NzSafeAny).getComputedStyle = () => ({ fontWeight: '', fontSize: '', fontFamily: '' });
+      const fontDefaults = topControl['getComputedFont'](hostEl);
+      expect(fontDefaults).toBe('400 14px sans-serif');
+      window.getComputedStyle = origGetComputedStyle;
+
+      // Test isBrowser = false in ngOnInit
+      (topControl as NzSafeAny).isBrowser = false;
+      topControl.ngOnInit();
+      (topControl as NzSafeAny).isBrowser = true;
+    });
+
+    it('should ngOnChanges and maxTagPlaceholder work with responsive', async () => {
+      component.listOfOption.set([
+        { nzValue: 'test_01', nzLabel: 'label_01' },
+        { nzValue: 'test_02', nzLabel: 'label_02' },
+        { nzValue: 'test_03', nzLabel: 'label_03' },
+        { nzValue: 'test_04', nzLabel: 'label_04' }
+      ]);
+      component.value.set(['test_01', 'test_02', 'test_03', 'test_04']);
+      component.nzMaxTagCount.set('responsive');
+      component.nzMaxTagPlaceholder.set(component.tagTemplate);
+      await flushChanges();
+
+      const topControl = fixture.debugElement.query(By.directive(NzSelectTopControlComponent))
+        .componentInstance as NzSelectTopControlComponent;
+      const hostEl = topControl['elementRef'].nativeElement;
+      Object.defineProperty(hostEl, 'clientWidth', { value: 80, configurable: true });
+      topControl['calculateFitCount']();
+      fixture.detectChanges();
+
+      const listOfItem = selectElement.querySelectorAll('nz-select-item');
+      const lastItem = listOfItem[listOfItem.length - 1];
+      expect(lastItem.textContent?.trim()).toContain('more selected');
+
+      // Test maxTagCount === 'responsive' and maxTagCount changes (hits lines 224-226)
+      topControl.maxTagCount = 'responsive';
+      topControl.ngOnChanges({
+        maxTagCount: new SimpleChange<NzSafeAny>(2, 'responsive', false)
+      });
+      expect(topControl.calculatedMaxTagCount).toBeGreaterThanOrEqual(1);
+
+      topControl.ngOnChanges({
+        listOfTopItem: new SimpleChange<NzSafeAny>(null, topControl.listOfTopItem, false)
+      });
+      topControl.ngOnChanges({
+        maxTagPlaceholder: new SimpleChange<NzSafeAny>(null, component.tagTemplate, false)
+      });
+      topControl.customTemplate = component.tagTemplate;
+      topControl.ngOnChanges({
+        customTemplate: new SimpleChange<NzSafeAny>(null, component.tagTemplate, false)
+      });
+
+      // Test ngOnChanges triggers without responsive (hits lines 231-233)
+      topControl.maxTagCount = 2;
+      topControl.ngOnChanges({
+        customTemplate: new SimpleChange<NzSafeAny>(null, null, false)
+      });
+      topControl.ngOnChanges({
+        maxTagCount: new SimpleChange<NzSafeAny>('responsive', 2, false)
+      });
+      expect(topControl.listOfSlicedItem.length).toBe(3);
+
+      // Test resizeObserver stream emission
+      const obsMap = (topControl['resizeObserver'] as NzSafeAny)?.observedElements;
+      const stream = obsMap?.get(hostEl)?.stream;
+      if (stream) {
+        topControl.maxTagCount = 'responsive';
+        stream.next([]);
+        topControl.maxTagCount = 2;
+        stream.next([]);
+      }
+    });
+
+    it('should maxTagCountAttribute handle transform', () => {
+      expect(maxTagCountAttribute('responsive')).toBe('responsive');
+      expect(maxTagCountAttribute('5')).toBe(5);
+      expect(maxTagCountAttribute(10)).toBe(10);
+      expect(maxTagCountAttribute(undefined)).toBe(Infinity);
+      expect(maxTagCountAttribute(null)).toBe(Infinity);
     });
   });
 

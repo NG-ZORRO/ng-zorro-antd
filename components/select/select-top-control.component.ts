@@ -230,10 +230,6 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
     if (listOfTopItem) {
       this.updateTemplateVariable();
     }
-    if (maxTagCount && this.maxTagCount === 'responsive') {
-      this.calculateFitCount();
-      return;
-    }
     if (listOfTopItem || maxTagCount || customTemplate || maxTagPlaceholder) {
       if (this.maxTagCount === 'responsive') {
         this.calculateFitCount();
@@ -319,19 +315,17 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
   }
 
   private measureTextWidth(text: string, font: string): number {
-    if (typeof document !== 'undefined') {
-      try {
-        if (!this.canvas) {
-          this.canvas = document.createElement('canvas');
-        }
-        const ctx = this.canvas.getContext?.('2d');
-        if (ctx) {
-          ctx.font = font;
-          return Math.ceil(ctx.measureText(text).width);
-        }
-      } catch {
-        // fallback
+    try {
+      if (!this.canvas) {
+        this.canvas = document.createElement('canvas');
       }
+      const ctx = this.canvas.getContext?.('2d');
+      if (ctx) {
+        ctx.font = font;
+        return Math.ceil(ctx.measureText(text).width);
+      }
+    } catch {
+      // fallback
     }
     let estimated = 0;
     for (let i = 0; i < text.length; i++) {
@@ -341,15 +335,9 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
   }
 
   private getComputedFont(el: HTMLElement): string {
-    if (typeof window === 'undefined') {
-      return '400 14px sans-serif';
-    }
     try {
       const style = window.getComputedStyle(el);
-      const weight = style?.fontWeight || '400';
-      const size = style?.fontSize || '14px';
-      const family = style?.fontFamily || 'sans-serif';
-      return `${weight} ${size} ${family}`;
+      return `${style?.fontWeight || '400'} ${style?.fontSize || '14px'} ${style?.fontFamily || 'sans-serif'}`;
     } catch {
       return '400 14px sans-serif';
     }
