@@ -32,6 +32,8 @@ export class NzOptionSelectionChange {
   ) {}
 }
 
+let nextUniqueId = 0;
+
 @Component({
   selector: 'nz-auto-option',
   exportAs: 'nzAutoOption',
@@ -42,8 +44,9 @@ export class NzOptionSelectionChange {
     </div>
   `,
   host: {
-    role: 'menuitem',
+    role: 'option',
     class: 'ant-select-item ant-select-item-option',
+    '[attr.id]': 'id',
     '[class.ant-select-item-option-grouped]': 'nzAutocompleteOptgroupComponent',
     '[class.ant-select-item-option-selected]': 'selected',
     '[class.ant-select-item-option-active]': 'active',
@@ -67,6 +70,7 @@ export class NzAutocompleteOptionComponent implements OnInit {
 
   active = false;
   selected = false;
+  readonly id = `nz-autocomplete-option-${nextUniqueId++}`;
   nzAutocompleteOptgroupComponent = inject(NzAutocompleteOptgroupComponent, { optional: true });
 
   ngOnInit(): void {
