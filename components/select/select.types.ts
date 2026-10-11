@@ -10,6 +10,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 export type NzSelectModeType = 'default' | 'multiple' | 'tags';
 export interface NzSelectItemInterface {
   template?: TemplateRef<NzSafeAny> | null;
+  templateContext?: NzSafeAny | null;
   nzLabel: string | number | null;
   nzValue: NzSafeAny | null;
   nzTitle?: string | number | null;
