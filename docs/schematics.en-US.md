@@ -29,14 +29,28 @@ ng add ng-zorro-antd [options]
 
 There are template source codes under every component API show case, you may obtain these codes by expanding `Show Code`.
 
+Example generators are provided by the optional `@ng-zorro/schematics` package. Install the beta as a development dependency (`22.0.0-beta.0` requires `ng-zorro-antd ^22.1.0`):
+
+```bash
+npm install --save-dev @ng-zorro/schematics@beta
+```
+
+The component library does not download these example generators by default. You can uninstall this optional package when you no longer need them.
+
 ### Command
 
 ```bash
-ng g ng-zorro-antd:[schematic] <name> [options]
+ng g @ng-zorro/schematics:[schematic] <name> [options]
 ```
 
 For example, you can generate a login form with the follow command.
 
 ```bash
-ng g ng-zorro-antd:form-normal-login login
+ng g @ng-zorro/schematics:form-normal-login login
 ```
+
+### Migrating existing commands
+
+Replace `ng-zorro-antd:<demo>` with `@ng-zorro/schematics:<demo>` in your commands and demo-specific `angular.json` defaults. Example names are unchanged. Generated demo components are standalone.
+
+`ng add ng-zorro-antd`, `ng update ng-zorro-antd`, and the `component`, `sidemenu`, `topnav`, and `add-icon-assets` generators remain in the main package.

@@ -20,7 +20,7 @@ $ ng add ng-zorro-antd [--locale=zh-CN] [--theme] [--skipPackageJson]
 
 ### 首次运行
 
-`npm run build:schematic` 编译到 publish 文件夹，创建一个新的 ng 项目。
+`npm run build:lib` 编译主包到 `publish` 文件夹，创建一个新的 ng 项目。
 
 1. `cd publish && npm link`
 2. `ng new schematic-debug`
@@ -28,7 +28,7 @@ $ ng add ng-zorro-antd [--locale=zh-CN] [--theme] [--skipPackageJson]
 
 ### 调试
 
-1. `schematic:build` 修改代码后编译
+1. `npm run build:lib` 修改代码后编译
 2. `cd schematic-debug` 切换到 ng 项目
 3. `git checkout . && git clean -fd` 还原更改
 4. `ng g ng-zorro-antd:[schematic]` 运行 schematic
@@ -38,3 +38,7 @@ $ ng add ng-zorro-antd [--locale=zh-CN] [--theme] [--skipPackageJson]
 ## 发布
 
 原有发布流程不变，但是 `schematics/utils/custom-theme.ts` 和 `schematics/utils/lib-versions.ts` 内容为动态生成，不提交到版本管理。
+
+## 可选示例生成器
+
+组件示例已迁移至独立的 `@ng-zorro/schematics` 包。运行 `npm run build:schematics-demo` 构建到 `dist/antd-schematics`；主包不包含或依赖该包。开发、安装和命令迁移见 [示例包说明](../schematics-demo/README.md)，与 ng-zorro-x 的生态约定见 [架构说明](../schematics-demo/ARCHITECTURE.md)。
