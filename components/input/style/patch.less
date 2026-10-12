@@ -1,11 +1,54 @@
 @import './input-otp';
 
-textarea.nz-textarea-autosize-measuring {
-  height: auto !important;
-  // Having 2px top and bottom padding seems to fix a bug where Chrome gets an incorrect
-  // measurement. We just have to account for it later and subtract it off the final result.
-  padding: 2px 0 !important;
-  overflow: hidden !important;
+// `cdkTextareaAutosize` computes content-box heights (angular/components#21619
+// fixed this scrollbar for Material by making its textareas content-box),
+// while `.ant-input` is border-box: the padding and border eat into the content
+// area and a scrollbar shows before `cdkAutosizeMaxRows` is reached.
+textarea.@{ant-prefix}-input.cdk-textarea-autosize {
+  box-sizing: content-box;
+  // `width: 100%` overflows the container once content-box; `stretch` sizes
+  // the margin box to the container instead (prefixed forms for Firefox and
+  // older Chromium and Safari).
+  width: -moz-available;
+  width: -webkit-fill-available;
+  width: stretch;
+  // The directive caches the row height from a one-row clone with its inline
+  // `min-height` cleared; the `.ant-input` `min-height` would still hold that
+  // clone open. A one-row autosize textarea still ends up the input height of
+  // its size.
+  min-height: 0;
+  // The directive swaps `padding` while measuring and sets `min-height` and
+  // `max-height` inline; the textarea `transition: all` would measure the
+  // pre-change values and animate them afterwards. Transition only what hover,
+  // focus, status and disabled change.
+  transition: color 0.3s, background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+
+  // The directive measures with the horizontal padding removed, which moves
+  // the wrap points of long lines; keep it so wrapped rows are counted. Mirrors
+  // the `.input()` size paddings and the has-feedback rule below, keep them in
+  // step. The vertical padding stays the directive's own 2px, which it
+  // subtracts back.
+  &-measuring,
+  &-measuring-firefox {
+    padding-inline: @input-padding-horizontal-base !important;
+
+    &.@{ant-prefix}-input-lg {
+      padding-inline: @input-padding-horizontal-lg !important;
+    }
+
+    &.@{ant-prefix}-input-sm {
+      padding-inline: @input-padding-horizontal-sm !important;
+    }
+
+    &.@{ant-prefix}-input-status-error,
+    &.@{ant-prefix}-input-status-warning,
+    &.@{ant-prefix}-input-status-validating,
+    &.@{ant-prefix}-input-status-success {
+      &.@{ant-prefix}-input-has-feedback {
+        padding-inline-end: @padding-lg + @padding-xss !important;
+      }
+    }
+  }
 }
 
 .ant-input-affix-wrapper-textarea-with-clear-btn .ant-input-suffix {
