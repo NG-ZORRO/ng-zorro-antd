@@ -11,7 +11,7 @@ import { vi } from 'vitest';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchMouseEvent, dispatchTouchEvent, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
-import { NzFormatEmitEvent, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
+import { NzFormatEmitEvent, NzTreeNode, NzTreeNodeKey, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 
@@ -378,6 +378,28 @@ describe('tree', () => {
         // In actual user behavior, click event may be triggered twice
         expect(spy).toHaveBeenCalledTimes(1);
       });
+    });
+  });
+
+  describe('check strictly with two-way binding', () => {
+    let fixture: ComponentFixture<NzTestTreeCheckStrictlyComponent>;
+    let component: NzTestTreeCheckStrictlyComponent;
+    let nativeElement: Element;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestTreeCheckStrictlyComponent);
+      component = fixture.componentInstance;
+      nativeElement = fixture.debugElement.nativeElement;
+      fixture.detectChanges();
+    });
+
+    it('should emit only the checked key and not check children when checking a parent node', async () => {
+      // get first node 0-0
+      const node = nativeElement.querySelector('.ant-tree-checkbox')!;
+      dispatchMouseEvent(node, 'click');
+      await stabilize(fixture, 300);
+      expect(component.checkedKeys()).toEqual(['0-0']);
+      expect(nativeElement.querySelectorAll('.ant-tree-checkbox-checked').length).toEqual(1);
     });
   });
 
@@ -760,6 +782,24 @@ export class NzTestTreeDraggableComponent {
   onDrop(): void {}
 
   onDragEnd(): void {}
+}
+
+@Component({
+  imports: [NzTreeModule],
+  template: `<nz-tree [nzData]="nodes" nzCheckable nzCheckStrictly nzExpandAll [(nzCheckedKeys)]="checkedKeys" />`
+})
+export class NzTestTreeCheckStrictlyComponent {
+  readonly checkedKeys = signal<NzTreeNodeKey[]>([]);
+  readonly nodes: NzTreeNodeOptions[] = [
+    {
+      title: '0-0',
+      key: '0-0',
+      children: [
+        { title: '0-0-0', key: '0-0-0', isLeaf: true },
+        { title: '0-0-1', key: '0-0-1', isLeaf: true }
+      ]
+    }
+  ];
 }
 
 @Component({
