@@ -28,7 +28,7 @@ import { getItemTemplateOutletContext } from './util';
       @if (displayLabelInHtml) {
         <span [class.ant-select-selection-item-content]="deletable" [innerHTML]="label"></span>
       } @else {
-        <span [class.ant-select-selection-item-content]="deletable">{{ label }}</span>
+        <span [class.ant-select-selection-item-content]="deletable" [textContent]="label"></span>
       }
     </ng-container>
     @if (deletable && !disabled) {

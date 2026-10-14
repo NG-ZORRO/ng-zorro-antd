@@ -113,6 +113,25 @@ describe('select', () => {
       expect(component.valueChange).not.toHaveBeenCalled();
     });
 
+    it('should update the label when its text node was replaced', async () => {
+      component.listOfOption.set([
+        { nzValue: 'test_01', nzLabel: 'label_01' },
+        { nzValue: 'test_02', nzLabel: 'label_02' }
+      ]);
+      component.value.set('test_01');
+      await flushChanges();
+      const selectItem = selectElement.querySelector('nz-select-item')!;
+      expect(selectItem.textContent?.trim()).toBe('label_01');
+      // Simulate Chrome page translation, which swaps text nodes for <font> elements
+      const font = document.createElement('font');
+      font.textContent = 'translated';
+      selectItem.querySelector('span')!.replaceChildren(font);
+      component.value.set('test_02');
+      await flushChanges();
+      expect(selectElement.querySelector('nz-select-item')).toBe(selectItem);
+      expect(selectItem.textContent?.trim()).toBe('label_02');
+    });
+
     it('should scroll to the initially selected option when opened', async () => {
       component.listOfOption.set(
         Array.from({ length: 30 }, (_, index) => ({ nzValue: index + 1, nzLabel: `Option ${index + 1}` }))
