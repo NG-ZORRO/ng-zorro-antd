@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ApplicationRef, Component, signal, TemplateRef, ViewChild } from '@angular/core';
+import { ApplicationRef, ChangeDetectionStrategy, Component, signal, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
 
@@ -786,7 +786,8 @@ export class NzTestTreeDraggableComponent {
 
 @Component({
   imports: [NzTreeModule],
-  template: `<nz-tree [nzData]="nodes" nzCheckable nzCheckStrictly nzExpandAll [(nzCheckedKeys)]="checkedKeys" />`
+  template: `<nz-tree [nzData]="nodes" nzCheckable nzCheckStrictly nzExpandAll [(nzCheckedKeys)]="checkedKeys" />`,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzTestTreeCheckStrictlyComponent {
   readonly checkedKeys = signal<NzTreeNodeKey[]>([]);
