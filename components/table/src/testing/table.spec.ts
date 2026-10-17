@@ -266,6 +266,20 @@ describe('nz-table', () => {
     });
   });
 
+  it('should wrap only fixed ellipsis cells and preserve dynamic content', async () => {
+    const fixture = TestBed.createComponent(NzTestTableFixedEllipsisComponent);
+    const element: HTMLElement = fixture.nativeElement;
+
+    for (const text of ['Initial', '', 'Updated']) {
+      fixture.componentInstance.text.set(text);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const contents = element.querySelectorAll('.ant-table-cell-content');
+      expect(Array.from(contents, content => content.textContent)).toEqual([text, text, text, text]);
+    }
+  });
+
   describe('double binding nz-table', () => {
     let fixture: ComponentFixture<NzTableSpecCrashComponent>;
     let testComponent: NzTableSpecCrashComponent;
@@ -284,6 +298,35 @@ describe('nz-table', () => {
 
   testDirectionality(() => NzTestTableBasicComponent, By.directive(NzTableComponent), 'ant-table-wrapper');
 });
+
+@Component({
+  imports: [NzTableModule],
+  template: `
+    <nz-table [nzData]="[{}]" [nzScroll]="{ x: '800px' }">
+      <thead>
+        <tr>
+          <th nzLeft nzEllipsis>{{ text() }}</th>
+          <th nzEllipsis>Middle</th>
+          <th nzRight nzEllipsis>{{ text() }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td nzLeft nzEllipsis>
+            @if (text()) {
+              <span>{{ text() }}</span>
+            }
+          </td>
+          <td nzEllipsis>Middle</td>
+          <td nzRight nzEllipsis>{{ text() }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  `
+})
+class NzTestTableFixedEllipsisComponent {
+  readonly text = signal('Initial');
+}
 
 interface BasicTestDataItem {
   name?: string;
