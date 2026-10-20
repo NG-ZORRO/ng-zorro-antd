@@ -4,9 +4,9 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, signal, WritableSignal } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { vi } from 'vitest';
@@ -24,6 +24,8 @@ import { NZ_FORM_SIZE } from 'ng-zorro-antd/core/form';
 import { dispatchFakeEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzFormModule } from 'ng-zorro-antd/form';
+
+import { generateColor } from './src/util/util';
 
 describe('color-picker', () => {
   let fixture: ComponentFixture<NzTestColorPickerComponent>;
@@ -228,25 +230,124 @@ describe('color-picker', () => {
     const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
     dispatchMouseEvent(dom, 'click');
     waitingForTooltipToggling();
-    const clear = overlayContainerElement.querySelector('.ant-color-picker-clear');
-    if (clear) {
-      dispatchMouseEvent(clear, 'click');
-      fixture.detectChanges();
-      waitingForTooltipToggling();
-      await fixture.whenStable();
-      fixture.detectChanges();
-      const colorDom = resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner');
-      expect(colorDom.style.backgroundColor).toBe('rgba(22, 119, 255, 0)');
-    }
+    const clear = overlayContainerElement.querySelector('.ant-color-picker-clear')!;
+    expect(clear).not.toBeNull();
+    dispatchMouseEvent(clear, 'click');
+    fixture.detectChanges();
+    waitingForTooltipToggling();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(testComponent.isClear).toBe(true);
+    expect(testComponent.colorChange?.color.getAlpha()).toBe(0);
+    // The parent echoed the transparent color back: the trigger stays in the cleared state.
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger .ant-color-picker-clear')).not.toBeNull();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner')).toBeNull();
+  });
+
+  it('color-picker should clear only once', () => {
+    const colorPicker = resultEl.componentInstance as NzColorPickerComponent;
+    const onClear = vi.fn();
+    colorPicker.nzOnClear.subscribe(onClear);
+    colorPicker.clearColorHandle();
+    colorPicker.clearColorHandle();
+    expect(onClear).toHaveBeenCalledTimes(1);
+  });
+
+  it('color-picker should keep the cleared state when the parent echoes the color without alpha', () => {
+    const colorPicker = resultEl.componentInstance as NzColorPickerComponent;
+    colorPicker.clearColorHandle();
+    fixture.detectChanges();
+    testComponent.nzValue.set(testComponent.colorChange!.color.toHexString());
+    fixture.detectChanges();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger .ant-color-picker-clear')).not.toBeNull();
+  });
+
+  it('color-picker should leave the cleared state when nzValue changes to another color', () => {
+    const colorPicker = resultEl.componentInstance as NzColorPickerComponent;
+    colorPicker.clearColorHandle();
+    fixture.detectChanges();
+    testComponent.nzValue.set('#ff6600');
+    fixture.detectChanges();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger .ant-color-picker-clear')).toBeNull();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner').style.backgroundColor).toBe(
+      'rgb(255, 102, 0)'
+    );
+  });
+
+  it('color-picker should restore alpha and leave the cleared state when picking a color after clear', () => {
+    const colorPicker = resultEl.componentInstance as NzColorPickerComponent;
+    colorPicker.clearColorHandle();
+    fixture.detectChanges();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger .ant-color-picker-clear')).not.toBeNull();
+
+    colorPicker.colorChange({ color: generateColor('rgba(255, 102, 0, 0)') });
+    fixture.detectChanges();
+    expect(testComponent.colorChange?.color.getAlpha()).toBe(1);
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger .ant-color-picker-clear')).toBeNull();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner').style.backgroundColor).toBe(
+      'rgb(255, 102, 0)'
+    );
+
+    colorPicker.clearColorHandle();
+    fixture.detectChanges();
+    colorPicker.formatChange({ color: '#ff660000', format: 'hex' });
+    fixture.detectChanges();
+    expect(testComponent.colorChange?.color.toHexString()).toBe('#ff6600');
+    expect(colorPicker.formControl.value).toBe('#ff6600');
+  });
+
+  it('color-picker nzId', () => {
+    testComponent.nzId.set('primary-color');
+    fixture.detectChanges();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger').getAttribute('id')).toBe('primary-color');
+  });
+
+  it('color-picker should show the cleared state when nzValue is null or undefined', () => {
+    const colorPicker = resultEl.componentInstance as NzColorPickerComponent;
+    testComponent.nzValue.set(null);
+    fixture.detectChanges();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger .ant-color-picker-clear')).not.toBeNull();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner')).toBeNull();
+    // The panel is seeded with a fully transparent color while cleared.
+    expect(generateColor(colorPicker.blockColor).getAlpha()).toBe(0);
+
+    testComponent.nzValue.set(undefined);
+    fixture.detectChanges();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger .ant-color-picker-clear')).not.toBeNull();
+
+    testComponent.nzValue.set('#ff6600');
+    fixture.detectChanges();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger .ant-color-picker-clear')).toBeNull();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner').style.backgroundColor).toBe(
+      'rgb(255, 102, 0)'
+    );
+  });
+
+  it('color-picker should show the cleared state when nzValue is null even with nzDefaultValue', () => {
+    testComponent.nzValue.set(null);
+    testComponent.nzDefaultValue.set('#ff6600');
+    fixture.detectChanges();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger .ant-color-picker-clear')).not.toBeNull();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner')).toBeNull();
+  });
+
+  it('color-picker should hide the text while cleared', () => {
+    testComponent.nzShowText.set(true);
+    testComponent.nzValue.set(null);
+    fixture.detectChanges();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger-text')).toBeNull();
   });
 
   it('color-picker nzOnChange', () => {
     const colorPicker = resultEl.componentInstance as NzColorPickerComponent;
 
     colorPicker.formatChange({ color: 'hsb(180, 91%, 100%)', format: 'hsb' });
-
     expect(testComponent.colorChange?.format).toBe('hsb');
     expect(testComponent.colorChange?.color.toHsbString()).toBe('hsb(180, 91%, 100%)');
+
+    colorPicker.formatChange({ color: 'rgb(255, 102, 0)', format: 'rgb' });
+    expect(testComponent.colorChange?.format).toBe('rgb');
+    expect(colorPicker.formControl.value).toBe('rgb(255, 102, 0)');
   });
 
   it('color-picker disableAlpha', () => {
@@ -256,6 +357,23 @@ describe('color-picker', () => {
     dispatchMouseEvent(dom, 'click');
     waitingForTooltipToggling();
     expect(overlayContainerElement.querySelector('.ant-color-picker-slider-alpha')).toBeNull();
+  });
+
+  it('nz-color-format should emit the typed hex color and ignore invalid input', () => {
+    const dom = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
+    dispatchMouseEvent(dom, 'click');
+    waitingForTooltipToggling();
+    const hexInput = overlayContainerElement.querySelector('.ant-color-picker-hex-input input') as HTMLInputElement;
+    hexInput.value = 'ff6600';
+    dispatchFakeEvent(hexInput, 'input');
+    waitingForTooltipToggling();
+    expect(testComponent.colorChange?.format).toBe('hex');
+    expect(testComponent.colorChange?.color.toHexString()).toBe('#ff6600');
+
+    hexInput.value = 'zz';
+    dispatchFakeEvent(hexInput, 'input');
+    waitingForTooltipToggling();
+    expect(testComponent.colorChange?.color.toHexString()).toBe('#ff6600');
   });
 
   it('nz-color-format disableAlpha', async () => {
@@ -279,6 +397,7 @@ describe('color-picker', () => {
   imports: [NzButtonModule, NzColorPickerModule],
   template: `
     <nz-color-picker
+      [nzId]="nzId()"
       [nzValue]="nzValue()"
       [nzSize]="nzSize()"
       [nzDefaultValue]="nzDefaultValue()"
@@ -302,8 +421,9 @@ describe('color-picker', () => {
   `
 })
 export class NzTestColorPickerComponent {
+  readonly nzId = signal<string | null>(null);
   readonly nzFormat = signal<NzColorPickerFormatType | null>(null);
-  readonly nzValue = signal('');
+  readonly nzValue = signal<string | null | undefined>('');
   readonly nzSize = signal<NzSizeLDSType>('default');
   readonly nzDefaultValue = signal('');
   readonly nzTrigger = signal<NzColorPickerTriggerType>('click');
@@ -370,6 +490,89 @@ describe('nz-color-picker form', () => {
     component.enable();
     fixture.detectChanges();
     expect(resultEl.nativeElement.classList).not.toContain('ant-color-picker-disabled');
+  });
+
+  it('color-picker form should link the label through nzId', () => {
+    const label = fixture.nativeElement.querySelector('label');
+    const trigger = resultEl.nativeElement.querySelector('.ant-color-picker-trigger');
+    expect(label.getAttribute('for')).toBe('color');
+    expect(trigger.getAttribute('id')).toBe('color');
+  });
+
+  it('color-picker form should show the cleared state for a null value', () => {
+    component.validateForm.controls.colorPicker.setValue(null);
+    fixture.detectChanges();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger .ant-color-picker-clear')).not.toBeNull();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner')).toBeNull();
+
+    component.validateForm.controls.colorPicker.setValue('#1677ff');
+    fixture.detectChanges();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger .ant-color-picker-clear')).toBeNull();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner').style.backgroundColor).toBe(
+      'rgb(22, 119, 255)'
+    );
+  });
+
+  it('color-picker form should show the picked color after a null value', () => {
+    const colorPicker = resultEl.componentInstance as NzColorPickerComponent;
+    component.validateForm.controls.colorPicker.setValue(null);
+    fixture.detectChanges();
+    colorPicker.colorChange({ color: generateColor('#ff6600') });
+    fixture.detectChanges();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger .ant-color-picker-clear')).toBeNull();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner').style.backgroundColor).toBe(
+      'rgb(255, 102, 0)'
+    );
+  });
+
+  it('color-picker form should show the cleared state after reset', () => {
+    component.validateForm.reset();
+    fixture.detectChanges();
+    expect(component.validateForm.controls.colorPicker.value).toBeNull();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger .ant-color-picker-clear')).not.toBeNull();
+  });
+
+  it('color-picker form should set the control to null on clear', () => {
+    const colorPicker = resultEl.componentInstance as NzColorPickerComponent;
+    colorPicker.clearColorHandle();
+    fixture.detectChanges();
+    expect(component.validateForm.controls.colorPicker.value).toBeNull();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger .ant-color-picker-clear')).not.toBeNull();
+  });
+});
+
+describe('nz-color-picker ngModel', () => {
+  let fixture: ComponentFixture<NzTestColorPickerNgModelComponent>;
+  let resultEl: DebugElement;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      providers: [provideNzNoAnimation()]
+    });
+    fixture = TestBed.createComponent(NzTestColorPickerNgModelComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    resultEl = fixture.debugElement.query(By.directive(NzColorPickerComponent));
+  });
+
+  it('color-picker should show the cleared state for an undefined model', () => {
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger .ant-color-picker-clear')).not.toBeNull();
+  });
+
+  it('color-picker should set the model to null on clear', async () => {
+    fixture.componentInstance.color.set('#ff6600');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-color-block-inner').style.backgroundColor).toBe(
+      'rgb(255, 102, 0)'
+    );
+
+    (resultEl.componentInstance as NzColorPickerComponent).clearColorHandle();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.color()).toBeNull();
+    expect(resultEl.nativeElement.querySelector('.ant-color-picker-trigger .ant-color-picker-clear')).not.toBeNull();
   });
 });
 
@@ -479,9 +682,9 @@ describe('nz-color-picker with presets', () => {
   template: `
     <form nz-form [formGroup]="validateForm">
       <nz-form-item>
-        <nz-form-label [nzSpan]="4">color</nz-form-label>
+        <nz-form-label [nzSpan]="4" nzFor="color">color</nz-form-label>
         <nz-form-control [nzSpan]="16">
-          <nz-color-picker formControlName="colorPicker" nzShowText />
+          <nz-color-picker nzId="color" formControlName="colorPicker" nzShowText />
         </nz-form-control>
       </nz-form-item>
     </form>
@@ -489,7 +692,7 @@ describe('nz-color-picker with presets', () => {
 })
 export class NzTestColorPickerFormComponent {
   validateForm = new FormGroup({
-    colorPicker: new FormControl('#ff6600')
+    colorPicker: new FormControl<string | null>('#ff6600')
   });
 
   disable(): void {
@@ -499,6 +702,15 @@ export class NzTestColorPickerFormComponent {
   enable(): void {
     this.validateForm.enable();
   }
+}
+
+@Component({
+  imports: [NzColorPickerModule, FormsModule],
+  template: `<nz-color-picker nzAllowClear [(ngModel)]="color" />`,
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class NzTestColorPickerNgModelComponent {
+  readonly color = signal<string | null | undefined>(undefined);
 }
 
 @Component({
