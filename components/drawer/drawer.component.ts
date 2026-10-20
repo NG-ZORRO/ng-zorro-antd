@@ -370,6 +370,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
       this.updateBodyOverflow();
       this.restoreFocus();
       this.inAnimation = false;
+      this.cdr.markForCheck();
       this.nzAfterClose.next(result);
       this.nzAfterClose.complete();
       this.componentInstance = null;
