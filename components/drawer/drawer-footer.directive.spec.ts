@@ -4,7 +4,7 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { ApplicationRef, Component, signal } from '@angular/core';
+import { ApplicationRef, ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
 
@@ -102,6 +102,7 @@ describe('NzDrawerFooterDirective', () => {
 });
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzDrawerComponent, NzDrawerContentDirective, NzDrawerFooterDirective],
   template: `
     <nz-drawer nzVisible>
@@ -113,6 +114,7 @@ describe('NzDrawerFooterDirective', () => {
 class NzDrawerWithFooterComponent {}
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzDrawerFooterDirective],
   template: `
     <p>Body</p>
@@ -133,6 +135,7 @@ class NzDrawerFooterContentComponent {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzDrawerFooterDirective],
   template: `<ng-template nzDrawerFooter>Unused footer</ng-template>`
 })
