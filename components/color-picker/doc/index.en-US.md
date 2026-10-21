@@ -15,24 +15,25 @@ Used when the user needs to customize the color selection.
 
 ### nz-color-picker
 
-| Parameter            | Description                           | Type                                               | Default     | Version |
-| -------------------- | ------------------------------------- | -------------------------------------------------- | ----------- | ------- |
-| `[nzFormat]`         | Format of color                       | `'rgb' \| 'hex' \| 'hsb'`                          | `'hex'`     |
-| `[nzValue]`          | Value of color                        | `string \| NzColor`                                | -           |
-| `[nzSize]`           | Setting the trigger size              | `'large' \| 'small' \| 'default'`                  | `'default'` |
-| `[nzDefaultValue]`   | Default value of color                | `string \| NzColor`                                | `false`     |
-| `[nzAllowClear]`     | Allow clearing color selected         | `boolean`                                          | `false`     |
-| `[nzTrigger]`        | ColorPicker trigger mode              | `'hover' \| 'click'`                               | `'click'`   |
-| `[nzShowText]`       | Show color text                       | `boolean`                                          | `false`     |
-| `[nzOpen]`           | Whether to show popups                | `boolean`                                          | `false`     |
-| `[nzDisabled]`       | Disable ColorPicker                   | `boolean`                                          | `false`     |
-| `[nzDisabledAlpha]`  | Disable Alpha                         | `boolean`                                          | `false`     |
-| `[nzTitle]`          | Setting the title of the color picker | `TemplateRef<void> \| string`                      | -           |
-| `[nzPresets]`        | Preset colors                         | `NzColorPickerPresetsItem[]`                       | -           | 21.0.0  |
-| `(nzOnChange)`       | Callback when value is changed        | `EventEmitter<{ color: NzColor; format: string }>` | -           |
-| `(nzOnClear)`        | Called when clear                     | `EventEmitter<boolean>`                            | -           |
-| `(nzOnFormatChange)` | Callback when `format` is changed     | `EventEmitter<'rgb'｜'hex'｜'hsb'>`                | -           |
-| `(nzOnOpenChange)`   | Callback for opening the color panel  | `EventEmitter<boolean>`                            | -           |
+| Parameter            | Description                                                   | Type                                               | Default     | Version |
+| -------------------- | ------------------------------------------------------------- | -------------------------------------------------- | ----------- | ------- |
+| `[nzId]`             | The `id` attribute of the trigger                             | `string`                                           | -           | 22.2.0  |
+| `[nzFormat]`         | Format of color                                               | `'rgb' \| 'hex' \| 'hsb'`                          | `'hex'`     |
+| `[nzValue]`          | Value of color, `null` or `undefined` shows the cleared state | `string \| NzColor \| null`                        | -           |
+| `[nzSize]`           | Setting the trigger size                                      | `'large' \| 'small' \| 'default'`                  | `'default'` |
+| `[nzDefaultValue]`   | Default value of color                                        | `string \| NzColor`                                | -           |
+| `[nzAllowClear]`     | Allow clearing color selected                                 | `boolean`                                          | `false`     |
+| `[nzTrigger]`        | ColorPicker trigger mode                                      | `'hover' \| 'click'`                               | `'click'`   |
+| `[nzShowText]`       | Show color text                                               | `boolean`                                          | `false`     |
+| `[nzOpen]`           | Whether to show popups                                        | `boolean`                                          | `false`     |
+| `[nzDisabled]`       | Disable ColorPicker                                           | `boolean`                                          | `false`     |
+| `[nzDisabledAlpha]`  | Disable Alpha                                                 | `boolean`                                          | `false`     |
+| `[nzTitle]`          | Setting the title of the color picker                         | `TemplateRef<void> \| string`                      | -           |
+| `[nzPresets]`        | Preset colors                                                 | `NzColorPickerPresetsItem[]`                       | -           | 21.0.0  |
+| `(nzOnChange)`       | Callback when value is changed                                | `EventEmitter<{ color: NzColor; format: string }>` | -           |
+| `(nzOnClear)`        | Called when clear, the form control value becomes `null`      | `EventEmitter<boolean>`                            | -           |
+| `(nzOnFormatChange)` | Callback when `format` is changed                             | `EventEmitter<'rgb'｜'hex'｜'hsb'>`                | -           |
+| `(nzOnOpenChange)`   | Callback for opening the color panel                          | `EventEmitter<boolean>`                            | -           |
 
 ### nz-color-block
 
