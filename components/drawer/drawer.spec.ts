@@ -13,7 +13,12 @@ import { vi } from 'vitest';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
-import { dispatchKeyboardEvent, provideMockDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
+import {
+  dispatchKeyboardEvent,
+  provideMockDirectionality,
+  sleep,
+  updateNonSignalsInput
+} from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -94,6 +99,23 @@ describe('NzDrawerComponent', () => {
       expect(component.drawerComponent.nzVisible).toBe(false);
       expect(component.triggerVisible).toHaveBeenCalledTimes(3);
       expect(component.triggerVisible).toHaveBeenCalledWith(false);
+    });
+
+    it('should remove content after close timeout in zoneless mode', async () => {
+      component.noAnimation.set(true);
+      fixture.detectChanges();
+      component.open();
+      fixture.detectChanges();
+      await sleep(0);
+      expect(getDrawerElement().querySelector('p')).not.toBeNull();
+
+      component.close();
+      fixture.detectChanges();
+      expect(getDrawerElement().querySelector('p')).not.toBeNull();
+
+      await sleep(0);
+      await fixture.whenStable();
+      expect(getDrawerElement().querySelector('p')).toBeNull();
     });
 
     it('should block scroll', async () => {
