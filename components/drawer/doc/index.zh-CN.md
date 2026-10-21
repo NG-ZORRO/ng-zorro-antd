@@ -96,16 +96,16 @@ description: 屏幕边缘滑出的浮层面板。
 
 #### 方法
 
-使用 `updateConfig()` 在打开后更新抽屉配置并触发渲染，支持无 Zone 应用。
+使用 `updateConfig()` 在打开后更新抽屉配置并触发渲染，支持无 Zone 应用。`nzContent`、`nzContentParams` 和 `nzData` 是创建时配置，抽屉创建后不能更改。
 例如：`drawerRef.updateConfig({ nzFooter: footerTemplate, nzOnCancel: () => Promise.resolve(false) })`。
 更新配置不会重新创建内容组件。
 
-| 名称                | 说明                                | 类型                                    |
-| ------------------- | ----------------------------------- | --------------------------------------- |
-| close               | 关闭 Drawer                         | `(result?: R) => void`                  |
-| open                | 打开 Drawer                         | `() => void`                            |
-| updateConfig        | 更新抽屉配置并触发渲染              | `(options: NzDrawerOptions<T>) => void` |
-| getContentComponent | 返回 `nzContent` 为组件时的组件实例 | `() => T \| null`                       |
+| 名称                | 说明                                | 类型                                          |
+| ------------------- | ----------------------------------- | --------------------------------------------- |
+| close               | 关闭 Drawer                         | `(result?: R) => void`                        |
+| open                | 打开 Drawer                         | `() => void`                                  |
+| updateConfig        | 更新抽屉配置并触发渲染              | `(options: NzDrawerUpdateOptions<T>) => void` |
+| getContentComponent | 返回 `nzContent` 为组件时的组件实例 | `() => T \| null`                             |
 
 #### 属性
 

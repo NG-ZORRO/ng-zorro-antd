@@ -21,7 +21,6 @@ import {
   booleanAttribute,
   ChangeDetectorRef,
   Component,
-  computed,
   ComponentRef,
   ContentChild,
   DestroyRef,
@@ -61,7 +60,8 @@ import {
   NZ_DRAWER_DATA,
   NzDrawerOptions,
   NzDrawerPlacement,
-  NzDrawerSize
+  NzDrawerSize,
+  NzDrawerUpdateOptions
 } from './drawer-options';
 import { NzDrawerRef } from './drawer-ref';
 
@@ -312,7 +312,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   // from service config
   @WithConfig() nzDirection?: Direction = undefined;
 
-  protected readonly dir = computed(() => this.nzDirection || this.directionality.valueSignal());
+  protected readonly dir = (): Direction => this.nzDirection || this.directionality.valueSignal();
 
   constructor() {
     super();
@@ -417,10 +417,10 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
     return this.componentRef;
   }
 
-  updateConfig(options: NzDrawerOptions<T>): void {
+  updateConfig(options: NzDrawerUpdateOptions<T>): void {
     const previousPlacement = this.nzPlacement;
     Object.assign(this, options);
-    if (this.nzPlacement !== previousPlacement) {
+    if (this.overlayRef && this.nzPlacement !== previousPlacement) {
       this.triggerPlacementChangeCycleOnce();
     }
     if (this.overlayRef) {

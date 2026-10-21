@@ -55,7 +55,7 @@ export class DrawerBuilderForService<T extends {}, R> {
   }
 
   updateOptions(options: NzDrawerOptions): void {
-    this.drawerRef!.updateConfig(options);
+    Object.assign(this.drawerRef!, options);
   }
 }
 
