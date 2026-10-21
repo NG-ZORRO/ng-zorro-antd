@@ -732,6 +732,67 @@ describe('NzDrawerService', () => {
     await flushDrawerAnimation(fixture);
     expect(closeSpy).toHaveBeenCalled();
   });
+
+  it('should update footer and extra through the drawer reference', async () => {
+    const drawerRef = drawerService.create({
+      nzTitle: 'Service',
+      nzContent: NzDrawerCustomComponent
+    });
+    await flushDrawerAnimation(fixture);
+
+    drawerRef.updateConfig({ nzFooter: 'Updated footer', nzExtra: 'Updated extra' });
+    await flushDrawerAnimation(fixture);
+    expect(drawerRef.nzFooter).toBe('Updated footer');
+    expect(drawerRef.nzExtra).toBe('Updated extra');
+    expect(overlayContainerElement.querySelector('.ant-drawer-footer')?.textContent).toBe('Updated footer');
+    expect(overlayContainerElement.querySelector('.ant-drawer-extra')?.textContent).toBe('Updated extra');
+
+    drawerRef.updateConfig({ nzFooter: undefined, nzExtra: undefined });
+    await flushDrawerAnimation(fixture);
+    expect(overlayContainerElement.querySelector('.ant-drawer-footer')).toBeNull();
+    expect(overlayContainerElement.querySelector('.ant-drawer-extra')).toBeNull();
+    drawerRef.close();
+  });
+
+  it('should use the current nzOnCancel from the drawer reference', async () => {
+    const initialCancel = vi.fn(() => Promise.resolve(false));
+    const updatedCancel = vi.fn(() => Promise.resolve(false));
+    const drawerRef = drawerService.create({
+      nzContent: NzDrawerCustomComponent,
+      nzOnCancel: initialCancel
+    });
+    const closeSpy = vi.fn();
+    drawerRef.afterClose.subscribe(closeSpy);
+    await flushDrawerAnimation(fixture);
+
+    drawerRef.nzOnCancel = updatedCancel;
+    (overlayContainerElement.querySelector('.ant-drawer-close') as HTMLElement).click();
+    await flushDrawerAnimation(fixture);
+    expect(updatedCancel).toHaveBeenCalledTimes(1);
+    expect(initialCancel).not.toHaveBeenCalled();
+    expect(closeSpy).not.toHaveBeenCalled();
+
+    drawerRef.updateConfig({ nzOnCancel: () => Promise.resolve(true) });
+    (overlayContainerElement.querySelector('.ant-drawer-mask') as HTMLElement).click();
+    await flushDrawerAnimation(fixture);
+    await flushDrawerAnimation(fixture);
+    expect(closeSpy).toHaveBeenCalled();
+  });
+
+  it('should close normally after removing nzOnCancel', async () => {
+    const drawerRef = drawerService.create({
+      nzContent: NzDrawerCustomComponent,
+      nzOnCancel: () => Promise.resolve(false)
+    });
+    const closeSpy = vi.fn();
+    drawerRef.afterClose.subscribe(closeSpy);
+    await flushDrawerAnimation(fixture);
+
+    drawerRef.updateConfig({ nzOnCancel: undefined });
+    (overlayContainerElement.querySelector('.ant-drawer-close') as HTMLElement).click();
+    await flushDrawerAnimation(fixture);
+    expect(closeSpy).toHaveBeenCalled();
+  });
 });
 
 async function stabilize<T>(fixture: ComponentFixture<T>, ms?: number): Promise<void> {
