@@ -106,17 +106,17 @@ parameters that have used to the 'nzContent component'
 
 #### Methods
 
-Use `updateConfig()` to update drawer options after opening and schedule rendering, including in zoneless applications.
+Use `updateConfig()` to update drawer options after opening and schedule rendering, including in zoneless applications. The content options `nzContent`, `nzContentParams`, and `nzData` are creation-only and cannot be changed after the drawer is created.
 For example: `drawerRef.updateConfig({ nzFooter: footerTemplate, nzOnCancel: () => Promise.resolve(false) })`.
 Updating the configuration does not recreate the content component.
 
-| Name                   | Description                                                               | Type                                    |
-| ---------------------- | ------------------------------------------------------------------------- | --------------------------------------- |
-| close                  | close the drawer.                                                         | `(result?: R) => void`                  |
-| open                   | open the drawer.                                                          | `() => void`                            |
-| updateConfig           | Update drawer options and schedule rendering.                             | `(options: NzDrawerOptions<T>) => void` |
-| getContentComponent    | Returns the instance when `nzContent` is the component.                   | `() => T \| null`                       |
-| getContentComponentRef | Returns the reference of the component when `nzContent` is the component. | `() => ComponentRef<T> \| null`         |
+| Name                   | Description                                                               | Type                                          |
+| ---------------------- | ------------------------------------------------------------------------- | --------------------------------------------- |
+| close                  | close the drawer.                                                         | `(result?: R) => void`                        |
+| open                   | open the drawer.                                                          | `() => void`                                  |
+| updateConfig           | Update drawer options and schedule rendering.                             | `(options: NzDrawerUpdateOptions<T>) => void` |
+| getContentComponent    | Returns the instance when `nzContent` is the component.                   | `() => T \| null`                             |
+| getContentComponentRef | Returns the reference of the component when `nzContent` is the component. | `() => ComponentRef<T> \| null`               |
 
 #### Property
 

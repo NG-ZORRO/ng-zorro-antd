@@ -50,6 +50,8 @@ export interface NzDrawerOptions<T = NzSafeAny, D = NzSafeAny> {
   nzOnCancel?(): Promise<NzSafeAny>;
 }
 
+export type NzDrawerUpdateOptions<T = NzSafeAny> = Omit<NzDrawerOptions<T>, 'nzContent' | 'nzContentParams' | 'nzData'>;
+
 export const NZ_DRAWER_DATA = new InjectionToken<NzSafeAny>(
   typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-drawer-data' : ''
 );

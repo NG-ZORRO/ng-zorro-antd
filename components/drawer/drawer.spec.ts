@@ -754,6 +754,40 @@ describe('NzDrawerService', () => {
     drawerRef.close();
   });
 
+  it('should update direction through the drawer reference', async () => {
+    const drawerRef = drawerService.create({ nzContent: NzDrawerCustomComponent, nzDirection: 'ltr' });
+    await flushDrawerAnimation(fixture);
+
+    const drawerElement = overlayContainerElement.querySelector('.ant-drawer') as HTMLElement;
+    expect(drawerElement.classList.contains('ant-drawer-rtl')).toBe(false);
+
+    drawerRef.updateConfig({ nzDirection: 'rtl' });
+    await flushDrawerAnimation(fixture);
+    expect(drawerElement.classList.contains('ant-drawer-rtl')).toBe(true);
+    drawerRef.close();
+  });
+
+  it('should not trigger a placement transition for initial service configuration', () => {
+    const drawerRef = drawerService.create({ nzContent: NzDrawerCustomComponent, nzPlacement: 'left' });
+    fixture.detectChanges();
+
+    const drawerElement = overlayContainerElement.querySelector('.ant-drawer') as HTMLElement;
+    expect(drawerRef.nzPlacement).toBe('left');
+    expect(drawerElement.classList.contains('ant-drawer-left')).toBe(true);
+    expect(drawerElement.style.transition).not.toBe('none');
+    drawerRef.close();
+  });
+
+  it('should trigger a placement transition when the placement is updated', async () => {
+    const drawerRef = drawerService.create({ nzContent: NzDrawerCustomComponent });
+    await flushDrawerAnimation(fixture);
+
+    drawerRef.updateConfig({ nzPlacement: 'left' });
+    fixture.detectChanges();
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).style.transition).toBe('none');
+    drawerRef.close();
+  });
+
   it('should use the current nzOnCancel from the drawer reference', async () => {
     const initialCancel = vi.fn(() => Promise.resolve(false));
     const updatedCancel = vi.fn(() => Promise.resolve(false));
