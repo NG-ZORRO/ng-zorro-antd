@@ -39,8 +39,12 @@
       "alias": "t"
     },
     "standalone": {
-      "description": "Whether the generated component is standalone.",
-      "type": "boolean"
+      "description": "Demo components are standalone.",
+      "type": "boolean",
+      "default": true,
+      "enum": [
+        true
+      ]
     },
     "prefix": {
       "type": "string",
