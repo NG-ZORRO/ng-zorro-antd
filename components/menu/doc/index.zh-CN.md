@@ -79,6 +79,7 @@ description: 为页面和功能提供导航的菜单列表。
 | `[nzDisabled]`             | 是否禁用                    | `boolean`                                                                                   | `false`        |
 | `[nzTitle]`                | 标题内容                    | `string \| TemplateRef<void>`                                                               | -              |
 | `[nzIcon]`                 | 标题中 `icon` 类型          | `string`                                                                                    | -              |
+| `[nzTheme]`                | 子菜单弹出层的主题颜色      | `'light' \| 'dark'`                                                                         | 父菜单主题     |
 | `[nzMenuClassName]`        | 自定义子菜单容器类名        | `string`                                                                                    | -              |
 | `[nzTriggerSubMenuAction]` | SubMenu 展开/关闭的触发行为 | `'hover' \| 'click'`                                                                        | `'hover'`      |
 | `(nzOpenChange)`           | 展开回调                    | `EventEmitter<boolean>`                                                                     | -              |
