@@ -191,7 +191,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
     this.footer.set(value);
   }
 
-  nzOnCancel?: NzDrawerOptions<T>['nzOnCancel'];
+  nzOnCancel?: () => Promise<NzSafeAny>;
   @Input() nzPlacement: NzDrawerPlacement = 'right';
   @Input() nzSize: NzDrawerSize = 'default';
   @Input() nzMaskStyle: NgStyleInterface = {};
