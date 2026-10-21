@@ -789,7 +789,10 @@ describe('NzDrawerService', () => {
     }
   });
 
-  it('should update the overlay z-index to zero through the drawer reference', async () => {
+  it.each([
+    { zIndex: 0, expected: '0' },
+    { zIndex: undefined, expected: '' }
+  ])('should update the overlay z-index to $zIndex', async ({ zIndex, expected }) => {
     const drawerRef = drawerService.create({ nzContent: NzDrawerCustomComponent, nzZIndex: 1001 });
     await flushDrawerAnimation(fixture);
 
@@ -797,11 +800,11 @@ describe('NzDrawerService', () => {
     const overlayHost = drawerElement.closest('.cdk-global-overlay-wrapper') as HTMLElement;
     expect(overlayHost.style.zIndex).toBe('1001');
 
-    drawerRef.updateConfig({ nzZIndex: 0 });
+    drawerRef.updateConfig({ nzZIndex: zIndex });
     await flushDrawerAnimation(fixture);
 
-    expect(drawerElement.style.zIndex).toBe('0');
-    expect(overlayHost.style.zIndex).toBe('0');
+    expect(drawerElement.style.zIndex).toBe(expected);
+    expect(overlayHost.style.zIndex).toBe(expected);
     drawerRef.close();
   });
 
