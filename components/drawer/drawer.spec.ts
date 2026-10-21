@@ -6,6 +6,8 @@
 import { Directionality } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { Location } from '@angular/common';
+import { provideLocationMocks, SpyLocation } from '@angular/common/testing';
 import { Component, Input, input, signal, TemplateRef, ViewChild, inject } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -609,7 +611,7 @@ describe('NzDrawerService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [NzDrawerService, provideNzNoAnimation()]
+      providers: [NzDrawerService, provideNzNoAnimation(), provideLocationMocks()]
     });
 
     fixture = TestBed.createComponent(NzTestDrawerWithServiceComponent);
@@ -764,6 +766,42 @@ describe('NzDrawerService', () => {
     drawerRef.updateConfig({ nzDirection: 'rtl' });
     await flushDrawerAnimation(fixture);
     expect(drawerElement.classList.contains('ant-drawer-rtl')).toBe(true);
+    drawerRef.close();
+  });
+
+  it.each([false, true])('should update nzCloseOnNavigation from %s at runtime', async initialValue => {
+    const drawerRef = drawerService.create({
+      nzContent: NzDrawerCustomComponent,
+      nzCloseOnNavigation: initialValue
+    });
+    const closeSpy = vi.fn();
+    drawerRef.afterClose.subscribe(closeSpy);
+    await flushDrawerAnimation(fixture);
+
+    drawerRef.updateConfig({ nzCloseOnNavigation: !initialValue });
+    (TestBed.inject(Location) as SpyLocation).simulateUrlPop('/next');
+    await flushDrawerAnimation(fixture);
+
+    expect(closeSpy).toHaveBeenCalledTimes(initialValue ? 0 : 1);
+    expect(overlayContainerElement.querySelector('.ant-drawer-open') !== null).toBe(initialValue);
+    if (initialValue) {
+      drawerRef.close();
+    }
+  });
+
+  it('should update the overlay z-index to zero through the drawer reference', async () => {
+    const drawerRef = drawerService.create({ nzContent: NzDrawerCustomComponent, nzZIndex: 1001 });
+    await flushDrawerAnimation(fixture);
+
+    const drawerElement = overlayContainerElement.querySelector('.ant-drawer') as HTMLElement;
+    const overlayHost = drawerElement.closest('.cdk-global-overlay-wrapper') as HTMLElement;
+    expect(overlayHost.style.zIndex).toBe('1001');
+
+    drawerRef.updateConfig({ nzZIndex: 0 });
+    await flushDrawerAnimation(fixture);
+
+    expect(drawerElement.style.zIndex).toBe('0');
+    expect(overlayHost.style.zIndex).toBe('0');
     drawerRef.close();
   });
 

@@ -15,7 +15,7 @@ import {
   OverlayRef
 } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, ComponentPortal, PortalModule, TemplatePortal } from '@angular/cdk/portal';
-import { NgTemplateOutlet } from '@angular/common';
+import { Location, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   booleanAttribute,
@@ -167,6 +167,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   private readonly directionality = inject(Directionality);
   private readonly destroyRef = inject(DestroyRef);
   private readonly document = inject(DOCUMENT);
+  private readonly location = inject(Location, { optional: true });
 
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
@@ -324,6 +325,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
 
   ngOnInit(): void {
     this.attachOverlay();
+    this.subscribeToNavigation();
     this.updateOverlayStyle();
     this.updateBodyOverflow();
     this.templateContext = { $implicit: this.nzData || this.nzContentParams, drawerRef: this as NzDrawerRef<R> };
@@ -479,7 +481,6 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
     if (!this.overlayRef) {
       this.portal = new TemplatePortal(this.drawerTemplate, this.viewContainerRef);
       this.overlayRef = createOverlayRef(this.injector, {
-        disposeOnNavigation: this.nzCloseOnNavigation,
         positionStrategy: createGlobalPositionStrategy(this.injector),
         scrollStrategy: createBlockScrollStrategy(this.injector)
       });
@@ -504,6 +505,15 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
           this.disposeOverlay();
         });
     }
+  }
+
+  private subscribeToNavigation(): void {
+    const subscription = this.location?.subscribe(() => {
+      if (this.nzCloseOnNavigation) {
+        this.disposeOverlay();
+      }
+    });
+    this.destroyRef.onDestroy(() => subscription?.unsubscribe());
   }
 
   private disposeOverlay(): void {
