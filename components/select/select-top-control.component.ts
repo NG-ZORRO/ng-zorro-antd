@@ -4,7 +4,9 @@
  */
 
 import { BACKSPACE } from '@angular/cdk/keycodes';
+import { isPlatformBrowser } from '@angular/common';
 import {
+  ChangeDetectorRef,
   Component,
   DestroyRef,
   ElementRef,
@@ -12,17 +14,19 @@ import {
   inject,
   Input,
   NgZone,
-  numberAttribute,
   OnChanges,
   OnInit,
   Output,
+  PLATFORM_ID,
   SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { auditTime } from 'rxjs/operators';
 
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -31,7 +35,13 @@ import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzSelectItemComponent } from './select-item.component';
 import { NzSelectPlaceholderComponent } from './select-placeholder.component';
 import { NzSelectSearchComponent } from './select-search.component';
-import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } from './select.types';
+import {
+  NzSelectItemInterface,
+  NzSelectMaxTagCount,
+  NzSelectModeType,
+  NzSelectTopControlItemType,
+  maxTagCountAttribute
+} from './select.types';
 
 @Component({
   selector: 'nz-select-top-control',
@@ -118,13 +128,16 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly elementRef = inject(ElementRef<HTMLElement>);
   private readonly ngZone = inject(NgZone);
+  private readonly resizeObserver = inject(NzResizeObserver);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   readonly noAnimation = inject(NzNoAnimationDirective, { host: true, optional: true });
 
   @Input() nzId: string | null = null;
   @Input() showSearch = false;
   @Input() placeHolder: string | TemplateRef<NzSafeAny> | null = null;
   @Input() open = false;
-  @Input({ transform: numberAttribute }) maxTagCount: number = Infinity;
+  @Input({ transform: maxTagCountAttribute }) maxTagCount: NzSelectMaxTagCount = Infinity;
   @Input() autofocus = false;
   @Input() disabled = false;
   @Input() mode: NzSelectModeType = 'default';
@@ -143,6 +156,9 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
   isShowSingleLabel = false;
   isComposing = false;
   inputValue: string | null = null;
+
+  calculatedMaxTagCount = Infinity;
+  private canvas?: HTMLCanvasElement;
 
   updateTemplateVariable(): void {
     const isSelectedValueEmpty = this.listOfTopItem.length === 0;
@@ -215,30 +231,130 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
       this.updateTemplateVariable();
     }
     if (listOfTopItem || maxTagCount || customTemplate || maxTagPlaceholder) {
-      const listOfSlicedItem: NzSelectTopControlItemType[] = this.listOfTopItem.slice(0, this.maxTagCount).map(o => ({
-        nzLabel: o.nzLabel,
-        nzValue: o.nzValue,
-        nzDisabled: o.nzDisabled,
-        contentTemplateOutlet: this.customTemplate,
-        contentTemplateOutletContext: o
-      }));
-      if (this.listOfTopItem.length > this.maxTagCount) {
-        const exceededLabel = `+ ${this.listOfTopItem.length - this.maxTagCount} ...`;
-        const listOfSelectedValue = this.listOfTopItem.map(item => item.nzValue);
-        const exceededItem = {
-          nzLabel: exceededLabel,
-          nzValue: '$$__nz_exceeded_item',
-          nzDisabled: true,
-          contentTemplateOutlet: this.maxTagPlaceholder,
-          contentTemplateOutletContext: listOfSelectedValue.slice(this.maxTagCount)
-        };
-        listOfSlicedItem.push(exceededItem);
+      if (this.maxTagCount === 'responsive') {
+        this.calculateFitCount();
+      } else {
+        this.updateSlicedItems();
       }
-      this.listOfSlicedItem = listOfSlicedItem;
+    }
+  }
+
+  private calculateFitCount(): void {
+    if (!this.isBrowser || this.mode === 'default' || this.listOfTopItem.length === 0) {
+      this.calculatedMaxTagCount = Infinity;
+      this.updateSlicedItems();
+      return;
+    }
+
+    const hostEl = this.elementRef.nativeElement;
+    const prefixEl = hostEl.querySelector('.ant-select-prefix') as HTMLElement | null;
+    const prefixWidth = prefixEl ? prefixEl.offsetWidth : 0;
+    const containerWidth = (hostEl.clientWidth || 0) - prefixWidth;
+
+    if (containerWidth <= 0) {
+      this.calculatedMaxTagCount = Infinity;
+      this.updateSlicedItems();
+      return;
+    }
+
+    const availableWidth = Math.max(0, containerWidth - 8);
+
+    const font = this.getComputedFont(hostEl);
+    const tagExtraWidth = 34;
+    const restTagWidth = 48;
+    const totalCount = this.listOfTopItem.length;
+
+    let accumulatedWidth = 0;
+    let fitCount = 0;
+    let allFit = true;
+
+    for (let i = 0; i < totalCount; i++) {
+      const item = this.listOfTopItem[i];
+      const text = String(item.nzLabel ?? item.nzValue ?? '');
+      const itemWidth = this.measureTextWidth(text, font) + tagExtraWidth;
+
+      if (accumulatedWidth + itemWidth + restTagWidth <= availableWidth) {
+        accumulatedWidth += itemWidth;
+        fitCount++;
+      } else {
+        allFit = false;
+        break;
+      }
+    }
+
+    const finalCount = allFit ? Infinity : Math.max(1, fitCount);
+    this.calculatedMaxTagCount = finalCount;
+    this.updateSlicedItems();
+    this.cdr.markForCheck();
+  }
+
+  private updateSlicedItems(): void {
+    const effectiveCount =
+      this.maxTagCount === 'responsive' ? this.calculatedMaxTagCount : (this.maxTagCount as number);
+
+    const listOfSlicedItem: NzSelectTopControlItemType[] = this.listOfTopItem.slice(0, effectiveCount).map(o => ({
+      nzLabel: o.nzLabel,
+      nzValue: o.nzValue,
+      nzDisabled: o.nzDisabled,
+      contentTemplateOutlet: this.customTemplate,
+      contentTemplateOutletContext: o
+    }));
+    if (this.listOfTopItem.length > effectiveCount) {
+      const exceededLabel = `+ ${this.listOfTopItem.length - effectiveCount} ...`;
+      const listOfSelectedValue = this.listOfTopItem.map(item => item.nzValue);
+      const exceededItem = {
+        nzLabel: exceededLabel,
+        nzValue: '$$__nz_exceeded_item',
+        nzDisabled: true,
+        contentTemplateOutlet: this.maxTagPlaceholder,
+        contentTemplateOutletContext: listOfSelectedValue.slice(effectiveCount)
+      };
+      listOfSlicedItem.push(exceededItem);
+    }
+    this.listOfSlicedItem = listOfSlicedItem;
+  }
+
+  private measureTextWidth(text: string, font: string): number {
+    try {
+      if (!this.canvas) {
+        this.canvas = document.createElement('canvas');
+      }
+      const ctx = this.canvas.getContext?.('2d');
+      if (ctx) {
+        ctx.font = font;
+        return Math.ceil(ctx.measureText(text).width);
+      }
+    } catch {
+      // fallback
+    }
+    let estimated = 0;
+    for (let i = 0; i < text.length; i++) {
+      estimated += text.charCodeAt(i) > 255 ? 13 : 8;
+    }
+    return Math.max(16, estimated);
+  }
+
+  private getComputedFont(el: HTMLElement): string {
+    try {
+      const style = window.getComputedStyle(el);
+      return `${style?.fontWeight || '400'} ${style?.fontSize || '14px'} ${style?.fontFamily || 'sans-serif'}`;
+    } catch {
+      return '400 14px sans-serif';
     }
   }
 
   ngOnInit(): void {
+    if (this.isBrowser) {
+      this.resizeObserver
+        .observe(this.elementRef.nativeElement)
+        .pipe(auditTime(16), takeUntilDestroyed(this.destroyRef))
+        .subscribe(() => {
+          if (this.maxTagCount === 'responsive') {
+            this.calculateFitCount();
+          }
+        });
+    }
+
     fromEventOutsideAngular<MouseEvent>(this.elementRef.nativeElement, 'click')
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {
