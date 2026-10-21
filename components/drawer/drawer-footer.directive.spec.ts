@@ -26,8 +26,9 @@ describe('NzDrawerFooterDirective', () => {
     overlay = TestBed.inject(OverlayContainer).getContainerElement();
   });
 
-  it('should render a projected footer with the standalone imports', async () => {
+  it.each([undefined, 'Fallback footer'])('should render a projected footer over initial nzFooter %s', async footer => {
     const fixture = TestBed.createComponent(NzDrawerWithFooterComponent);
+    fixture.componentInstance.footer.set(footer);
     await fixture.whenStable();
 
     expect(overlay.querySelector('.ant-drawer-footer')?.textContent).toContain('Save');
@@ -105,13 +106,15 @@ describe('NzDrawerFooterDirective', () => {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NzDrawerComponent, NzDrawerContentDirective, NzDrawerFooterDirective],
   template: `
-    <nz-drawer nzVisible>
+    <nz-drawer nzVisible [nzFooter]="footer()">
       <ng-container *nzDrawerContent>Body</ng-container>
       <div *nzDrawerFooter><button>Save</button></div>
     </nz-drawer>
   `
 })
-class NzDrawerWithFooterComponent {}
+class NzDrawerWithFooterComponent {
+  readonly footer = signal<string | undefined>(undefined);
+}
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
