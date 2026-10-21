@@ -27,6 +27,7 @@ import {
   DestroyRef,
   DOCUMENT,
   EventEmitter,
+  forwardRef,
   inject,
   Injector,
   Input,
@@ -35,6 +36,7 @@ import {
   Output,
   reflectComponentType,
   Renderer2,
+  signal,
   SimpleChanges,
   TemplateRef,
   Type,
@@ -57,7 +59,7 @@ import {
   DRAWER_DEFAULT_SIZE,
   DRAWER_LARGE_SIZE,
   NZ_DRAWER_DATA,
-  NzDrawerOptionsOfComponent,
+  NzDrawerOptions,
   NzDrawerPlacement,
   NzDrawerSize
 } from './drawer-options';
@@ -70,6 +72,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
 @Component({
   selector: 'nz-drawer',
   exportAs: 'nzDrawer',
+  providers: [{ provide: NzDrawerRef, useExisting: forwardRef(() => NzDrawerComponent) }],
   imports: [NzNoAnimationDirective, NzOutletModule, NzIconModule, PortalModule, NgTemplateOutlet, CdkScrollable],
   template: `
     <ng-template #drawerTemplate>
@@ -153,7 +156,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
 })
 export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extends Partial<T> = NzSafeAny>
   extends NzDrawerRef<T, R>
-  implements OnInit, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent
+  implements OnInit, AfterViewInit, OnChanges, NzDrawerOptions
 {
   private readonly renderer = inject(Renderer2);
   private readonly injector = inject(Injector);
@@ -177,7 +180,18 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   @Input({ transform: booleanAttribute }) nzKeyboard: boolean = true;
   @Input() nzTitle?: string | TemplateRef<{}>;
   @Input() nzExtra?: string | TemplateRef<{}>;
-  @Input() nzFooter?: string | TemplateRef<{}>;
+  private readonly footer = signal<string | TemplateRef<{}> | undefined>(undefined);
+
+  @Input()
+  get nzFooter(): string | TemplateRef<{}> | undefined {
+    return this.footer();
+  }
+
+  set nzFooter(value: string | TemplateRef<{}> | undefined) {
+    this.footer.set(value);
+  }
+
+  nzOnCancel?: NzDrawerOptions<T>['nzOnCancel'];
   @Input() nzPlacement: NzDrawerPlacement = 'right';
   @Input() nzSize: NzDrawerSize = 'default';
   @Input() nzMaskStyle: NgStyleInterface = {};
@@ -401,6 +415,18 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
 
   override getContentComponentRef(): ComponentRef<T> | null {
     return this.componentRef;
+  }
+
+  updateConfig(options: NzDrawerOptions<T>): void {
+    const previousPlacement = this.nzPlacement;
+    Object.assign(this, options);
+    if (this.nzPlacement !== previousPlacement) {
+      this.triggerPlacementChangeCycleOnce();
+    }
+    if (this.overlayRef) {
+      overlayZIndexSetter(this.overlayRef, this.nzZIndex);
+    }
+    this.cdr.markForCheck();
   }
 
   closeClick(): void {
