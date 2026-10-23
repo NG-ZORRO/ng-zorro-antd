@@ -6,12 +6,13 @@
 import { NgModule } from '@angular/core';
 
 import { NzDrawerContentDirective } from './drawer-content.directive';
+import { NzDrawerFooterDirective } from './drawer-footer.directive';
 import { NzDrawerComponent } from './drawer.component';
 import { NzDrawerService } from './drawer.service';
 
 @NgModule({
-  imports: [NzDrawerComponent, NzDrawerContentDirective],
+  imports: [NzDrawerComponent, NzDrawerContentDirective, NzDrawerFooterDirective],
   providers: [NzDrawerService],
-  exports: [NzDrawerComponent, NzDrawerContentDirective]
+  exports: [NzDrawerComponent, NzDrawerContentDirective, NzDrawerFooterDirective]
 })
 export class NzDrawerModule {}
