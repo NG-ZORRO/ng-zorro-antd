@@ -29,6 +29,7 @@ If the current page business logic is too complex, and with a more mandatory seq
 
 > Value of `(nzHide)` is whether not show the check-list anymore.
 > If the value is `true`, you can store a data in `LocalStorage` to avoid showing the check-list again.
+> Confirming emits the current checkbox value once. Cancelling does not emit `(nzHide)` and preserves the checkbox value when returning to the confirmation panel.
 
 ### Interfaces
 

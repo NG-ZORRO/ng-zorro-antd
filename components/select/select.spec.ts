@@ -26,6 +26,7 @@ import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import { NZ_SPACE_COMPACT_SIZE } from 'ng-zorro-antd/space';
 
 import { NzOptionContainerComponent } from './option-container.component';
+import { NzOptionItemComponent } from './option-item.component';
 import { NzSelectSearchComponent } from './select-search.component';
 import { NzSelectTopControlComponent } from './select-top-control.component';
 import { NzSelectComponent, NzSelectSizeType } from './select.component';
@@ -196,6 +197,18 @@ describe('select', () => {
       component.nzCustomTemplate.set(component.customTemplate);
       await flushChanges();
       expect(selectElement.querySelector('nz-select-item')!.textContent?.trim()).toBe('selected: label');
+    });
+
+    it('should update custom option template context', async () => {
+      const optionFixture = TestBed.createComponent(TestSelectOptionItemTemplateComponent);
+      optionFixture.detectChanges();
+      expect(optionFixture.nativeElement.textContent.trim()).toBe('value: label');
+
+      optionFixture.componentInstance.context.set({ nzValue: 'updated', label: 'updated label' });
+      optionFixture.detectChanges();
+      await optionFixture.whenStable();
+      optionFixture.detectChanges();
+      expect(optionFixture.nativeElement.textContent.trim()).toBe('updated: updated label');
     });
 
     it('should nzShowArrow works', () => {
@@ -1987,6 +2000,17 @@ export class TestSelectTemplateDefaultComponent {
   readonly nzBackdrop = signal(false);
   readonly nzSelectOnTab = signal(false);
   readonly nzPlacement = signal<NzSelectPlacementType | null>('bottomLeft');
+}
+
+@Component({
+  imports: [NzOptionItemComponent],
+  template: `
+    <ng-template #optionTemplate let-item let-label="label">{{ item.nzValue }}: {{ label }}</ng-template>
+    <nz-option-item [customContent]="true" [template]="optionTemplate" [templateContext]="context()" />
+  `
+})
+export class TestSelectOptionItemTemplateComponent {
+  readonly context = signal({ nzValue: 'value', label: 'label' });
 }
 
 @Component({

@@ -92,7 +92,7 @@ import { NzItemProps } from './typings';
       <div class="ant-check-list-close-check">
         <div class="ant-check-list-close-check-title">{{ i18n.checkListCheck }}</div>
         <div class="ant-check-list-close-check-action">
-          <button nz-button nzType="primary" (click)="visible.set(false); hide.emit(checked)">{{ i18n.ok }}</button>
+          <button nz-button nzType="primary" (click)="visible.set(false); hide.emit(checked())">{{ i18n.ok }}</button>
           <button nz-button (click)="visible.set(true)">{{ i18n.cancel }}</button>
         </div>
         <div class="ant-check-list-close-check-other">
@@ -117,7 +117,7 @@ export class NzCheckListContentComponent {
   readonly closePopover = output<boolean>();
   readonly hide = output<boolean>();
 
-  protected checked = false;
+  protected readonly checked = signal(false);
   protected visible = signal(true);
   protected progressPercent = computed(() => {
     const index = Math.min(Math.max(this.index() - 1, 0), this.items().length);
