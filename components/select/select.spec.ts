@@ -5,7 +5,16 @@
 
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { ApplicationRef, Component, signal, SimpleChange, TemplateRef, ViewChild, WritableSignal } from '@angular/core';
+import {
+  ApplicationRef,
+  ChangeDetectionStrategy,
+  Component,
+  signal,
+  SimpleChange,
+  TemplateRef,
+  ViewChild,
+  WritableSignal
+} from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -2007,7 +2016,8 @@ export class TestSelectTemplateDefaultComponent {
   template: `
     <ng-template #optionTemplate let-item let-label="label">{{ item.nzValue }}: {{ label }}</ng-template>
     <nz-option-item [customContent]="true" [template]="optionTemplate" [templateContext]="context()" />
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TestSelectOptionItemTemplateComponent {
   readonly context = signal({ nzValue: 'value', label: 'label' });
