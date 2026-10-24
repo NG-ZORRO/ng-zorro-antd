@@ -118,15 +118,15 @@ export class NzTheadComponent<T> implements AfterContentInit, AfterViewInit, OnI
         ),
         map(list =>
           list
-            .filter(item => !!item.nzSortFn || !!item.nzFilterFn)
+            .filter(item => !!item.nzSortFn || !!item.filterFn)
             .map(item => {
-              const { nzSortFn, sortOrder, nzFilterFn, nzFilterValue, nzSortPriority, nzColumnKey } = item;
+              const { nzSortFn, sortOrder, filterFn, nzFilterValue, nzSortPriority, nzColumnKey } = item;
               return {
                 key: nzColumnKey,
                 sortFn: nzSortFn,
                 sortPriority: nzSortPriority,
                 sortOrder: sortOrder!,
-                filterFn: nzFilterFn!,
+                filterFn: filterFn!,
                 filterValue: nzFilterValue
               };
             })

@@ -24,6 +24,8 @@ export class NzTableDataService<T> {
   private frontPagination$ = new BehaviorSubject<boolean>(true);
   private pageSize$ = new BehaviorSubject<number>(10);
   private listOfData$ = new BehaviorSubject<readonly T[]>([]);
+  /** All rows passed to the table, before filtering, sorting, or pagination. */
+  readonly listOfSourceData$ = this.listOfData$.asObservable();
   listOfCustomColumn$ = new BehaviorSubject<NzCustomColumn[]>([]);
   pageIndexDistinct$ = this.pageIndex$.pipe(distinctUntilChanged());
   pageSizeDistinct$ = this.pageSize$.pipe(distinctUntilChanged());

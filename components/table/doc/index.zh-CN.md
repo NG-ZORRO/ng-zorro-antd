@@ -139,7 +139,47 @@ Table 组件同时具备了易用性和高度可定制性
 | `[noDataVirtualHeight]` | 没有数据时内部滚动的高度，如果没有传递任何内容，则使用默认值。                         | `string`                                                   | `'182px'` |
 | `[nzFilters]`           | 过滤器内容, 显示数据 `text`，回调函数传出 `value`，设置 `byDefault` 以默认应用过滤规则 | `Array<{ text: string; value: any; byDefault?: boolean }>` | -         |
 | `[nzFilterMultiple]`    | 是否为多选过滤器                                                                       | `boolean`                                                  | `true`    |
+| `[nzFilterConfig]`      | 内置过滤器配置，同时设置 `nzFilterFn` 时以 `nzFilterFn` 为准                           | `NzTableFilterConfig<T>`                                   | -         |
+| `[nzFilterValue]`       | 当前应用的过滤值，可双向绑定。绑定后优先于 `nzFilters` 中的 `byDefault`                | `any[] \| any`                                             | -         |
 | `(nzFilterChange)`      | 过滤器内容选择的 value 数据回调                                                        | `EventEmitter<any[] \| any>`                               | -         |
+| `(nzFilterValueChange)` | 过滤值改变回调，用于 `[(nzFilterValue)]`                                               | `EventEmitter<any[] \| any>`                               | -         |
+
+#### NzTableOptionsFilterConfig
+
+默认（`options: 'auto'`）根据传入 `nzData` 的全部数据（筛选、排序、分页之前）自动生成去重后的筛选项。服务端分页时表格只拥有当前页数据，请为 `options` 传入手动编写的列表。`nzFilters` 相当于由 `nzFilterFn` 匹配的手动选项的简写。
+
+过滤值始终为数组，即使 `nzFilterMultiple` 为 `false`。数组中的 `null` 表示选择空值选项，可匹配 `null`、`undefined`、`''`、`NaN` 和无效日期。不同类型的值会被区分，例如 `1` 和 `'1'`。数组、对象等其他类型的值会被忽略，并在开发模式下给出警告。
+
+| 参数             | 说明                                                                       | 类型                                                                    | 默认值   |
+| ---------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------------------- | -------- |
+| `type`           | 过滤器类型                                                                 | `'options'`                                                             | -        |
+| `valueGetter`    | 从行数据中读取用于筛选的值。`'auto'` 时必填，未设置时表格不在本地筛选      | `(data: T) => string \| number \| boolean \| Date \| null \| undefined` | -        |
+| `options`        | `'auto'` 根据数据生成选项；传入列表时按原样展示，`byDefault` 的项默认选中  | `'auto' \| NzTableFilterList`                                           | `'auto'` |
+| `dateMode`       | 按本地日期（`'date'`）或精确时间（`'datetime'`）比较 `Date` 值             | `'date' \| 'datetime'`                                                  | `'date'` |
+| `labelFormatter` | 格式化自动生成的选项文本。空值选项使用国际化文案 `Table.filterEmptyOption` | `(value: string \| number \| boolean \| Date) => string`                | -        |
+| `sortFn`         | 排序自动生成的非空选项，空值选项始终位于末尾                               | `(a: NzTableFilterOptionValue, b: NzTableFilterOptionValue) => number`  | -        |
+
+#### 文本、数字和日期过滤器
+
+`type: 'text' | 'number' | 'date'` 会渲染条件选择框和值编辑器。过滤值是可序列化的条件对象（清除时为 `null`），服务端筛选时也会出现在 `nzQueryParams` 中。值为空的行不会匹配任何生效的条件。`between` 包含边界，且任一边界都可以留空。
+
+| 参数              | 说明                                                                                         | 类型                                                                             | 默认值                                      |
+| ----------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------- |
+| `type`            | 过滤器类型                                                                                   | `'text' \| 'number' \| 'date'`                                                   | -                                           |
+| `valueGetter`     | 从行数据中读取用于筛选的值。文本支持 `string \| number`；日期支持 `Date`、ISO 字符串和时间戳 | `(data: T) => ...`                                                               | -                                           |
+| `operators`       | 可选条件                                                                                     | 见下表                                                                           | 该类型全部条件，`fuzzy` 需要 `fuzzyMatcher` |
+| `defaultOperator` | 默认选中的条件                                                                               | 见下表                                                                           | 第一个条件                                  |
+| `caseSensitive`   | （文本）"区分大小写"复选框的初始状态                                                         | `boolean`                                                                        | `false`                                     |
+| `fuzzyMatcher`    | （文本）`fuzzy` 条件使用的匹配函数，例如基于模糊搜索库实现                                   | `(query: string, value: string, options: { caseSensitive: boolean }) => boolean` | -                                           |
+| `placeholder`     | （文本）输入框占位文本                                                                       | `string`                                                                         | -                                           |
+| `step`            | （数字）输入框步长                                                                           | `number`                                                                         | -                                           |
+| `dateMode`        | （日期）`'date'` 按日期比较；`'datetime'` 按精确时间比较并显示时间选择。`on` 始终按日期比较  | `'date' \| 'datetime'`                                                           | `'date'`                                    |
+
+| 类型     | 条件                                                                                                 | 条件对象                                                                                      |
+| -------- | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `text`   | `contains`、`equals`、`startsWith`、`endsWith`、`fuzzy`                                              | `{ operator, value: string, caseSensitive?: boolean }`                                        |
+| `number` | `equals`、`notEquals`、`greaterThan`、`greaterThanOrEqual`、`lessThan`、`lessThanOrEqual`、`between` | `{ operator, value: number \| null, valueTo?: number \| null }`                               |
+| `date`   | `on`、`before`、`after`、`between`                                                                   | `{ operator, value: string \| null, valueTo?: string \| null }`（`yyyy-MM-dd` 或 ISO 字符串） |
 
 样式属性
 

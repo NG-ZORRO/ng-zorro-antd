@@ -132,13 +132,53 @@ Sort property
 
 Filter property
 
-| Property             | Description                                                                                            | Type                                                       | Default |
-| -------------------- | ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------- | ------- |
-| `[nzShowFilter]`     | Whether to show filter                                                                                 | `boolean`                                                  | -       |
-| `[nzFilterFn]`       | Filter function used to filter the data on client side. Set to `true` when using server side filtering | `NzTableFilterFn<T> \| boolean`                            | -       |
-| `[nzFilters]`        | Filter options, `text`, and `value` for callback, `byDefault` to enable filter by default              | `Array<{ text: string; value: any; byDefault?: boolean }>` | -       |
-| `[nzFilterMultiple]` | Whether multiple mode filtering is enabled                                                             | `boolean`                                                  | `true`  |
-| `(nzFilterChange)`   | Callback when filter `value` changes                                                                   | `EventEmitter<any[] \| any>`                               | -       |
+| Property                | Description                                                                                            | Type                                                       | Default |
+| ----------------------- | ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------- | ------- |
+| `[nzShowFilter]`        | Whether to show filter                                                                                 | `boolean`                                                  | -       |
+| `[nzFilterFn]`          | Filter function used to filter the data on client side. Set to `true` when using server side filtering | `NzTableFilterFn<T> \| boolean`                            | -       |
+| `[nzFilters]`           | Filter options, `text`, and `value` for callback, `byDefault` to enable filter by default              | `Array<{ text: string; value: any; byDefault?: boolean }>` | -       |
+| `[nzFilterMultiple]`    | Whether multiple mode filtering is enabled                                                             | `boolean`                                                  | `true`  |
+| `[nzFilterConfig]`      | Built-in filter configuration. `nzFilterFn` takes precedence if both are provided                      | `NzTableFilterConfig<T>`                                   | -       |
+| `[nzFilterValue]`       | Applied filter value, double binding. Takes precedence over `byDefault` in `nzFilters` when bound      | `any[] \| any`                                             | -       |
+| `(nzFilterChange)`      | Callback when filter `value` changes                                                                   | `EventEmitter<any[] \| any>`                               | -       |
+| `(nzFilterValueChange)` | Callback when filter `value` changes, used by `[(nzFilterValue)]`                                      | `EventEmitter<any[] \| any>`                               | -       |
+
+#### NzTableOptionsFilterConfig
+
+By default (`options: 'auto'`), generates unique filter options from all data passed to `nzData`, before filtering, sorting, and pagination. With server side pagination, only the current page data is available, so pass a hand-written list to `options` instead. `nzFilters` is a shorthand for hand-written options that are matched by `nzFilterFn`.
+
+The applied value is always an array, even when `nzFilterMultiple` is `false`. `null` in the array selects the empty option, which matches `null`, `undefined`, `''`, `NaN`, and invalid dates. Values of different types are kept distinct, for example `1` and `'1'`. Other value types such as arrays and objects are ignored, with a warning in development mode.
+
+| Property         | Description                                                                                                        | Type                                                                    | Default  |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- | -------- |
+| `type`           | Filter type                                                                                                        | `'options'`                                                             | -        |
+| `valueGetter`    | Reads the value to filter from a row. Required for `'auto'` options. Without it, the table does not filter locally | `(data: T) => string \| number \| boolean \| Date \| null \| undefined` | -        |
+| `options`        | `'auto'` generates options from the data. A list is shown as-is, and `byDefault` items are selected initially      | `'auto' \| NzTableFilterList`                                           | `'auto'` |
+| `dateMode`       | Compare `Date` values by local calendar day (`'date'`) or exact timestamp (`'datetime'`)                           | `'date' \| 'datetime'`                                                  | `'date'` |
+| `labelFormatter` | Formats generated option labels. The empty option uses the `Table.filterEmptyOption` locale text                   | `(value: string \| number \| boolean \| Date) => string`                | -        |
+| `sortFn`         | Sorts non-empty generated options. The empty option is always listed last                                          | `(a: NzTableFilterOptionValue, b: NzTableFilterOptionValue) => number`  | -        |
+
+#### Text, number and date filters
+
+`type: 'text' | 'number' | 'date'` renders a condition select and value editors. The applied value is a serializable criterion object (`null` when cleared), which is also sent to `nzQueryParams` for server side filtering. Rows whose value is empty never match an active criterion. `between` is inclusive, and either bound may be left empty.
+
+| Property          | Description                                                                                                                        | Type                                                                             | Default                                           |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------- |
+| `type`            | Filter type                                                                                                                        | `'text' \| 'number' \| 'date'`                                                   | -                                                 |
+| `valueGetter`     | Reads the value to filter from a row. Text accepts `string \| number`; date accepts `Date`, ISO strings and timestamps             | `(data: T) => ...`                                                               | -                                                 |
+| `operators`       | Available conditions                                                                                                               | see below                                                                        | all of the type, `fuzzy` only with `fuzzyMatcher` |
+| `defaultOperator` | Initially selected condition                                                                                                       | see below                                                                        | first operator                                    |
+| `caseSensitive`   | (text) Initial state of the "Match case" checkbox                                                                                  | `boolean`                                                                        | `false`                                           |
+| `fuzzyMatcher`    | (text) Matcher used by the `fuzzy` condition, for example backed by a fuzzy search library                                         | `(query: string, value: string, options: { caseSensitive: boolean }) => boolean` | -                                                 |
+| `placeholder`     | (text) Input placeholder                                                                                                           | `string`                                                                         | -                                                 |
+| `step`            | (number) Input step                                                                                                                | `number`                                                                         | -                                                 |
+| `dateMode`        | (date) `'date'` compares calendar days; `'datetime'` compares instants and shows a time picker. `on` always compares calendar days | `'date' \| 'datetime'`                                                           | `'date'`                                          |
+
+| Type     | Operators                                                                                            | Criterion                                                                                    |
+| -------- | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `text`   | `contains`, `equals`, `startsWith`, `endsWith`, `fuzzy`                                              | `{ operator, value: string, caseSensitive?: boolean }`                                       |
+| `number` | `equals`, `notEquals`, `greaterThan`, `greaterThanOrEqual`, `lessThan`, `lessThanOrEqual`, `between` | `{ operator, value: number \| null, valueTo?: number \| null }`                              |
+| `date`   | `on`, `before`, `after`, `between`                                                                   | `{ operator, value: string \| null, valueTo?: string \| null }` (`yyyy-MM-dd` or ISO string) |
 
 Style property
 
