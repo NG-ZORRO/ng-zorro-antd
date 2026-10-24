@@ -80,6 +80,11 @@ describe('table filter criteria', () => {
       expect(match(text, { operator: 'contains', value: '' }, 'a', null)).toEqual([true, true]);
       expect(match(text, null, 'a')).toEqual([true]);
     });
+
+    it('should remove an explicitly requested fuzzy operator without a matcher', () => {
+      expect(getCriteriaFilterOperators({ ...text, operators: ['fuzzy', 'equals'] })).toEqual(['equals']);
+      expect(match(text, { operator: 'fuzzy', value: 'apple' }, 'pear')).toEqual([true]);
+    });
   });
 
   describe('number', () => {
@@ -166,6 +171,35 @@ describe('table filter criteria', () => {
       expect(parseFilterDate('2024-03-04')).toEqual(day('2024-03-04'));
       expect(parseFilterDate('nope')).toBeNull();
     });
+
+    it('should reject unsupported date inputs and serialize invalid dates as empty', () => {
+      expect(parseFilterDate({ year: 2024 })).toBeNull();
+      expect(parseFilterDate(false)).toBeNull();
+      expect(parseFilterDate(day('2024-03-04').getTime())).toEqual(day('2024-03-04'));
+      expect(serializeFilterDate(new Date('invalid'))).toBeNull();
+    });
+
+    it('should leave rows unchanged for inactive or invalid date criteria', () => {
+      expect(match(date, null, ...values)).toEqual([true, true, true, true, true]);
+      expect(match(date, { operator: 'before', value: 'invalid' }, day('2024-01-01'))).toEqual([true]);
+    });
+
+    it('should support either endpoint of an open-ended date range', () => {
+      expect(match(date, { operator: 'between', value: null, valueTo: '2024-01-02' }, ...values)).toEqual([
+        true,
+        true,
+        false,
+        false,
+        false
+      ]);
+      expect(match(date, { operator: 'between', value: '2024-01-02' }, ...values)).toEqual([
+        false,
+        true,
+        true,
+        false,
+        false
+      ]);
+    });
   });
 
   it('should resolve default operators and active state', () => {
@@ -175,5 +209,7 @@ describe('table filter criteria', () => {
     expect(isCriterionActive({ operator: 'between', value: null, valueTo: 3 })).toBe(true);
     expect(isCriterionActive({ operator: 'equals', value: NaN })).toBe(false);
     expect(isCriterionActive(null)).toBe(false);
+    expect(isCriterionActive({ value: 'missing operator' })).toBe(false);
+    expect(isCriterionActive('not a criterion')).toBe(false);
   });
 });

@@ -3,7 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { buildFilterOptions, createOptionsFilterFn, getFilterOptionKey } from '../table-filter-options';
+import {
+  buildFilterOptions,
+  createOptionsFilterFn,
+  formatFilterOptionValue,
+  getFilterOptionKey
+} from '../table-filter-options';
 import { NzTableOptionsFilterConfig } from '../table.types';
 
 interface Row {
@@ -58,6 +63,24 @@ describe('table filter options', () => {
     expect(
       buildFilterOptions(data, config({ sortFn: (a, b) => Number(b) - Number(a) })).options.map(option => option.value)
     ).toEqual([100, 10, 9]);
+  });
+
+  it('should sort mixed types consistently and dates chronologically', () => {
+    const earlier = new Date(2024, 0, 1);
+    const later = new Date(2024, 0, 2);
+    const { options } = buildFilterOptions(rows(later, true, 2, 'a', earlier, false), config());
+
+    expect(options.map(option => option.value)).toEqual(['a', 2, false, true, earlier, later]);
+    expect(formatFilterOptionValue(earlier)).toBe('2024-01-01');
+    expect(formatFilterOptionValue(earlier, 'datetime')).toBe(earlier.toISOString());
+    expect(formatFilterOptionValue(false)).toBe('false');
+  });
+
+  it('should leave automatic options empty without a value getter', () => {
+    expect(buildFilterOptions(rows('a'), { type: 'options' })).toEqual({
+      options: [],
+      hasUnsupportedValue: false
+    });
   });
 
   it('should report and skip unsupported values', () => {

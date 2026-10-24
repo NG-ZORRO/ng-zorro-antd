@@ -437,6 +437,57 @@ describe('nz-th criteria filter config', () => {
     expect(getRenderedIds()).toEqual([1, 2, 3]);
   });
 
+  it('should restore a bound text criterion and clear it on reset', async () => {
+    component.customerValue.set({ operator: 'equals', value: 'Acme', caseSensitive: true });
+    await stabilize();
+    expect(getRenderedIds()).toEqual([1]);
+    await openFilter(0);
+
+    expect(getPanel()!.querySelector<HTMLInputElement>('input[nz-input]')!.value).toBe('Acme');
+    expect(getPanel()!.querySelector<HTMLInputElement>('.ant-checkbox-input')!.checked).toBe(true);
+    overlayContainerElement.querySelector<HTMLElement>('.ant-table-filter-dropdown-btns .ant-btn-link')!.click();
+    await stabilize();
+
+    expect(component.customerValue()).toBeNull();
+    expect(getRenderedIds()).toEqual([1, 2, 3]);
+  });
+
+  it('should restore both date range editors without confirming on date-picker Enter', async () => {
+    component.dueValue.set({ operator: 'between', value: '2024-01-01', valueTo: '2024-01-31' });
+    await stabilize();
+    expect(getRenderedIds()).toEqual([1, 3]);
+    await openFilter(2);
+    const inputs = getPanel()!.querySelectorAll<HTMLInputElement>('nz-date-picker input');
+
+    expect(Array.from(inputs).map(input => input.value)).toEqual(['2024-01-01', '2024-01-31']);
+    inputs[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    await wait(200);
+    await stabilize();
+    expect(getPanel()).not.toBeNull();
+
+    overlayContainerElement.querySelector<HTMLElement>('.ant-table-filter-dropdown-btns .ant-btn-link')!.click();
+    await stabilize();
+
+    expect(component.dueValue()).toBeNull();
+    expect(getRenderedIds()).toEqual([1, 2, 3]);
+  });
+
+  it('should restore datetime range values with time editors', async () => {
+    component.dueFilter.dateMode = 'datetime';
+    const from = new Date(2024, 0, 1, 8).toISOString();
+    const to = new Date(2024, 0, 31, 18).toISOString();
+    component.dueValue.set({ operator: 'between', value: from, valueTo: to });
+    await stabilize();
+    await openFilter(2);
+    const inputs = getPanel()!.querySelectorAll<HTMLInputElement>('nz-date-picker input');
+
+    expect(inputs[0].value).toContain('2024-01-01');
+    expect(inputs[0].value).toContain('08:00');
+    expect(inputs[1].value).toContain('2024-01-31');
+    expect(inputs[1].value).toContain('18:00');
+    expect(getRenderedIds()).toEqual([1, 3]);
+  });
+
   it('should use hand-written options with default selections in an options config', async () => {
     await stabilize();
     expect(getRenderedIds()).toEqual([1, 2, 3]);
