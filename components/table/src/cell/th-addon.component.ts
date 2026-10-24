@@ -201,7 +201,9 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit {
   }
 
   private isFilterValueSelected(value: NzTableFilterValue): boolean {
-    return Array.isArray(this.nzFilterValue) ? this.nzFilterValue.includes(value) : this.nzFilterValue === value;
+    return this.isLegacyFilters && !this.nzFilterMultiple
+      ? this.nzFilterValue === value
+      : this.normalizeOptionsFilterValue(this.nzFilterValue).includes(value);
   }
 
   private updateListOfFilterOption(): void {
@@ -241,7 +243,7 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit {
       return {
         text: text ?? label,
         value: isEmpty ? NZ_TABLE_FILTER_EMPTY_OPTION_VALUE : value,
-        byDefault: selectedKeys.has(key)
+        byDefault: key.startsWith('custom:') ? this.isFilterValueSelected(value) : selectedKeys.has(key)
       };
     });
   }
@@ -319,7 +321,7 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit {
     if (isFirstChange(nzFilters) && !this.isNzShowFilterChanged) {
       this.nzShowFilter = true;
     }
-    if (nzFilterConfig?.firstChange && this.nzFilterConfig && !this.isNzShowFilterChanged) {
+    if (nzFilterConfig && this.nzFilterConfig && !this.isNzShowFilterChanged) {
       this.nzShowFilter = true;
     }
     if (nzFilterConfig) {

@@ -15,6 +15,8 @@ import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
 import {
   NzTableDateFilterConfig,
+  NzTableFilterFn,
+  NzTableFilterList,
   NzTableFilterValue,
   NzTableModule,
   NzTableNumberFilterConfig,
@@ -80,6 +82,7 @@ describe('nz-th filter config', () => {
       await stabilize();
     }
     overlayContainerElement.querySelector<HTMLElement>('.ant-table-filter-dropdown-btns .ant-btn-primary')!.click();
+    await new Promise(resolve => setTimeout(resolve, 200));
     await stabilize();
   }
 
@@ -150,23 +153,98 @@ describe('nz-th filter config', () => {
     expect(getOptionTexts()).toEqual(['archived', 'blocked', 'closed', 'open', '(empty)']);
     expect(getRenderedIds()).toEqual([]);
   });
+
+  it('should preserve an array-valued legacy option in single selection mode', async () => {
+    const value = ['red'];
+    component.teamMultiple.set(false);
+    component.teamFilters = [{ text: 'Red', value }];
+    await stabilize();
+    await openFilter(1);
+    await selectOptions('Red');
+
+    expect(component.teamValue()).toBe(value);
+    expect(getRenderedIds()).toEqual([1, 3, 5, 7]);
+    expect(fixture.nativeElement.querySelectorAll('.ant-table-filter-trigger')[1].classList).toContain('active');
+
+    await openFilter(1);
+    expect(getOptionElements()[0].querySelector('.ant-radio-checked')).not.toBeNull();
+  });
+
+  it('should preserve and reset custom object-valued options', async () => {
+    const value = { team: 'red' };
+    component.statusFilter.set({ type: 'options', options: [{ text: 'Red', value }] });
+    component.statusFilterFn = (values, task) => values.includes(value) && task.team === value.team;
+    await stabilize();
+    await openFilter(0);
+    await selectOptions('Red');
+
+    expect(component.statusValue()).toEqual([value]);
+    expect(getRenderedIds()).toEqual([1, 3, 5, 7]);
+    expect(fixture.nativeElement.querySelector('.ant-table-filter-trigger').classList).toContain('active');
+
+    await openFilter(0);
+    expect(getOptionElements()[0].querySelector('.ant-checkbox-checked')).not.toBeNull();
+    const reset = overlayContainerElement.querySelector<HTMLButtonElement>(
+      '.ant-table-filter-dropdown-btns .ant-btn-link'
+    )!;
+    expect(reset.disabled).toBe(false);
+    reset.click();
+    await stabilize();
+
+    expect(component.statusValue()).toEqual([]);
+    expect(getRenderedIds()).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
+  });
+
+  it('should clear generated options when the source data becomes empty', async () => {
+    await stabilize();
+    await openFilter(0);
+    expect(getOptionTexts().length).toBeGreaterThan(0);
+
+    component.data.set([]);
+    await stabilize();
+
+    expect(getOptionTexts()).toEqual([]);
+  });
+
+  it('should show a late filter config while respecting explicit trigger visibility', async () => {
+    const config = component.statusFilter();
+    component.statusFilter.set(null);
+    await stabilize();
+    expect(fixture.nativeElement.querySelectorAll('.ant-table-filter-trigger').length).toBe(1);
+
+    component.statusFilter.set(config);
+    await stabilize();
+
+    expect(fixture.nativeElement.querySelectorAll('.ant-table-filter-trigger').length).toBe(2);
+    await openFilter(0);
+    expect(getOptionTexts()).toEqual(['blocked', 'closed', 'open', '(empty)']);
+  });
 });
 
 @Component({
   imports: [NzTableModule],
   template: `
-    <nz-table #table [nzData]="data" [nzPageSize]="20">
+    <nz-table #table [nzData]="data()" [nzPageSize]="20">
       <thead>
         <tr>
           <th
-            [nzFilterConfig]="statusFilter"
+            [nzFilterConfig]="statusFilter()"
+            [nzFilterFn]="statusFilterFn"
             [nzFilterMultiple]="multiple()"
             [(nzFilterValue)]="statusValue"
             (nzFilterChange)="statusChange($event)"
           >
             Status
           </th>
-          <th [nzFilters]="teamFilters" [nzFilterFn]="teamFilterFn" [(nzFilterValue)]="teamValue">Team</th>
+          <th
+            [nzFilters]="teamFilters"
+            [nzFilterFn]="teamFilterFn"
+            [nzFilterMultiple]="teamMultiple()"
+            [(nzFilterValue)]="teamValue"
+          >
+            Team
+          </th>
+          <th [nzFilterConfig]="statusFilter()" [nzShowFilter]="false">Hidden filter</th>
         </tr>
       </thead>
       <tbody>
@@ -182,18 +260,20 @@ describe('nz-th filter config', () => {
 })
 class NzThTestFilterConfigComponent {
   readonly multiple = signal(true);
+  readonly teamMultiple = signal(true);
   readonly statusValue = signal<NzTableFilterValue>(null);
   readonly teamValue = signal<NzTableFilterValue>(null);
   readonly statusChange = vi.fn();
-  readonly statusFilter: NzTableOptionsFilterConfig<Task> = {
+  readonly statusFilter = signal<NzTableOptionsFilterConfig<Task> | null>({
     type: 'options',
     valueGetter: task => task.status
-  };
-  readonly teamFilters = [
+  });
+  statusFilterFn: NzTableFilterFn<Task> | null = null;
+  teamFilters: NzTableFilterList = [
     { text: 'Red', value: 'red' },
     { text: 'Blue', value: 'blue' }
   ];
-  readonly data: Task[] = [
+  readonly data = signal<Task[]>([
     { id: 1, status: 'open', team: 'red' },
     { id: 2, status: 'open', team: 'blue' },
     { id: 3, status: 'closed', team: 'red' },
@@ -202,7 +282,7 @@ class NzThTestFilterConfigComponent {
     { id: 6, status: undefined, team: 'blue' },
     { id: 7, status: 'blocked', team: 'red' },
     { id: 8, status: 'open', team: 'blue' }
-  ];
+  ]);
 
   teamFilterFn = (value: string[], task: Task): boolean => value.includes(task.team);
 }
@@ -301,6 +381,33 @@ describe('nz-th criteria filter config', () => {
 
     expect(component.customerValue()).toEqual({ operator: 'equals', value: 'acme', caseSensitive: true });
     expect(getRenderedIds()).toEqual([]);
+  });
+
+  it('should not confirm a draft when Enter is pressed in the operator select', async () => {
+    await stabilize();
+    await openFilter(0);
+    await typeInto(getPanel()!.querySelector('input[nz-input]')!, 'AC');
+    getPanel()!
+      .querySelector('nz-select input')!
+      .dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    await wait(200);
+    await stabilize();
+
+    expect(getPanel()).not.toBeNull();
+    expect(component.customerValue()).toBeNull();
+  });
+
+  it.each([0, 1])('should confirm a value editor with Enter in column %i', async index => {
+    await stabilize();
+    await openFilter(index);
+    const input = getPanel()!.querySelector<HTMLInputElement>('input[nz-input]')!;
+    await typeInto(input, index === 0 ? 'AC' : '100');
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    await wait(200);
+    await stabilize();
+
+    expect(getPanel()).toBeNull();
+    expect(index === 0 ? component.customerValue() : component.amountValue()).not.toBeNull();
   });
 
   it('should apply bound number and date criteria together', async () => {

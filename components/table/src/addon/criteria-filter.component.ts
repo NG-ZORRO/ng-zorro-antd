@@ -231,8 +231,11 @@ export class NzTableCriteriaFilterComponent implements OnChanges, OnInit {
   }
 
   onEnter(event: Event): void {
-    // Enter inside an input applies the filter; other controls (e.g. the operator select) keep their own behavior.
-    if (event.target instanceof HTMLInputElement && event.target.closest('nz-date-picker') === null) {
+    if (
+      event.target instanceof HTMLInputElement &&
+      (event.target.type === 'text' || event.target.type === 'number') &&
+      event.target.closest('nz-select, nz-date-picker') === null
+    ) {
       event.preventDefault();
       this.confirm();
     }
