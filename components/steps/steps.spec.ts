@@ -68,6 +68,21 @@ describe('steps', () => {
       expect(innerSteps[2].nativeElement.className).toBe('ant-steps-item ant-steps-item-wait');
     });
 
+    it('should preserve a custom status when the current step changes', async () => {
+      await stabilize(fixture);
+      const step = innerSteps[1].injector.get(NzStepComponent);
+      step.nzStatus = 'error';
+      testComponent.current = 2;
+      testComponent.cdr.markForCheck();
+      await stabilize(fixture);
+
+      expect(step.nzStatus).toBe('error');
+      expect(step.currentIndex).toBe(2);
+      expect(innerSteps[1].nativeElement.classList).toContain('ant-steps-item-error');
+      expect(innerSteps[1].nativeElement.classList).not.toContain('ant-steps-item-active');
+      expect(innerSteps[2].nativeElement.classList).toContain('ant-steps-item-active');
+    });
+
     it('should tail display correct', async () => {
       await stabilize(fixture);
       expect(innerSteps[0].nativeElement.querySelector('.ant-steps-item-tail')).toBeTruthy();
@@ -336,6 +351,27 @@ describe('steps', () => {
         'anticon-smile-o'
       );
     });
+  });
+
+  it('should preserve icon property access when switching between strings and templates', async () => {
+    const fixture = TestBed.createComponent(NzTestInnerStepStringComponent);
+    await stabilize(fixture);
+    const element = fixture.debugElement.query(By.directive(NzStepComponent));
+    const step = element.injector.get(NzStepComponent);
+    const template = fixture.componentInstance.iconTemplate!;
+
+    step.nzIcon = template;
+    step.markForCheck();
+    await stabilize(fixture);
+    expect(step.nzIcon).toBe(template);
+    expect(element.nativeElement.querySelector('.anticon-smile-o')).not.toBeNull();
+
+    step.nzIcon = 'user';
+    step.markForCheck();
+    await stabilize(fixture);
+    expect(step.nzIcon).toBe('user');
+    expect(element.nativeElement.querySelector('.anticon-user')).not.toBeNull();
+    expect(element.nativeElement.querySelector('.anticon-smile-o')).toBeNull();
   });
 
   describe('step ng for', () => {

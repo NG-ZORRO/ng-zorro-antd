@@ -99,15 +99,15 @@ export class NzUploadComponent implements OnInit, AfterViewInit, OnChanges {
   @Input({ transform: booleanAttribute }) nzMultiple = false;
   @Input() nzName = 'file';
 
-  private _showUploadList: boolean | NzShowUploadList = true;
+  private readonly _showUploadList = signal<boolean | NzShowUploadList>(true);
 
   @Input()
   set nzShowUploadList(value: boolean | NzShowUploadList) {
-    this._showUploadList = typeof value === 'boolean' ? toBoolean(value) : value;
+    this._showUploadList.set(typeof value === 'boolean' ? toBoolean(value) : value);
   }
 
   get nzShowUploadList(): boolean | NzShowUploadList {
-    return this._showUploadList;
+    return this._showUploadList();
   }
 
   @Input({ transform: booleanAttribute }) nzShowButton = true;
