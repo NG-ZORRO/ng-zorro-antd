@@ -374,6 +374,17 @@ describe('steps', () => {
     expect(element.nativeElement.querySelector('.anticon-smile-o')).toBeNull();
   });
 
+  it('should render an active step without a status class when the outer status is empty', async () => {
+    const fixture = TestBed.createComponent(NzStepComponent);
+    const step = fixture.componentInstance;
+    step.outStatus = '';
+    step.currentIndex = 0;
+    await stabilize(fixture);
+
+    expect(step.nzStatus).toBe('');
+    expect(fixture.nativeElement.className).toBe('ant-steps-item ant-steps-item-active');
+  });
+
   describe('step ng for', () => {
     it('should title display correct', () => {
       TestBed.createComponent(NzTestStepForComponent).detectChanges();
