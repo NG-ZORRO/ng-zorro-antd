@@ -8,7 +8,9 @@ import { Component, DebugElement, signal, TemplateRef, ViewChild } from '@angula
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { provideMockDirectionality } from 'ng-zorro-antd/core/testing';
+import { vi } from 'vitest';
+
+import { provideMockDirectionality, sleep } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
@@ -193,6 +195,100 @@ describe('nz-layout', () => {
       sider = fixture.debugElement.query(By.directive(NzSiderComponent));
     });
 
+    afterEach(() => {
+      viewport.reset();
+    });
+
+    it.each([false, true])('should preserve initial nzCollapsed=%s above the breakpoint', async collapsed => {
+      viewport.set(1200);
+      fixture.componentInstance.isCollapsed.set(collapsed);
+      const component = sider.injector.get(NzSiderComponent);
+      const emit = vi.spyOn(component.nzCollapsedChange, 'emit');
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(component.nzCollapsed).toBe(collapsed);
+      expect(fixture.componentInstance.isCollapsed()).toBe(collapsed);
+      expect(sider.nativeElement.classList.contains('ant-layout-sider-collapsed')).toBe(collapsed);
+      expect(emit).not.toHaveBeenCalled();
+    });
+
+    it.each([false, true])('should collapse below the breakpoint with initial nzCollapsed=%s', async collapsed => {
+      viewport.set(900);
+      fixture.componentInstance.isCollapsed.set(collapsed);
+      const component = sider.injector.get(NzSiderComponent);
+      const emit = vi.spyOn(component.nzCollapsedChange, 'emit');
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(component.matchBreakPoint).toBe(true);
+      expect(component.nzCollapsed).toBe(true);
+      expect(fixture.componentInstance.isCollapsed()).toBe(true);
+      fixture.detectChanges();
+      expect(sider.nativeElement.style.width).toBe('0px');
+      expect(emit).toHaveBeenCalledTimes(collapsed ? 0 : 1);
+      if (!collapsed) {
+        expect(emit).toHaveBeenCalledWith(true);
+      }
+    });
+
+    it.each([
+      { width: 1300, nextWidth: 1100, collapsed: true },
+      { width: 900, nextWidth: 700, collapsed: false }
+    ])('should preserve manual nzCollapsed=$collapsed when resizing from $width to $nextWidth', async scenario => {
+      viewport.set(scenario.width);
+      fixture.componentInstance.collapsedWidth.set(80);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+      const component = sider.injector.get(NzSiderComponent);
+      const trigger: HTMLElement = sider.nativeElement.querySelector('.ant-layout-sider-trigger');
+      trigger.click();
+      await fixture.whenStable();
+      fixture.detectChanges();
+      expect(component.nzCollapsed).toBe(scenario.collapsed);
+      const emit = vi.spyOn(component.nzCollapsedChange, 'emit');
+
+      viewport.set(scenario.nextWidth);
+      window.dispatchEvent(new Event('resize'));
+      await sleep(32);
+      await fixture.whenStable();
+
+      expect(component.matchBreakPoint).toBe(scenario.nextWidth < 992);
+      expect(component.nzCollapsed).toBe(scenario.collapsed);
+      expect(fixture.componentInstance.isCollapsed()).toBe(scenario.collapsed);
+      expect(sider.nativeElement.style.width).toBe(scenario.collapsed ? '80px' : '200px');
+      expect(emit).not.toHaveBeenCalled();
+    });
+
+    it('should collapse and expand once when crossing the configured breakpoint', async () => {
+      viewport.set(1200);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      const component = sider.injector.get(NzSiderComponent);
+      const emit = vi.spyOn(component.nzCollapsedChange, 'emit');
+
+      viewport.set(991);
+      window.dispatchEvent(new Event('resize'));
+      await sleep(32);
+      await fixture.whenStable();
+      expect(component.matchBreakPoint).toBe(true);
+      expect(fixture.componentInstance.isCollapsed()).toBe(true);
+      expect(sider.nativeElement.style.width).toBe('0px');
+      expect(emit).toHaveBeenCalledTimes(1);
+      expect(emit).toHaveBeenNthCalledWith(1, true);
+
+      viewport.set(992);
+      window.dispatchEvent(new Event('resize'));
+      await sleep(32);
+      await fixture.whenStable();
+      expect(component.matchBreakPoint).toBe(false);
+      expect(fixture.componentInstance.isCollapsed()).toBe(false);
+      expect(sider.nativeElement.style.width).toBe('200px');
+      expect(emit).toHaveBeenCalledTimes(2);
+      expect(emit).toHaveBeenNthCalledWith(2, false);
+    });
+
     it('should responsive work', async () => {
       viewport.set(500);
       window.dispatchEvent(new Event('resize'));
@@ -203,7 +299,6 @@ describe('nz-layout', () => {
           .querySelector('.ant-layout-sider-zero-width-trigger')
           .firstElementChild.getAttribute('nzType')
       ).toBe('menu-fold');
-      viewport.reset();
     });
   });
 
@@ -297,7 +392,7 @@ export class NzLayoutSideComponent {
         nzCollapsible
         [(nzCollapsed)]="isCollapsed"
         nzBreakpoint="lg"
-        [nzCollapsedWidth]="0"
+        [nzCollapsedWidth]="collapsedWidth()"
         [nzZeroTrigger]="zeroTrigger"
       />
       <nz-layout>
@@ -315,6 +410,7 @@ export class NzLayoutSideComponent {
 })
 export class NzLayoutResponsiveComponent {
   readonly isCollapsed = signal(false);
+  readonly collapsedWidth = signal(0);
 }
 
 @Component({
