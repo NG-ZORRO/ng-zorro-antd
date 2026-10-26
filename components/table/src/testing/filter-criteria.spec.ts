@@ -179,6 +179,26 @@ describe('table filter criteria', () => {
       expect(serializeFilterDate(new Date('invalid'))).toBeNull();
     });
 
+    it.each(['2024-02-31', '2023-02-29', '1900-02-29', '2024-13-01', '2024-00-01', '2024-01-00'])(
+      'should reject impossible calendar date %s',
+      value => {
+        expect(parseFilterDate(value)).toBeNull();
+        expect(match(date, { operator: 'on', value: '2024-03-02' }, value)).toEqual([false]);
+      }
+    );
+
+    it.each(['0000-02-29', '0001-01-01', '0099-12-31', '2000-02-29', '2024-02-29'])(
+      'should preserve valid calendar date %s without changing its year',
+      value => {
+        const parsed = parseFilterDate(value);
+
+        expect(parsed).not.toBeNull();
+        expect(serializeFilterDate(parsed)).toBe(value);
+        expect(parsed!.getHours()).toBe(0);
+        expect(match(date, { operator: 'on', value }, value)).toEqual([true]);
+      }
+    );
+
     it('should leave rows unchanged for inactive or invalid date criteria', () => {
       expect(match(date, null, ...values)).toEqual([true, true, true, true, true]);
       expect(match(date, { operator: 'before', value: 'invalid' }, day('2024-01-01'))).toEqual([true]);

@@ -136,6 +136,7 @@ let nextId = 0;
                 nzSize="small"
                 [nzId]="id + '-from'"
                 [nzShowTime]="showTime"
+                [nzFormat]="showTime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd'"
                 [nzPlaceHolder]="valueLabel"
                 [(ngModel)]="dateFrom"
               />
@@ -147,6 +148,7 @@ let nextId = 0;
                   nzSize="small"
                   [nzId]="id + '-to'"
                   [nzShowTime]="showTime"
+                  [nzFormat]="showTime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd'"
                   [nzPlaceHolder]="valueToLabel"
                   [(ngModel)]="dateTo"
                 />
@@ -231,6 +233,9 @@ export class NzTableCriteriaFilterComponent implements OnChanges, OnInit {
   }
 
   onEnter(event: Event): void {
+    if (event instanceof KeyboardEvent && event.isComposing) {
+      return;
+    }
     if (
       event.target instanceof HTMLInputElement &&
       (event.target.type === 'text' || event.target.type === 'number') &&
@@ -248,6 +253,7 @@ export class NzTableCriteriaFilterComponent implements OnChanges, OnInit {
 
   reset(): void {
     this.isVisible = false;
+    this.appliedCriterion = JSON.stringify(this.value);
     this.resetDraft(null);
     this.emitFilterData();
   }

@@ -170,6 +170,50 @@ describe('nz-th filter config', () => {
     expect(getOptionElements()[0].querySelector('.ant-radio-checked')).not.toBeNull();
   });
 
+  it.each([false, true])('should respect an explicit %s filter predicate', async predicate => {
+    component.statusFilterFn = predicate;
+    component.statusValue.set(['closed']);
+    await stabilize();
+
+    expect(getRenderedIds()).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
+    expect(component.statusValue()).toEqual(['closed']);
+  });
+
+  it.each([false, true])('should preserve array-valued options with multiple selection %s', async multiple => {
+    const value = ['red'];
+    component.multiple.set(multiple);
+    component.statusFilter.set({ type: 'options', options: [{ text: 'Red', value }] });
+    component.statusFilterFn = (values, task) => values.includes(value) && value.includes(task.team);
+    await stabilize();
+    await openFilter(0);
+    await selectOptions('Red');
+
+    expect(component.statusValue()).toEqual([value]);
+    expect(component.statusValue()[0]).toBe(value);
+    expect(getRenderedIds()).toEqual([1, 3, 5, 7]);
+
+    await openFilter(0);
+    expect(getOptionElements()[0].querySelector('.ant-radio-checked, .ant-checkbox-checked')).not.toBeNull();
+    overlayContainerElement.querySelector<HTMLElement>('.ant-table-filter-dropdown-btns .ant-btn-link')!.click();
+    await stabilize();
+
+    expect(component.statusValue()).toEqual([]);
+    expect(getRenderedIds()).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
+  });
+
+  it('should preserve bound selection arrays for a single array-valued option', async () => {
+    const value = ['red'];
+    component.multiple.set(false);
+    component.statusFilter.set({ type: 'options', options: [{ text: 'Red', value }] });
+    component.statusFilterFn = (values, task) => values.includes(value) && value.includes(task.team);
+    component.statusValue.set([value]);
+    await stabilize();
+    await openFilter(0);
+
+    expect(getOptionElements()[0].querySelector('.ant-radio-checked')).not.toBeNull();
+    expect(getRenderedIds()).toEqual([1, 3, 5, 7]);
+  });
+
   it('should preserve and reset custom object-valued options', async () => {
     const value = { team: 'red' };
     component.statusFilter.set({ type: 'options', options: [{ text: 'Red', value }] });
@@ -268,7 +312,7 @@ class NzThTestFilterConfigComponent {
     type: 'options',
     valueGetter: task => task.status
   });
-  statusFilterFn: NzTableFilterFn<Task> | null = null;
+  statusFilterFn: NzTableFilterFn<Task> | boolean | null = null;
   teamFilters: NzTableFilterList = [
     { text: 'Red', value: 'red' },
     { text: 'Blue', value: 'blue' }
@@ -333,6 +377,16 @@ describe('nz-th criteria filter config', () => {
     return overlayContainerElement.querySelector<HTMLElement>('.ant-table-filter-dropdown-criteria');
   }
 
+  async function selectOperator(label: string): Promise<void> {
+    dispatchFakeEvent(getPanel()!.querySelector('nz-select')!, 'click');
+    await stabilize();
+    Array.from(overlayContainerElement.querySelectorAll<HTMLElement>('.ant-select-item-option'))
+      .find(option => option.textContent!.trim() === label)!
+      .click();
+    await wait(200);
+    await stabilize();
+  }
+
   async function typeInto(input: HTMLInputElement, value: string): Promise<void> {
     input.value = value;
     dispatchFakeEvent(input, 'input');
@@ -364,14 +418,7 @@ describe('nz-th criteria filter config', () => {
   it('should keep the filter dropdown open while choosing an operator', async () => {
     await stabilize();
     await openFilter(0);
-    dispatchFakeEvent(getPanel()!.querySelector('nz-select')!, 'click');
-    await stabilize();
-    const equalsOption = Array.from(
-      overlayContainerElement.querySelectorAll<HTMLElement>('.ant-select-item-option')
-    ).find(option => option.textContent!.trim() === 'Equals')!;
-    equalsOption.click();
-    await wait(200);
-    await stabilize();
+    await selectOperator('Equals');
 
     expect(getPanel()).not.toBeNull();
     await typeInto(getPanel()!.querySelector('input[type="text"]')!, 'acme');
@@ -395,6 +442,37 @@ describe('nz-th criteria filter config', () => {
 
     expect(getPanel()).not.toBeNull();
     expect(component.customerValue()).toBeNull();
+  });
+
+  it('should wait for input method composition to finish before confirming text', async () => {
+    await stabilize();
+    await openFilter(0);
+    const input = getPanel()!.querySelector<HTMLInputElement>('input[nz-input]')!;
+    input.dispatchEvent(new CompositionEvent('compositionstart', { bubbles: true }));
+    await typeInto(input, 'Ac');
+    const composingEnter = new KeyboardEvent('keydown', {
+      key: 'Enter',
+      isComposing: true,
+      bubbles: true,
+      cancelable: true
+    });
+    input.dispatchEvent(composingEnter);
+    await wait(200);
+    await stabilize();
+
+    expect(composingEnter.defaultPrevented).toBe(false);
+    expect(getPanel()).not.toBeNull();
+    expect(component.customerValue()).toBeNull();
+
+    input.dispatchEvent(new CompositionEvent('compositionend', { data: 'Ac', bubbles: true }));
+    await stabilize();
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    await wait(200);
+    await stabilize();
+
+    expect(getPanel()).toBeNull();
+    expect(component.customerValue()).toEqual({ operator: 'contains', value: 'Ac', caseSensitive: false });
+    expect(getRenderedIds()).toEqual([1, 3]);
   });
 
   it.each([0, 1])('should confirm a value editor with Enter in column %i', async index => {
@@ -452,6 +530,23 @@ describe('nz-th criteria filter config', () => {
     expect(getRenderedIds()).toEqual([1, 2, 3]);
   });
 
+  it('should clear an applied criterion after its operator is removed', async () => {
+    component.customerValue.set({ operator: 'contains', value: 'Ac' });
+    await stabilize();
+    expect(getRenderedIds()).toEqual([1, 3]);
+
+    component.customerFilter.update(config => ({ ...config, operators: ['equals'] }));
+    await stabilize();
+    await openFilter(0);
+    expect(getPanel()!.querySelector<HTMLInputElement>('input[nz-input]')!.value).toBe('');
+    overlayContainerElement.querySelector<HTMLElement>('.ant-table-filter-dropdown-btns .ant-btn-link')!.click();
+    await stabilize();
+
+    expect(component.customerValue()).toBeNull();
+    expect(getRenderedIds()).toEqual([1, 2, 3]);
+    expect(fixture.nativeElement.querySelector('.ant-table-filter-trigger').classList).not.toContain('active');
+  });
+
   it('should restore both date range editors without confirming on date-picker Enter', async () => {
     component.dueValue.set({ operator: 'between', value: '2024-01-01', valueTo: '2024-01-31' });
     await stabilize();
@@ -488,6 +583,35 @@ describe('nz-th criteria filter config', () => {
     expect(getRenderedIds()).toEqual([1, 3]);
   });
 
+  it.each(['Before', 'After', 'Between'])(
+    'should update datetime precision when switching from On to %s',
+    async label => {
+      component.dueFilter.dateMode = 'datetime';
+      component.dueValue.set({ operator: 'on', value: '2024-01-10' });
+      await stabilize();
+      await openFilter(2);
+      const input = getPanel()!.querySelector<HTMLInputElement>('nz-date-picker input')!;
+      expect(input.value).toBe('2024-01-10');
+
+      await selectOperator(label);
+      expect(input.value).toBe('2024-01-10 00:00:00');
+
+      if (label === 'Between') {
+        component.dueValue.set({
+          operator: 'between',
+          value: new Date(2024, 0, 1, 8).toISOString(),
+          valueTo: new Date(2024, 0, 31, 18).toISOString()
+        });
+        await stabilize();
+        const inputs = getPanel()!.querySelectorAll<HTMLInputElement>('nz-date-picker input');
+        expect(Array.from(inputs).map(editor => editor.value)).toEqual(['2024-01-01 08:00:00', '2024-01-31 18:00:00']);
+      }
+
+      await selectOperator('On');
+      expect(input.value).toBe(label === 'Between' ? '2024-01-01' : '2024-01-10');
+    }
+  );
+
   it('should use hand-written options with default selections in an options config', async () => {
     await stabilize();
     expect(getRenderedIds()).toEqual([1, 2, 3]);
@@ -506,7 +630,7 @@ describe('nz-th criteria filter config', () => {
     <nz-table #table [nzData]="data" [nzPageSize]="20">
       <thead>
         <tr>
-          <th [nzFilterConfig]="customerFilter" [(nzFilterValue)]="customerValue">Customer</th>
+          <th [nzFilterConfig]="customerFilter()" [(nzFilterValue)]="customerValue">Customer</th>
           <th [nzFilterConfig]="amountFilter" [(nzFilterValue)]="amountValue">Amount</th>
           <th [nzFilterConfig]="dueFilter" [(nzFilterValue)]="dueValue">Due</th>
           <th [nzFilterConfig]="priorityFilter">Priority</th>
@@ -526,7 +650,10 @@ class NzThTestCriteriaFilterComponent {
   readonly customerValue = signal<NzTableFilterValue>(null);
   readonly amountValue = signal<NzTableFilterValue>(null);
   readonly dueValue = signal<NzTableFilterValue>(null);
-  readonly customerFilter: NzTableTextFilterConfig<Invoice> = { type: 'text', valueGetter: row => row.customer };
+  readonly customerFilter = signal<NzTableTextFilterConfig<Invoice>>({
+    type: 'text',
+    valueGetter: row => row.customer
+  });
   readonly amountFilter: NzTableNumberFilterConfig<Invoice> = { type: 'number', valueGetter: row => row.amount };
   readonly dueFilter: NzTableDateFilterConfig<Invoice> = { type: 'date', valueGetter: row => row.due };
   readonly priorityFilter: NzTableOptionsFilterConfig<Invoice> = {
