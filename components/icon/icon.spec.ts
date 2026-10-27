@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement, NgModule, inject, signal } from '@angular/core';
+import { Component, DebugElement, NgModule, Renderer2, inject, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -105,6 +105,21 @@ describe('nz-icon', () => {
       await updateNonSignalsInput(fixture);
       fixture.detectChanges();
       expect(icons[0].nativeElement.firstChild.style.transform).toBeFalsy();
+    });
+
+    it('should rotate without writing a style attribute, which strict CSP blocks', async () => {
+      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
+      fixture.detectChanges();
+      const setAttribute = vi.spyOn(icons[0].injector.get(Renderer2), 'setAttribute');
+
+      testComponent.rotate.set(90);
+      fixture.detectChanges();
+      await updateNonSignalsInput(fixture);
+      fixture.detectChanges();
+
+      expect(icons[0].nativeElement.firstChild.style.transform).toBe('rotate(90deg)');
+      expect(setAttribute).not.toHaveBeenCalledWith(expect.anything(), 'style', expect.anything());
     });
 
     it('should not throw when firstChild is not an Element', async () => {

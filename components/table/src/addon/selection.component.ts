@@ -20,6 +20,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
         nz-checkbox
         [class.ant-table-selection-select-all-custom]="showRowSelection"
         [ngModel]="checked"
+        [ngModelOptions]="{ standalone: true }"
         [nzDisabled]="disabled"
         [nzIndeterminate]="indeterminate"
         [attr.aria-label]="label"

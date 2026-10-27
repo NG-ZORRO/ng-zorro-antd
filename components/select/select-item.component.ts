@@ -18,6 +18,8 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
+import { getItemTemplateOutletContext } from './util';
+
 @Component({
   selector: 'nz-select-item',
   encapsulation: ViewEncapsulation.None,
@@ -61,10 +63,7 @@ export class NzSelectItemComponent {
   @Output() readonly delete = new EventEmitter<MouseEvent>();
 
   protected get templateOutletContext(): NzSafeAny {
-    return {
-      $implicit: this.contentTemplateOutletContext,
-      ...this.contentTemplateOutletContext
-    };
+    return getItemTemplateOutletContext(this.contentTemplateOutletContext);
   }
 
   onDelete(e: MouseEvent): void {

@@ -116,6 +116,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
             [disabled]="nzDisabled"
             [readOnly]="nzInputReadOnly"
             [(ngModel)]="inputValue"
+            [ngModelOptions]="{ standalone: true }"
             placeholder="{{ getPlaceholder() }}"
             [size]="inputSize"
             autocomplete="off"
@@ -163,6 +164,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
         (focus)="onFocus($event, partType)"
         (keyup.enter)="onKeyupEnter($event)"
         [(ngModel)]="inputValue[datePickerService.getActiveIndex(partType)]"
+        [ngModelOptions]="{ standalone: true }"
         (ngModelChange)="onInputChange($event)"
         placeholder="{{ getPlaceholder(partType) }}"
       />
@@ -173,7 +175,9 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
       <div class="{{ prefixCls }}-active-bar" [style]="activeBarStyle"></div>
       @if (showClear) {
         <span class="{{ prefixCls }}-clear" (click)="onClickClear($event)">
-          <nz-icon nzType="close-circle" nzTheme="fill" />
+          <ng-content select="[nzDatePickerClearIcon]">
+            <nz-icon nzType="close-circle" nzTheme="fill" />
+          </ng-content>
         </span>
       }
 

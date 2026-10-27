@@ -19,6 +19,7 @@ import { CronChangeType, TimeType } from './typings';
       <input
         nz-input
         [(ngModel)]="value"
+        [ngModelOptions]="{ standalone: true }"
         [name]="label"
         [disabled]="disabled"
         (focus)="focusInputEffect($event)"

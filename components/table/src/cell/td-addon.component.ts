@@ -47,6 +47,7 @@ import { NzRowIndentDirective } from '../addon/row-indent.directive';
         nz-checkbox
         [nzDisabled]="nzDisabled"
         [ngModel]="nzChecked"
+        [ngModelOptions]="{ standalone: true }"
         [nzIndeterminate]="nzIndeterminate"
         [attr.aria-label]="nzLabel"
         (ngModelChange)="onCheckedChange($event)"

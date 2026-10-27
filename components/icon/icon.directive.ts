@@ -172,11 +172,13 @@ export class NzIconDirective extends IconBase implements AfterContentChecked {
       return;
     }
 
+    // Set the property through the CSSOM rather than a `style` attribute,
+    // which a strict `style-src` Content Security Policy blocks.
     const rotate = this.nzRotate();
     if (rotate) {
-      this.renderer.setAttribute(svg, 'style', `transform: rotate(${rotate}deg)`);
+      this.renderer.setStyle(svg, 'transform', `rotate(${rotate}deg)`);
     } else {
-      this.renderer.removeAttribute(svg, 'style');
+      this.renderer.removeStyle(svg, 'transform');
     }
   }
 

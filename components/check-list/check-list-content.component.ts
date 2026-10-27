@@ -96,7 +96,9 @@ import { NzItemProps } from './typings';
           <button nz-button (click)="visible.set(true)">{{ i18n.cancel }}</button>
         </div>
         <div class="ant-check-list-close-check-other">
-          <label nz-checkbox [(ngModel)]="checked">{{ i18n.checkListCheckOther }}</label>
+          <label nz-checkbox [(ngModel)]="checked" [ngModelOptions]="{ standalone: true }">{{
+            i18n.checkListCheckOther
+          }}</label>
         </div>
       </div>
     }

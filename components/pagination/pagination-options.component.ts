@@ -20,6 +20,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
         [nzDisabled]="disabled"
         [nzSize]="nzSize"
         [ngModel]="pageSize"
+        [ngModelOptions]="{ standalone: true }"
         (ngModelChange)="onPageSizeChange($event)"
       >
         @for (option of listOfPageSizeOption; track option.value) {

@@ -963,6 +963,24 @@ describe('select', () => {
       expect(component.onClear).toHaveBeenCalled();
     });
 
+    it('should expose raw option fields through implicit and named template contexts', async () => {
+      component.listOfOption.set([{ value: 'test_01', label: component.optionTemplate, disabled: true }]);
+      component.nzOpen.set(true);
+      await flushChanges();
+
+      expect(document.querySelector('nz-option-item')!.textContent?.trim()).toBe('option: test_01 test_01 true');
+    });
+
+    it('should display the label in the top control when a string label is provided', async () => {
+      component.listOfOption.set([
+        { value: 'test_01', label: 'label 1' },
+        { value: 'test_02', label: 'label 2' }
+      ]);
+      component.value.set('test_02');
+      await flushChanges();
+      expect(selectElement.querySelector('nz-select-item')!.textContent?.trim()).toBe('label 2');
+    });
+
     it('should nzCustomTemplate works', async () => {
       component.listOfOption.set([{ value: 'value', label: 'label' }]);
       fixture.detectChanges();
@@ -2072,12 +2090,16 @@ export class TestSelectTemplateTagsComponent {
     <ng-template #dropdownTemplate><div class="dropdown-render">dropdownRender</div></ng-template>
     <ng-template #customTemplate let-selected>selected: {{ selected.nzLabel }}</ng-template>
     <ng-template #suffixIconTemplate>icon</ng-template>
+    <ng-template #optionTemplate let-option let-value="value" let-disabled="disabled">
+      option: {{ option.value }} {{ value }} {{ disabled }}
+    </ng-template>
   `
 })
 export class TestSelectReactiveDefaultComponent {
   @ViewChild('dropdownTemplate') dropdownTemplate!: TemplateRef<NzSafeAny>;
   @ViewChild('customTemplate') customTemplate!: TemplateRef<NzSafeAny>;
   @ViewChild('suffixIconTemplate') suffixIconTemplate!: TemplateRef<NzSafeAny>;
+  @ViewChild('optionTemplate', { static: true }) optionTemplate!: TemplateRef<NzSafeAny>;
   readonly value = signal<NzSafeAny | null>(null);
   readonly nzOpen = signal(false);
   valueChange = vi.fn<(value: NzSafeAny) => void>();

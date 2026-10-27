@@ -257,17 +257,19 @@ export class NzImagePreviewComponent implements OnInit {
         this.ngZone.run(() => this.wheelZoomEventHandler(event));
       });
 
-    fromEventOutsideAngular<KeyboardEvent>(this.document, 'keydown')
-      .pipe(
-        filter(event => event.keyCode === ESCAPE),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(() => {
-        this.ngZone.run(() => {
-          this.onClose();
-          this.markForCheck();
+    if (this.config.nzKeyboard) {
+      fromEventOutsideAngular<KeyboardEvent>(this.document, 'keydown')
+        .pipe(
+          filter(event => event.keyCode === ESCAPE),
+          takeUntilDestroyed(this.destroyRef)
+        )
+        .subscribe(() => {
+          this.ngZone.run(() => {
+            this.onClose();
+            this.markForCheck();
+          });
         });
-      });
+    }
   }
 
   setImages(images: NzImage[], scaleStepMap?: Map<string, number>): void {
