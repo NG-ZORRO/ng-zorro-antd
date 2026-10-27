@@ -296,6 +296,16 @@ describe('color-picker', () => {
     expect(colorPicker.formControl.value).toBe('#ff6600');
   });
 
+  it('color-picker should keep the alpha of a semi-transparent color', () => {
+    const colorPicker = resultEl.componentInstance as NzColorPickerComponent;
+
+    colorPicker.colorChange({ color: generateColor('rgba(255, 102, 0, 0.5)') });
+    expect(colorPicker.blockColor).toBe('#ff660080');
+
+    colorPicker.formatChange({ color: 'rgba(255, 102, 0, 0.5)', format: 'hex' });
+    expect(colorPicker.formControl.value).toBe('#ff660080');
+  });
+
   it('color-picker nzId', () => {
     testComponent.nzId.set('primary-color');
     fixture.detectChanges();
