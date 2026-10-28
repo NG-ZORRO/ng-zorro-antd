@@ -1,3 +1,8 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
@@ -11,6 +16,8 @@ export default defineConfig({
       reportsDirectory: 'coverage-report',
       reporter: ['html', 'text-summary', 'lcovonly', 'cobertura']
     },
-    screenshotFailures: false
+    browser: {
+      screenshotFailures: false
+    }
   }
 });
