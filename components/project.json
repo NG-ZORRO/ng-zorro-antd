@@ -32,7 +32,7 @@
       "options": {
         "buildTarget": "ng-zorro-antd-lib:build:development",
         "runner": "vitest",
-        "runnerConfig": "components/vitest.config.mjs",
+        "runnerConfig": "vitest.config.ts",
         "browsers": [
           "ChromiumHeadless"
         ],
