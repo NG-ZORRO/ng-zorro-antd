@@ -448,29 +448,69 @@ describe('input-number', () => {
     expect(component.value).toBe(5);
   });
 
-  it('should be set mouse wheel', () => {
-    const input = hostElement.querySelector('input')!;
-    component.value = 0;
-    dispatchEvent(input, new WheelEvent('wheel', { deltaY: -100 }));
-    expect(component.value).toBe(1);
-    dispatchEvent(input, new WheelEvent('wheel', { deltaY: 100 }));
-    expect(component.value).toBe(0);
+  describe('mouse wheel', () => {
+    it('should step and prevent scrolling when focused', async () => {
+      await fixture.whenStable();
+      const input = getInputElement();
+      input.focus();
+      await fixture.whenStable();
 
-    component.value = 0;
-    component.disabled.set(true);
-    fixture.detectChanges();
-    dispatchEvent(input, new WheelEvent('wheel', { deltaY: 100 }));
-    expect(component.value).toBe(0);
+      const wheelUp = new WheelEvent('wheel', { deltaY: -100, cancelable: true });
+      dispatchEvent(input, wheelUp);
+      expect(component.value).toBe(1);
+      expect(wheelUp.defaultPrevented).toBe(true);
 
-    component.value = 1;
-    component.disabled.set(false);
-    component.readonly.set(true);
-    fixture.detectChanges();
-    dispatchEvent(input, new WheelEvent('wheel', { deltaY: 100 }));
-    expect(component.value).toBe(1);
+      const wheelDown = new WheelEvent('wheel', { deltaY: 100, cancelable: true });
+      dispatchEvent(input, wheelDown);
+      expect(component.value).toBe(0);
+      expect(wheelDown.defaultPrevented).toBe(true);
+    });
+
+    it.each(['before focus', 'after blur'])('should ignore wheel events %s', async state => {
+      await fixture.whenStable();
+      const input = getInputElement();
+      const onStep = vi.spyOn(component, 'onStep');
+
+      if (state === 'after blur') {
+        input.focus();
+        await fixture.whenStable();
+        expect(hostElement.classList).toContain('ant-input-number-focused');
+        input.blur();
+        await vi.waitFor(() => expect(hostElement.classList).not.toContain('ant-input-number-focused'));
+      }
+
+      for (const deltaY of [-100, 100]) {
+        const event = new WheelEvent('wheel', { deltaY, cancelable: true });
+        dispatchEvent(input, event);
+        expect(component.value).toBeNull();
+        expect(event.defaultPrevented).toBe(false);
+      }
+      expect(onStep).not.toHaveBeenCalled();
+      expect(document.activeElement).not.toBe(input);
+    });
+
+    it.each(['disabled', 'readonly', 'changeOnWheel'] as const)('should ignore wheel events with %s', async option => {
+      await fixture.whenStable();
+      const input = getInputElement();
+      input.focus();
+      await fixture.whenStable();
+
+      component[option].set(option !== 'changeOnWheel');
+      await fixture.whenStable();
+      const onStep = vi.spyOn(component, 'onStep');
+
+      for (const deltaY of [-100, 100]) {
+        const event = new WheelEvent('wheel', { deltaY, cancelable: true });
+        dispatchEvent(input, event);
+        expect(component.value).toBeNull();
+        expect(event.defaultPrevented).toBe(false);
+      }
+      expect(onStep).not.toHaveBeenCalled();
+    });
   });
 
-  it('should be work onStep', () => {
+  it('should be work onStep', async () => {
+    await fixture.whenStable();
     const onStep = vi.spyOn(component, 'onStep');
     const input = hostElement.querySelector('input')!;
 
@@ -480,6 +520,8 @@ describe('input-number', () => {
     downStepByKeyboard();
     expect(onStep).toHaveBeenCalledWith({ value: 0, offset: component.step(), type: 'down', emitter: 'keyboard' });
 
+    input.focus();
+    await fixture.whenStable();
     dispatchEvent(input, new WheelEvent('wheel', { deltaY: -100 }));
     expect(onStep).toHaveBeenCalledWith({ value: 1, offset: component.step(), type: 'up', emitter: 'wheel' });
 
