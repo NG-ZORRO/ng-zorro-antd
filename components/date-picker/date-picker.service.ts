@@ -17,6 +17,8 @@ export class DatePickerService implements OnDestroy {
   activeDate?: CompatibleValue;
   activeInput: RangePartType = 'left';
   arrowLeft: number = 0;
+  /** Horizontal distance between the overlay and the picker input, e.g. when the overlay is pushed on screen */
+  arrowOffset: number = 0;
   isRange = false;
 
   valueChange$ = new ReplaySubject<CompatibleValue>(1);
