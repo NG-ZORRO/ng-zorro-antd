@@ -229,6 +229,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
+      cdkConnectedOverlayPush
       cdkConnectedOverlayTransformOriginOn=".{{ prefixCls }}-dropdown"
       [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayOrigin]="origin"
