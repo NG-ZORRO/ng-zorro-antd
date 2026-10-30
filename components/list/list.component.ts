@@ -16,7 +16,8 @@ import {
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
-  inject
+  inject,
+  signal
 } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -121,7 +122,7 @@ import {
     '[class.ant-list-split]': 'nzSplit',
     '[class.ant-list-bordered]': 'nzBordered',
     '[class.ant-list-loading]': 'nzLoading',
-    '[class.ant-list-something-after-last-item]': 'hasSomethingAfterLastItem'
+    '[class.ant-list-something-after-last-item]': 'hasSomethingAfterLastItem()'
   },
   imports: [
     NgTemplateOutlet,
@@ -156,7 +157,7 @@ export class NzListComponent implements AfterContentInit, OnChanges {
   @ContentChild(NzListPaginationComponent) nzListPaginationComponent!: NzListPaginationComponent;
   @ContentChild(NzListLoadMoreDirective) nzListLoadMoreDirective!: NzListLoadMoreDirective;
 
-  protected hasSomethingAfterLastItem = false;
+  protected readonly hasSomethingAfterLastItem = signal(false);
   private itemLayoutNotifySource = new BehaviorSubject<NzDirectionVHType>(this.nzItemLayout);
 
   get itemLayoutNotify$(): Observable<NzDirectionVHType> {
@@ -185,6 +186,6 @@ export class NzListComponent implements AfterContentInit, OnChanges {
   }
 
   ngAfterContentInit(): void {
-    this.hasSomethingAfterLastItem = this.getSomethingAfterLastItem();
+    this.hasSomethingAfterLastItem.set(this.getSomethingAfterLastItem());
   }
 }

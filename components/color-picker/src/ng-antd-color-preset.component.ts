@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectorRef, Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
 
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 
@@ -21,7 +21,7 @@ import { generateColor } from './util/util';
       <nz-collapse nzGhost>
         @for (preset of presets; track preset.key || $index) {
           <nz-collapse-panel
-            [nzActive]="openPresets.has($index)"
+            [nzActive]="openPresets().has($index)"
             (nzActiveChange)="onPanelActiveChange($index, $event)"
             [nzHeader]="preset.label"
           >
@@ -44,28 +44,32 @@ import { generateColor } from './util/util';
   }
 })
 export class NgAntdColorPresetComponent implements OnInit {
-  private cdr = inject(ChangeDetectorRef);
-  protected openPresets = new Set<string | number>();
+  protected readonly openPresets = signal(new Set<string | number>());
 
   @Input() presets: NzPresetColor[] = [];
   @Input() value: Color | null = null;
   @Output() readonly presetSelect = new EventEmitter<NzColor>();
 
   ngOnInit(): void {
+    const openPresets = new Set<string | number>();
     this.presets.forEach((preset, index) => {
       if (preset.defaultOpen) {
-        this.openPresets.add(index);
+        openPresets.add(index);
       }
     });
+    this.openPresets.set(openPresets);
   }
 
   onPanelActiveChange(index: number, active: boolean): void {
-    if (active) {
-      this.openPresets.add(index);
-    } else {
-      this.openPresets.delete(index);
-    }
-    this.cdr.markForCheck();
+    this.openPresets.update(openPresets => {
+      const updatedOpenPresets = new Set(openPresets);
+      if (active) {
+        updatedOpenPresets.add(index);
+      } else {
+        updatedOpenPresets.delete(index);
+      }
+      return updatedOpenPresets;
+    });
   }
 
   selectPresetColor(color: string | NzColor): void {
