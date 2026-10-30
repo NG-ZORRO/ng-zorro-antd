@@ -81,9 +81,11 @@ import { NzSelectTopControlComponent } from './select-top-control.component';
 import {
   NzFilterOptionType,
   NzSelectItemInterface,
+  NzSelectMaxTagCount,
   NzSelectModeType,
   NzSelectOptionInterface,
-  NzSelectPlacementType
+  NzSelectPlacementType,
+  maxTagCountAttribute
 } from './select.types';
 
 const defaultFilterOption: NzFilterOptionType = (searchValue: string, item: NzSelectItemInterface): boolean => {
@@ -257,7 +259,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
   @Input() nzNotFoundContent: string | TemplateRef<NzSafeAny> | undefined = undefined;
   @Input() nzPlaceHolder: string | TemplateRef<NzSafeAny> | null = null;
   @Input() nzPlacement: NzSelectPlacementType | null = null;
-  @Input() nzMaxTagCount = Infinity;
+  @Input({ transform: maxTagCountAttribute }) nzMaxTagCount: NzSelectMaxTagCount = Infinity;
   @Input() nzDropdownRender: TemplateRef<NzSafeAny> | null = null;
   @Input() nzCustomTemplate: TemplateRef<{ $implicit: NzSelectItemInterface }> | null = null;
   @Input() nzPrefix: TemplateRef<NzSafeAny> | string | null = null;
