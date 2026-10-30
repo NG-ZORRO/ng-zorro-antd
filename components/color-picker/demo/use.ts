@@ -18,9 +18,9 @@ import { NzInputModule } from 'ng-zorro-antd/input';
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label [nzSpan]="4">color</nz-form-label>
+        <nz-form-label [nzSpan]="4" nzFor="color">color</nz-form-label>
         <nz-form-control [nzSpan]="16">
-          <nz-color-picker formControlName="colorPicker" nzShowText />
+          <nz-color-picker nzId="color" formControlName="colorPicker" nzShowText />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
