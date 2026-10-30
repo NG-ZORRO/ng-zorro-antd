@@ -63,9 +63,13 @@ export class NzTreeBaseService {
    * get checked node keys
    */
   getCheckedNodeKeys(): NzTreeNodeKey[] {
-    const keys: NzTreeNodeKey[] = [];
     const checkedNodes = this.getCheckedNodeList();
+    // in strict mode, parent and children are not associated, so only the checked nodes themselves count
+    if (this.isCheckStrictly) {
+      return checkedNodes.map(node => node.key);
+    }
 
+    const keys: NzTreeNodeKey[] = [];
     const calc = (nodes: NzTreeNode[]): void => {
       nodes.forEach(node => {
         keys.push(node.key);
