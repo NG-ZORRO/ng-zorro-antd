@@ -106,6 +106,33 @@ describe('progress', () => {
       });
     });
 
+    it('should restore the cached status after completion and removal of an explicit status', () => {
+      const instance = progress.injector.get(NzProgressComponent);
+      testComponent.status.set('active');
+      fixture.detectChanges();
+
+      testComponent.status.set(undefined);
+      testComponent.percent.set(100);
+      testComponent.successPercent.set(100);
+      fixture.detectChanges();
+      expect(instance.status).toBe('success');
+      expect(progress.nativeElement.firstElementChild.classList).toContain('ant-progress-status-success');
+
+      testComponent.status.set('exception');
+      fixture.detectChanges();
+      expect(instance.status).toBe('exception');
+      expect(progress.nativeElement.firstElementChild.classList).toContain('ant-progress-status-exception');
+
+      testComponent.status.set(undefined);
+      fixture.detectChanges();
+      expect(instance.status).toBe('success');
+
+      testComponent.percent.set(50);
+      fixture.detectChanges();
+      expect(instance.status).toBe('exception');
+      expect(progress.nativeElement.firstElementChild.classList).toContain('ant-progress-status-exception');
+    });
+
     it('should showInfo work', () => {
       fixture.detectChanges();
       expect(progress.nativeElement.firstElementChild!.classList).toContain('ant-progress-show-info');

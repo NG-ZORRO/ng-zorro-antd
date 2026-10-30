@@ -4,14 +4,15 @@
  */
 
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, DebugElement, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzFormModule } from 'ng-zorro-antd/form/form.module';
 
-import { NzFormDirective, NzFormLayoutType } from './form.directive';
+import { NzFormLabelComponent } from './form-label.component';
+import { NzFormDirective, NzFormLayoutType, NzLabelAlignType } from './form.directive';
 import { NzRequiredMark } from './types';
 
 describe('form', () => {
@@ -122,6 +123,50 @@ describe('form', () => {
           expect(label.classList).not.toContain('ant-form-item-no-colon');
         }
       });
+    });
+  });
+
+  describe('label overrides', () => {
+    it('should update inherited values while preserving explicit local overrides', async () => {
+      const fixture = TestBed.createComponent(NzTestFormLabelOverridesComponent);
+      const host = fixture.componentInstance;
+      await fixture.whenStable();
+      const labels = fixture.debugElement.queryAll(By.directive(NzFormLabelComponent));
+      const inherited = labels[0].injector.get(NzFormLabelComponent);
+      const local = labels[1].injector.get(NzFormLabelComponent);
+
+      host.defaults.set({ noColon: true, align: 'left', wrap: true, icon: 'info-circle' });
+      await fixture.whenStable();
+      expect(inherited.nzNoColon).toBe(true);
+      expect(inherited.nzLabelAlign).toBe('left');
+      expect(inherited.nzLabelWrap).toBe(true);
+      expect(inherited.tooltipIcon).toEqual({ type: 'info-circle', theme: 'outline' });
+      expect(labels[0].nativeElement.classList).toContain('ant-form-item-label-left');
+      expect(labels[0].nativeElement.classList).toContain('ant-form-item-label-wrap');
+      expect(labels[0].nativeElement.querySelector('label').classList).toContain('ant-form-item-no-colon');
+
+      expect(local.nzNoColon).toBe(false);
+      expect(local.nzLabelAlign).toBe('right');
+      expect(local.nzLabelWrap).toBe(false);
+      expect(local.tooltipIcon).toEqual({ type: 'question-circle', theme: 'outline' });
+      expect(labels[1].nativeElement.classList).not.toContain('ant-form-item-label-left');
+      expect(labels[1].nativeElement.classList).not.toContain('ant-form-item-label-wrap');
+      expect(labels[1].nativeElement.querySelector('label').classList).not.toContain('ant-form-item-no-colon');
+
+      host.overrides.set({ noColon: true, align: 'left', wrap: true, icon: 'check-circle' });
+      host.defaults.set({ noColon: false, align: 'right', wrap: false, icon: 'close-circle' });
+      await fixture.whenStable();
+      expect(inherited.nzNoColon).toBe(false);
+      expect(inherited.nzLabelAlign).toBe('right');
+      expect(inherited.nzLabelWrap).toBe(false);
+      expect(inherited.tooltipIcon).toEqual({ type: 'close-circle', theme: 'outline' });
+      expect(local.nzNoColon).toBe(true);
+      expect(local.nzLabelAlign).toBe('left');
+      expect(local.nzLabelWrap).toBe(true);
+      expect(local.tooltipIcon).toEqual({ type: 'check-circle', theme: 'outline' });
+      expect(labels[1].nativeElement.classList).toContain('ant-form-item-label-left');
+      expect(labels[1].nativeElement.classList).toContain('ant-form-item-label-wrap');
+      expect(labels[1].nativeElement.querySelector('label').classList).toContain('ant-form-item-no-colon');
     });
   });
 
@@ -238,6 +283,47 @@ export class NzTestFormLabelIntegrateComponent {
   readonly defaultNoColon = signal(false);
   readonly testPriority = signal(false);
   readonly noColon = signal(false);
+}
+
+@Component({
+  imports: [NzFormModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <form
+      nz-form
+      [nzNoColon]="defaults().noColon"
+      [nzLabelAlign]="defaults().align"
+      [nzLabelWrap]="defaults().wrap"
+      [nzTooltipIcon]="defaults().icon"
+    >
+      <nz-form-item>
+        <nz-form-label>Inherited</nz-form-label>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label
+          [nzNoColon]="overrides().noColon"
+          [nzLabelAlign]="overrides().align"
+          [nzLabelWrap]="overrides().wrap"
+          [nzTooltipIcon]="overrides().icon"
+          >Local</nz-form-label
+        >
+      </nz-form-item>
+    </form>
+  `
+})
+export class NzTestFormLabelOverridesComponent {
+  readonly defaults = signal<{ noColon: boolean; align: NzLabelAlignType; wrap: boolean; icon: string }>({
+    noColon: false,
+    align: 'right',
+    wrap: false,
+    icon: 'question-circle'
+  });
+  readonly overrides = signal<{ noColon: boolean; align: NzLabelAlignType; wrap: boolean; icon: string }>({
+    noColon: false,
+    align: 'right',
+    wrap: false,
+    icon: 'question-circle'
+  });
 }
 
 @Component({
