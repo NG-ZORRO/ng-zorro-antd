@@ -364,12 +364,14 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
               // so it skips the write. Formatting again on blur still produces '1%', leaving the
               // deleted suffix unrestored. After Angular finishes rendering, reconcile the actual
               // input value with the final displayValue to restore the expected formatting.
-              afterNextRender(
-                () => {
-                  this.syncDisplayValue();
-                },
-                { injector: this.injector }
-              );
+              if (!destroyRef.destroyed) {
+                afterNextRender(
+                  () => {
+                    this.syncDisplayValue();
+                  },
+                  { injector: this.injector }
+                );
+              }
             }
           });
         });
