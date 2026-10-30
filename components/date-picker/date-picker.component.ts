@@ -229,6 +229,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
+      cdkConnectedOverlayPush
       cdkConnectedOverlayTransformOriginOn=".{{ prefixCls }}-dropdown"
       [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayOrigin]="origin"
@@ -483,6 +484,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
       this.activeBarStyle = { ...baseStyle, left: `${this.datePickerService.arrowLeft}px` };
     }
 
+    this.updateArrowOffset();
     this.cdr.markForCheck();
   }
 
@@ -592,6 +594,24 @@ export class NzDatePickerComponent implements OnInit, OnChanges, AfterViewInit, 
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
     this.currentPosition.set(position.connectionPair);
+    this.updateArrowOffset();
+  }
+
+  /**
+   * The overlay may be pushed on screen or aligned to the end of the input,
+   * so the range arrow needs to be shifted by the distance between them.
+   */
+  private updateArrowOffset(): void {
+    const overlayRef = this.cdkConnectedOverlay?.overlayRef;
+    if (!this.isRange || !overlayRef?.hasAttached()) {
+      return;
+    }
+
+    const originRect = this.elementRef.nativeElement.getBoundingClientRect();
+    const overlayRect = overlayRef.overlayElement.getBoundingClientRect();
+    this.datePickerService.arrowOffset =
+      this.dir() === 'rtl' ? overlayRect.right - originRect.right : originRect.left - overlayRect.left;
+    this.panel?.cdr.markForCheck();
   }
 
   onClickClear(event: MouseEvent): void {

@@ -467,6 +467,24 @@ describe('range-picker', () => {
       expect(arrow.style.right).not.toBe('');
       fixture.debugElement.nativeElement.parentElement.setAttribute('dir', '');
     });
+
+    it('should keep the arrow pointing at the input when the overlay is not aligned with it', () => {
+      fixtureInstance.useSuite.set(7);
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      fixture.detectChanges();
+      vi.advanceTimersByTime(10000);
+      fixture.detectChanges();
+
+      const pickerLeft = fixture.debugElement
+        .query(By.css('nz-range-picker'))
+        .nativeElement.getBoundingClientRect().left;
+      const overlayLeft = queryFromOverlay(`.${PREFIX_CLASS}-dropdown`).getBoundingClientRect().left;
+      const arrow = queryFromOverlay(`.${PREFIX_CLASS}-range-arrow`) as HTMLElement;
+
+      expect(pickerLeft).not.toBe(overlayLeft);
+      expect(parseFloat(arrow.style.left)).toBeCloseTo(pickerLeft - overlayLeft, 0);
+    });
   }); // /general api testing
 
   describe('panel switch and move forward/afterward', () => {
@@ -1414,11 +1432,14 @@ describe('Signal Forms', () => {
       @case (6) {
         <nz-range-picker [nzSeparator]="separatorTemplate" />
       }
+      @case (7) {
+        <nz-range-picker nzPlacement="bottomRight" />
+      }
     }
   `
 })
 class NzTestRangePickerComponent {
-  readonly useSuite = signal<1 | 2 | 3 | 4 | 5 | 6 | undefined>(undefined);
+  readonly useSuite = signal<1 | 2 | 3 | 4 | 5 | 6 | 7 | undefined>(undefined);
   @ViewChild('tplDateRender', { static: true }) tplDateRender!: TemplateRef<Date>;
   @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter!: TemplateRef<void>;
 
