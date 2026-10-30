@@ -568,7 +568,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   }
 
   protected onWheel(event: WheelEvent): void {
-    if (this.finalDisabled() || this.nzReadOnly() || !this.nzChangeOnWheel()) {
+    if (!this.focused() || this.finalDisabled() || this.nzReadOnly() || !this.nzChangeOnWheel()) {
       return;
     }
 
