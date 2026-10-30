@@ -10,6 +10,36 @@ nz-filter-trigger {
   display: inline-flex;
 }
 
+.@{table-prefix-cls}-filter-dropdown-criteria {
+  display: flex;
+  flex-direction: column;
+  gap: @padding-xs;
+  width: 240px;
+  padding: @padding-xs;
+  border-bottom: @border-width-base @border-style-base @border-color-split;
+
+  .@{table-prefix-cls}-filter-dropdown-criteria-range {
+    display: flex;
+    gap: @padding-xs;
+  }
+
+  .@{table-prefix-cls}-filter-dropdown-criteria-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    border: 0;
+    clip-path: inset(50%);
+  }
+
+  .@{ant-prefix}-picker {
+    width: 100%;
+  }
+}
+
 .nz-table-out-bordered {
   > .@{table-prefix-cls}-title {
     border: @table-border;
@@ -49,7 +79,6 @@ cdk-virtual-scroll-viewport.ant-table-body {
 
 // virtual scroll border
 .@{table-prefix-cls}.@{table-prefix-cls}-bordered {
-
   > .@{table-prefix-cls}-container {
     > .cdk-virtual-scroll-viewport > .cdk-virtual-scroll-content-wrapper {
       > table {
@@ -142,7 +171,8 @@ cdk-virtual-scroll-viewport.ant-table-body {
   }
 
   .@{table-prefix-cls}-thead {
-    .@{table-prefix-cls}-row, tr {
+    .@{table-prefix-cls}-row,
+    tr {
       display: flex;
       justify-content: space-between;
       width: 100%;
@@ -154,7 +184,8 @@ cdk-virtual-scroll-viewport.ant-table-body {
   }
 
   .@{table-prefix-cls}-tbody {
-    .@{table-prefix-cls}-row, tr {
+    .@{table-prefix-cls}-row,
+    tr {
       display: flex;
       justify-content: space-between;
       width: 100%;
@@ -171,7 +202,8 @@ cdk-virtual-scroll-viewport.ant-table-body {
 
   .ant-table-fixed {
     tr {
-      .ant-table-cell-fix-left-last, .ant-table-cell-fix-right-first {
+      .ant-table-cell-fix-left-last,
+      .ant-table-cell-fix-right-first {
         overflow: visible;
       }
     }
