@@ -42,6 +42,20 @@ description: 屏幕边缘滑出的浮层面板。
 | `[nzZIndex]`            | 设置 Drawer 的 `z-index`                                                                                     | `number`                                 | `1000`      |
 | `(nzOnClose)`           | 点击遮罩层或右上角叉的回调                                                                                   | `EventEmitter<MouseEvent>`               | -           |
 
+### [nzDrawerFooter]
+
+自定义抽屉页脚，支持在通过 `NzDrawerService` 打开的内容组件中使用。
+导入 `NzDrawerFooterDirective` 或 `NzDrawerModule`，支持以下两种语法：
+
+```html
+<ng-template nzDrawerFooter>
+  <button nz-button nzType="primary" (click)="save()">保存</button>
+</ng-template>
+<!-- 也可以使用：<div *nzDrawerFooter>...</div> -->
+```
+
+该指令会替换 `nzFooter`。条件页脚被移除时，仅当抽屉仍使用该模板才会清空 `nzFooter`。
+
 ### NzDrawerService
 
 | 方法名          | 说明                  | 参数                    | 返回                |
@@ -49,6 +63,8 @@ description: 屏幕边缘滑出的浮层面板。
 | create<T, D, R> | 创建并打开一个 Drawer | `NzDrawerOptions<T, D>` | `NzDrawerRef<T, R>` |
 
 ### NzDrawerOptions
+
+`NzDrawerOptionsOfComponent` 是 `NzDrawerOptions` 的已弃用兼容别名。
 
 | 参数                | 说明                                                                                                                   | 类型                                                               | 默认值      | 全局配置 |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ----------- | -------- |
@@ -80,30 +96,38 @@ description: 屏幕边缘滑出的浮层面板。
 
 #### 方法
 
-| 名称                | 说明                                | 类型                   |
-| ------------------- | ----------------------------------- | ---------------------- |
-| close               | 关闭 Drawer                         | `(result?: R) => void` |
-| open                | 打开 Drawer                         | `() => void`           |
-| getContentComponent | 返回 `nzContent` 为组件时的组件实例 | `() => T \| null`      |
+使用 `updateConfig()` 在打开后更新抽屉配置并触发渲染，支持 Zoneless 应用。`nzContent`、`nzContentParams` 和 `nzData` 是创建时配置，抽屉创建后不能更改。
+例如：`drawerRef.updateConfig({ nzFooter: footerTemplate, nzOnCancel: () => Promise.resolve(false) })`。
+更新配置不会重新创建内容组件。
+
+| 名称                | 说明                                | 类型                                          |
+| ------------------- | ----------------------------------- | --------------------------------------------- |
+| close               | 关闭 Drawer                         | `(result?: R) => void`                        |
+| open                | 打开 Drawer                         | `() => void`                                  |
+| updateConfig        | 更新抽屉配置并触发渲染              | `(options: NzDrawerUpdateOptions<T>) => void` |
+| getContentComponent | 返回 `nzContent` 为组件时的组件实例 | `() => T \| null`                             |
 
 #### 属性
 
-| 名称            | 说明                                                        | 类型                                     |
-| --------------- | ----------------------------------------------------------- | ---------------------------------------- |
-| afterOpen       | 打开之后的回调                                              | `Observable<void>`                       |
-| afterClose      | 关闭之后的回调                                              | `Observable<R>`                          |
-| nzClosable      | 是否显示右上角的关闭按钮                                    | `boolean`                                |
-| nzCloseIcon     | 自定义关闭图标                                              | `string \| TemplateRef<void> \| null`    |
-| nzMaskClosable  | 点击蒙层是否允许关闭                                        | `boolean`                                |
-| nzMask          | 是否展示遮罩                                                | `boolean`                                |
-| nzMaskStyle     | 遮罩样式                                                    | `object`                                 |
-| nzKeyboard      | 是否支持键盘 esc 关闭                                       | `boolean`                                |
-| nzBodyStyle     | Modal body 样式                                             | `object`                                 |
-| nzTitle         | 标题                                                        | `string \| TemplateRef<void>`            |
-| nzWidth         | 宽度                                                        | `number \| string`                       |
-| nzHeight        | 高度, 只在方向为 `'top'`或`'bottom'` 时生效                 | `number \| string`                       |
-| nzWrapClassName | 对话框外层容器的类名                                        | `string`                                 |
-| nzZIndex        | 设置 Drawer 的 `z-index`                                    | `number`                                 |
-| nzPlacement     | 抽屉的方向                                                  | `'top' \| 'right' \| 'bottom' \| 'left'` |
-| nzOffsetX       | x 坐标移量(px)                                              | `number`                                 |
-| nzOffsetY       | y 坐标移量(px), 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number`                                 |
+| 名称            | 说明                                                                   | 类型                                     |
+| --------------- | ---------------------------------------------------------------------- | ---------------------------------------- |
+| afterOpen       | 打开之后的回调                                                         | `Observable<void>`                       |
+| afterClose      | 关闭之后的回调                                                         | `Observable<R>`                          |
+| nzClosable      | 是否显示右上角的关闭按钮                                               | `boolean`                                |
+| nzCloseIcon     | 自定义关闭图标                                                         | `string \| TemplateRef<void> \| null`    |
+| nzMaskClosable  | 点击蒙层是否允许关闭                                                   | `boolean`                                |
+| nzMask          | 是否展示遮罩                                                           | `boolean`                                |
+| nzMaskStyle     | 遮罩样式                                                               | `object`                                 |
+| nzKeyboard      | 是否支持键盘 esc 关闭                                                  | `boolean`                                |
+| nzBodyStyle     | Modal body 样式                                                        | `object`                                 |
+| nzTitle         | 标题                                                                   | `string \| TemplateRef<void>`            |
+| nzFooter        | 抽屉的页脚                                                             | `string \| TemplateRef<void>`            |
+| nzExtra         | 抽屉右上角的操作区域                                                   | `string \| TemplateRef<void>`            |
+| nzOnCancel      | 服务创建的抽屉的当前关闭回调，返回的 Promise 结果为 `false` 时阻止关闭 | `() => Promise<any>`                     |
+| nzWidth         | 宽度                                                                   | `number \| string`                       |
+| nzHeight        | 高度, 只在方向为 `'top'`或`'bottom'` 时生效                            | `number \| string`                       |
+| nzWrapClassName | 对话框外层容器的类名                                                   | `string`                                 |
+| nzZIndex        | 设置 Drawer 的 `z-index`                                               | `number`                                 |
+| nzPlacement     | 抽屉的方向                                                             | `'top' \| 'right' \| 'bottom' \| 'left'` |
+| nzOffsetX       | x 坐标移量(px)                                                         | `number`                                 |
+| nzOffsetY       | y 坐标移量(px), 高度, 只在方向为 `'top'`或`'bottom'` 时生效            | `number`                                 |

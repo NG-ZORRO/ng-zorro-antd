@@ -45,6 +45,20 @@ achieved more efficient within the same context.
 | `[nzZIndex]`            | The `z-index` of the Drawer.                                                                                                                                                                | `number`                                 | `1000`      |
 | `(nzOnClose)`           | Specify a callback that will be called when a user clicks mask, close button or Cancel button.                                                                                              | `EventEmitter<MouseEvent>`               | -           |
 
+### [nzDrawerFooter]
+
+Customizes the drawer footer from a template, including inside a content component opened with `NzDrawerService`.
+Import `NzDrawerFooterDirective` or `NzDrawerModule`. Both syntaxes below are supported:
+
+```html
+<ng-template nzDrawerFooter>
+  <button nz-button nzType="primary" (click)="save()">Save</button>
+</ng-template>
+<!-- Alternatively: <div *nzDrawerFooter>...</div> -->
+```
+
+The directive replaces `nzFooter`. When a conditional footer is removed, it clears `nzFooter` only if its template is still in use.
+
 ### NzDrawerService
 
 | Method          | Description               | Params                  | Return              |
@@ -52,6 +66,8 @@ achieved more efficient within the same context.
 | create<T, D, R> | create and open an Drawer | `NzDrawerOptions<T, D>` | `NzDrawerRef<T, R>` |
 
 ### NzDrawerOptions
+
+`NzDrawerOptionsOfComponent` is a deprecated compatibility alias for `NzDrawerOptions`.
 
 | Params              | Description                                                                                                                                                                                                    | Type                                                               | Default     | Global Config |
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ----------- | ------------- |
@@ -90,32 +106,39 @@ parameters that have used to the 'nzContent component'
 
 #### Methods
 
-| Name                   | Description                                                               | Type                            |
-| ---------------------- | ------------------------------------------------------------------------- | ------------------------------- |
-| close                  | close the drawer.                                                         | `(result?: R) => void`          |
-| open                   | open the drawer.                                                          | `() => void`                    |
-| getContentComponent    | Returns the instance when `nzContent` is the component.                   | `() => T \| null`               |
-| getContentComponentRef | Returns the reference of the component when `nzContent` is the component. | `() => ComponentRef<T> \| null` |
+Use `updateConfig()` to update drawer options after opening and schedule rendering, including in zoneless applications. The content options `nzContent`, `nzContentParams`, and `nzData` are creation-only and cannot be changed after the drawer is created.
+For example: `drawerRef.updateConfig({ nzFooter: footerTemplate, nzOnCancel: () => Promise.resolve(false) })`.
+Updating the configuration does not recreate the content component.
+
+| Name                   | Description                                                               | Type                                          |
+| ---------------------- | ------------------------------------------------------------------------- | --------------------------------------------- |
+| close                  | close the drawer.                                                         | `(result?: R) => void`                        |
+| open                   | open the drawer.                                                          | `() => void`                                  |
+| updateConfig           | Update drawer options and schedule rendering.                             | `(options: NzDrawerUpdateOptions<T>) => void` |
+| getContentComponent    | Returns the instance when `nzContent` is the component.                   | `() => T \| null`                             |
+| getContentComponentRef | Returns the reference of the component when `nzContent` is the component. | `() => ComponentRef<T> \| null`               |
 
 #### Property
 
-| Name            | Description                                                                     | Type                                     |
-| --------------- | ------------------------------------------------------------------------------- | ---------------------------------------- |
-| afterOpen       | Callback called after open.                                                     | `Observable<void>`                       |
-| afterClose      | Callback called after close.                                                    | `Observable<R>`                          |
-| nzCloseIcon     | Custom close icon                                                               | `string \| TemplateRef<void> \| null`    |
-| nzClosable      | Whether a close (x) button is visible on top right of the Drawer dialog or not. | `boolean`                                |
-| nzMaskClosable  | Clicking on the mask (area outside the Drawer) to close the Drawer or not.      | `boolean`                                |
-| nzMask          | Whether to show mask or not.                                                    | `boolean`                                |
-| nzKeyboard      | Whether support press esc to close                                              | `boolean`                                |
-| nzMaskStyle     | Style for Drawer's mask element.                                                | `object`                                 |
-| nzBodyStyle     | Body style for modal body element. Such as height, padding etc.                 | `object`                                 |
-| nzTitle         | The title for Drawer.                                                           | `string \| TemplateRef<void>`            |
-| nzFooter        | The footer for Drawer.                                                          | `string \| TemplateRef<void>`            |
-| nzWidth         | Width of the Drawer dialog.                                                     | `number \| string`                       |
-| nzHeight        | Height of the Drawer dialog, only when placement is `'top'` or `'bottom'`.      | `number \| string`                       |
-| nzWrapClassName | The class name of the container of the Drawer dialog.                           | `string`                                 |
-| nzZIndex        | The `z-index` of the Drawer.                                                    | `number`                                 |
-| nzPlacement     | The placement of the Drawer.                                                    | `'top' \| 'right' \| 'bottom' \| 'left'` |
-| nzOffsetX       | The X coordinate offset(px).                                                    | `number`                                 |
-| nzOffsetY       | The Y coordinate offset(px), only when placement is `'top'` or `'bottom'`.      | `number`                                 |
+| Name            | Description                                                                               | Type                                     |
+| --------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------- |
+| afterOpen       | Callback called after open.                                                               | `Observable<void>`                       |
+| afterClose      | Callback called after close.                                                              | `Observable<R>`                          |
+| nzCloseIcon     | Custom close icon                                                                         | `string \| TemplateRef<void> \| null`    |
+| nzClosable      | Whether a close (x) button is visible on top right of the Drawer dialog or not.           | `boolean`                                |
+| nzMaskClosable  | Clicking on the mask (area outside the Drawer) to close the Drawer or not.                | `boolean`                                |
+| nzMask          | Whether to show mask or not.                                                              | `boolean`                                |
+| nzKeyboard      | Whether support press esc to close                                                        | `boolean`                                |
+| nzMaskStyle     | Style for Drawer's mask element.                                                          | `object`                                 |
+| nzBodyStyle     | Body style for modal body element. Such as height, padding etc.                           | `object`                                 |
+| nzTitle         | The title for Drawer.                                                                     | `string \| TemplateRef<void>`            |
+| nzFooter        | The footer for Drawer.                                                                    | `string \| TemplateRef<void>`            |
+| nzExtra         | Extra actions area at corner.                                                             | `string \| TemplateRef<void>`            |
+| nzOnCancel      | Current close handler for service-created drawers. Resolving to `false` prevents closing. | `() => Promise<any>`                     |
+| nzWidth         | Width of the Drawer dialog.                                                               | `number \| string`                       |
+| nzHeight        | Height of the Drawer dialog, only when placement is `'top'` or `'bottom'`.                | `number \| string`                       |
+| nzWrapClassName | The class name of the container of the Drawer dialog.                                     | `string`                                 |
+| nzZIndex        | The `z-index` of the Drawer.                                                              | `number`                                 |
+| nzPlacement     | The placement of the Drawer.                                                              | `'top' \| 'right' \| 'bottom' \| 'left'` |
+| nzOffsetX       | The X coordinate offset(px).                                                              | `number`                                 |
+| nzOffsetY       | The Y coordinate offset(px), only when placement is `'top'` or `'bottom'`.                | `number`                                 |

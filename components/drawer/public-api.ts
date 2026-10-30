@@ -4,6 +4,7 @@
  */
 
 export * from './drawer-content.directive';
+export * from './drawer-footer.directive';
 export * from './drawer-options';
 export * from './drawer-ref';
 export * from './drawer.component';
