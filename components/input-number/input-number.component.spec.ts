@@ -202,6 +202,25 @@ describe('input-number', () => {
       expect(component.value).toBe(null);
     });
 
+    it('should restore a deleted formatter suffix on blur', async () => {
+      component.formatter.set((value: number): string => `${value}%`);
+      component.parser.set((value: string): number => parseFloat(value.replace('%', '')));
+      await fixture.whenStable();
+
+      input('1');
+      await fixture.whenStable();
+      expect(getInputElement().value).toBe('1%');
+
+      input('1');
+      await fixture.whenStable();
+      expect(component.value).toBe(1);
+
+      blur();
+      await fixture.whenStable();
+      expect(getInputElement().value).toBe('1%');
+      expect(component.value).toBe(1);
+    });
+
     it('with formatter', () => {
       component.formatter.set((value: number): string => `${value}%`);
       component.parser.set((value: string): number => parseFloat(value?.replace('%', '')));

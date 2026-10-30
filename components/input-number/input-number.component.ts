@@ -23,6 +23,7 @@ import {
   numberAttribute,
   OnInit,
   output,
+  Renderer2,
   signal,
   untracked,
   viewChild,
@@ -235,6 +236,7 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
   private inputRef = viewChild.required<ElementRef<HTMLInputElement>>('input');
   private hostRef = viewChild<ElementRef<HTMLDivElement>>('inputNumberHost');
   private elementRef = inject(ElementRef);
+  private renderer = inject(Renderer2);
   private injector = inject(Injector);
   private focusMonitor = inject(FocusMonitor);
   private directionality = inject(Directionality);
@@ -355,6 +357,21 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
               this.fixValue();
               this.onTouched();
               this.nzBlur.emit();
+              // A user edit can change the DOM value without changing the final formatted value.
+              // For example, deleting '%' from '1%' leaves input.value as '1'. In the input handler,
+              // displayValue changes from '1%' to '1' and back to '1%' before Angular checks [value].
+              // Angular compares against the previous binding value, not the current DOM value,
+              // so it skips the write. Formatting again on blur still produces '1%', leaving the
+              // deleted suffix unrestored. After Angular finishes rendering, reconcile the actual
+              // input value with the final displayValue to restore the expected formatting.
+              if (!destroyRef.destroyed) {
+                afterNextRender(
+                  () => {
+                    this.syncDisplayValue();
+                  },
+                  { injector: this.injector }
+                );
+              }
             }
           });
         });
@@ -443,6 +460,14 @@ export class NzInputNumberComponent implements OnInit, ControlValueAccessor {
     });
 
     this.focus();
+  }
+
+  private syncDisplayValue(): void {
+    const input = this.inputRef().nativeElement;
+    const displayValue = this.displayValue();
+    if (input.value !== displayValue) {
+      this.renderer.setProperty(input, 'value', displayValue);
+    }
   }
 
   private setValue(value: number | null): void {
