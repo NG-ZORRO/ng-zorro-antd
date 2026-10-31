@@ -34,7 +34,7 @@ import {
   typeInElement
 } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzInputModule, NzInputWrapperComponent } from 'ng-zorro-antd/input';
 
 import {
   NzAutocompleteComponent,
@@ -917,6 +917,19 @@ describe('auto-complete', () => {
       expect(componentInstance.trigger['getConnectedElement']()).toBe(componentInstance.origin.elementRef);
       const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
       expect(Math.ceil(parseFloat(overlayPane.style.width))).toBe(320);
+    });
+
+    it('should align the dropdown with the input-wrapper by default', () => {
+      const componentInstance = fixture.componentInstance;
+      const wrapper = fixture.debugElement.query(By.directive(NzInputWrapperComponent)).nativeElement as HTMLElement;
+      vi.spyOn(wrapper, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 0, 360, 32));
+
+      componentInstance.trigger.openPanel();
+      fixture.detectChanges();
+
+      expect(componentInstance.trigger['getConnectedElement']().nativeElement).toBe(wrapper);
+      const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
+      expect(Math.ceil(parseFloat(overlayPane.style.width))).toBe(360);
     });
   });
 });
