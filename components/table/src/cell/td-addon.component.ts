@@ -15,18 +15,21 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
-  booleanAttribute
+  booleanAttribute,
+  inject
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
+import { NzCellFixedDirective } from './cell-fixed.directive';
 import { NzRowExpandButtonDirective } from '../addon/row-expand-button.directive';
 import { NzRowIndentDirective } from '../addon/row-indent.directive';
+import { NzCellEllipsisDirective } from '../styled/ellipsis.directive';
 
 @Component({
   selector:
-    'td[nzChecked], td[nzDisabled], td[nzIndeterminate], td[nzIndentSize], td[nzExpand], td[nzShowExpand], td[nzShowCheckbox]',
+    'td[nzChecked], td[nzDisabled], td[nzIndeterminate], td[nzIndentSize], td[nzExpand], td[nzShowExpand], td[nzShowCheckbox], td[nzEllipsis]',
   encapsulation: ViewEncapsulation.None,
   template: `
     @if (nzShowExpand || nzIndentSize > 0) {
@@ -53,15 +56,27 @@ import { NzRowIndentDirective } from '../addon/row-indent.directive';
         (ngModelChange)="onCheckedChange($event)"
       ></label>
     }
-    <ng-content />
+    @if (ellipsisDir?.nzEllipsis && fixedDir) {
+      <span class="ant-table-cell-content">
+        <ng-template [ngTemplateOutlet]="contentTemplate" />
+      </span>
+    } @else {
+      <ng-template [ngTemplateOutlet]="contentTemplate" />
+    }
+    <ng-template #contentTemplate>
+      <ng-content />
+    </ng-template>
   `,
   host: {
     '[class.ant-table-cell-with-append]': `nzShowExpand || nzIndentSize > 0`,
     '[class.ant-table-selection-column]': `nzShowCheckbox`
   },
-  imports: [NzRowIndentDirective, NzRowExpandButtonDirective, NgTemplateOutlet, NzCheckboxModule, FormsModule]
+  imports: [NzRowIndentDirective, NzRowExpandButtonDirective, NzCheckboxModule, NgTemplateOutlet, FormsModule]
 })
 export class NzTdAddOnComponent implements OnChanges {
+  readonly ellipsisDir = inject(NzCellEllipsisDirective, { self: true, optional: true });
+  readonly fixedDir = inject(NzCellFixedDirective, { self: true, optional: true });
+
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
