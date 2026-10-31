@@ -12,12 +12,14 @@ import {
   booleanAttribute,
   ChangeDetectorRef,
   Component,
+  computed,
   ContentChildren,
   DestroyRef,
   ElementRef,
   EventEmitter,
   forwardRef,
   inject,
+  input,
   Input,
   OnChanges,
   OnInit,
@@ -28,7 +30,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { combineLatest, merge } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 
@@ -105,7 +107,7 @@ const listOfHorizontalPositions = [
       >
         <div
           nz-submenu-none-inline-child
-          [theme]="theme"
+          [theme]="theme()"
           [mode]="mode"
           [open]="nzOpen"
           [position]="position"
@@ -161,6 +163,10 @@ export class NzSubMenuComponent implements OnInit, AfterContentInit, OnChanges {
   private readonly nzMenuService = inject(MenuService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly platform = inject(Platform);
+  private readonly menuTheme = toSignal(this.nzMenuService.theme$, { requireSync: true });
+
+  public readonly nzTheme = input<NzMenuThemeType | undefined>(undefined);
+  protected readonly theme = computed(() => this.nzTheme() || this.menuTheme());
 
   @Input() nzMenuClassName: string = '';
   @Input() nzPaddingLeft: number | null = null;
@@ -182,7 +188,6 @@ export class NzSubMenuComponent implements OnInit, AfterContentInit, OnChanges {
   private level = this.nzSubmenuService.level;
   position: 'left' | 'right' = 'right';
   triggerWidth: number | null = null;
-  theme: NzMenuThemeType = 'light';
   mode: NzMenuModeType = 'vertical';
   inlinePaddingLeft: number | null = null;
   overlayPositions = listOfVerticalPositions;
@@ -227,12 +232,6 @@ export class NzSubMenuComponent implements OnInit, AfterContentInit, OnChanges {
   }
 
   ngOnInit(): void {
-    /** submenu theme update **/
-    this.nzMenuService.theme$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(theme => {
-      this.theme = theme;
-      this.cdr.markForCheck();
-    });
-
     /** submenu mode update **/
     this.nzSubmenuService.mode$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(mode => {
       this.mode = mode;

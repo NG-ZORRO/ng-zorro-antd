@@ -80,6 +80,7 @@ You can set the title of `[nz-submenu]` in the following ways.
 | `[nzDisabled]`             | whether sub menu is disabled or not             | `boolean`                                                                                   | `false`        |
 | `[nzTitle]`                | set submenu title                               | `string \| TemplateRef<void>`                                                               | -              |
 | `[nzIcon]`                 | `icon` type in title                            | `string`                                                                                    | -              |
+| `[nzTheme]`                | color theme of the submenu popup                | `'light' \| 'dark'`                                                                         | parent menu    |
 | `[nzMenuClassName]`        | Custom the submenu container's class name       | `string`                                                                                    | -              |
 | `[nzTriggerSubMenuAction]` | Which action can trigger submenu open/close     | `'hover' \| 'click'`                                                                        | `'hover'`      |
 | `(nzOpenChange)`           | nzOpen callback                                 | `EventEmitter<boolean>`                                                                     | -              |
