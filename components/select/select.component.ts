@@ -704,6 +704,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterCon
       const listOfTransformedItem = listOfOptions.map(item => {
         return {
           template: item.label instanceof TemplateRef ? item.label : null,
+          templateContext: { ...item },
           nzTitle: this.getTitle(item.title, item.label),
           nzLabel: typeof item.label === 'string' || typeof item.label === 'number' ? item.label : null,
           nzValue: item.value,

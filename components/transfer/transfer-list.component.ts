@@ -82,6 +82,7 @@ import { RenderListContext, TransferDirection, TransferItem, TransferStat } from
               [placeholder]="searchPlaceholder"
               [disabled]="disabled"
               [(ngModel)]="filter"
+              [ngModelOptions]="{ standalone: true }"
               (ngModelChange)="handleFilter($event)"
             />
           </nz-input-wrapper>

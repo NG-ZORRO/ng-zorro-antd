@@ -26,13 +26,12 @@ description: A content area which can be collapsed and expanded.
 
 ### nz-collapse-panel
 
-| Property           | Description                                 | Type                               | Default | Global Config | Version |
-| ------------------ | ------------------------------------------- | ---------------------------------- | ------- | ------------- | ------- |
-| `[nzDisabled]`     | If `true`, panel cannot be opened or closed | `boolean`                          | `false` | -             |
-| `[nzHeader]`       | Title of the panel                          | `string \| TemplateRef<void>`      | -       | -             |
-| `[nzExpandedIcon]` | Customize an icon for toggle                | `string \| TemplateRef<void>`      | -       | -             |
-| `[nzExtra]`        | Extra element in the corner                 | `string \| TemplateRef<void>`      | -       | -             |
-| `[nzShowArrow]`    | Display arrow or not                        | `boolean`                          | `true`  | ✅            |
-| `[nzActive]`       | Active status of panel, double binding      | `boolean`                          | -       | -             |
-| `[nzCollapsible]`  | Set collapsible trigger area                | `'header' \| 'icon' \| 'disabled'` | -       | -             | 20.2.0  |
-| `(nzActiveChange)` | Callback function of the active status      | `EventEmitter<boolean>`            | -       | -             |
+| Property           | Description                            | Type                               | Default | Global Config | Version |
+| ------------------ | -------------------------------------- | ---------------------------------- | ------- | ------------- | ------- |
+| `[nzHeader]`       | Title of the panel                     | `string \| TemplateRef<void>`      | -       | -             |
+| `[nzExpandedIcon]` | Customize an icon for toggle           | `string \| TemplateRef<void>`      | -       | -             |
+| `[nzExtra]`        | Extra element in the corner            | `string \| TemplateRef<void>`      | -       | -             |
+| `[nzShowArrow]`    | Display arrow or not                   | `boolean`                          | `true`  | ✅            |
+| `[nzActive]`       | Active status of panel, double binding | `boolean`                          | -       | -             |
+| `[nzCollapsible]`  | Set collapsible trigger area           | `'header' \| 'icon' \| 'disabled'` | -       | -             | 20.2.0  |
+| `(nzActiveChange)` | Callback function of the active status | `EventEmitter<boolean>`            | -       | -             |

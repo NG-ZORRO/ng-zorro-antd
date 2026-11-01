@@ -227,7 +227,7 @@ Customized filter panel
 | `[nzDropdownMenu]`  | Dropdown menu                                                                                     | `NzDropdownMenuComponent` | -       |
 | `[nzVisible]`       | whether the dropdown menu is visible, double binding                                              | `boolean`                 | -       |
 | `[nzActive]`        | whether the icon status is activated                                                              | `boolean`                 | `false` |
-| `[nzHasBackdrop]`   | Whether or not attach a backdrop.                                                                 | `boolean`                 | `false` |
+| `[nzBackdrop]`      | Whether or not attach a backdrop.                                                                 | `boolean`                 | `false` |
 | `(nzVisibleChange)` | a callback function takes an argument: `nzVisible`, is executed when the visible state is changed | `EventEmitter<boolean>`   | -       |
 
 ### [nz-virtual-scroll]

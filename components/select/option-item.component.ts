@@ -26,12 +26,14 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
+import { getItemTemplateOutletContext } from './util';
+
 @Component({
   selector: 'nz-option-item',
   template: `
     <div class="ant-select-item-option-content">
       @if (customContent) {
-        <ng-template [ngTemplateOutlet]="template" />
+        <ng-template [ngTemplateOutlet]="template" [ngTemplateOutletContext]="templateOutletContext" />
       } @else {
         {{ label }}
       }
@@ -67,6 +69,7 @@ export class NzOptionItemComponent implements OnChanges, OnInit {
   @Input() grouped = false;
   @Input({ transform: booleanAttribute }) customContent = false;
   @Input() template: TemplateRef<NzSafeAny> | null = null;
+  @Input() templateContext: NzSafeAny | null = null;
   @Input() disabled = false;
   @Input() showState = false;
   @Input() title?: string | number | null;
@@ -79,8 +82,13 @@ export class NzOptionItemComponent implements OnChanges, OnInit {
   @Output() readonly itemClick = new EventEmitter<NzSafeAny>();
   @Output() readonly itemHover = new EventEmitter<NzSafeAny>();
 
+  protected templateOutletContext: NzSafeAny = null;
+
   ngOnChanges(changes: SimpleChanges): void {
-    const { value, activatedValue, listOfSelectedValue } = changes;
+    const { value, activatedValue, listOfSelectedValue, templateContext } = changes;
+    if (templateContext) {
+      this.templateOutletContext = getItemTemplateOutletContext(this.templateContext);
+    }
     if (value || listOfSelectedValue) {
       this.selected = this.listOfSelectedValue.some(v => this.compareWith(v, this.value));
     }

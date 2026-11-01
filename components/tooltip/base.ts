@@ -132,6 +132,18 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
   protected readonly triggerDisposables: VoidFunction[] = [];
 
   private delayTimer?: ReturnType<typeof setTimeout>;
+  /**
+   * Whether the pending {@link delayTimer} will open (rather than close) the overlay.
+   */
+  private delayTimerOpens = false;
+  /**
+   * Timer used to update the value of {@link isTouchTriggered}.
+   */
+  private touchResetTimer?: ReturnType<typeof setTimeout>;
+  /**
+   * Tracks whether the most recent pointer interaction was a touch.
+   */
+  private isTouchTriggered: boolean = false;
 
   // componentType is supplied by subclasses, not Angular DI.
   // eslint-disable-next-line @angular-eslint/prefer-inject
@@ -139,6 +151,7 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
     this.destroyRef.onDestroy(() => {
       // Clear toggling timer. Issue #3875 #4317 #4386
       this.clearTogglingTimer();
+      this.clearTouchResetTimer();
       this.removeTriggerListeners();
     });
   }
@@ -228,13 +241,31 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
 
     if (trigger === 'hover') {
       let overlayElement: HTMLElement;
+
+      // Because of Hybrid devices, rather than disabling hover we flag a short window after `touchend` event.
+      // Following W3C Touch Events documented sequence `touchend` should fire before the mouse events.
+      this.triggerDisposables.push(
+        this.renderer.listen(el, 'touchend', () => {
+          // A touch must never result in a delayed hover-open, including one that a
+          // real `mouseenter` scheduled just before the tap.
+          this.cancelPendingOpenTimer();
+          this.isTouchTriggered = true;
+          this.clearTouchResetTimer();
+          this.touchResetTimer = setTimeout(() => {
+            this.isTouchTriggered = false;
+          }, 500);
+        })
+      );
       this.triggerDisposables.push(
         this.renderer.listen(el, 'mouseenter', () => {
+          // Only the compatibility hover-open path is suppressed.
+          if (this.isTouchTriggered) return;
           this.delayEnterLeave(true, true, this._mouseEnterDelay);
         })
       );
       this.triggerDisposables.push(
         this.renderer.listen(el, 'mouseleave', () => {
+          // No touch guard here: closing must always work.
           this.delayEnterLeave(true, false, this._mouseLeaveDelay);
           if (this.component?.overlay.overlayRef && !overlayElement) {
             overlayElement = this.component.overlay.overlayRef.overlayElement;
@@ -315,8 +346,10 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
     if (this.delayTimer) {
       this.clearTogglingTimer();
     } else if (delay > 0) {
+      this.delayTimerOpens = isEnter;
       this.delayTimer = setTimeout(() => {
         this.delayTimer = undefined;
+        this.delayTimerOpens = false;
         isEnter ? this.show() : this.hide();
       }, delay * 1000);
     } else {
@@ -335,6 +368,23 @@ export abstract class NzTooltipBaseDirective implements AfterViewInit, OnChanges
     if (this.delayTimer) {
       clearTimeout(this.delayTimer);
       this.delayTimer = undefined;
+    }
+    this.delayTimerOpens = false;
+  }
+
+  private clearTouchResetTimer(): void {
+    if (this.touchResetTimer) {
+      clearTimeout(this.touchResetTimer);
+      this.touchResetTimer = undefined;
+    }
+  }
+
+  /**
+   * Cancels a scheduled show, but leaves a scheduled hide untouched.
+   */
+  private cancelPendingOpenTimer(): void {
+    if (this.delayTimer && this.delayTimerOpens) {
+      this.clearTogglingTimer();
     }
   }
 }

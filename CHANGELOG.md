@@ -1,3 +1,25 @@
+## [22.1.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/22.1.1...22.1.2) (2026-10-09)
+
+### Bug Fixes
+
+- **\*:** isolate internal `ngModel` controls to avoid `NG01354` errors ([#9986](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9986)) ([5ac745b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5ac745b2ecdfa4bd197e34d4f8441ec80b39589d))
+- **i18n:** add missing translations to `ro_RO` ([#10002](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10002)) ([54c7573](https://github.com/NG-ZORRO/ng-zorro-antd/commit/54c7573d97ee6842017e4407dd056c0196e8c234))
+- **icon:** apply rotation through CSSOM for compatibility with strict CSP ([#9990](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9990)) ([e95d13f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e95d13f784d22ae8dc7073d3ab7767c947126886))
+- **image:** respect `nzKeyboard` when closing previews with Escape ([#9983](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9983)) ([10a07e4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/10a07e40308a097d3e5636d3dc1ca9fe39815939)), closes [#9980](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9980)
+- **modal:** allow the mask fade-out animation to complete before closing ([#9967](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9967)) ([fb93d6b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fb93d6b6fca3349f28bff5d85946e5dc5686be4e))
+- **tooltip,popover,popconfirm:** suppress synthetic hover activation after touch interactions ([#9881](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9881)) ([58fc4bb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/58fc4bb58a5095c7f11b305375b92c32d382297b))
+
+## [22.1.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/22.1.0...22.1.1) (2026-09-22)
+
+### Bug Fixes
+
+- **date-picker:** apply `aria-selected` and `aria-disabled` to grid cells ([#9968](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9968)) ([e07388b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e07388bb550baeb3da87881a42a2617f9444a6e2))
+- **input:** correct search button border radius ([#9972](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9972)) ([6a44eff](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6a44eff4be805797a3794de196d888ee69ba6fac))
+- **menu:** reset submenu state when its overlay detaches ([#9966](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9966)) ([6058afa](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6058afa2d3fea67c0db8d8bdf5d3fae47659f5c5))
+- **rate:** use `tabindex="0"` to preserve document focus order ([#9970](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9970)) ([52682e5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/52682e5371dfbf3b5af8d0665052ff51a394f5b0))
+- **slider:** initialize correctly with Signal Forms ([#9961](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9961)) ([9f42b30](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9f42b3012452317e3a1ceb7a3fbbda84017e0317))
+- **table:** measure column widths correctly during modal animations ([#9960](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9960)) ([cfe390e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/cfe390e18430d834928ec4f263f2925a0771d58e))
+
 ## [22.1.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/22.0.1...22.1.0) (2026-09-17)
 
 ### Features

@@ -61,9 +61,19 @@ interface NzThItemInterface {
             @for (f of listOfParsedFilter; track f.value) {
               <li nz-menu-item [nzSelected]="f.checked" (click)="check(f)">
                 @if (!filterMultiple) {
-                  <label nz-radio [ngModel]="f.checked" (ngModelChange)="check(f)"></label>
+                  <label
+                    nz-radio
+                    [ngModel]="f.checked"
+                    [ngModelOptions]="{ standalone: true }"
+                    (ngModelChange)="check(f)"
+                  ></label>
                 } @else {
-                  <label nz-checkbox [ngModel]="f.checked" (ngModelChange)="check(f)"></label>
+                  <label
+                    nz-checkbox
+                    [ngModel]="f.checked"
+                    [ngModelOptions]="{ standalone: true }"
+                    (ngModelChange)="check(f)"
+                  ></label>
                 }
                 <span>{{ f.text }}</span>
               </li>

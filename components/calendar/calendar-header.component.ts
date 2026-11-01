@@ -40,6 +40,7 @@ import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
           [nzSize]="size"
           [nzDropdownMatchSelectWidth]="false"
           [ngModel]="activeYear"
+          [ngModelOptions]="{ standalone: true }"
           (ngModelChange)="updateYear($event)"
         >
           @for (year of years; track year.value) {
@@ -53,6 +54,7 @@ import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
             [nzSize]="size"
             [nzDropdownMatchSelectWidth]="false"
             [ngModel]="activeMonth"
+            [ngModelOptions]="{ standalone: true }"
             (ngModelChange)="monthChange.emit($event)"
           >
             @for (month of months; track month.value) {
@@ -64,6 +66,7 @@ import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
         <nz-radio-group
           class="ant-picker-calendar-mode-switch"
           [(ngModel)]="mode"
+          [ngModelOptions]="{ standalone: true }"
           (ngModelChange)="modeChange.emit($event)"
           [nzSize]="size"
         >

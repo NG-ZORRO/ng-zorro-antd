@@ -166,7 +166,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
     </nz-space-compact>
     <br />
     <nz-space-compact nzBlock>
-      <nz-input-wrapper nzAddOnBefore="Http://" nzAddOnAfter=".com" [style.width.%]="50">
+      <nz-input-wrapper nzAddonBefore="Http://" nzAddonAfter=".com" [style.width.%]="50">
         <input nz-input placeholder="input here" />
       </nz-input-wrapper>
       <nz-input-number>

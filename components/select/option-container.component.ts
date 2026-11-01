@@ -66,6 +66,7 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
                 [icon]="menuItemSelectedIcon"
                 [customContent]="item.nzCustomContent"
                 [template]="item.template ?? null"
+                [templateContext]="item.templateContext ?? null"
                 [grouped]="!!item.groupLabel"
                 [disabled]="
                   item.nzDisabled || (isMaxMultipleCountReached && !listOfSelectedValue.includes(item['nzValue']))
