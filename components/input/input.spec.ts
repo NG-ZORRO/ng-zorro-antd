@@ -4,7 +4,15 @@
  */
 
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Component, DebugElement, signal, viewChild, ViewEncapsulation, WritableSignal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DebugElement,
+  signal,
+  viewChild,
+  ViewEncapsulation,
+  WritableSignal
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { disabled, form, FormField } from '@angular/forms/signals';
@@ -615,7 +623,8 @@ export class TestInputFinalVariantComponent {
   encapsulation: ViewEncapsulation.None,
   styles: `
     @import './style/testing.less';
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzTestInputAutosizeTextareaComponent {
   readonly size = signal<NzSizeLDSType>('default');
