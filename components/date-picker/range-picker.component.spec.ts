@@ -1079,6 +1079,24 @@ describe('range-picker', () => {
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
     });
+
+    it('should highlight the weeks of the selected range', async () => {
+      fixtureInstance.modelValue.set([new Date(2018, 10, 7), new Date(2018, 10, 21)]);
+      await stabilize();
+      openPickerByClickTrigger();
+
+      const rowClasses = (index: number): DOMTokenList =>
+        queryFromOverlay(`.ant-picker-panel:first-child table tbody tr:nth-child(${index})`).classList;
+
+      expect(rowClasses(2).contains('ant-picker-week-panel-row-range-start')).toBe(true);
+      expect(rowClasses(3).contains('ant-picker-week-panel-row-range-hover')).toBe(true);
+      expect(rowClasses(4).contains('ant-picker-week-panel-row-range-end')).toBe(true);
+      [1, 5].forEach(index => {
+        expect(rowClasses(index).contains('ant-picker-week-panel-row-range-start')).toBe(false);
+        expect(rowClasses(index).contains('ant-picker-week-panel-row-range-hover')).toBe(false);
+        expect(rowClasses(index).contains('ant-picker-week-panel-row-range-end')).toBe(false);
+      });
+    });
   });
 
   describe('month mode', () => {

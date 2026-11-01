@@ -65,6 +65,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
     const firstDayOfMonth = this.activeDate.calendarStart({
       weekStartsOn: this.dateAdapter.getFirstDayOfWeek() as WeekDayIndex
     });
+    const [startSelected, endSelected] = this.hasRangeValue() ? this.selectedValue : [];
 
     for (let week = 0; week < this.MAX_ROW; week++) {
       const weekStart = firstDayOfMonth.addDays(week * 7);
@@ -73,6 +74,8 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
         dateCells: [],
         trackByIndex: week
       };
+      let isRangeStart = false;
+      let isRangeEnd = false;
 
       for (let day = 0; day < 7; day++) {
         const date = weekStart.addDays(day);
@@ -104,11 +107,17 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
         if (date.isSameDay(this.value)) {
           row.isActive = date.isSameDay(this.value);
         }
+        isRangeStart ||= date.isSameDay(startSelected);
+        isRangeEnd ||= date.isSameDay(endSelected);
         row.dateCells.push(cell);
       }
+      const isInRange = !!startSelected?.isBeforeDay(weekStart) && weekStart.addDays(6).isBeforeDay(endSelected);
       row.classMap = {
         [`ant-picker-week-panel-row`]: this.canSelectWeek,
-        [`ant-picker-week-panel-row-selected`]: this.canSelectWeek && row.isActive
+        [`ant-picker-week-panel-row-selected`]: this.canSelectWeek && row.isActive,
+        [`ant-picker-week-panel-row-range-start`]: this.canSelectWeek && isRangeStart,
+        [`ant-picker-week-panel-row-range-end`]: this.canSelectWeek && isRangeEnd,
+        [`ant-picker-week-panel-row-range-hover`]: this.canSelectWeek && isInRange
       };
       weekRows.push(row);
     }
