@@ -12,6 +12,8 @@ import { By } from '@angular/platform-browser';
 
 import { vi } from 'vitest';
 
+import { NzOverflowContainerComponent } from 'ng-zorro-antd/cdk/overflow';
+import { NzResizeObserverFactory } from 'ng-zorro-antd/cdk/resize-observer';
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NZ_FORM_SIZE, NZ_FORM_VARIANT } from 'ng-zorro-antd/core/form';
 import {
@@ -31,8 +33,10 @@ import { NzSelectTopControlComponent } from './select-top-control.component';
 import { NzSelectComponent, NzSelectSizeType } from './select.component';
 import { NzSelectModule } from './select.module';
 import {
+  maxTagCountAttribute,
   NzFilterOptionType,
   NzSelectItemInterface,
+  NzSelectMaxTagCount,
   NzSelectModeType,
   NzSelectOptionInterface,
   NzSelectPlacementType
@@ -887,6 +891,230 @@ describe('select', () => {
       component.nzMaxTagPlaceholder.set(component.tagTemplate);
       fixture.detectChanges();
       expect(listOfItem[2].textContent?.trim()).toBe('and 2 more selected');
+    });
+
+    it('should maxTagCountAttribute handle transform', () => {
+      expect(maxTagCountAttribute('responsive')).toBe('responsive');
+      expect(maxTagCountAttribute('5')).toBe(5);
+      expect(maxTagCountAttribute(10)).toBe(10);
+      expect(maxTagCountAttribute(undefined)).toBe(Infinity);
+      expect(maxTagCountAttribute(null)).toBe(Infinity);
+    });
+  });
+
+  describe('responsive maxTagCount', () => {
+    let component: TestSelectResponsiveComponent;
+    let fixture: ComponentFixture<TestSelectResponsiveComponent>;
+    let selectElement: HTMLElement;
+    let resize: ReturnType<typeof createSelectResizeHarness>;
+
+    async function flushChanges(): Promise<void> {
+      fixture.detectChanges();
+      await updateNonSignalsInput(fixture, 16);
+      fixture.detectChanges();
+    }
+
+    beforeEach(async () => {
+      resize = createSelectResizeHarness();
+      TestBed.configureTestingModule({
+        providers: [{ provide: NzResizeObserverFactory, useValue: resize.factory }]
+      });
+      fixture = TestBed.createComponent(TestSelectResponsiveComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+      selectElement = fixture.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+      await flushChanges();
+    });
+
+    it('should show every tag when the line is wide enough', async () => {
+      await layout({ container: 1000, item: 40, rest: 40, suffix: 20 });
+      expect(visibleTagHosts().length).toBe(4);
+      expect(restHost().hasAttribute('inert')).toBe(true);
+      expect(selectElement.querySelector('.ant-select-selection-overflow-item-suffix input')).toBeTruthy();
+    });
+
+    it('should collapse tags that do not fit and keep the search suffix', async () => {
+      await layout({ container: 200, item: 80, rest: 50, suffix: 30 });
+      expect(visibleTagHosts().length).toBe(1);
+      expect(tagHosts().filter(item => item.hasAttribute('inert')).length).toBe(3);
+      expect(restText()).toBe('+ 3 ...');
+      expect(restHost().hasAttribute('inert')).toBe(false);
+      const suffix = suffixHost();
+      expect(suffix.style.position).toBe('absolute');
+      expect(suffix.style.getPropertyValue('inset-inline-start')).toBe('130px');
+      expect(suffix.style.left).toBe('');
+      expect(suffix.querySelector('input')).toBeTruthy();
+    });
+
+    it('should show only the rest item when nothing fits', async () => {
+      await layout({ container: 40, item: 80, rest: 40, suffix: 20 });
+      expect(overflowContainer().displayCount()).toBe(-1);
+      expect(visibleTagHosts().length).toBe(0);
+      expect(tagHosts().every(item => item.hasAttribute('inert'))).toBe(true);
+      expect(restText()).toBe('+ 4 ...');
+      expect(selectElement.querySelector('.ant-select-selection-overflow-item-suffix input')).toBeTruthy();
+    });
+
+    it('should render a custom nzMaxTagPlaceholder as the measured rest', async () => {
+      component.nzMaxTagPlaceholder.set(component.tagTemplate);
+      await flushChanges();
+      await layout({ container: 200, item: 80, rest: 50, suffix: 30 });
+      expect(restText()).toBe('and 3 more selected');
+
+      await layout({ container: 200, item: 80, rest: 180, suffix: 30 });
+      expect(visibleTagHosts().length).toBe(0);
+      expect(restText()).toBe('and 4 more selected');
+    });
+
+    it('should measure a custom tag template instead of its label text', async () => {
+      component.nzCustomTemplate.set(component.customTemplate);
+      await flushChanges();
+      await layout({ container: 1000, item: 40, rest: 40, suffix: 20 });
+      expect(selectElement.textContent).toContain('wide alpha');
+      expect(visibleTagHosts().length).toBe(4);
+
+      await layout({ container: 200, item: 180, rest: 40, suffix: 20 });
+      expect(visibleTagHosts().length).toBeLessThan(4);
+      expect(tagHosts()[0].textContent).toContain('wide alpha');
+    });
+
+    it('should drop a tag when the search suffix gets wider', async () => {
+      await layout({ container: 250, item: 80, rest: 40, suffix: 20 });
+      expect(visibleTagHosts().length).toBe(2);
+
+      const input = suffixHost().querySelector('input')!;
+      input.value = 'long search';
+      dispatchFakeEvent(input, 'input');
+      await flushChanges();
+      setMeasuredWidth(suffixHost(), 140);
+      resize.flush();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(input.value).toBe('long search');
+      expect(visibleTagHosts().length).toBe(0);
+    });
+
+    it('should show a previously hidden tag after one tag is removed', async () => {
+      await layout({ container: 300, item: 80, rest: 40, suffix: 20 });
+      expect(visibleTagHosts().length).toBe(3);
+      expect(restHost().hasAttribute('inert')).toBe(false);
+
+      dispatchFakeEvent(selectElement.querySelector('.anticon-close')!, 'click');
+      await flushChanges();
+      await layout({ container: 300, item: 80, rest: 40, suffix: 20 });
+
+      expect(component.value().length).toBe(3);
+      expect(visibleTagHosts().length).toBe(3);
+      expect(tagHosts().some(item => item.hasAttribute('inert'))).toBe(false);
+      expect(restHost().hasAttribute('inert')).toBe(true);
+    });
+
+    it('should clear responsive tags', async () => {
+      component.nzAllowClear.set(true);
+      await flushChanges();
+      dispatchMouseEvent(selectElement.querySelector('nz-select-clear')!, 'click');
+      await flushChanges();
+      expect(component.value().length).toBe(0);
+      expect(tagHosts().length).toBe(0);
+    });
+
+    it('should still collapse tags when the select is disabled', async () => {
+      component.nzDisabled.set(true);
+      await flushChanges();
+      await layout({ container: 200, item: 80, rest: 50, suffix: 30 });
+      expect(visibleTagHosts().length).toBe(1);
+      expect(selectElement.querySelector('.ant-select-selection-item-remove')).toBeNull();
+    });
+
+    it('should keep a numeric nzMaxTagCount stable when the container resizes', async () => {
+      component.nzMaxTagCount.set(2);
+      await flushChanges();
+      resize.flush();
+      fixture.detectChanges();
+      const items = selectElement.querySelectorAll('nz-select-item');
+      expect(selectElement.querySelector('nz-overflow-container')).toBeNull();
+      expect(items.length).toBe(3);
+      expect(items[2].textContent?.trim()).toBe('+ 2 ...');
+
+      component.nzMaxTagPlaceholder.set(component.tagTemplate);
+      fixture.detectChanges();
+      expect(selectElement.querySelectorAll('nz-select-item')[2].textContent?.trim()).toBe('and 2 more selected');
+    });
+
+    it('should ignore responsive maxTagCount in single mode', async () => {
+      component.nzMode.set('default');
+      component.value.set('a');
+      component.nzMaxTagCount.set('responsive');
+      await flushChanges();
+      expect(selectElement.querySelector('nz-overflow-container')).toBeNull();
+      expect(selectElement.querySelectorAll('nz-select-item').length).toBe(1);
+      expect(selectElement.querySelector('nz-select-item')!.textContent).toContain('alpha');
+    });
+
+    async function layout(widths: { container: number; item: number; rest: number; suffix: number }): Promise<void> {
+      setMeasuredWidth(selectElement.querySelector('nz-overflow-container') as HTMLElement, widths.container);
+      tagHosts().forEach(item => setMeasuredWidth(item, widths.item));
+      setMeasuredWidth(restHost(), widths.rest);
+      setMeasuredWidth(suffixHost(), widths.suffix);
+      resize.flush();
+      await fixture.whenStable();
+      fixture.detectChanges();
+    }
+
+    function overflowContainer(): NzOverflowContainerComponent {
+      return fixture.debugElement.query(By.directive(NzOverflowContainerComponent)).componentInstance;
+    }
+
+    function tagHosts(): HTMLElement[] {
+      return [...selectElement.querySelectorAll<HTMLElement>('.ant-select-selection-overflow-item')].filter(
+        item =>
+          !item.classList.contains('ant-select-selection-overflow-item-rest') &&
+          !item.classList.contains('ant-select-selection-overflow-item-suffix')
+      );
+    }
+
+    function visibleTagHosts(): HTMLElement[] {
+      return tagHosts().filter(item => !item.hasAttribute('inert'));
+    }
+
+    function restHost(): HTMLElement {
+      return selectElement.querySelector<HTMLElement>('.ant-select-selection-overflow-item-rest')!;
+    }
+
+    function suffixHost(): HTMLElement {
+      return selectElement.querySelector<HTMLElement>('.ant-select-selection-overflow-item-suffix')!;
+    }
+
+    function restText(): string {
+      return restHost().textContent!.replace(/\s+/g, ' ').trim();
+    }
+  });
+
+  describe('responsive maxTagCount without ResizeObserver', () => {
+    let fixture: ComponentFixture<TestSelectResponsiveComponent>;
+    let selectElement: HTMLElement;
+
+    beforeEach(async () => {
+      TestBed.configureTestingModule({
+        providers: [{ provide: NzResizeObserverFactory, useValue: { create: (): null => null } }]
+      });
+      fixture = TestBed.createComponent(TestSelectResponsiveComponent);
+      fixture.detectChanges();
+      selectElement = fixture.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
+      fixture.detectChanges();
+      await updateNonSignalsInput(fixture, 16);
+      fixture.detectChanges();
+    });
+
+    it('should leave every tag visible', () => {
+      const tags = [...selectElement.querySelectorAll<HTMLElement>('.ant-select-selection-overflow-item')].filter(
+        item =>
+          !item.classList.contains('ant-select-selection-overflow-item-rest') &&
+          !item.classList.contains('ant-select-selection-overflow-item-suffix')
+      );
+      expect(tags.length).toBe(4);
+      expect(tags.every(item => !item.hasAttribute('inert') && item.style.opacity !== '0')).toBe(true);
     });
   });
 
@@ -2049,7 +2277,7 @@ export class TestSelectTemplateMultipleComponent {
 export class TestSelectTemplateTagsComponent {
   @ViewChild('tagTemplate') tagTemplate!: TemplateRef<NzSafeAny>;
   readonly nzSize = signal<NzSelectSizeType>('default');
-  readonly nzMaxTagCount = signal(Infinity);
+  readonly nzMaxTagCount = signal<NzSelectMaxTagCount>(Infinity);
   readonly value = signal<NzSafeAny[]>([]);
   readonly listOfOption = signal<NzSelectItemInterface[]>([]);
   valueChange = vi.fn();
@@ -2189,7 +2417,7 @@ export class TestSelectReactiveMultipleComponent {
 export class TestSelectReactiveTagsComponent {
   @ViewChild('tagTemplate') tagTemplate?: TemplateRef<NzSafeAny>;
   readonly nzSize = signal<NzSelectSizeType>('default');
-  readonly nzMaxTagCount = signal(Infinity);
+  readonly nzMaxTagCount = signal<NzSelectMaxTagCount>(Infinity);
   readonly value = signal<NzSafeAny[]>([]);
   readonly listOfOption = signal<NzSelectOptionInterface[]>([]);
   valueChange = vi.fn();
@@ -2250,4 +2478,79 @@ export class TestSelectFinalSizeComponent {
 })
 export class TestSelectFinalVariantComponent {
   readonly variant = signal<NzVariant | undefined>(undefined);
+}
+
+function setMeasuredWidth(element: HTMLElement, width: number): void {
+  Object.defineProperty(element, 'clientWidth', { configurable: true, get: () => width });
+  Object.defineProperty(element, 'offsetWidth', { configurable: true, get: () => width });
+}
+
+function createSelectResizeHarness(): { factory: NzResizeObserverFactory; flush: () => void } {
+  const observed: Array<{ callback: ResizeObserverCallback; elements: Set<Element> }> = [];
+  const factory: NzResizeObserverFactory = {
+    create(callback: ResizeObserverCallback): ResizeObserver {
+      const record = { callback, elements: new Set<Element>() };
+      observed.push(record);
+      return {
+        observe: element => {
+          record.elements.add(element);
+        },
+        unobserve: element => {
+          record.elements.delete(element);
+        },
+        disconnect: () => {
+          record.elements.clear();
+        }
+      } as ResizeObserver;
+    }
+  };
+  return {
+    factory,
+    flush: () => {
+      for (const record of observed) {
+        const entries = [...record.elements].map(target => ({ target }) as ResizeObserverEntry);
+        if (entries.length) {
+          record.callback(entries, null as unknown as ResizeObserver);
+        }
+      }
+    }
+  };
+}
+
+@Component({
+  imports: [FormsModule, NzSelectModule],
+  template: `
+    <nz-select
+      [nzMode]="nzMode()"
+      [nzMaxTagCount]="nzMaxTagCount()"
+      [nzMaxTagPlaceholder]="nzMaxTagPlaceholder() ?? null"
+      [nzCustomTemplate]="nzCustomTemplate() ?? null"
+      [nzDisabled]="nzDisabled()"
+      [nzAllowClear]="nzAllowClear()"
+      [(ngModel)]="value"
+    >
+      @for (o of listOfOption(); track o.nzValue) {
+        <nz-option [nzValue]="o.nzValue" [nzLabel]="o.nzLabel" [nzDisabled]="o.nzDisabled" />
+      }
+    </nz-select>
+    <ng-template #tagTemplate let-selectedList>and {{ selectedList.length }} more selected</ng-template>
+    <ng-template #customTemplate let-selected>wide {{ selected.nzLabel }}</ng-template>
+  `
+})
+class TestSelectResponsiveComponent {
+  @ViewChild('tagTemplate', { static: true }) tagTemplate!: TemplateRef<{ $implicit: NzSafeAny[] }>;
+  @ViewChild('customTemplate', { static: true }) customTemplate!: TemplateRef<{ $implicit: NzSelectItemInterface }>;
+  readonly nzMode = signal<NzSelectModeType>('tags');
+  readonly nzMaxTagCount = signal<NzSelectMaxTagCount>('responsive');
+  readonly nzMaxTagPlaceholder = signal<TemplateRef<{ $implicit: NzSafeAny[] }> | undefined>(undefined);
+  readonly nzCustomTemplate = signal<TemplateRef<{ $implicit: NzSelectItemInterface }> | undefined>(undefined);
+  readonly nzDisabled = signal(false);
+  readonly nzAllowClear = signal(false);
+  readonly value = signal<NzSafeAny>(['a', 'b', 'c', 'd']);
+  readonly listOfOption = signal<NzSelectItemInterface[]>([
+    { nzValue: 'a', nzLabel: 'alpha' },
+    { nzValue: 'b', nzLabel: 'bravo' },
+    { nzValue: 'c', nzLabel: 'charlie' },
+    { nzValue: 'd', nzLabel: 'delta' }
+  ]);
 }

@@ -11,7 +11,8 @@ import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 @Directive({
   selector: '[nzOverflowItem]',
   host: {
-    '[style]': 'overflowStyle'
+    '[style]': 'overflowStyle',
+    '[attr.inert]': 'hidden ? "" : null'
   }
 })
 export class NzOverflowItemDirective {
@@ -19,6 +20,7 @@ export class NzOverflowItemDirective {
   private elementRef = inject(ElementRef);
   private cdr = inject(ChangeDetectorRef);
 
+  hidden = false;
   overflowStyle: Record<string, string | number | undefined> | undefined = undefined;
   itemWidth$ = this.nzResizeObserver.observe(this.elementRef.nativeElement).pipe(
     map(([item]) => (item.target as HTMLElement).offsetWidth),
@@ -32,6 +34,7 @@ export class NzOverflowItemDirective {
 
   setItemStyle(display: boolean, order: number): void {
     const mergedHidden = !display;
+    this.hidden = mergedHidden;
     this.overflowStyle = {
       opacity: mergedHidden ? 0 : 1,
       height: mergedHidden ? 0 : undefined,
