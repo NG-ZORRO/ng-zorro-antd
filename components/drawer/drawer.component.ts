@@ -15,18 +15,18 @@ import {
   OverlayRef
 } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, ComponentPortal, PortalModule, TemplatePortal } from '@angular/cdk/portal';
-import { NgTemplateOutlet } from '@angular/common';
+import { Location, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   booleanAttribute,
   ChangeDetectorRef,
   Component,
-  computed,
   ComponentRef,
   ContentChild,
   DestroyRef,
   DOCUMENT,
   EventEmitter,
+  forwardRef,
   inject,
   Injector,
   Input,
@@ -35,6 +35,7 @@ import {
   Output,
   reflectComponentType,
   Renderer2,
+  signal,
   SimpleChanges,
   TemplateRef,
   Type,
@@ -57,9 +58,10 @@ import {
   DRAWER_DEFAULT_SIZE,
   DRAWER_LARGE_SIZE,
   NZ_DRAWER_DATA,
-  NzDrawerOptionsOfComponent,
+  NzDrawerOptions,
   NzDrawerPlacement,
-  NzDrawerSize
+  NzDrawerSize,
+  NzDrawerUpdateOptions
 } from './drawer-options';
 import { NzDrawerRef } from './drawer-ref';
 
@@ -70,6 +72,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
 @Component({
   selector: 'nz-drawer',
   exportAs: 'nzDrawer',
+  providers: [{ provide: NzDrawerRef, useExisting: forwardRef(() => NzDrawerComponent) }],
   imports: [NzNoAnimationDirective, NzOutletModule, NzIconModule, PortalModule, NgTemplateOutlet, CdkScrollable],
   template: `
     <ng-template #drawerTemplate>
@@ -153,7 +156,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
 })
 export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extends Partial<T> = NzSafeAny>
   extends NzDrawerRef<T, R>
-  implements OnInit, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent
+  implements OnInit, AfterViewInit, OnChanges, NzDrawerOptions
 {
   private readonly renderer = inject(Renderer2);
   private readonly injector = inject(Injector);
@@ -164,6 +167,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   private readonly directionality = inject(Directionality);
   private readonly destroyRef = inject(DestroyRef);
   private readonly document = inject(DOCUMENT);
+  private readonly location = inject(Location, { optional: true });
 
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
@@ -177,7 +181,18 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   @Input({ transform: booleanAttribute }) nzKeyboard: boolean = true;
   @Input() nzTitle?: string | TemplateRef<{}>;
   @Input() nzExtra?: string | TemplateRef<{}>;
-  @Input() nzFooter?: string | TemplateRef<{}>;
+  private readonly footer = signal<string | TemplateRef<{}> | undefined>(undefined);
+
+  @Input()
+  get nzFooter(): string | TemplateRef<{}> | undefined {
+    return this.footer();
+  }
+
+  set nzFooter(value: string | TemplateRef<{}> | undefined) {
+    this.footer.set(value);
+  }
+
+  nzOnCancel?: () => Promise<NzSafeAny>;
   @Input() nzPlacement: NzDrawerPlacement = 'right';
   @Input() nzSize: NzDrawerSize = 'default';
   @Input() nzMaskStyle: NgStyleInterface = {};
@@ -298,7 +313,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
   // from service config
   @WithConfig() nzDirection?: Direction = undefined;
 
-  protected readonly dir = computed(() => this.nzDirection || this.directionality.valueSignal());
+  protected readonly dir = (): Direction => this.nzDirection || this.directionality.valueSignal();
 
   constructor() {
     super();
@@ -310,6 +325,7 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
 
   ngOnInit(): void {
     this.attachOverlay();
+    this.subscribeToNavigation();
     this.updateOverlayStyle();
     this.updateBodyOverflow();
     this.templateContext = { $implicit: this.nzData || this.nzContentParams, drawerRef: this as NzDrawerRef<R> };
@@ -403,6 +419,18 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
     return this.componentRef;
   }
 
+  updateConfig(options: NzDrawerUpdateOptions<T>): void {
+    const previousPlacement = this.nzPlacement;
+    Object.assign(this, options);
+    if (this.overlayRef && this.nzPlacement !== previousPlacement) {
+      this.triggerPlacementChangeCycleOnce();
+    }
+    if (this.overlayRef) {
+      overlayZIndexSetter(this.overlayRef, this.nzZIndex);
+    }
+    this.cdr.markForCheck();
+  }
+
   closeClick(): void {
     this.nzOnClose.emit();
   }
@@ -453,7 +481,6 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
     if (!this.overlayRef) {
       this.portal = new TemplatePortal(this.drawerTemplate, this.viewContainerRef);
       this.overlayRef = createOverlayRef(this.injector, {
-        disposeOnNavigation: this.nzCloseOnNavigation,
         positionStrategy: createGlobalPositionStrategy(this.injector),
         scrollStrategy: createBlockScrollStrategy(this.injector)
       });
@@ -478,6 +505,15 @@ export class NzDrawerComponent<T extends {} = NzSafeAny, R = NzSafeAny, D extend
           this.disposeOverlay();
         });
     }
+  }
+
+  private subscribeToNavigation(): void {
+    const subscription = this.location?.subscribe(() => {
+      if (this.nzCloseOnNavigation) {
+        this.disposeOverlay();
+      }
+    });
+    this.destroyRef.onDestroy(() => subscription?.unsubscribe());
   }
 
   private disposeOverlay(): void {
