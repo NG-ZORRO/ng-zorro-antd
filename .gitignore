@@ -36,6 +36,9 @@ yarn.lock
 .vscode/*
 !.vscode/mcp.json
 
+#IDE - Zed
+.zed/
+
 # misc
 /.angular/cache
 /.nx-cache
