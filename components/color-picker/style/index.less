@@ -119,11 +119,23 @@
       margin: 0 @margin-xss 0 @margin-xs;
       font-size: @font-size-base;
     }
+
+    .@{color-picker-prefix-cls}-clear {
+      width: 24px;
+      height: 24px;
+      margin-bottom: 0;
+      cursor: inherit;
+    }
   }
 
   &-sm {
     min-width: 24px;
     height: 24px;
+
+    .@{color-picker-prefix-cls}-clear {
+      width: 16px;
+      height: 16px;
+    }
   }
 
   &-lg {
@@ -132,6 +144,11 @@
 
     .@{color-picker-prefix-cls}-trigger-text {
       font-size: @font-size-lg;
+    }
+
+    .@{color-picker-prefix-cls}-clear {
+      width: 32px;
+      height: 32px;
     }
   }
 
