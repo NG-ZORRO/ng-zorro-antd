@@ -96,6 +96,12 @@
 
       .@{collapse-prefix-cls}-expand-icon {
         cursor: pointer;
+
+        &:focus-visible {
+          outline: @line-width-focus solid @border-color-primary;
+          outline-offset: 1px;
+          transition: outline-offset 0s, outline 0s;
+        }
       }
     }
 
