@@ -6,7 +6,7 @@
 import { Component, inject, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
-import { CandyDate, NzDateAdapter, WeekDayIndex } from 'ng-zorro-antd/core/time';
+import { CandyDate, NzDateAdapter } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
@@ -23,30 +23,40 @@ import { transCompatFormat } from './util';
 })
 export class DateTableComponent extends AbstractTable implements OnChanges, OnInit {
   private readonly i18n = inject(NzI18nService);
-  private readonly dateAdapter = inject(NzDateAdapter);
+  private readonly dateAdapter = inject<NzDateAdapter<Date>>(NzDateAdapter);
 
   @Input() format?: string;
 
   private changeValueFromInside(value: CandyDate): void {
     // Only change date, does not change time
-    this.activeDate = this.activeDate.setYear(value.getYear()).setMonth(value.getMonth()).setDate(value.getDate());
+    let date = this.dateAdapter.setDate(this.dateAdapter.clone(this.activeDate.nativeDate), 1);
+    date = this.dateAdapter.setYear(date, this.dateAdapter.getYear(value.nativeDate));
+    date = this.dateAdapter.setMonth(date, this.dateAdapter.getMonth(value.nativeDate));
+    date = this.dateAdapter.setDate(date, this.dateAdapter.getDate(value.nativeDate));
+    this.activeDate = new CandyDate(date);
     this.valueChange.emit(this.activeDate);
 
-    if (!this.activeDate.isSameMonth(this.value)) {
+    if (
+      !this.value ||
+      this.dateAdapter.getYear(date) !== this.dateAdapter.getYear(this.value.nativeDate) ||
+      this.dateAdapter.getMonth(date) !== this.dateAdapter.getMonth(this.value.nativeDate)
+    ) {
       this.render();
     }
   }
 
   makeHeadRow(): DateCell[] {
     const weekDays: DateCell[] = [];
-    const start = this.activeDate.calendarStart({ weekStartsOn: this.dateAdapter.getFirstDayOfWeek() as WeekDayIndex });
+    const start = this.dateAdapter.calendarStartOfWeek(
+      this.dateAdapter.calendarStartOfMonth(this.activeDate.nativeDate)
+    );
     for (let colIndex = 0; colIndex < this.MAX_COL; colIndex++) {
-      const day = start.addDays(colIndex);
+      const day = this.dateAdapter.addCalendarDays(start, colIndex);
       weekDays.push({
         trackByIndex: null,
-        value: day.nativeDate,
-        title: this.dateAdapter.format(day.nativeDate, 'E'), // eg. Tue
-        content: this.dateAdapter.format(day.nativeDate, this.getVeryShortWeekFormat()), // eg. Tu,
+        value: day,
+        title: this.dateAdapter.format(day, 'E'), // eg. Tue
+        content: this.dateAdapter.format(day, this.getVeryShortWeekFormat()), // eg. Tu,
         isSelected: false,
         isDisabled: false,
         onClick(): void {},
@@ -62,12 +72,12 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
 
   makeBodyRows(): DateBodyRow[] {
     const weekRows: DateBodyRow[] = [];
-    const firstDayOfMonth = this.activeDate.calendarStart({
-      weekStartsOn: this.dateAdapter.getFirstDayOfWeek() as WeekDayIndex
-    });
+    const firstDayOfMonth = this.dateAdapter.calendarStartOfWeek(
+      this.dateAdapter.calendarStartOfMonth(this.activeDate.nativeDate)
+    );
 
     for (let week = 0; week < this.MAX_ROW; week++) {
-      const weekStart = firstDayOfMonth.addDays(week * 7);
+      const weekStart = this.dateAdapter.addCalendarDays(firstDayOfMonth, week * 7);
       const row: DateBodyRow = {
         isActive: false,
         dateCells: [],
@@ -75,7 +85,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
       };
 
       for (let day = 0; day < 7; day++) {
-        const date = weekStart.addDays(day);
+        const date = new CandyDate(this.dateAdapter.addCalendarDays(weekStart, day));
         const dateFormat = transCompatFormat(
           this.format ?? this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY-MM-DD')
         );
@@ -91,7 +101,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
           title,
           cellRender: valueFunctionProp(this.cellRender!, date), // Customized content
           fullCellRender: valueFunctionProp(this.fullCellRender!, date),
-          content: `${date.getDate()}`,
+          content: `${this.dateAdapter.getDate(date.nativeDate)}`,
           onClick: () => this.changeValueFromInside(date),
           onMouseEnter: () => this.cellHover.emit(date)
         };
@@ -101,8 +111,8 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
         if (this.showWeek && !row.weekNum) {
           row.weekNum = this.dateAdapter.getISOWeek(date.nativeDate);
         }
-        if (date.isSameDay(this.value)) {
-          row.isActive = date.isSameDay(this.value);
+        if (this.value && this.dateAdapter.sameDate(date.nativeDate, this.value.nativeDate)) {
+          row.isActive = true;
         }
         row.dateCells.push(cell);
       }
@@ -120,42 +130,49 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
       const [startHover, endHover] = this.hoverValue;
       const [startSelected, endSelected] = this.selectedValue;
       // Selected
-      if (startSelected?.isSameDay(date)) {
+      if (startSelected && this.dateAdapter.sameDate(startSelected.nativeDate, date.nativeDate)) {
         cell.isSelectedStart = true;
         cell.isSelected = true;
       }
 
-      if (endSelected?.isSameDay(date)) {
+      if (endSelected && this.dateAdapter.sameDate(endSelected.nativeDate, date.nativeDate)) {
         cell.isSelectedEnd = true;
         cell.isSelected = true;
       }
 
       if (startHover && endHover) {
-        cell.isHoverStart = startHover.isSameDay(date);
-        cell.isHoverEnd = endHover.isSameDay(date);
-        cell.isLastCellInPanel = date.isLastDayOfMonth();
-        cell.isFirstCellInPanel = date.isFirstDayOfMonth();
-        cell.isInHoverRange = startHover.isBeforeDay(date) && date.isBeforeDay(endHover);
+        cell.isHoverStart = this.dateAdapter.sameDate(startHover.nativeDate, date.nativeDate);
+        cell.isHoverEnd = this.dateAdapter.sameDate(endHover.nativeDate, date.nativeDate);
+        cell.isLastCellInPanel = this.dateAdapter.isLastDayOfMonth(date.nativeDate);
+        cell.isFirstCellInPanel = this.dateAdapter.isFirstDayOfMonth(date.nativeDate);
+        cell.isInHoverRange =
+          this.dateAdapter.compareDate(startHover.nativeDate, date.nativeDate) < 0 &&
+          this.dateAdapter.compareDate(date.nativeDate, endHover.nativeDate) < 0;
       }
       cell.isStartSingle = startSelected && !endSelected;
       cell.isEndSingle = !startSelected && endSelected;
-      cell.isInSelectedRange = startSelected?.isBeforeDay(date) && date.isBeforeDay(endSelected);
+      cell.isInSelectedRange =
+        !!startSelected &&
+        !!endSelected &&
+        this.dateAdapter.compareDate(startSelected.nativeDate, date.nativeDate) < 0 &&
+        this.dateAdapter.compareDate(date.nativeDate, endSelected.nativeDate) < 0;
       cell.isRangeStartNearHover = startSelected && cell.isInHoverRange;
       cell.isRangeEndNearHover = endSelected && cell.isInHoverRange;
     }
 
-    cell.isToday = date.isToday();
-    cell.isSelected = date.isSameDay(this.value);
+    cell.isToday = this.dateAdapter.isToday(date.nativeDate);
+    cell.isSelected = !!this.value && this.dateAdapter.sameDate(date.nativeDate, this.value.nativeDate);
     cell.isDisabled = !!this.disabledDate?.(date.nativeDate);
     cell.classMap = this.getClassMap(cell);
   }
 
   override getClassMap(cell: DateCell): Record<string, boolean> {
-    const date = new CandyDate(cell.value);
     return {
       ...super.getClassMap(cell),
       [`ant-picker-cell-today`]: !!cell.isToday,
-      [`ant-picker-cell-in-view`]: date.isSameMonth(this.activeDate)
+      [`ant-picker-cell-in-view`]:
+        this.dateAdapter.getYear(cell.value) === this.dateAdapter.getYear(this.activeDate.nativeDate) &&
+        this.dateAdapter.getMonth(cell.value) === this.dateAdapter.getMonth(this.activeDate.nativeDate)
     };
   }
 }
