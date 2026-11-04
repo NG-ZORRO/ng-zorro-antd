@@ -160,7 +160,7 @@ describe('Coverage supplements', () => {
     let component: DateTableComponent;
 
     beforeEach(() => {
-      TestBed.overrideProvider(NzDateAdapter, { useClass: ShiftedDateAdapter });
+      TestBed.overrideProvider(NzDateAdapter, { useFactory: () => new ShiftedDateAdapter(), deps: [] });
       fixture = TestBed.createComponent(DateTableComponent);
       component = fixture.componentInstance;
     });
