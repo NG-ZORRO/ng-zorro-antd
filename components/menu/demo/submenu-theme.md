@@ -1,5 +1,5 @@
 ---
-order: 8
+order: 5
 version: 22.2.0
 title:
   zh-CN: 子菜单主题

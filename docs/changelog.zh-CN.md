@@ -33,7 +33,7 @@ tag: '{{version}}'
 - **auto-complete:** 默认将浮层与 `nz-input-wrapper` 对齐 ([#10035](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10035)) ([8f8b3c7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8f8b3c77be789ae06260dc946d874d3b951b83fe))
 - **auto-complete:** 避免销毁已重新打开的浮层 ([#9996](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9996)) ([42b3fb9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/42b3fb9dc48319c8051b84976a04a7d0af45ad20))
 - **descriptions:** 修正条目内边距 ([#9999](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9999)) ([83aec8c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/83aec8cb40ff16d40706f89ead3bf58374b728a0))
-- **drawer:** 在无 Zone 模式下于关闭延时结束后刷新视图 ([#10017](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10017)) ([53de3a2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/53de3a21806fc1f2b190cb3ff15a35633190069a))
+- **drawer:** 在 zoneless 模式下于关闭延时结束后刷新视图 ([#10017](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10017)) ([53de3a2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/53de3a21806fc1f2b190cb3ff15a35633190069a))
 - **i18n:** 补充 `tr_TR` 缺失的翻译 ([#10025](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10025)) ([914538c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/914538cec16e53e06b40c092880720f1adbab992))
 - **i18n:** 在 `ro_RO` 中使用罗马尼亚日期格式 ([#10012](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10012)) ([d8b3d05](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d8b3d05bf32fcbc11ed6595edb86ab30f41aeeb4))
 - **i18n:** 在 `tr_TR` 中使用土耳其日期格式 ([#10026](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10026)) ([0a1a1fe](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0a1a1feb50877452d8b1be57ba8492634487e21a))
