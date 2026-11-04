@@ -73,17 +73,17 @@ You can set the title of `[nz-submenu]` in the following ways.
 </ng-template>
 ```
 
-| Param                      | Description                                     | Type                                                                                        | Default value  |
-| -------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------- | -------------- |
-| `[nzPlacement]`            | placement of pop menu                           | `'bottomLeft' \| 'bottomCenter' \| 'bottomRight' \| 'topLeft' \| 'topCenter' \| 'topRight'` | `'bottomLeft'` |
-| `[nzOpen]`                 | whether sub menu is open or not, double binding | `boolean`                                                                                   | `false`        |
-| `[nzDisabled]`             | whether sub menu is disabled or not             | `boolean`                                                                                   | `false`        |
-| `[nzTitle]`                | set submenu title                               | `string \| TemplateRef<void>`                                                               | -              |
-| `[nzIcon]`                 | `icon` type in title                            | `string`                                                                                    | -              |
-| `[nzTheme]`                | color theme of the submenu popup                | `'light' \| 'dark'`                                                                         | parent menu    |
-| `[nzMenuClassName]`        | Custom the submenu container's class name       | `string`                                                                                    | -              |
-| `[nzTriggerSubMenuAction]` | Which action can trigger submenu open/close     | `'hover' \| 'click'`                                                                        | `'hover'`      |
-| `(nzOpenChange)`           | nzOpen callback                                 | `EventEmitter<boolean>`                                                                     | -              |
+| Param                      | Description                                     | Type                                                                                        | Default value  | Version |
+| -------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------- | -------------- | ------- |
+| `[nzPlacement]`            | placement of pop menu                           | `'bottomLeft' \| 'bottomCenter' \| 'bottomRight' \| 'topLeft' \| 'topCenter' \| 'topRight'` | `'bottomLeft'` |         |
+| `[nzOpen]`                 | whether sub menu is open or not, double binding | `boolean`                                                                                   | `false`        |         |
+| `[nzDisabled]`             | whether sub menu is disabled or not             | `boolean`                                                                                   | `false`        |         |
+| `[nzTitle]`                | set submenu title                               | `string \| TemplateRef<void>`                                                               | -              |         |
+| `[nzIcon]`                 | `icon` type in title                            | `string`                                                                                    | -              |         |
+| `[nzTheme]`                | color theme of the submenu popup                | `'light' \| 'dark'`                                                                         | parent menu    | 22.2.0  |
+| `[nzMenuClassName]`        | Custom the submenu container's class name       | `string`                                                                                    | -              |         |
+| `[nzTriggerSubMenuAction]` | Which action can trigger submenu open/close     | `'hover' \| 'click'`                                                                        | `'hover'`      |         |
+| `(nzOpenChange)`           | nzOpen callback                                 | `EventEmitter<boolean>`                                                                     | -              |         |
 
 ### [nz-menu-group]
 

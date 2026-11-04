@@ -1,3 +1,31 @@
+## [22.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/22.1.2...22.2.0) (2026-11-04)
+
+### Features
+
+- **date-picker:** support custom clear icons ([#10001](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10001)) ([84598cc](https://github.com/NG-ZORRO/ng-zorro-antd/commit/84598cc23f6cadb452b96adcc456549a34ae2eac)), closes [#6781](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6781)
+- **date-picker:** support `nzPrefix` ([#9964](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9964)) ([6713f84](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6713f8419cb58c4c60954375ae2ad61304c417c6))
+- **drawer:** support footer directives and dynamic configuration ([#10019](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10019)) ([f2084c3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f2084c3eb536c520b95e326891d64a08bb63b1aa))
+- **menu:** support `nzTheme` for submenu ([#9976](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9976)) ([d4342a0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d4342a0f49b3417602242ba3274d6f62f0b2fdf0))
+- **select:** provide option context to label template ([#9963](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9963)) ([a52daf4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a52daf49421cf87136d2266ec2542cd8cbb35558))
+
+### Bug Fixes
+
+- **auto-complete:** align the panel with `nz-input-wrapper` by default ([#10035](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10035)) ([8f8b3c7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8f8b3c77be789ae06260dc946d874d3b951b83fe))
+- **auto-complete:** avoid disposing reopened overlay ([#9996](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9996)) ([42b3fb9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/42b3fb9dc48319c8051b84976a04a7d0af45ad20))
+- **descriptions:** correct item padding ([#9999](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9999)) ([83aec8c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/83aec8cb40ff16d40706f89ead3bf58374b728a0))
+- **drawer:** refresh view after close timeout in zoneless mode ([#10017](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10017)) ([53de3a2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/53de3a21806fc1f2b190cb3ff15a35633190069a))
+- **i18n:** add missing translations to `tr_TR` ([#10025](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10025)) ([914538c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/914538cec16e53e06b40c092880720f1adbab992))
+- **i18n:** use Romanian date format in `ro_RO` ([#10012](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10012)) ([d8b3d05](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d8b3d05bf32fcbc11ed6595edb86ab30f41aeeb4))
+- **i18n:** use Turkish date format in `tr_TR` ([#10026](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10026)) ([0a1a1fe](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0a1a1feb50877452d8b1be57ba8492634487e21a))
+- **input-number:** disable wheel control when not in focus ([#10029](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10029)) ([7a90747](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7a9074755064bfc754e046e1dac377216ce941eb))
+- **input-number:** synchronize the display value on blur ([#10030](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10030)) ([949250a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/949250ad2223586a16215df263c4c12bc6ee6a6e))
+- **table:** restore ellipsis in fixed columns ([#10015](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10015)) ([7a04e96](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7a04e965b37b7b45514ee6ad3ffb48e963b9c125))
+- **table:** unsubscribe the header scroll sync on destroy ([#10037](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10037)) ([9e6379e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9e6379e0c6f2240ee8981c121df54f05ffcaf19b))
+
+### Deprecations
+
+- **core:** deprecate `NzDestroyService` in favor of Angular’s `DestroyRef`; removal is planned for v24 ([#9998](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9998)) ([049d4de](https://github.com/NG-ZORRO/ng-zorro-antd/commit/049d4de89996b36398552da5e5739ac10eeb807c))
+
 ## [22.1.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/22.1.1...22.1.2) (2026-10-09)
 
 ### Bug Fixes
