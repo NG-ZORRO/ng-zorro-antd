@@ -4,25 +4,31 @@
  */
 
 import { BACKSPACE } from '@angular/cdk/keycodes';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   Component,
   DestroyRef,
   ElementRef,
   EventEmitter,
-  inject,
   Input,
   NgZone,
-  numberAttribute,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  inject
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+import {
+  NzOverflowContainerComponent,
+  NzOverflowItemDirective,
+  NzOverflowRestDirective,
+  NzOverflowSuffixDirective
+} from 'ng-zorro-antd/cdk/overflow';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/animation';
 import { NzStringTemplateOutletDirective } from 'ng-zorro-antd/core/outlet';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -31,12 +37,23 @@ import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
 import { NzSelectItemComponent } from './select-item.component';
 import { NzSelectPlaceholderComponent } from './select-placeholder.component';
 import { NzSelectSearchComponent } from './select-search.component';
-import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } from './select.types';
+import {
+  NzSelectItemInterface,
+  NzSelectMaxTagCount,
+  NzSelectModeType,
+  NzSelectTopControlItemType,
+  maxTagCountAttribute
+} from './select.types';
 
 @Component({
   selector: 'nz-select-top-control',
   exportAs: 'nzSelectTopControl',
   imports: [
+    NgTemplateOutlet,
+    NzOverflowContainerComponent,
+    NzOverflowItemDirective,
+    NzOverflowRestDirective,
+    NzOverflowSuffixDirective,
     NzSelectSearchComponent,
     NzSelectItemComponent,
     NzSelectPlaceholderComponent,
@@ -74,41 +91,76 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
           }
         }
         @default {
-          <div class="ant-select-selection-overflow">
-            <!--multiple or tags mode-->
-            @for (item of listOfSlicedItem; track item.nzValue) {
-              <div class="ant-select-selection-overflow-item">
+          @if (maxTagCount === 'responsive') {
+            <nz-overflow-container class="ant-select-selection-overflow" #overflow>
+              @for (item of listOfTopItem; track item.nzValue) {
+                <div class="ant-select-selection-overflow-item" nzOverflowItem>
+                  <nz-select-item
+                    [removeIcon]="removeIcon"
+                    [label]="item.nzLabel"
+                    [disabled]="item.nzDisabled || disabled"
+                    [contentTemplateOutlet]="customTemplate"
+                    deletable
+                    [contentTemplateOutletContext]="item"
+                    (delete)="onDeleteItem(item)"
+                  />
+                </div>
+              }
+              <div class="ant-select-selection-overflow-item ant-select-selection-overflow-item-rest" nzOverflowRest>
                 <nz-select-item
-                  [removeIcon]="removeIcon"
-                  [label]="item.nzLabel"
-                  [disabled]="item.nzDisabled || disabled"
-                  [contentTemplateOutlet]="item.contentTemplateOutlet"
-                  deletable
-                  [contentTemplateOutletContext]="item.contentTemplateOutletContext"
-                  (delete)="onDeleteItem(item.contentTemplateOutletContext)"
+                  [disabled]="true"
+                  [label]="responsiveRestLabel(overflow.displayCount())"
+                  [contentTemplateOutlet]="maxTagPlaceholder"
+                  [contentTemplateOutletContext]="responsiveOmittedValues(overflow.displayCount())"
                 />
               </div>
-            }
-            <div class="ant-select-selection-overflow-item ant-select-selection-overflow-item-suffix">
-              <nz-select-search
-                [nzId]="nzId"
-                [disabled]="disabled"
-                [value]="inputValue!"
-                [autofocus]="autofocus"
-                [showInput]="true"
-                [mirrorSync]="true"
-                [focusTrigger]="open"
-                (isComposingChange)="isComposingChange($event)"
-                (valueChange)="onInputValueChange($event)"
-              />
+              <div
+                class="ant-select-selection-overflow-item ant-select-selection-overflow-item-suffix"
+                nzOverflowSuffix
+              >
+                <ng-container [ngTemplateOutlet]="multipleSearch" />
+              </div>
+            </nz-overflow-container>
+          } @else {
+            <div class="ant-select-selection-overflow">
+              <!--multiple or tags mode-->
+              @for (item of listOfSlicedItem; track item.nzValue) {
+                <div class="ant-select-selection-overflow-item">
+                  <nz-select-item
+                    [removeIcon]="removeIcon"
+                    [label]="item.nzLabel"
+                    [disabled]="item.nzDisabled || disabled"
+                    [contentTemplateOutlet]="item.contentTemplateOutlet"
+                    deletable
+                    [contentTemplateOutletContext]="item.contentTemplateOutletContext"
+                    (delete)="onDeleteItem(item.contentTemplateOutletContext)"
+                  />
+                </div>
+              }
+              <div class="ant-select-selection-overflow-item ant-select-selection-overflow-item-suffix">
+                <ng-container [ngTemplateOutlet]="multipleSearch" />
+              </div>
             </div>
-          </div>
+          }
         }
       }
       @if (isShowPlaceholder) {
         <nz-select-placeholder [placeholder]="placeHolder" />
       }
     </span>
+    <ng-template #multipleSearch>
+      <nz-select-search
+        [nzId]="nzId"
+        [disabled]="disabled"
+        [value]="inputValue!"
+        [autofocus]="autofocus"
+        [showInput]="true"
+        [mirrorSync]="true"
+        [focusTrigger]="open"
+        (isComposingChange)="isComposingChange($event)"
+        (valueChange)="onInputValueChange($event)"
+      />
+    </ng-template>
   `,
   host: {
     class: 'ant-select-selector'
@@ -124,7 +176,7 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
   @Input() showSearch = false;
   @Input() placeHolder: string | TemplateRef<NzSafeAny> | null = null;
   @Input() open = false;
-  @Input({ transform: numberAttribute }) maxTagCount: number = Infinity;
+  @Input({ transform: maxTagCountAttribute }) maxTagCount: NzSelectMaxTagCount = Infinity;
   @Input() autofocus = false;
   @Input() disabled = false;
   @Input() mode: NzSelectModeType = 'default';
@@ -214,28 +266,44 @@ export class NzSelectTopControlComponent implements OnChanges, OnInit {
     if (listOfTopItem) {
       this.updateTemplateVariable();
     }
-    if (listOfTopItem || maxTagCount || customTemplate || maxTagPlaceholder) {
-      const listOfSlicedItem: NzSelectTopControlItemType[] = this.listOfTopItem.slice(0, this.maxTagCount).map(o => ({
-        nzLabel: o.nzLabel,
-        nzValue: o.nzValue,
-        nzDisabled: o.nzDisabled,
-        contentTemplateOutlet: this.customTemplate,
-        contentTemplateOutletContext: o
-      }));
-      if (this.listOfTopItem.length > this.maxTagCount) {
-        const exceededLabel = `+ ${this.listOfTopItem.length - this.maxTagCount} ...`;
-        const listOfSelectedValue = this.listOfTopItem.map(item => item.nzValue);
-        const exceededItem = {
-          nzLabel: exceededLabel,
-          nzValue: '$$__nz_exceeded_item',
-          nzDisabled: true,
-          contentTemplateOutlet: this.maxTagPlaceholder,
-          contentTemplateOutletContext: listOfSelectedValue.slice(this.maxTagCount)
-        };
-        listOfSlicedItem.push(exceededItem);
-      }
-      this.listOfSlicedItem = listOfSlicedItem;
+    if ((listOfTopItem || maxTagCount || customTemplate || maxTagPlaceholder) && this.maxTagCount !== 'responsive') {
+      this.updateSlicedItems();
     }
+  }
+
+  protected responsiveOmittedValues(displayCount: number): NzSafeAny[] {
+    return this.listOfTopItem.slice(displayCount + 1).map(item => item.nzValue);
+  }
+
+  protected responsiveRestLabel(displayCount: number): string {
+    return `+ ${Math.max(this.listOfTopItem.length - displayCount - 1, 0)} ...`;
+  }
+
+  private updateSlicedItems(): void {
+    if (this.maxTagCount === 'responsive') {
+      return;
+    }
+    const maxTagCount = this.maxTagCount;
+    const listOfSlicedItem: NzSelectTopControlItemType[] = this.listOfTopItem.slice(0, maxTagCount).map(o => ({
+      nzLabel: o.nzLabel,
+      nzValue: o.nzValue,
+      nzDisabled: o.nzDisabled,
+      contentTemplateOutlet: this.customTemplate,
+      contentTemplateOutletContext: o
+    }));
+    if (this.listOfTopItem.length > maxTagCount) {
+      const exceededLabel = `+ ${this.listOfTopItem.length - maxTagCount} ...`;
+      const listOfSelectedValue = this.listOfTopItem.map(item => item.nzValue);
+      const exceededItem = {
+        nzLabel: exceededLabel,
+        nzValue: '$$__nz_exceeded_item',
+        nzDisabled: true,
+        contentTemplateOutlet: this.maxTagPlaceholder,
+        contentTemplateOutletContext: listOfSelectedValue.slice(maxTagCount)
+      };
+      listOfSlicedItem.push(exceededItem);
+    }
+    this.listOfSlicedItem = listOfSlicedItem;
   }
 
   ngOnInit(): void {
