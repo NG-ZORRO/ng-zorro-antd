@@ -213,12 +213,27 @@ describe('modal with animation', () => {
     modalRef.afterOpen.subscribe(spy);
 
     const projectedElement = overlayContainerElement.querySelector('.modal-content')!;
-    dispatchEvent(
-      projectedElement,
-      new AnimationEvent('animationend', { animationName: 'someChildAnimation', bubbles: true })
-    );
+    dispatchEvent(projectedElement, new AnimationEvent('animationend', { animationName: 'antZoomIn', bubbles: true }));
     await fixture.whenStable();
     expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('should ignore an opening animation completion delivered after closing started', async () => {
+    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
+    const spy = vi.fn();
+    modalRef.afterOpen.subscribe(spy);
+    const modalContentElement = overlayContainerElement.querySelector('.ant-modal')!;
+
+    const backdropElement = modalRef.getBackdropElement()!;
+    modalRef.close();
+    animationDone(modalContentElement, 'antZoomIn');
+    expect(spy).not.toHaveBeenCalled();
+    expect(modalContentElement.classList).toContain('ant-zoom-leave');
+
+    animationDone(modalContentElement, 'antZoomOut');
+    animationDone(backdropElement, 'antFadeOut');
+    await fixture.whenStable();
+    expect(modalRef.getState()).toBe(NzModalState.CLOSED);
   });
 
   it('should complete afterOpen without emitting when closed before opening finished', async () => {

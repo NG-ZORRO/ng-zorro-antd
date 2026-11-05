@@ -326,7 +326,11 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
         this.animationStateChanged.emit('enter-active');
       };
       const onAnimationEnd = (event: AnimationEvent): void => {
-        if (event.target === element && event.animationName === 'antZoomIn') {
+        if (
+          event.target === element &&
+          event.animationName === 'antZoomIn' &&
+          !element.classList.contains(ZOOM_CLASS_NAME_MAP.leave)
+        ) {
           finish();
         }
       };
