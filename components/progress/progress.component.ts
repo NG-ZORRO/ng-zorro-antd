@@ -13,7 +13,8 @@ import {
   SimpleChanges,
   ViewEncapsulation,
   numberAttribute,
-  inject
+  inject,
+  signal
 } from '@angular/core';
 
 import { NzConfigKey, onConfigChangeEventForComponent, WithConfig } from 'ng-zorro-antd/core/config';
@@ -215,7 +216,7 @@ export class NzProgressComponent implements OnChanges {
   }
 
   get status(): NzProgressStatusType {
-    return this.nzStatus || this.inferredStatus;
+    return this.nzStatus || this.inferredStatus();
   }
 
   get strokeWidth(): number {
@@ -227,7 +228,7 @@ export class NzProgressComponent implements OnChanges {
   }
 
   private cachedStatus: NzProgressStatusType = 'normal';
-  private inferredStatus: NzProgressStatusType = 'normal';
+  private readonly inferredStatus = signal<NzProgressStatusType>('normal');
 
   constructor() {
     onConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME, () => {
@@ -259,10 +260,10 @@ export class NzProgressComponent implements OnChanges {
       const fillAll = parseInt(this.nzPercent.toString(), 10) >= 100;
       if (fillAll) {
         if ((isNotNil(this.nzSuccessPercent) && this.nzSuccessPercent! >= 100) || this.nzSuccessPercent === undefined) {
-          this.inferredStatus = 'success';
+          this.inferredStatus.set('success');
         }
       } else {
-        this.inferredStatus = this.cachedStatus;
+        this.inferredStatus.set(this.cachedStatus);
       }
     }
 

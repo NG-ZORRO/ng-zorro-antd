@@ -58,7 +58,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'segmented';
       }
 
       <ng-content>
-        @for (item of normalizedOptions; track item.value) {
+        @for (item of normalizedOptions(); track item.value) {
           <label nz-segmented-item [nzIcon]="item.icon" [nzValue]="item.value" [nzDisabled]="item.disabled">
             {{ item.label }}
           </label>
@@ -121,7 +121,7 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
   protected readonly thumbStyle = signal<NgStyleInterface | null>(null);
   protected readonly thumbAnimationEnter = withAnimationCheck(() => 'ant-segmented-thumb-motion-appear-active');
   protected readonly showThumb = this.service.showThumb;
-  protected normalizedOptions: NzSegmentedOption[] = [];
+  protected readonly normalizedOptions = signal<NzSegmentedOption[]>([]);
   protected onChange: OnChangeType = () => {};
   protected onTouched: OnTouchedType = () => {};
 
@@ -185,7 +185,7 @@ export class NzSegmentedComponent implements OnChanges, ControlValueAccessor {
       this.service.setName(this.nzName);
     }
     if (nzOptions) {
-      this.normalizedOptions = normalizeOptions(nzOptions.currentValue);
+      this.normalizedOptions.set(normalizeOptions(nzOptions.currentValue));
     }
     if (nzDisabled) {
       this.service.disabled$.next(nzDisabled.currentValue);
