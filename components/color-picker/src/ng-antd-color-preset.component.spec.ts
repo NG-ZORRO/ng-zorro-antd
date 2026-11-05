@@ -102,6 +102,37 @@ describe('ng-antd-color-preset', () => {
     expect(second.classList.contains('ant-collapse-item-active')).toBe(true);
   });
 
+  it('should update panel active state independently when active state changes', () => {
+    component.presets = [
+      { label: 'Recent', colors: ['#ff0000'], defaultOpen: true },
+      { label: 'Favorites', colors: ['#0000ff'], defaultOpen: false }
+    ];
+    fixture.detectChanges();
+
+    const host = fixture.nativeElement as HTMLElement;
+    const items = host.querySelectorAll('.ant-collapse-item');
+    const first = items[0] as HTMLElement;
+    const second = items[1] as HTMLElement;
+
+    component.onPanelActiveChange(1, true);
+    fixture.detectChanges();
+
+    expect(first.classList.contains('ant-collapse-item-active')).toBe(true);
+    expect(second.classList.contains('ant-collapse-item-active')).toBe(true);
+
+    component.onPanelActiveChange(0, false);
+    fixture.detectChanges();
+
+    expect(first.classList.contains('ant-collapse-item-active')).toBe(false);
+    expect(second.classList.contains('ant-collapse-item-active')).toBe(true);
+
+    component.onPanelActiveChange(0, true);
+    fixture.detectChanges();
+
+    expect(first.classList.contains('ant-collapse-item-active')).toBe(true);
+    expect(second.classList.contains('ant-collapse-item-active')).toBe(true);
+  });
+
   it('should emit presetSelect with NzColor when a color is clicked', () => {
     component.presets = [
       {

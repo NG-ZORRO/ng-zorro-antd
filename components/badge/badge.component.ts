@@ -12,7 +12,8 @@ import {
   TemplateRef,
   ViewEncapsulation,
   booleanAttribute,
-  inject
+  inject,
+  signal
 } from '@angular/core';
 
 import { withAnimationCheck } from 'ng-zorro-antd/core/animation';
@@ -32,7 +33,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
   encapsulation: ViewEncapsulation.None,
   imports: [NzBadgeSupComponent, NzOutletModule],
   template: `
-    @if ((nzStatus || nzColor) && !showSup && !nzCount) {
+    @if ((nzStatus || nzColor) && !showSup() && !nzCount) {
       <span
         class="ant-badge-status-dot"
         [class]="(nzStatus || presetColor) && 'ant-badge-status-' + (nzStatus || presetColor)"
@@ -44,7 +45,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
     }
     <ng-content />
     <ng-container *nzStringTemplateOutlet="nzCount">
-      @if (showSup) {
+      @if (showSup()) {
         <nz-badge-sup
           [isPresetColor]="nzStatus || presetColor"
           [nzColor]="nzStatus || presetColor || nzColor"
@@ -64,7 +65,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
   host: {
     class: 'ant-badge',
     '[class.ant-badge-status]': 'nzStatus',
-    '[class.ant-badge-not-a-wrapper]': '!!(nzStandalone || ((nzStatus || nzColor) && !showSup && !nzCount))',
+    '[class.ant-badge-not-a-wrapper]': '!!(nzStandalone || ((nzStatus || nzColor) && !showSup() && !nzCount))',
     '[class.ant-badge-rtl]': 'dir() === "rtl"'
   }
 })
@@ -73,7 +74,7 @@ export class NzBadgeComponent implements OnChanges {
 
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
-  protected showSup = false;
+  protected readonly showSup = signal(false);
   protected readonly supAnimationEnter = withAnimationCheck(() => 'ant-badge-zoom-enter');
   protected readonly supAnimationLeave = withAnimationCheck(() => 'ant-badge-zoom-leave');
   presetColor: string | null = null;
@@ -102,8 +103,9 @@ export class NzBadgeComponent implements OnChanges {
       this.presetColor = this.nzColor && badgePresetColors.indexOf(this.nzColor) !== -1 ? this.nzColor : null;
     }
     if (nzShowDot || nzDot || nzCount || nzShowZero) {
-      this.showSup =
-        (this.nzShowDot && this.nzDot) || (typeof this.nzCount === 'number' && (this.nzCount > 0 || this.nzShowZero));
+      this.showSup.set(
+        (this.nzShowDot && this.nzDot) || (typeof this.nzCount === 'number' && (this.nzCount > 0 || this.nzShowZero))
+      );
     }
   }
 }

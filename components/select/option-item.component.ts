@@ -16,6 +16,7 @@ import {
   OnChanges,
   OnInit,
   Output,
+  signal,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
@@ -33,7 +34,7 @@ import { getItemTemplateOutletContext } from './util';
   template: `
     <div class="ant-select-item-option-content">
       @if (customContent) {
-        <ng-template [ngTemplateOutlet]="template" [ngTemplateOutletContext]="templateOutletContext" />
+        <ng-template [ngTemplateOutlet]="template" [ngTemplateOutletContext]="templateOutletContext()" />
       } @else {
         {{ label }}
       }
@@ -82,12 +83,12 @@ export class NzOptionItemComponent implements OnChanges, OnInit {
   @Output() readonly itemClick = new EventEmitter<NzSafeAny>();
   @Output() readonly itemHover = new EventEmitter<NzSafeAny>();
 
-  protected templateOutletContext: NzSafeAny = null;
+  protected readonly templateOutletContext = signal<NzSafeAny>(null);
 
   ngOnChanges(changes: SimpleChanges): void {
     const { value, activatedValue, listOfSelectedValue, templateContext } = changes;
     if (templateContext) {
-      this.templateOutletContext = getItemTemplateOutletContext(this.templateContext);
+      this.templateOutletContext.set(getItemTemplateOutletContext(this.templateContext));
     }
     if (value || listOfSelectedValue) {
       this.selected = this.listOfSelectedValue.some(v => this.compareWith(v, this.value));
