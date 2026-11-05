@@ -69,3 +69,5 @@ Thumbs.db
 
 # Agents
 .claude/projects/
+
+.zed
