@@ -6,7 +6,7 @@ __ngcc_entry_points__.json
 dist/
 tmp/
 junit/
-.vitest-attachments/
+.vitest/attachments/
 components/**/*/__screenshots__/
 out-tsc/
 /site
@@ -35,6 +35,9 @@ yarn.lock
 # IDE - VSCode
 .vscode/*
 !.vscode/mcp.json
+
+#IDE - Zed
+.zed/
 
 # misc
 /.angular/cache

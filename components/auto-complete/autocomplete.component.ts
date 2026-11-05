@@ -114,9 +114,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   @Input({ transform: booleanAttribute }) nzDropdownMatchSelectWidth = true;
   @Input() compareWith: CompareWith = (o1, o2) => o1 === o2;
   @Input() nzDataSource?: AutocompleteDataSource;
-  @Output()
-  readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent> =
-    new EventEmitter<NzAutocompleteOptionComponent>();
+  @Output() readonly selectionChange = new EventEmitter<NzAutocompleteOptionComponent>();
 
   showPanel: boolean = true;
   isOpen: boolean = false;
@@ -155,7 +153,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   /** Options changes listener */
   private readonly optionSelectionChanges: Observable<NzOptionSelectionChange> = defer(() => {
     if (this.options) {
-      return merge<NzOptionSelectionChange[]>(...this.options.map(option => option.selectionChange));
+      return merge(...this.options.map(option => option.selectionChange));
     }
 
     return this.afterNextRender$.pipe(switchMap(() => this.optionSelectionChanges));
@@ -163,7 +161,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
 
   private readonly optionMouseEnter: Observable<NzAutocompleteOptionComponent> = defer(() => {
     if (this.options) {
-      return merge<NzAutocompleteOptionComponent[]>(...this.options.map(option => option.mouseEntered));
+      return merge(...this.options.map(option => option.mouseEntered));
     }
 
     return this.afterNextRender$.pipe(switchMap(() => this.optionMouseEnter));
@@ -192,6 +190,18 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
     }
   }
 
+  ngAfterContentInit(): void {
+    if (!this.nzDataSource) {
+      this.optionsInit();
+    }
+  }
+
+  ngAfterViewInit(): void {
+    if (this.nzDataSource) {
+      this.optionsInit();
+    }
+  }
+
   onAnimationEvent(event: AnimationCallbackEvent): void {
     const element = event.target as HTMLElement;
     // If animations are disabled, complete immediately
@@ -206,18 +216,6 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
       event.animationComplete();
     };
     element.addEventListener('animationend', onAnimationEnd);
-  }
-
-  ngAfterContentInit(): void {
-    if (!this.nzDataSource) {
-      this.optionsInit();
-    }
-  }
-
-  ngAfterViewInit(): void {
-    if (this.nzDataSource) {
-      this.optionsInit();
-    }
   }
 
   setVisibility(): void {
@@ -252,8 +250,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
 
   getOptionIndex(value: NzSafeAny): number {
     return this.options.reduce(
-      (result: number, current: NzAutocompleteOptionComponent, index: number) =>
-        result === -1 ? (this.compareWith(value, current.nzValue) ? index : -1) : result,
+      (result, current, index) => (result === -1 ? (this.compareWith(value, current.nzValue) ? index : -1) : result),
       -1
     )!;
   }
@@ -290,10 +287,10 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   }
 
   private subscribeOptionChanges(): void {
-    this.selectionChangeSubscription!.unsubscribe();
+    this.selectionChangeSubscription?.unsubscribe();
     this.selectionChangeSubscription = this.optionSelectionChanges
-      .pipe(filter((event: NzOptionSelectionChange) => event.isUserInput))
-      .subscribe((event: NzOptionSelectionChange) => {
+      .pipe(filter(event => event.isUserInput))
+      .subscribe(event => {
         event.source.select();
         event.source.setActiveStyles();
         this.activeItem = event.source;
@@ -302,8 +299,8 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
         this.selectionChange.emit(event.source);
       });
 
-    this.optionMouseEnterSubscription!.unsubscribe();
-    this.optionMouseEnterSubscription = this.optionMouseEnter.subscribe((event: NzAutocompleteOptionComponent) => {
+    this.optionMouseEnterSubscription?.unsubscribe();
+    this.optionMouseEnterSubscription = this.optionMouseEnter.subscribe(event => {
       event.setActiveStyles();
       this.activeItem = event;
       this.activeItemIndex = this.getOptionIndex(this.activeItem.nzValue);
