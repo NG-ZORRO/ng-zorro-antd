@@ -191,7 +191,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
   }
 
   /**
-   * `animationend` never fires for an animation the browser do not star
+   * `animationend` never fires for an animation the browser does not start
    */
   private isAnimating(element: HTMLElement, animationName: string): boolean {
     return !!element.getAnimations?.().some(animation => (animation as CSSAnimation).animationName === animationName);

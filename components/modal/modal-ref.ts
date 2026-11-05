@@ -38,10 +38,9 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
   state: NzModalState = NzModalState.OPEN;
   afterClose = new Subject<R | undefined>();
   /**
-   * without animation the opening is synchrone, so subscribtion is before opening
-   * that's why ReplaySubject is better than Subject here
+   * Without animation the modal opens synchronously, before callers can subscribe
+   * to the returned ref, so the event must be replayed.
    */
-
   afterOpen = new ReplaySubject<void>(1);
 
   private destroy$ = new Subject<void>();
