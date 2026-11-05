@@ -6,7 +6,7 @@
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { ComponentRef, EventEmitter } from '@angular/core';
-import { Subject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -37,7 +37,12 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
   result?: R;
   state: NzModalState = NzModalState.OPEN;
   afterClose = new Subject<R | undefined>();
-  afterOpen = new Subject<void>();
+  /**
+   * without animation the opening is synchrone, so subscribtion is before opening
+   * that's why ReplaySubject is better than Subject here
+   */
+
+  afterOpen = new ReplaySubject<void>(1);
 
   private destroy$ = new Subject<void>();
 
@@ -91,6 +96,7 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
     containerInstance.okTriggered.pipe(takeUntil(this.destroy$)).subscribe(() => this.trigger(NzTriggerAction.OK));
 
     overlayRef.detachments().subscribe(() => {
+      this.afterOpen.complete();
       this.afterClose.next(this.result);
       this.afterClose.complete();
       if (config.nzAfterClose instanceof EventEmitter) {

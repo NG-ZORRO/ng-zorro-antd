@@ -190,6 +190,13 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
     this.focusTrap?.destroy();
   }
 
+  /**
+   * `animationend` never fires for an animation the browser do not star
+   */
+  private isAnimating(element: HTMLElement, animationName: string): boolean {
+    return !!element.getAnimations?.().some(animation => (animation as CSSAnimation).animationName === animationName);
+  }
+
   private setEnterInitialClass(): void {
     if (this.animationDisabled()) {
       return;
@@ -311,18 +318,31 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
       // The enter class sets scale(0) and opacity(0) so the modal is invisible
       this.setEnterInitialClass();
 
-      // In the next frame, add enter-active class to trigger the animation
-      requestAnimationFrame(() => this.setEnterActiveClass());
-
       const element = this.modalElementRef.nativeElement;
-      const onAnimationEnd = (): void => {
+      const finish = (): void => {
         element.removeEventListener('animationend', onAnimationEnd);
         this.trapFocus();
         this.cleanAnimationClass();
         this.animationStateChanged.emit('enter-active');
       };
-
+      const onAnimationEnd = (event: AnimationEvent): void => {
+        if (event.target === element && event.animationName === 'antZoomIn') {
+          finish();
+        }
+      };
       element.addEventListener('animationend', onAnimationEnd);
+
+      // In the next frame, add enter-active class to trigger the animation
+      requestAnimationFrame(() => {
+        // The modal may have been closed or disposed before the first frame
+        if (!element.isConnected || element.classList.contains(ZOOM_CLASS_NAME_MAP.leave)) {
+          return;
+        }
+        this.setEnterActiveClass();
+        if (!this.isAnimating(element, 'antZoomIn')) {
+          finish();
+        }
+      });
     }
   }
 
@@ -352,7 +372,12 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
         element.removeEventListener('animationend', onModalAnimationEnd);
         finish();
       };
-      element.addEventListener('animationend', onModalAnimationEnd);
+
+      if (this.isAnimating(element, 'antZoomOut')) {
+        element.addEventListener('animationend', onModalAnimationEnd);
+      } else {
+        finish();
+      }
 
       if (backdropElement) {
         const backdropParent = backdropElement.parentNode;
