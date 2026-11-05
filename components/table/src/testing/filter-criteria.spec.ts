@@ -201,7 +201,21 @@ describe('table filter criteria', () => {
 
     it('should leave rows unchanged for inactive or invalid date criteria', () => {
       expect(match(date, null, ...values)).toEqual([true, true, true, true, true]);
-      expect(match(date, { operator: 'before', value: 'invalid' }, day('2024-01-01'))).toEqual([true]);
+      expect(match(date, { operator: 'before', value: 'invalid' }, ...values)).toEqual([true, true, true, true, true]);
+      expect(match(date, { operator: 'between', value: 'invalid', valueTo: 'invalid' }, ...values)).toEqual([
+        true,
+        true,
+        true,
+        true,
+        true
+      ]);
+      expect(match(date, { operator: 'between', value: 'invalid', valueTo: null }, ...values)).toEqual([
+        true,
+        true,
+        true,
+        true,
+        true
+      ]);
     });
 
     it('should support either endpoint of an open-ended date range', () => {

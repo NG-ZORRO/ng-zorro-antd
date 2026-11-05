@@ -199,24 +199,24 @@ function createDateFilterFn<T>(config: NzTableDateFilterConfig<T>): NzTableFilte
     if (!isCriterionActive(criterion)) {
       return true;
     }
+    const { operator } = criterion;
+    const from = parseFilterDate(criterion.value);
+    const to = operator === 'between' ? parseFilterDate(criterion.valueTo) : null;
+    if (!from && !to) {
+      return true;
+    }
     const date = parseFilterDate(valueGetter(data));
     if (!date) {
       return false;
     }
-    const { operator } = criterion;
     const byDay = dateMode === 'date' || operator === 'on';
     const value = toComparable(date, byDay);
-    const from = parseFilterDate(criterion.value);
     if (operator === 'between') {
-      const to = parseFilterDate(criterion.valueTo);
       const lower = from && toComparable(from, byDay);
       const upper = to && toComparable(to, byDay);
       return (lower === null || value >= lower) && (upper === null || value <= upper);
     }
-    if (!from) {
-      return true;
-    }
-    const target = toComparable(from, byDay);
+    const target = toComparable(from!, byDay);
     switch (operator) {
       case 'before':
         return value < target;

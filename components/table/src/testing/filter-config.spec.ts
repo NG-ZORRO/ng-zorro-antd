@@ -170,6 +170,66 @@ describe('nz-th filter config', () => {
     expect(getOptionElements()[0].querySelector('.ant-radio-checked')).not.toBeNull();
   });
 
+  it('should distinguish a cleared legacy filter from a selected null-valued option', async () => {
+    component.teamMultiple.set(false);
+    component.teamFilters = [
+      { text: 'All', value: null },
+      { text: 'Red', value: 'red' }
+    ];
+    component.teamFilterFn = () => true;
+    await stabilize();
+    const trigger = fixture.nativeElement.querySelectorAll('.ant-table-filter-trigger')[1] as HTMLElement;
+    expect(trigger.classList).not.toContain('active');
+
+    await openFilter(1);
+    expect(getOptionElements()[0].querySelector('.ant-radio-checked')).toBeNull();
+    expect(
+      overlayContainerElement.querySelector<HTMLButtonElement>('.ant-table-filter-dropdown-btns .ant-btn-link')!
+        .disabled
+    ).toBe(true);
+    await selectOptions('Red');
+    expect(component.teamValue()).toBe('red');
+    await openFilter(1);
+    await selectOptions('All');
+
+    expect(component.teamValue()).toBeNull();
+    expect(trigger.classList).toContain('active');
+    await openFilter(1);
+    expect(getOptionElements()[0].querySelector('.ant-radio-checked')).not.toBeNull();
+    const reset = overlayContainerElement.querySelector<HTMLButtonElement>(
+      '.ant-table-filter-dropdown-btns .ant-btn-link'
+    )!;
+    expect(reset.disabled).toBe(false);
+    reset.click();
+    await new Promise(resolve => setTimeout(resolve, 200));
+    await stabilize();
+
+    expect(component.teamValue()).toBeNull();
+    expect(trigger.classList).not.toContain('active');
+    await openFilter(1);
+    expect(getOptionElements()[0].querySelector('.ant-radio-checked')).toBeNull();
+  });
+
+  it.each([false, true])(
+    'should use explicit option labels before formatting with a formatter %s',
+    async useFormatter => {
+      const labelFormatter = vi.fn(() => 'Formatted');
+      component.statusFilter.set({
+        type: 'options',
+        options: [
+          { text: 'All', value: Symbol('all') },
+          { text: '', value: Symbol('blank') }
+        ],
+        labelFormatter: useFormatter ? labelFormatter : undefined
+      });
+      await stabilize();
+      await openFilter(0);
+
+      expect(getOptionTexts()).toEqual(['All', '']);
+      expect(labelFormatter).not.toHaveBeenCalled();
+    }
+  );
+
   it.each([false, true])('should respect an explicit %s filter predicate', async predicate => {
     component.statusFilterFn = predicate;
     component.statusValue.set(['closed']);
@@ -403,6 +463,53 @@ describe('nz-th criteria filter config', () => {
       cell => Number(cell.textContent)
     );
   }
+
+  it.each(['Enter', ' '])('should open a criteria filter with %j and return focus after confirming', async key => {
+    await stabilize();
+    const trigger = fixture.nativeElement.querySelector('.ant-table-filter-trigger') as HTMLElement;
+    expect(trigger.tabIndex).toBe(0);
+    expect(trigger.getAttribute('role')).toBe('button');
+    expect(trigger.getAttribute('aria-label')).toBe('Filter menu');
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    trigger.focus();
+    const event = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true });
+    trigger.dispatchEvent(event);
+    await wait(200);
+    await stabilize();
+
+    expect(event.defaultPrevented).toBe(true);
+    expect(getPanel()).not.toBeNull();
+    expect(trigger.getAttribute('aria-expanded')).toBe('true');
+    const input = getPanel()!.querySelector<HTMLInputElement>('input[nz-input]')!;
+    input.focus();
+    await typeInto(input, 'Ac');
+    await confirm();
+    await wait(200);
+    await stabilize();
+
+    expect(getPanel()).toBeNull();
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    expect(document.activeElement).toBe(trigger);
+    expect(getRenderedIds()).toEqual([1, 3]);
+  });
+
+  it('should return focus to the keyboard trigger when Escape closes the panel', async () => {
+    await stabilize();
+    const trigger = fixture.nativeElement.querySelector('.ant-table-filter-trigger') as HTMLElement;
+    trigger.focus();
+    trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    await wait(200);
+    await stabilize();
+    const input = getPanel()!.querySelector<HTMLInputElement>('input[nz-input]')!;
+    input.focus();
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', keyCode: 27, bubbles: true }));
+    await wait(200);
+    await stabilize();
+
+    expect(getPanel()).toBeNull();
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    expect(document.activeElement).toBe(trigger);
+  });
 
   it('should filter text with the default operator and emit a criterion', async () => {
     await stabilize();

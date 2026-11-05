@@ -75,12 +75,13 @@ const NZ_TABLE_FILTER_EMPTY_OPTION_VALUE = Symbol('NzTableFilterEmptyOption');
       />
     } @else if (nzShowFilter || nzCustomFilter) {
       <nz-table-filter
+        #filter
         [contentTemplate]="notFilterTemplate"
         [extraTemplate]="extraTemplate"
         [customFilter]="nzCustomFilter"
         [filterMultiple]="nzFilterMultiple"
         [listOfFilter]="listOfFilterForDisplay"
-        (filterChange)="onFilterValueChange($event)"
+        (filterChange)="onFilterValueChange($event, filter.isChecked)"
       />
     } @else {
       <ng-container [ngTemplateOutlet]="notFilterTemplate" />
@@ -138,6 +139,7 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit {
   private isNzShowSortChanged = false;
   private isNzShowFilterChanged = false;
   private isNzFilterValueChanged = false;
+  private isLegacyNullFilterSelected = false;
   private listOfSourceData: readonly T[] = [];
   private listOfFilterOption: NzTableFilterOption[] = [];
   private generatedFilterFn: NzTableFilterFn<T> | null = null;
@@ -196,7 +198,8 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit {
     }
   }
 
-  onFilterValueChange(value: NzTableFilterValue): void {
+  onFilterValueChange(value: NzTableFilterValue, isChecked = false): void {
+    this.isLegacyNullFilterSelected = this.isLegacyFilters && !this.nzFilterMultiple && value === null && isChecked;
     const filterValue =
       this.nzFilterConfig?.type === 'options'
         ? this.normalizeOptionsFilterValue(
@@ -221,9 +224,10 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit {
   }
 
   private isFilterValueSelected(value: NzTableFilterValue): boolean {
-    return this.isLegacyFilters && !this.nzFilterMultiple
-      ? this.nzFilterValue === value
-      : this.normalizeOptionsFilterValue(this.nzFilterValue).includes(value);
+    if (this.isLegacyFilters && !this.nzFilterMultiple) {
+      return value === null ? this.isLegacyNullFilterSelected : this.nzFilterValue === value;
+    }
+    return this.normalizeOptionsFilterValue(this.nzFilterValue).includes(value);
   }
 
   private updateListOfFilterOption(): void {
@@ -255,13 +259,10 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit {
         return { text: text ?? '', value, byDefault: this.isFilterValueSelected(value) };
       }
       const isEmpty = key === NZ_TABLE_FILTER_EMPTY_KEY;
-      const label = isEmpty
-        ? emptyText
-        : labelFormatter
-          ? labelFormatter(value)
-          : formatFilterOptionValue(value, dateMode);
       return {
-        text: text ?? label,
+        text:
+          text ??
+          (isEmpty ? emptyText : labelFormatter ? labelFormatter(value) : formatFilterOptionValue(value, dateMode)),
         value: isEmpty ? NZ_TABLE_FILTER_EMPTY_OPTION_VALUE : value,
         byDefault: key.startsWith('custom:') ? this.isFilterValueSelected(value) : selectedKeys.has(key)
       };
@@ -332,6 +333,9 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit {
     }
     if (nzFilterValue) {
       this.isNzFilterValueChanged = true;
+      if (this.nzFilterValue !== null) {
+        this.isLegacyNullFilterSelected = false;
+      }
     }
     const isFirstChange = (value: SimpleChange): boolean =>
       value && value.firstChange && value.currentValue !== undefined;
@@ -364,6 +368,8 @@ export class NzThAddOnComponent<T> implements OnChanges, OnInit {
       !this.isNzFilterValueChanged
     ) {
       const listOfValue = listOfDefaultFilter.filter(item => item.byDefault).map(item => item.value);
+      this.isLegacyNullFilterSelected =
+        this.isLegacyFilters && !this.nzFilterMultiple && listOfValue.length > 0 && listOfValue[0] === null;
       this.nzFilterValue = this.isLegacyFilters
         ? this.nzFilterMultiple
           ? listOfValue

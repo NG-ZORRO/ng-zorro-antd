@@ -12,7 +12,7 @@ import { vi } from 'vitest';
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
-import { NzThAddOnComponent, NzTableModule } from 'ng-zorro-antd/table';
+import { NzThAddOnComponent, NzTableFilterList, NzTableModule } from 'ng-zorro-antd/table';
 
 describe('nz-th', () => {
   beforeEach(() => {
@@ -37,6 +37,14 @@ describe('nz-th', () => {
       fixture.detectChanges();
       expect(th.nativeElement.classList).toContain('ant-table-column-has-sorters');
       expect(th.nativeElement.querySelector('.ant-table-column-sorter')).toBeDefined();
+    });
+
+    it.each([false, true])('should preserve a legacy null-valued option with byDefault %s', byDefault => {
+      testComponent.filterMultiple = false;
+      testComponent.filters = [{ text: 'All', value: null, byDefault }];
+      fixture.detectChanges();
+
+      expect(th.nativeElement.querySelector('.ant-table-filter-trigger').classList.contains('active')).toBe(byDefault);
     });
 
     it('should sort change work', () => {
@@ -150,7 +158,7 @@ export class NzThTestNzTableComponent {
   readonly width = signal<string | null>(null);
   readonly sort = signal<string | null>(null);
   sortChange = vi.fn();
-  filters = [
+  filters: NzTableFilterList = [
     { text: 'filter1', value: '1' },
     { text: 'filter2', value: '2' }
   ];
