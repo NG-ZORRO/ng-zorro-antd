@@ -88,6 +88,8 @@ The sidebar.
 
 When `nzBreakpoint` is set, a viewport below the breakpoint collapses the sidebar on initialization. At or above the breakpoint, the initial `nzCollapsed` value is preserved. After initialization, crossing the breakpoint collapses or expands the sidebar; resizing within the same breakpoint range preserves the current collapsed state.
 
+When `nzCollapsedWidth` is `0`, the special trigger remains available while the sidebar is collapsed, even at or above the breakpoint.
+
 #### breakpoint width
 
 ```js

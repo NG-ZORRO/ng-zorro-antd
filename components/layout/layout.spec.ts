@@ -211,6 +211,24 @@ describe('nz-layout', () => {
       expect(fixture.componentInstance.isCollapsed()).toBe(collapsed);
       expect(sider.nativeElement.classList.contains('ant-layout-sider-collapsed')).toBe(collapsed);
       expect(emit).not.toHaveBeenCalled();
+      expect(sider.nativeElement.style.width).toBe(collapsed ? '0px' : '200px');
+
+      const trigger = fixture.debugElement.query(By.css('.ant-layout-sider-zero-width-trigger'));
+      if (collapsed) {
+        expect(trigger).not.toBeNull();
+        trigger.nativeElement.click();
+        fixture.detectChanges();
+        await fixture.whenStable();
+
+        expect(component.nzCollapsed).toBe(false);
+        expect(fixture.componentInstance.isCollapsed()).toBe(false);
+        expect(sider.nativeElement.classList.contains('ant-layout-sider-collapsed')).toBe(false);
+        expect(sider.nativeElement.style.width).toBe('200px');
+        expect(emit).toHaveBeenCalledExactlyOnceWith(false);
+        expect(fixture.debugElement.query(By.css('.ant-layout-sider-zero-width-trigger'))).toBeNull();
+      } else {
+        expect(trigger).toBeNull();
+      }
     });
 
     it.each([false, true])('should collapse below the breakpoint with initial nzCollapsed=%s', async collapsed => {
