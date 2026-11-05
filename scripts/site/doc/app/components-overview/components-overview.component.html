@@ -46,11 +46,28 @@
           @for (component of group.children; track $index) {
             <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="8" nzXl="6" nzXXl="6" class="components-overview-card">
               <a routerLink="/{{ component.path }}">
-                <nz-card nzHoverable nzTitle="{{ component.label }} {{ component.zh }}">
-                  <div class="components-overview-img">
-                    <img [alt]="component.label" [src]="component.cover" />
-                  </div>
-                </nz-card>
+                @if (component.tag) {
+                  <nz-ribbon [nzText]="component.tag" nzColor="green">
+                    <ng-container [ngTemplateOutlet]="componentCard"></ng-container>
+                  </nz-ribbon>
+                } @else {
+                  <ng-container [ngTemplateOutlet]="componentCard"></ng-container>
+                }
+
+                <ng-template #componentCard>
+                  @let isBorderBeam = component.path.includes('border-beam');
+                  <nz-card
+                    nzHoverable
+                    [nzBorderBeam]="isBorderBeam"
+                    [nzBorderBeamOutset]="isBorderBeam ? 0 : undefined"
+                    [class.components-overview-beam-card]="isBorderBeam"
+                    nzTitle="{{ component.label }} {{ component.zh }}"
+                  >
+                    <div class="components-overview-img">
+                      <img [alt]="component.label" [src]="component.cover" />
+                    </div>
+                  </nz-card>
+                </ng-template>
               </a>
             </div>
           }
