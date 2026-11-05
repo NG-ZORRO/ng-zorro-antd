@@ -1,5 +1,5 @@
 ---
-order: 6
+order: 7
 title:
   zh-CN: 配合路由使用
   en-US: Router

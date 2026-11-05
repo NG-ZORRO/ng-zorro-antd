@@ -9,7 +9,7 @@ import { By } from '@angular/platform-browser';
 
 import { vi } from 'vitest';
 
-import { testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
+import { sleep, testDirectionality, updateNonSignalsInput } from 'ng-zorro-antd/core/testing';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import en_US from 'ng-zorro-antd/i18n/languages/en_US';
 import { NzTableComponent, NzTableModule, NzTableSize } from 'ng-zorro-antd/table';
@@ -264,6 +264,54 @@ describe('nz-table', () => {
       const tableBody = table.nativeElement.querySelector('.ant-table-body');
       expect(tableBody.scrollWidth).toBe(tableBody.clientWidth);
     });
+
+    it('should stop syncing the header scroll position after destroy', async () => {
+      await sleep(0);
+      const tableHeader: HTMLElement = table.nativeElement.querySelector('.ant-table-header');
+      const tableBody: HTMLElement = table.nativeElement.querySelector('.ant-table-body');
+      const setHeaderScrollLeft = vi.spyOn(tableHeader, 'scrollLeft', 'set');
+
+      tableBody.dispatchEvent(new Event('scroll'));
+      expect(setHeaderScrollLeft).toHaveBeenCalledTimes(1);
+
+      fixture.destroy();
+      tableBody.dispatchEvent(new Event('scroll'));
+      expect(setHeaderScrollLeft).toHaveBeenCalledTimes(1);
+    });
+
+    it('should stop syncing the fixed footer scroll position after destroy', async () => {
+      testComponent.fixedFooter.set(true);
+      fixture.detectChanges();
+      await sleep(0);
+      const tableHeader: HTMLElement = table.nativeElement.querySelector('.ant-table-header');
+      const tableBody: HTMLElement = table.nativeElement.querySelector('.ant-table-body');
+      const tableFoot: HTMLElement = table.nativeElement.querySelector('div.ant-table-summary');
+      const setHeaderScrollLeft = vi.spyOn(tableHeader, 'scrollLeft', 'set');
+      const setFootScrollLeft = vi.spyOn(tableFoot, 'scrollLeft', 'set');
+
+      tableBody.dispatchEvent(new Event('scroll'));
+      expect(setHeaderScrollLeft).toHaveBeenCalledTimes(1);
+      expect(setFootScrollLeft).toHaveBeenCalledTimes(1);
+
+      fixture.destroy();
+      tableBody.dispatchEvent(new Event('scroll'));
+      expect(setHeaderScrollLeft).toHaveBeenCalledTimes(1);
+      expect(setFootScrollLeft).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it('should wrap only fixed ellipsis cells and preserve dynamic content', async () => {
+    const fixture = TestBed.createComponent(NzTestTableFixedEllipsisComponent);
+    const element: HTMLElement = fixture.nativeElement;
+
+    for (const text of ['Initial', '', 'Updated']) {
+      fixture.componentInstance.text.set(text);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const contents = element.querySelectorAll('.ant-table-cell-content');
+      expect(Array.from(contents, content => content.textContent)).toEqual([text, text, text, text]);
+    }
   });
 
   describe('double binding nz-table', () => {
@@ -284,6 +332,35 @@ describe('nz-table', () => {
 
   testDirectionality(() => NzTestTableBasicComponent, By.directive(NzTableComponent), 'ant-table-wrapper');
 });
+
+@Component({
+  imports: [NzTableModule],
+  template: `
+    <nz-table [nzData]="[{}]" [nzScroll]="{ x: '800px' }">
+      <thead>
+        <tr>
+          <th nzLeft nzEllipsis>{{ text() }}</th>
+          <th nzEllipsis>Middle</th>
+          <th nzRight nzEllipsis>{{ text() }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td nzLeft nzEllipsis>
+            @if (text()) {
+              <span>{{ text() }}</span>
+            }
+          </td>
+          <td nzEllipsis>Middle</td>
+          <td nzRight nzEllipsis>{{ text() }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  `
+})
+class NzTestTableFixedEllipsisComponent {
+  readonly text = signal('Initial');
+}
 
 interface BasicTestDataItem {
   name?: string;
@@ -431,6 +508,11 @@ interface ScrollTestDataItem {
             </tr>
           }
         </tbody>
+        <tfoot nzSummary [nzFixed]="fixedFooter()">
+          <tr>
+            <td colspan="11">Summary</td>
+          </tr>
+        </tfoot>
       </nz-table>
     </div>
   `,
@@ -443,6 +525,7 @@ export class NzTestTableScrollComponent implements OnInit {
   @ViewChild(NzTableComponent, { static: false }) nzTableComponent!: NzTableComponent<ScrollTestDataItem>;
   readonly dataSet = signal<ScrollTestDataItem[]>([]);
   readonly width = signal(300);
+  readonly fixedFooter = signal(false);
 
   ngOnInit(): void {
     const dataSet: ScrollTestDataItem[] = [];
