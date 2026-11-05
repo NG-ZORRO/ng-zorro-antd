@@ -23,7 +23,7 @@ import {
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { provideNzIconsTesting } from 'ng-zorro-antd/icon/testing';
-import { NzSubmenuTrigger } from 'ng-zorro-antd/menu/menu.types';
+import { NzMenuThemeType, NzSubmenuTrigger } from 'ng-zorro-antd/menu/menu.types';
 
 import { NzMenuItemComponent } from './menu-item.component';
 import { NzMenuDirective } from './menu.directive';
@@ -279,6 +279,34 @@ describe('menu', () => {
   });
 
   describe('submenu', () => {
+    describe('submenu theme', () => {
+      let fixture: ComponentFixture<NzTestSubMenuThemeComponent>;
+      let component: NzTestSubMenuThemeComponent;
+
+      beforeEach(() => {
+        fixture = TestBed.createComponent(NzTestSubMenuThemeComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+      });
+
+      it('should inherit and react to the menu theme when no theme is provided', () => {
+        expect(overlayContainerElement.querySelector('.ant-menu-submenu-popup')?.classList).toContain('ant-menu-light');
+
+        component.menuTheme.set('dark');
+        fixture.detectChanges();
+
+        expect(overlayContainerElement.querySelector('.ant-menu-submenu-popup')?.classList).toContain('ant-menu-dark');
+      });
+
+      it('should use the submenu theme when provided', () => {
+        component.menuTheme.set('dark');
+        component.subMenuTheme.set('light');
+        fixture.detectChanges();
+
+        expect(overlayContainerElement.querySelector('.ant-menu-submenu-popup')?.classList).toContain('ant-menu-light');
+      });
+    });
+
     describe('horizontal submenu', () => {
       let fixture: ComponentFixture<NzTestMenuHorizontalComponent>;
       let testComponent: NzTestMenuHorizontalComponent;
@@ -1044,6 +1072,34 @@ export class NzTestMenuSwitchModeComponent {
 })
 export class NzTestMenuThemeComponent {
   readonly theme = signal(true);
+}
+
+@Component({
+  imports: [NzMenuModule],
+  template: `
+    <ul nz-menu style="width: 240px;" nzMode="horizontal" [nzTheme]="menuTheme()">
+      <li nz-submenu nzOpen nzTitle="Navigation One" nzIcon="mail" [nzTheme]="subMenuTheme()">
+        <ul>
+          <li nz-menu-group nzTitle="Item 1">
+            <ul>
+              <li nz-menu-item nzSelected>Option 1</li>
+              <li nz-menu-item>Option 2</li>
+            </ul>
+          </li>
+          <li nz-menu-group nzTitle="Item 2">
+            <ul>
+              <li nz-menu-item>Option 3</li>
+              <li nz-menu-item>Option 4</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  `
+})
+class NzTestSubMenuThemeComponent {
+  public readonly menuTheme = signal<NzMenuThemeType>('light');
+  public readonly subMenuTheme = signal<NzMenuThemeType | undefined>(undefined);
 }
 
 async function stabilize<T>(fixture: ComponentFixture<T>, ms?: number): Promise<void> {
