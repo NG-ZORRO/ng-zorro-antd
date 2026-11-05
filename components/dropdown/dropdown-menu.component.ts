@@ -16,6 +16,7 @@ import {
   ViewContainerRef,
   ViewEncapsulation,
   inject,
+  viewChild,
   signal,
   type AnimationCallbackEvent
 } from '@angular/core';
@@ -42,6 +43,7 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
   template: `
     <ng-template>
       <div
+        #dropdown
         class="ant-dropdown"
         [class.ant-dropdown-rtl]="dir() === 'rtl'"
         [class.ant-dropdown-show-arrow]="nzArrow"
@@ -83,6 +85,7 @@ export class NzDropdownMenuComponent implements AfterContentInit {
   mouseState$ = new BehaviorSubject<boolean>(false);
   animationStateChange$ = new EventEmitter<AnimationCallbackEvent>();
   @ViewChild(TemplateRef, { static: true }) templateRef!: TemplateRef<NzSafeAny>;
+  readonly dropdownElement = viewChild<ElementRef<HTMLElement>>('dropdown');
 
   nzOverlayClassName: string = '';
   nzOverlayStyle: IndexableObject = {};
