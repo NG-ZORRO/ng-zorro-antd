@@ -3,12 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { InteractivityChecker } from '@angular/cdk/a11y';
 import {
+  afterNextRender,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
+  Injector,
   OnChanges,
   OnInit,
   Output,
@@ -64,6 +67,8 @@ export class NzFilterTriggerComponent implements OnChanges, OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly destroyRef = inject(DestroyRef);
   private readonly i18n = inject(NzI18nService);
+  private readonly injector = inject(Injector);
+  private readonly interactivityChecker = inject(InteractivityChecker);
   private isKeyboardTriggered = false;
   locale: NzTableI18nInterface = {};
 
@@ -79,7 +84,9 @@ export class NzFilterTriggerComponent implements OnChanges, OnInit {
 
   onVisibleChange(visible: boolean): void {
     this.nzVisible = visible;
-    if (!visible) {
+    if (visible && this.isKeyboardTriggered) {
+      afterNextRender(() => this.focusPanel(), { injector: this.injector });
+    } else if (!visible) {
       this.restoreFocus();
     }
     this.nzVisibleChange.next(visible);
@@ -93,10 +100,25 @@ export class NzFilterTriggerComponent implements OnChanges, OnInit {
   }
 
   private restoreFocus(): void {
-    if (this.isKeyboardTriggered) {
-      this.nzDropdown.nativeElement.focus();
-      this.isKeyboardTriggered = false;
+    const trigger = this.nzDropdown.nativeElement;
+    if (
+      this.isKeyboardTriggered &&
+      this.nzDropdownMenu.dropdownElement()?.nativeElement.contains(trigger.ownerDocument.activeElement)
+    ) {
+      trigger.focus();
     }
+    this.isKeyboardTriggered = false;
+  }
+
+  private focusPanel(): void {
+    const trigger = this.nzDropdown.nativeElement;
+    if (!this.nzVisible || !this.isKeyboardTriggered || trigger.ownerDocument.activeElement !== trigger) {
+      return;
+    }
+    const elements = this.nzDropdownMenu.dropdownElement()?.nativeElement.querySelectorAll<HTMLElement>('*');
+    const firstTabbable =
+      elements && Array.from(elements).find(element => this.interactivityChecker.isTabbable(element));
+    firstTabbable?.focus();
   }
 
   hide(): void {

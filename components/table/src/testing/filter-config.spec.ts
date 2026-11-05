@@ -8,6 +8,7 @@ import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { vi } from 'vitest';
+import { page, userEvent } from 'vitest/browser';
 
 import { provideNzNoAnimation } from 'ng-zorro-antd/core/animation';
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
@@ -472,18 +473,17 @@ describe('nz-th criteria filter config', () => {
     expect(trigger.getAttribute('aria-label')).toBe('Filter menu');
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
     trigger.focus();
-    const event = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true });
-    trigger.dispatchEvent(event);
+    await userEvent.keyboard(key === 'Enter' ? '{Enter}' : ' ');
     await wait(200);
     await stabilize();
 
-    expect(event.defaultPrevented).toBe(true);
     expect(getPanel()).not.toBeNull();
     expect(trigger.getAttribute('aria-expanded')).toBe('true');
+    expect(document.activeElement).toBe(getPanel()!.querySelector('nz-select input'));
+    await userEvent.keyboard('{Tab}');
     const input = getPanel()!.querySelector<HTMLInputElement>('input[nz-input]')!;
-    input.focus();
-    await typeInto(input, 'Ac');
-    await confirm();
+    expect(document.activeElement).toBe(input);
+    await userEvent.keyboard('Ac{Enter}');
     await wait(200);
     await stabilize();
 
@@ -493,21 +493,68 @@ describe('nz-th criteria filter config', () => {
     expect(getRenderedIds()).toEqual([1, 3]);
   });
 
+  it.each([1, 2, 3])('should focus a control and tab within the keyboard-opened filter in column %i', async index => {
+    await stabilize();
+    const trigger = fixture.nativeElement.querySelectorAll('.ant-table-filter-trigger')[index] as HTMLElement;
+    trigger.focus();
+    await userEvent.keyboard('{Enter}');
+    await wait(200);
+    await stabilize();
+
+    const panel = overlayContainerElement.querySelector<HTMLElement>('.ant-table-filter-dropdown')!;
+    const firstControl = panel.querySelector('input');
+    expect(document.activeElement).toBe(firstControl);
+    await userEvent.keyboard('{Tab}');
+    expect(document.activeElement).not.toBe(firstControl);
+    expect(panel.contains(document.activeElement)).toBe(true);
+  });
+
   it('should return focus to the keyboard trigger when Escape closes the panel', async () => {
     await stabilize();
     const trigger = fixture.nativeElement.querySelector('.ant-table-filter-trigger') as HTMLElement;
     trigger.focus();
-    trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    await userEvent.keyboard('{Enter}');
     await wait(200);
     await stabilize();
-    const input = getPanel()!.querySelector<HTMLInputElement>('input[nz-input]')!;
-    input.focus();
-    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', keyCode: 27, bubbles: true }));
+    expect(document.activeElement).toBe(getPanel()!.querySelector('nz-select input'));
+    await userEvent.keyboard('{Escape}');
     await wait(200);
     await stabilize();
 
     expect(getPanel()).toBeNull();
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  it('should preserve focus on a control clicked outside a keyboard-opened filter', async () => {
+    await stabilize();
+    const trigger = fixture.nativeElement.querySelector('.ant-table-filter-trigger') as HTMLElement;
+    trigger.focus();
+    await userEvent.keyboard('{Enter}');
+    await wait(200);
+    await stabilize();
+    expect(getPanel()!.contains(document.activeElement)).toBe(true);
+
+    const outsideInput = fixture.nativeElement.querySelector('input.outside-filter') as HTMLInputElement;
+    await userEvent.click(outsideInput);
+    await wait(200);
+    await stabilize();
+
+    expect(getPanel()).toBeNull();
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    expect(document.activeElement).toBe(outsideInput);
+    await userEvent.keyboard('outside');
+    expect(outsideInput.value).toBe('outside');
+  });
+
+  it('should keep focus on the trigger when a filter is opened with a pointer', async () => {
+    await stabilize();
+    const trigger = fixture.nativeElement.querySelector('.ant-table-filter-trigger') as HTMLElement;
+    await page.getByRole('button', { name: 'Filter menu' }).first().click();
+    await wait(200);
+    await stabilize();
+
+    expect(getPanel()).not.toBeNull();
     expect(document.activeElement).toBe(trigger);
   });
 
@@ -751,6 +798,7 @@ describe('nz-th criteria filter config', () => {
         }
       </tbody>
     </nz-table>
+    <input class="outside-filter" aria-label="Outside filter" />
   `
 })
 class NzThTestCriteriaFilterComponent {

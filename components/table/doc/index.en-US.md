@@ -262,6 +262,8 @@ Other property
 
 Customized filter panel
 
+Enter or Space opens the panel and focuses its first tabbable control. Closing a keyboard-opened panel returns focus to the trigger only if focus is still inside the panel; clicking another control preserves focus on that control.
+
 | Property            | Description                                                                                       | Type                      | Default |
 | ------------------- | ------------------------------------------------------------------------------------------------- | ------------------------- | ------- |
 | `[nzDropdownMenu]`  | Dropdown menu                                                                                     | `NzDropdownMenuComponent` | -       |
