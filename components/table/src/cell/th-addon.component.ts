@@ -8,6 +8,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   Input,
@@ -19,8 +20,7 @@ import {
   SimpleChanges,
   ViewEncapsulation,
   booleanAttribute,
-  inject,
-  DestroyRef
+  inject
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { combineLatest, of, Subject } from 'rxjs';
@@ -34,6 +34,7 @@ import { NzI18nService, NzTableI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzTableCriteriaFilterComponent } from '../addon/criteria-filter.component';
 import { NzTableFilterComponent } from '../addon/filter.component';
 import { NzTableSortersComponent } from '../addon/sorters.component';
+import { NzCellEllipsisDirective } from '../styled/ellipsis.directive';
 import { NzTableDataService } from '../table-data.service';
 import { createCriteriaFilterFn } from '../table-filter-criteria';
 import {
@@ -54,6 +55,7 @@ import {
   NzTableSortFn,
   NzTableSortOrder
 } from '../table.types';
+import { NzCellFixedDirective } from './cell-fixed.directive';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
 // The dropdown treats a single `null` selection as cleared, so the empty option uses a private value internally.
@@ -61,7 +63,7 @@ const NZ_TABLE_FILTER_EMPTY_OPTION_VALUE = Symbol('NzTableFilterEmptyOption');
 
 @Component({
   selector:
-    'th[nzColumnKey], th[nzSortFn], th[nzSortOrder], th[nzFilters], th[nzShowSort], th[nzShowFilter], th[nzCustomFilter], th[nzFilterConfig]',
+    'th[nzColumnKey], th[nzSortFn], th[nzSortOrder], th[nzFilters], th[nzShowSort], th[nzShowFilter], th[nzCustomFilter], th[nzEllipsis], th[nzFilterConfig]',
   encapsulation: ViewEncapsulation.None,
   template: `
     @if (nzShowFilter && !nzCustomFilter && criteriaConfig) {
@@ -84,18 +86,29 @@ const NZ_TABLE_FILTER_EMPTY_OPTION_VALUE = Symbol('NzTableFilterEmptyOption');
       <ng-container [ngTemplateOutlet]="notFilterTemplate" />
     }
     <ng-template #notFilterTemplate>
-      <ng-template [ngTemplateOutlet]="nzShowSort ? sortTemplate : contentTemplate" />
+      <ng-template [ngTemplateOutlet]="nzShowSort ? sortTemplate : contentWrapperTemplate" />
     </ng-template>
     <ng-template #extraTemplate>
       <ng-content select="[nz-th-extra]" />
       <ng-content select="nz-filter-trigger" />
     </ng-template>
     <ng-template #sortTemplate>
-      <nz-table-sorters [sortOrder]="sortOrder" [sortDirections]="sortDirections" [contentTemplate]="contentTemplate" />
+      <nz-table-sorters
+        [sortOrder]="sortOrder"
+        [sortDirections]="sortDirections"
+        [contentTemplate]="contentWrapperTemplate"
+      />
     </ng-template>
-    <ng-template #contentTemplate>
-      <ng-content />
+    <ng-template #contentWrapperTemplate>
+      @if (ellipsisDir?.nzEllipsis && fixedDir) {
+        <span class="ant-table-cell-content">
+          <ng-template [ngTemplateOutlet]="contentTemplate" />
+        </span>
+      } @else {
+        <ng-template [ngTemplateOutlet]="contentTemplate" />
+      }
     </ng-template>
+    <ng-template #contentTemplate><ng-content /></ng-template>
   `,
   host: {
     '[class.ant-table-column-has-sorters]': 'nzShowSort',
@@ -105,6 +118,8 @@ const NZ_TABLE_FILTER_EMPTY_OPTION_VALUE = Symbol('NzTableFilterEmptyOption');
 })
 export class NzThAddOnComponent<T> implements OnChanges, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+  readonly ellipsisDir = inject(NzCellEllipsisDirective, { self: true, optional: true });
+  readonly fixedDir = inject(NzCellFixedDirective, { self: true, optional: true });
 
   nzConfigService = inject(NzConfigService);
   private el: HTMLElement = inject(ElementRef<HTMLElement>).nativeElement;
