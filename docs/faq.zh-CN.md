@@ -39,7 +39,7 @@ ng-zorro-antd 本质上是组件库，与用户自己写的 `@Component` 没有�
 
 ### Expression Changed After It Has Been Checked Error 错误
 
-Angular 的数据流是单向数据流，违反数据流走向会引起该问题，[这篇文章](https://angular.love/everything-you-need-to-know-about-the-expressionchangedafterithasbeencheckederror-error)会帮助你理解原因。
+Angular 的数据流是单向数据流，违反数据流走向会引起该问题，[官方文档](https://angular.cn/errors/NG0100)会帮助你理解原因。
 
 ### Can't bind to 'formGroup' since it isn't a known property of 'form'
 
@@ -70,13 +70,13 @@ this.dataSet = this.dataSet.filter(d => d.key !== i);
 
 开发者也可以使用 [immer](https://immerjs.github.io/immer/) 获得更好的操作体验
 
-从 Angular 22 开始，`OnPush` 也是你自己组件的默认变更检测策略。`OnPush` 组件只会在以下情况下被重新检查：某个输入属性收到新的引用、模板中绑定的事件被触发、模板中的 `async` 管道收到新值、模板中读取的 signal 发生变化，或者调用了 `markForCheck()`。如果需要让某个组件保持以前的行为，可以设置 `changeDetection: ChangeDetectionStrategy.Eager`。
+从 Angular 22 开始，`OnPush` 也是你自己组件的默认变更检测策略。`OnPush` 组件只会在以下情况下被重新检查：某个输入属性的值发生变化（Angular 使用 `Object.is` 进行比较）、模板中绑定的事件被触发、模板中的 `async` 管道收到新值、模板中读取的 signal 发生变化，或者调用了 `markForCheck()`。如果需要让某个组件保持以前的行为，可以设置 `changeDetection: ChangeDetectionStrategy.Eager`。
 
-排查 `OnPush` 下页面不更新的问题，可以参考[这篇文章](https://frontendatlas.com/angular/trivia/angular-onpush-change-detection-debugging-real-bug)（英文）。
+更多细节可以参考官方文档中的[跳过组件子树](https://angular.cn/best-practices/skipping-subtrees)。
 
 ### 我的页面卡死了，函数不停的在执行
 
-在 Angular 的模板表达式中，绑定带有副作用的属性或者方法都是[危险的](https://angular.cn/guide/template-syntax#avoid-side-effects)，如果你违反了这条规则，很可能会造成性能下降甚至引起死循环。以下的代码会在页面中不停输出 `I will run every time`，因为 `console.log` 本身是一种副作用函数。
+在 Angular 的模板表达式中，绑定带有副作用的属性或者方法都是危险的，如果你违反了这条规则，很可能会造成性能下降甚至引起死循环。以下的代码会在页面中不停输出 `I will run every time`，因为 `console.log` 本身是一种副作用函数。
 
 ```typescript
 @Component({

@@ -37,7 +37,7 @@ Please make sure you have export NG-ZORRO's feature modules in `ShareModule` if 
 
 ### Expression Changed After It Has Been Checked Error
 
-This [doc](https://angular.love/everything-you-need-to-know-about-the-expressionchangedafterithasbeencheckederror-error) will help you.
+This [doc](https://angular.dev/errors/NG0100) will help you.
 
 ### Can't bind to 'formGroup' since it isn't a known property of 'form'
 
@@ -68,9 +68,9 @@ this.dataSet = this.dataSet.filter(d => d.key !== i);
 
 Recommend using [immer](https://immerjs.github.io/immer/) for a better development experience.
 
-Since Angular 22, `OnPush` is also the default for your own components. An `OnPush` component is checked again only when one of its inputs receives a new reference, an event bound in its template fires, an `async` pipe in its template receives a new value, a signal read in its template changes, or `markForCheck()` is called. To keep the previous behavior for a component, set `changeDetection: ChangeDetectionStrategy.Eager`.
+Since Angular 22, `OnPush` is also the default for your own components. An `OnPush` component is checked again only when one of its input values changes (Angular compares them with `Object.is`), an event bound in its template fires, an `async` pipe in its template receives a new value, a signal read in its template changes, or `markForCheck()` is called. To keep the previous behavior for a component, set `changeDetection: ChangeDetectionStrategy.Eager`.
 
-For a walkthrough of debugging a page that does not update under `OnPush`, see [Angular OnPush by default: debug stale UI after v22](https://frontendatlas.com/angular/trivia/angular-onpush-change-detection-debugging-real-bug).
+For more details, see [Skipping component subtrees](https://angular.dev/best-practices/skipping-subtrees) in the Angular documentation.
 
 ### My Angular app is deadlock, what happened?
 
