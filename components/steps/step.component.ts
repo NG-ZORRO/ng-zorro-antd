@@ -15,7 +15,8 @@ import {
   ViewEncapsulation,
   booleanAttribute,
   inject,
-  DestroyRef
+  DestroyRef,
+  signal
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject } from 'rxjs';
@@ -133,31 +134,31 @@ export class NzStepComponent implements OnInit {
 
   @Input()
   get nzStatus(): string {
-    return this._status;
+    return this._status();
   }
 
   set nzStatus(status: string) {
-    this._status = status;
+    this._status.set(status);
     this.isCustomStatus = true;
   }
 
   isCustomStatus = false;
-  private _status = 'wait';
+  private readonly _status = signal('wait');
 
   @Input()
   get nzIcon(): NgClassType | TemplateRef<void> | undefined {
-    return this._icon;
+    return this._icon();
   }
 
   set nzIcon(value: NgClassType | TemplateRef<void> | undefined) {
     if (!(value instanceof TemplateRef)) {
       this.oldAPIIcon = typeof value === 'string' && value.indexOf('anticon') > -1;
     }
-    this._icon = value;
+    this._icon.set(value);
   }
 
   oldAPIIcon = true;
-  private _icon?: NgClassType | TemplateRef<void>;
+  private readonly _icon = signal<NgClassType | TemplateRef<void> | undefined>(undefined);
 
   customProcessTemplate?: TemplateRef<{ $implicit: TemplateRef<void>; status: string; index: number }>; // Set by parent.
   direction = 'horizontal';
@@ -182,17 +183,17 @@ export class NzStepComponent implements OnInit {
   }
 
   get currentIndex(): number {
-    return this._currentIndex;
+    return this._currentIndex();
   }
 
   set currentIndex(current: number) {
-    this._currentIndex = current;
+    this._currentIndex.set(current);
     if (!this.isCustomStatus) {
-      this._status = current > this.index ? 'finish' : current === this.index ? this.outStatus || '' : 'wait';
+      this._status.set(current > this.index ? 'finish' : current === this.index ? this.outStatus || '' : 'wait');
     }
   }
 
-  private _currentIndex = 0;
+  private readonly _currentIndex = signal(0);
 
   ngOnInit(): void {
     fromEventOutsideAngular(this.itemContainer.nativeElement, 'click')
