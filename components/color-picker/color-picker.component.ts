@@ -48,6 +48,7 @@ import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType, NzPresetCol
   ],
   template: `
     <div
+      [attr.id]="nzId"
       [class.ant-color-picker-trigger]="!nzFlipFlop"
       [class.ant-color-picker-sm]="finalSize() === 'small'"
       [class.ant-color-picker-lg]="finalSize() === 'large'"
@@ -58,12 +59,14 @@ import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType, NzPresetCol
       [nzPopoverVisible]="nzOpen"
       (nzPopoverVisibleChange)="nzOnOpenChange.emit($event)"
     >
-      @if (!nzFlipFlop) {
-        <nz-color-block [nzColor]="blockColor" [nzSize]="finalSize()" />
-      } @else {
+      @if (nzFlipFlop) {
         <ng-template [ngTemplateOutlet]="nzFlipFlop" />
+      } @else if (isCleared) {
+        <div class="ant-color-picker-clear"></div>
+      } @else {
+        <nz-color-block [nzColor]="blockColor" [nzSize]="finalSize()" />
       }
-      @if (nzShowText && !!showText && !nzFlipFlop) {
+      @if (nzShowText && !!showText && !nzFlipFlop && !isCleared) {
         <div class="ant-color-picker-trigger-text">
           {{ showText }}
         </div>
@@ -96,7 +99,7 @@ import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType, NzPresetCol
     <ng-template #nzPanelRenderFooter>
       <nz-color-format
         [colorValue]="blockColor"
-        [clearColor]="clearColor"
+        [clearColor]="isCleared"
         [format]="nzFormat"
         [nzDisabledAlpha]="nzDisabledAlpha"
         (formatChange)="formatChange($event)"
@@ -123,8 +126,9 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
 
   private readonly formSize = inject(NZ_FORM_SIZE, { optional: true });
 
+  @Input() nzId: string | null = null;
   @Input() nzFormat: NzColorPickerFormatType | null = null;
-  @Input() nzValue: string | NzColor = '';
+  @Input() nzValue: string | NzColor | null | undefined = '';
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzDefaultValue: string | NzColor = '';
   @Input() nzTrigger: NzColorPickerTriggerType = 'click';
@@ -146,17 +150,27 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   blockColor: string = '';
   clearColor: boolean = false;
   showText: string = defaultColor.toHexString();
-  formControl = this.formBuilder.control('');
+  formControl = this.formBuilder.control<string | null>('');
   private readonly size = signal(this.nzSize);
 
   protected readonly finalSize = computed(() => this.formSize?.() || this.size());
 
-  onChange: (value: string) => void = () => {};
+  /**
+   * Whether the picker is in the cleared state: either the user cleared the color,
+   * or the value is `null` or `undefined`.
+   */
+  get isCleared(): boolean {
+    return this.clearColor || this.nzValue == null;
+  }
 
-  writeValue(value: string): void {
-    this.nzValue = value;
+  onChange: (value: string | null) => void = () => {};
+
+  writeValue(value: string | null | undefined): void {
+    this.nzValue = value ?? null;
+    this.clearColor = false;
     this.getBlockColor();
-    this.formControl.patchValue(value);
+    this.formControl.patchValue(this.nzValue);
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: NzSafeAny): void {
@@ -175,17 +189,7 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
     this.getBlockColor();
     this.formControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
       if (value) {
-        let color = value;
-        if (this.nzFormat === 'hex') {
-          color =
-            generateColor(value).getAlpha() < 1
-              ? generateColor(value).toHex8String()
-              : generateColor(value).toHexString();
-        } else if (this.nzFormat === 'hsb') {
-          color = generateColor(value).toHsbString();
-        } else if (this.nzFormat === 'rgb') {
-          color = generateColor(value).toRgbString();
-        }
+        const color = this.nzFormat ? this.toFormatString(generateColor(value), this.nzFormat) : value;
         this.showText = color;
         this.onChange(color);
         this.cdr.markForCheck();
@@ -196,6 +200,15 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   ngOnChanges(changes: SimpleChanges): void {
     const { nzValue, nzDefaultValue, nzSize } = changes;
     if (nzValue || nzDefaultValue) {
+      // Keep the cleared state when the parent only echoes back the color emitted on clear
+      // (with or without its alpha); any other incoming value ends the cleared state.
+      if (
+        this.clearColor &&
+        nzValue?.currentValue != null &&
+        generateColor(nzValue.currentValue).toHexString() !== generateColor(this.blockColor).toHexString()
+      ) {
+        this.clearColor = false;
+      }
       this.getBlockColor();
     }
     if (nzSize) {
@@ -204,34 +217,64 @@ export class NzColorPickerComponent implements OnInit, OnChanges, ControlValueAc
   }
 
   clearColorHandle(): void {
+    if (this.isCleared) {
+      return;
+    }
+    const clearedColor = generateColor(this.blockColor).setAlpha(0);
     this.clearColor = true;
+    this.blockColor = clearedColor.toHex8String();
+    this.formControl.setValue(null, { emitEvent: false });
     this.nzOnClear.emit(true);
+    this.nzOnChange.emit({ color: clearedColor, format: this.nzFormat ?? 'hex' });
+    this.onChange(null);
     this.cdr.markForCheck();
   }
 
+  /**
+   * The color shown in the trigger and used to seed the panel. In the cleared state
+   * the panel keeps the hue of the last color (or the default) at 0% alpha.
+   */
   getBlockColor(): void {
-    if (this.nzValue) {
-      this.blockColor = generateColor(this.nzValue).toRgbString();
-    } else if (this.nzDefaultValue) {
-      this.blockColor = generateColor(this.nzDefaultValue).toRgbString();
-    } else {
-      this.blockColor = defaultColor.toHexString();
-    }
+    const color = generateColor(this.nzValue || this.nzDefaultValue || defaultColor);
+    this.blockColor = this.isCleared ? generateColor({ ...color.toHsb(), a: 0 }).toHex8String() : color.toRgbString();
   }
 
   colorChange(value: { color: NzColor }): void {
-    this.blockColor = value.color.getAlpha() < 1 ? value.color.toHex8String() : value.color.toHexString();
+    const color = this.restoreAlphaIfCleared(value.color);
+    this.blockColor = color.getAlpha() < 1 ? color.toHex8String() : color.toHexString();
+    this.nzValue = this.blockColor;
     this.clearColor = false;
-    this.nzOnChange.emit({ color: value.color, format: this.nzFormat ?? 'hex' });
+    this.nzOnChange.emit({ color, format: this.nzFormat ?? 'hex' });
     this.cdr.markForCheck();
   }
 
   formatChange(value: { color: string; format: NzColorPickerFormatType }): void {
-    this.nzValue = value.color;
+    const color = this.restoreAlphaIfCleared(generateColor(value.color));
+    const colorString = this.toFormatString(color, value.format);
+    this.nzValue = colorString;
     this.clearColor = false;
     this.getBlockColor();
-    this.nzOnChange.emit({ color: generateColor(value.color), format: value.format });
-    this.formControl.patchValue(value.color);
+    this.nzOnChange.emit({ color, format: value.format });
+    this.formControl.patchValue(colorString);
     this.cdr.markForCheck();
+  }
+
+  private toFormatString(color: NzColor, format: NzColorPickerFormatType): string {
+    switch (format) {
+      case 'hsb':
+        return color.toHsbString();
+      case 'rgb':
+        return color.toRgbString();
+      default:
+        return color.getAlpha() < 1 ? color.toHex8String() : color.toHexString();
+    }
+  }
+
+  /**
+   * The cleared color is fully transparent. When the user picks a color again, restore
+   * the alpha to 100% so the selection is visible, as Ant Design does.
+   */
+  private restoreAlphaIfCleared(color: NzColor): NzColor {
+    return this.isCleared ? generateColor({ ...color.toHsb(), a: 1 }) : color;
   }
 }

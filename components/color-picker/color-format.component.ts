@@ -244,7 +244,9 @@ export class NzColorFormatComponent implements OnChanges, OnInit {
         rgbB: Math.round(generateColor(this.colorValue).b),
         roundA: Math.round(generateColor(this.colorValue).roundA * 100)
       };
-      this.validateForm.patchValue(colorValue);
+      // While cleared, the inputs only mirror the picker state: emitting here would
+      // round-trip a transparent color back into the picker and undo the clear.
+      this.validateForm.patchValue(colorValue, { emitEvent: !this.clearColor });
     }
 
     if (format && this.format) {
@@ -252,7 +254,8 @@ export class NzColorFormatComponent implements OnChanges, OnInit {
     }
 
     if (clearColor && this.clearColor) {
-      this.validateForm.get('roundA')?.patchValue(0);
+      // The picker already propagated the cleared state; only sync the alpha input.
+      this.validateForm.get('roundA')?.patchValue(0, { emitEvent: false });
     }
   }
 }
