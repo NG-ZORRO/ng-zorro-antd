@@ -23,8 +23,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { map, merge, Subject, takeUntil } from 'rxjs';
-import { pairwise, startWith } from 'rxjs/operators';
+import { merge, Subject } from 'rxjs';
+import { map, pairwise, startWith, takeUntil } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { fromEventOutsideAngular } from 'ng-zorro-antd/core/util';
