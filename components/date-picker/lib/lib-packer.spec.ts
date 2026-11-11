@@ -106,6 +106,19 @@ class ShiftedDateAdapter extends NativeDateAdapter {
   }
 }
 
+// Simulates a timezone where midnight on the first day of the month is skipped by DST (e.g. America/Asuncion on
+// October 1, 2023), so 00:xx on that day is normalized to 01:xx.
+@Injectable()
+class SkippedFirstMidnightDateAdapter extends NativeDateAdapter {
+  override setDate(date: Date, day: number): Date {
+    const result = super.setDate(date, day);
+    if (day === 1 && result.getHours() === 0) {
+      result.setHours(1);
+    }
+    return result;
+  }
+}
+
 // TODO: Add unit test of date-table and month-table
 describe('Coverage supplements', () => {
   beforeEach(() => {
@@ -307,6 +320,28 @@ describe('Coverage supplements', () => {
   });
 
   // Tests for issue #9650
+  describe('DateTable when the first day of the month skips midnight', () => {
+    it('should keep the active time when selecting another day', () => {
+      TestBed.overrideProvider(NzDateAdapter, { useFactory: () => new SkippedFirstMidnightDateAdapter(), deps: [] });
+      const fixture = TestBed.createComponent(DateTableComponent);
+      const component = fixture.componentInstance;
+      const active = new Date(2023, 9, 15, 0, 30, 15, 250);
+      component.activeDate = new CandyDate(active);
+      component.value = new CandyDate(active);
+      const selected: CandyDate[] = [];
+      component.valueChange.subscribe(value => selected.push(value));
+      fixture.detectChanges();
+
+      const index = component.bodyRows
+        .flatMap(row => row.dateCells)
+        .findIndex(cell => cell.value.getTime() === new Date(2023, 9, 16).getTime());
+      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('tbody td')[index].click();
+
+      expect(selected.map(value => value.nativeDate)).toEqual([new Date(2023, 9, 16, 0, 30, 15, 250)]);
+      expect(active).toEqual(new Date(2023, 9, 15, 0, 30, 15, 250));
+    });
+  });
+
   describe('DateHeader', () => {
     let fixture: ComponentFixture<DateHeaderComponent>;
     let componentInstance: DateHeaderComponent;
