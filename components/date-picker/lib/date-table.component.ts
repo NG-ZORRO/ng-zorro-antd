@@ -28,11 +28,11 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
   @Input() format?: string;
 
   private changeValueFromInside(value: CandyDate): void {
-    // Only change date, does not change time
-    let date = this.dateAdapter.setDate(this.dateAdapter.clone(this.activeDate.nativeDate), 1);
-    date = this.dateAdapter.setYear(date, this.dateAdapter.getYear(value.nativeDate));
-    date = this.dateAdapter.setMonth(date, this.dateAdapter.getMonth(value.nativeDate));
-    date = this.dateAdapter.setDate(date, this.dateAdapter.getDate(value.nativeDate));
+    // Only change date, does not change time: start from the clicked cell's date and copy the active time onto it,
+    // so the time is never normalized through an unrelated day (e.g. a day whose midnight is skipped by DST).
+    const active = this.activeDate.nativeDate;
+    const date = this.dateAdapter.clone(value.nativeDate);
+    date.setHours(active.getHours(), active.getMinutes(), active.getSeconds(), active.getMilliseconds());
     this.activeDate = new CandyDate(date);
     this.valueChange.emit(this.activeDate);
 
