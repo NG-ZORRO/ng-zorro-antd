@@ -26,7 +26,7 @@ By clicking the input box, you can select a time from a popup panel.
 | `[nzNowText]`             | text of the Now button                                                                 | `string`                                                   | `'Now'`           | ✅            |
 | `[nzOkText]`              | text of the Ok button                                                                  | `string`                                                   | `'Ok'`            | ✅            |
 | `[nzDefaultOpenValue]`    | default open panel value if `[ngModel]` is null                                        | `Date`                                                     | `new Date()`      |
-| `[nzDisabled]`            | determine whether the TimePicker is disabled                                           | `boolean`                                                  | `false`           |
+| `[nzDisabled]`            | Disable the time picker and interaction with its open panel                                           | `boolean`                                                  | `false`           |
 | `[nzDisabledHours]`       | to specify the hours that cannot be selected                                           | `() => number[]`                                           | -                 |
 | `[nzDisabledMinutes]`     | to specify the minutes that cannot be selected                                         | `(hour: number) => number[]`                               | -                 |
 | `[nzDisabledSeconds]`     | to specify the seconds that cannot be selected                                         | `(hour: number, minute: number) => number[]`               | -                 |
