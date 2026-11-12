@@ -71,6 +71,7 @@ import { NzColor, NzColorPickerFormatType, NzColorPickerTriggerType, NzPresetCol
     </div>
     <ng-template #colorPicker>
       <ng-antd-color-picker
+        [attr.inert]="nzDisabled ? '' : null"
         [value]="blockColor"
         [defaultValue]="nzDefaultValue"
         [disabled]="nzDisabled"

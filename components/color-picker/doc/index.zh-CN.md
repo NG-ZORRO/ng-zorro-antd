@@ -26,7 +26,7 @@ description: 用于颜色选择。
 | `[nzTrigger]`        | 颜色选择器的触发模式 | `'hover' \| 'click'`                               | `'click'`   |
 | `[nzShowText]`       | 显示颜色文本         | `boolean`                                          | `false`     |
 | `[nzOpen]`           | 是否显示弹出窗口     | `boolean`                                          | `false`     |
-| `[nzDisabled]`       | 禁用颜色选择器       | `boolean`                                          | `false`     |
+| `[nzDisabled]`       | 禁用颜色选择器及已打开面板中的交互       | `boolean`                                          | `false`     |
 | `[nzDisabledAlpha]`  | 禁用透明度           | `boolean`                                          | `false`     |
 | `[nzTitle]`          | 设置颜色选择器的标题 | `TemplateRef<void> \| string`                      | -           |
 | `[nzPresets]`        | 预设的颜色           | `NzColorPickerPresetsItem[]`                       | -           | 21.0.0 |
