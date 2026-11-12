@@ -392,6 +392,22 @@ describe('cascader', () => {
       expect(testComponent.onOpenChange).toHaveBeenCalledTimes(0);
     });
 
+    it('should make an open menu inert while the cascader is disabled', () => {
+      fixture.detectChanges();
+      testComponent.cascader.setMenuOpen(true);
+      fixture.detectChanges();
+      const menu = overlayContainerElement.querySelector('.ant-cascader-menus')!;
+      expect(menu.hasAttribute('inert')).toBe(false);
+
+      testComponent.nzDisabled.set(true);
+      fixture.detectChanges();
+      expect(menu.hasAttribute('inert')).toBe(true);
+
+      testComponent.nzDisabled.set(false);
+      fixture.detectChanges();
+      expect(menu.hasAttribute('inert')).toBe(false);
+    });
+
     it('should disabled state work', async () => {
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).not.toContain('ant-select-disabled');

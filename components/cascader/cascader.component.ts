@@ -233,6 +233,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'cascader';
       <div
         #menu
         class="ant-cascader-menus"
+        [attr.inert]="nzDisabled ? '' : null"
         [class.ant-cascader-rtl]="dir() === 'rtl'"
         [class.ant-cascader-menus-hidden]="!menuOpen()"
         [class.ant-cascader-menu-empty]="shouldShowEmpty"
@@ -1243,6 +1244,10 @@ export class NzCascaderComponent
     fromEventOutsideAngular<KeyboardEvent>(this.el, 'keydown')
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(event => {
+        if (this.nzDisabled) {
+          return;
+        }
+
         const keyCode = event.keyCode;
 
         if (
