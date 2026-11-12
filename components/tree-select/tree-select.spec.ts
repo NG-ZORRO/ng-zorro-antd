@@ -199,6 +199,22 @@ describe('tree-select', () => {
       expect(treeSelectComponent.nzOpen).toBe(false);
     });
 
+    it('should make an open tree inert while the select is disabled', () => {
+      treeSelectComponent.openDropdown();
+      fixture.detectChanges();
+      const tree = overlayContainerElement.querySelector('nz-tree')!;
+      expect(tree.closest('[inert]')).toBeNull();
+
+      testComponent.disabled.set(true);
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('nz-tree')).toBe(tree);
+      expect(tree.closest('[inert]')).not.toBeNull();
+
+      testComponent.disabled.set(false);
+      fixture.detectChanges();
+      expect(tree.closest('[inert]')).toBeNull();
+    });
+
     it('should dropdownMatchSelectWidth work', async () => {
       testComponent.dropdownMatchSelectWidth.set(true);
       fixture.detectChanges();
