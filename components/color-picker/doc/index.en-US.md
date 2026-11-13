@@ -25,7 +25,7 @@ Used when the user needs to customize the color selection.
 | `[nzTrigger]`        | ColorPicker trigger mode              | `'hover' \| 'click'`                               | `'click'`   |
 | `[nzShowText]`       | Show color text                       | `boolean`                                          | `false`     |
 | `[nzOpen]`           | Whether to show popups                | `boolean`                                          | `false`     |
-| `[nzDisabled]`       | Disable ColorPicker                   | `boolean`                                          | `false`     |
+| `[nzDisabled]`       | Disable ColorPicker and interaction with its open panel                   | `boolean`                                          | `false`     |
 | `[nzDisabledAlpha]`  | Disable Alpha                         | `boolean`                                          | `false`     |
 | `[nzTitle]`          | Setting the title of the color picker | `TemplateRef<void> \| string`                      | -           |
 | `[nzPresets]`        | Preset colors                         | `NzColorPickerPresetsItem[]`                       | -           | 21.0.0  |

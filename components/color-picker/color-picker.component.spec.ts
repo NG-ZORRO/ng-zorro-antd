@@ -110,6 +110,22 @@ describe('color-picker', () => {
     expect(resultEl.nativeElement.classList).toContain('ant-color-picker-disabled');
   });
 
+  it('should make the controlled panel inert while the picker is disabled', () => {
+    testComponent.nzOpen.set(true);
+    waitingForTooltipToggling();
+    const input = overlayContainerElement.querySelector('.ant-color-picker-hex-input input')!;
+    expect(input.closest('[inert]')).toBeNull();
+
+    testComponent.nzDisabled.set(true);
+    waitingForTooltipToggling();
+    expect(overlayContainerElement.querySelector('.ant-color-picker-hex-input input')).toBe(input);
+    expect(input.closest('[inert]')).not.toBeNull();
+
+    testComponent.nzDisabled.set(false);
+    waitingForTooltipToggling();
+    expect(input.closest('[inert]')).toBeNull();
+  });
+
   it('color-picker nzShowText', () => {
     testComponent.nzShowText.set(true);
     fixture.detectChanges();
