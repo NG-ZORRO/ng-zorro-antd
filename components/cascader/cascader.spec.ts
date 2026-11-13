@@ -730,6 +730,21 @@ describe('cascader', () => {
       expect(getAllColumns().length).toBe(3);
     });
 
+    it('should keep the native list semantics of each column', () => {
+      fixture.detectChanges();
+      testComponent.cascader.setMenuOpen(true);
+      fixture.detectChanges();
+      getItemAtColumnAndRow(1, 1)!.click();
+      fixture.detectChanges();
+
+      const columns = Array.from(getAllColumns());
+      expect(columns.length).toBe(2);
+      columns.forEach(column => {
+        expect(column.tagName).toBe('UL');
+        expect(column.getAttribute('role')).toBeNull();
+      });
+    });
+
     it('should click option to change column count', () => {
       fixture.detectChanges();
       expect(getAllColumns().length).toBe(0);
