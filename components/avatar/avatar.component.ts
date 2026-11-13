@@ -20,7 +20,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { of, switchMap } from 'rxjs';
+import { of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { NzConfigKey, withConfigFactory, WithConfig } from 'ng-zorro-antd/core/config';
 import {

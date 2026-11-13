@@ -22,7 +22,8 @@ import {
   Renderer2
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { animationFrameScheduler, asapScheduler, debounceTime, finalize } from 'rxjs';
+import { animationFrameScheduler, asapScheduler } from 'rxjs';
+import { debounceTime, finalize } from 'rxjs/operators';
 
 import { IconBase, RenderMeta, ThemeType } from '@ant-design/icons-angular';
 
