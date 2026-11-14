@@ -120,9 +120,12 @@ export class NzSiderComponent implements OnInit, OnChanges, AfterContentInit {
           const breakpoint = this.nzBreakpoint;
           if (breakpoint) {
             inNextTick().subscribe(() => {
-              this.matchBreakPoint = !map[breakpoint];
-              this.setCollapsed(this.matchBreakPoint);
-              this.cdr.markForCheck();
+              const matchBreakPoint = !map[breakpoint];
+              if (this.matchBreakPoint !== matchBreakPoint) {
+                this.matchBreakPoint = matchBreakPoint;
+                this.setCollapsed(matchBreakPoint);
+                this.cdr.markForCheck();
+              }
             });
           }
         });
