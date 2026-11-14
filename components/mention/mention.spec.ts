@@ -115,6 +115,23 @@ describe('mention', () => {
       expect(mention.isOpen).toBe(false);
     });
 
+    it('should ignore a suggestion after the open mention is disabled', async () => {
+      const { mention, trigger } = fixture.componentInstance;
+      const onSelect = vi.fn();
+      mention.nzOnSelect.subscribe(onSelect);
+      dispatchFakeEvent(textarea, 'click');
+      await stabilize(fixture);
+      expect(mention.isOpen).toBe(true);
+
+      trigger.setDisabledState(true);
+      fixture.detectChanges();
+      mention.selectSuggestion('angular');
+
+      expect(textarea.value).toBe('@angular');
+      expect(onSelect).not.toHaveBeenCalled();
+      expect(mention.isOpen).toBe(false);
+    });
+
     it('should close the dropdown when the user clicks away', async () => {
       const mention = fixture.componentInstance.mention;
       dispatchFakeEvent(textarea, 'click');

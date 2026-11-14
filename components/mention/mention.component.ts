@@ -309,6 +309,11 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   selectSuggestion(suggestion: string | {}): void {
+    if (!this.canOpen()) {
+      this.closeDropdown();
+      return;
+    }
+
     const value = this.nzValueWith(suggestion);
     this.trigger().insertMention({
       mention: value,
@@ -430,7 +435,7 @@ export class NzMentionComponent implements OnInit, AfterViewInit, OnChanges {
 
   private canOpen(): boolean {
     const element: HTMLInputElement | HTMLTextAreaElement = this.triggerNativeElement;
-    return !element.readOnly && !element.disabled;
+    return !this.disabled() && !element.readOnly && !element.disabled;
   }
 
   private resetCursorMention(): void {
