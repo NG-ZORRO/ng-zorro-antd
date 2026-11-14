@@ -210,6 +210,30 @@ describe('notification', () => {
     expect((notificationService as any).container).toBeUndefined(); // eslint-disable-line @typescript-eslint/no-explicit-any
   });
 
+  it.each(['topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'top', 'bottom'] as const)(
+    'should replace the notification without NG0956 warning when nzMaxStack is 1 with placement of %s',
+    async nzPlacement => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      configService.set('notification', { nzMaxStack: 1 });
+
+      notificationService.success('', 'FIRST', { nzPlacement });
+      await stabilize();
+      overlayContainerElement = overlayContainer.getContainerElement();
+      expect(overlayContainerElement.textContent).toContain('FIRST');
+
+      notificationService.success('', 'SECOND', { nzPlacement });
+      await stabilize();
+
+      const placementElement = overlayContainerElement.querySelector(`.ant-notification-${nzPlacement}`)!;
+      expect(overlayContainerElement.querySelectorAll('.ant-notification-notice').length).toBe(1);
+      expect(placementElement.textContent).not.toContain('FIRST');
+      expect(placementElement.textContent).toContain('SECOND');
+      expect(warnSpy).not.toHaveBeenCalledWith(expect.stringContaining('NG0956'));
+
+      warnSpy.mockRestore();
+    }
+  );
+
   it('should destroy without animation', async () => {
     notificationService.error('', 'EXISTS', { nzDuration: 1000, nzAnimate: false });
     await stabilize(1000);

@@ -167,6 +167,26 @@ describe('message', () => {
     expect(messageService['container']).toBeUndefined();
   });
 
+  it('should replace the message without NG0956 warning when nzMaxStack is 1', async () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    configService.set('message', { nzMaxStack: 1 });
+
+    messageService.success('FIRST');
+    await stabilize();
+    overlayContainerElement = overlayContainer.getContainerElement();
+    expect(overlayContainerElement.textContent).toContain('FIRST');
+
+    messageService.success('SECOND');
+    await stabilize();
+
+    expect(overlayContainerElement.querySelectorAll('.ant-message-notice').length).toBe(1);
+    expect(overlayContainerElement.textContent).not.toContain('FIRST');
+    expect(overlayContainerElement.textContent).toContain('SECOND');
+    expect(warnSpy).not.toHaveBeenCalledWith(expect.stringContaining('NG0956'));
+
+    warnSpy.mockRestore();
+  });
+
   it('should destroy without animation', async () => {
     messageService.error('EXISTS', { nzDuration: 1000, nzAnimate: false });
     await stabilize(1000);
