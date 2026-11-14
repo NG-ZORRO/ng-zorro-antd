@@ -385,6 +385,26 @@ describe('NzDatePickerComponent', () => {
       expect(getPickerContainer()).toBeNull();
     });
 
+    it('should make a controlled open panel inert while the picker is disabled', () => {
+      fixtureInstance.useSuite.set(2);
+      fixtureInstance.nzOpen.set(true);
+      fixture.detectChanges();
+      vi.advanceTimersByTime(500);
+      fixture.detectChanges();
+
+      const panel = getPickerContainer();
+      expect(panel.closest('[inert]')).toBeNull();
+
+      fixtureInstance.nzDisabled.set(true);
+      fixture.detectChanges();
+      expect(getPickerContainer()).toBe(panel);
+      expect(panel.closest('[inert]')).not.toBeNull();
+
+      fixtureInstance.nzDisabled.set(false);
+      fixture.detectChanges();
+      expect(panel.closest('[inert]')).toBeNull();
+    });
+
     it('should support nzFormat', async () => {
       fixtureInstance.nzFormat.set('dd.MM.yyyy');
       fixtureInstance.nzValue.set(new Date('2020-03-04'));
@@ -1722,7 +1742,7 @@ describe('finalVariant', () => {
         />
       }
       @case (2) {
-        <nz-date-picker [nzOpen]="nzOpen()" (nzOnOpenChange)="nzOnOpenChange($event)" />
+        <nz-date-picker [nzOpen]="nzOpen()" [nzDisabled]="nzDisabled()" (nzOnOpenChange)="nzOnOpenChange($event)" />
       }
       @case (3) {
         <nz-date-picker nzOpen [(ngModel)]="modelValue" />

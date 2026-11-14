@@ -201,6 +201,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
     <ng-template #inlineMode>
       <div
         [class]="dropdownClass()"
+        [attr.inert]="nzDisabled ? '' : null"
         [class.ant-picker-dropdown-range]="!nzInline() && isRange"
         [class.ant-picker-active-left]="datePickerService.activeInput === 'left'"
         [class.ant-picker-active-right]="datePickerService.activeInput === 'right'"
