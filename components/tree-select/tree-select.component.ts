@@ -115,6 +115,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
     >
       <div
         [class]="dropdownClassName"
+        [attr.inert]="nzDisabled ? '' : null"
         [nzNoAnimation]="!!noAnimation?.nzNoAnimation?.()"
         [animate.enter]="slideAnimationEnter()"
         [animate.leave]="slideAnimationLeave()"
