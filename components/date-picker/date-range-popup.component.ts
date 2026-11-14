@@ -188,9 +188,8 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   }
 
   get arrowPosition(): { left?: string; right?: string } {
-    return this.dir === 'rtl'
-      ? { right: `${this.datePickerService?.arrowLeft}px` }
-      : { left: `${this.datePickerService?.arrowLeft}px` };
+    const { arrowLeft, arrowOffset } = this.datePickerService;
+    return this.dir === 'rtl' ? { right: `${arrowLeft + arrowOffset}px` } : { left: `${arrowLeft + arrowOffset}px` };
   }
 
   ngOnInit(): void {
