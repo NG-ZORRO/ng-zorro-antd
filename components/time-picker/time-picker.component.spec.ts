@@ -160,6 +160,41 @@ describe('time-picker', () => {
       expect(testComponent.open()).toBe(true);
     });
 
+    it('should make an open panel inert while the picker is disabled', async () => {
+      testComponent.open.set(true);
+      await stabilize(fixture);
+      const panel = overlayContainerElement.querySelector('.ant-picker-panel')!;
+      expect(panel.closest('[inert]')).toBeNull();
+
+      testComponent.disabled.set(true);
+      await stabilize(fixture);
+      expect(overlayContainerElement.querySelector('.ant-picker-panel')).toBe(panel);
+      expect(panel.closest('[inert]')).not.toBeNull();
+
+      testComponent.disabled.set(false);
+      await stabilize(fixture);
+      expect(panel.closest('[inert]')).toBeNull();
+    });
+
+    it('should discard an uncommitted panel value when closing while disabled', async () => {
+      testComponent.date.set(new Date(2026, 4, 5, 9));
+      testComponent.open.set(true);
+      await stabilize(fixture);
+      const onChange = vi.spyOn(testComponent, 'onChange');
+
+      dispatchMouseEvent(overlayContainerElement.querySelector('.ant-picker-time-panel-cell')!, 'click');
+      await stabilize(fixture);
+      expect(getPickerInput(fixture.debugElement).value).toBe('00:00:00');
+      expect(onChange).not.toHaveBeenCalled();
+
+      testComponent.disabled.set(true);
+      await stabilize(fixture);
+      testComponent.nzTimePickerComponent.setCurrentValueAndClose();
+      await stabilize(fixture);
+      expect(getPickerInput(fixture.debugElement).value).toBe('09:00:00');
+      expect(onChange).not.toHaveBeenCalled();
+    });
+
     it('should clear work', async () => {
       testComponent.date.set(new Date('2018-11-11 11:11:11'));
       await stabilize(fixture);

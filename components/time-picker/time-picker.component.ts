@@ -125,6 +125,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
         [animate.enter]="timepickerAnimationEnter()"
         [animate.leave]="timepickerAnimationLeave()"
         [class]="dropdownTimePickerClass()"
+        [attr.inert]="nzDisabled ? '' : null"
         style="position: relative"
       >
         <div class="ant-picker-panel-container">
@@ -387,12 +388,12 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   setCurrentValueAndClose(): void {
-    if (this.hasConfirmed || !this.nzNeedConfirm()) {
+    if (!this.nzDisabled && (this.hasConfirmed || !this.nzNeedConfirm())) {
       this.emitValue(this.value);
-      this.hasConfirmed = false;
     } else {
       this.setValue(this.preValue);
     }
+    this.hasConfirmed = false;
     this.close();
   }
 

@@ -27,7 +27,7 @@ description: 输入或选择时间的控件。
 | `[nzNowText]`             | 此刻按钮文本                                            | `string`                                                   | `'此刻'`       | ✅       |
 | `[nzOkText]`              | 确认按钮文本                                            | `string`                                                   | `'确定'`       | ✅       |
 | `[nzDefaultOpenValue]`    | 当 `[ngModel]` 不存在时，可以设置面板打开时默认选中的值 | `Date`                                                     | `new Date()`   |
-| `[nzDisabled]`            | 禁用全部操作                                            | `boolean`                                                  | `false`        |
+| `[nzDisabled]`            | 禁用时间选择器及已打开面板中的交互                                            | `boolean`                                                  | `false`        |
 | `[nzDisabledHours]`       | 禁止选择部分小时选项                                    | `() => number[]`                                           | -              |
 | `[nzDisabledMinutes]`     | 禁止选择部分分钟选项                                    | `(hour: number) => number[]`                               | -              |
 | `[nzDisabledSeconds]`     | 禁止选择部分秒选项                                      | `(hour: number, minute: number) => number[]`               | -              |
