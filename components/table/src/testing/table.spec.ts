@@ -330,6 +330,64 @@ describe('nz-table', () => {
     });
   });
 
+  describe('server-side pagination nz-table', () => {
+    let fixture: ComponentFixture<NzTestTableServerPaginationComponent>;
+    let testComponent: NzTestTableServerPaginationComponent;
+    let table: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestTableServerPaginationComponent);
+      fixture.detectChanges();
+      testComponent = fixture.debugElement.componentInstance;
+      table = fixture.debugElement.query(By.directive(NzTableComponent));
+    });
+
+    it('should show pagination when the current page is empty but nzTotal > 0', () => {
+      const pagination = table.nativeElement.querySelector('.ant-pagination');
+      expect(pagination).not.toBeNull();
+      expect(pagination.hasAttribute('hidden')).toBe(false);
+      expect(table.nativeElement.querySelectorAll('.ant-pagination-item').length).toBe(3);
+      expect(table.nativeElement.querySelector('.ant-pagination-item-active').innerText).toBe('2');
+      expect(table.nativeElement.querySelector('.ant-table-placeholder')).not.toBeNull();
+    });
+
+    it('should allow navigating back to another page when the current page is empty', () => {
+      table.nativeElement.querySelectorAll('.ant-pagination-item')[0].click();
+      fixture.detectChanges();
+      expect(testComponent.pageIndexChange).toHaveBeenCalledWith(1);
+      expect(testComponent.pageIndex()).toBe(1);
+      expect(table.nativeElement.querySelector('.ant-pagination-item-active').innerText).toBe('1');
+    });
+
+    it('should keep showing pagination after data becomes empty while nzTotal > 0', () => {
+      testComponent.data.set([{ id: 1 }]);
+      fixture.detectChanges();
+      expect(table.nativeElement.querySelector('.ant-pagination')).not.toBeNull();
+      testComponent.data.set([]);
+      fixture.detectChanges();
+      expect(table.nativeElement.querySelector('.ant-pagination')).not.toBeNull();
+    });
+
+    it('should not show pagination when data is empty and nzTotal is 0', () => {
+      testComponent.total.set(0);
+      fixture.detectChanges();
+      expect(table.nativeElement.querySelector('.ant-pagination')).toBeNull();
+    });
+
+    it('should not show pagination when nzShowPagination is false even if nzTotal > 0', () => {
+      testComponent.showPagination.set(false);
+      fixture.detectChanges();
+      expect(table.nativeElement.querySelector('.ant-pagination')).toBeNull();
+    });
+
+    it('should not show pagination with front pagination when nzData is empty', () => {
+      testComponent.front.set(true);
+      testComponent.total.set(0);
+      fixture.detectChanges();
+      expect(table.nativeElement.querySelector('.ant-pagination')).toBeNull();
+    });
+  });
+
   testDirectionality(() => NzTestTableBasicComponent, By.directive(NzTableComponent), 'ant-table-wrapper');
 });
 
@@ -584,4 +642,41 @@ export class NzTableSpecCrashComponent {
       );
     }, 1000);
   }
+}
+
+@Component({
+  imports: [NzTableModule],
+  template: `
+    <nz-table
+      #nzTable
+      [nzData]="data()"
+      [nzTotal]="total()"
+      [nzFrontPagination]="front()"
+      [nzShowPagination]="showPagination()"
+      [(nzPageIndex)]="pageIndex"
+      (nzPageIndexChange)="pageIndexChange($event)"
+      [nzPageSize]="10"
+    >
+      <thead>
+        <tr>
+          <th>ID</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of nzTable.data; track item.id) {
+          <tr>
+            <td>{{ item.id }}</td>
+          </tr>
+        }
+      </tbody>
+    </nz-table>
+  `
+})
+export class NzTestTableServerPaginationComponent {
+  readonly data = signal<Array<{ id: number }>>([]);
+  readonly total = signal(30);
+  readonly front = signal(false);
+  readonly showPagination = signal(true);
+  readonly pageIndex = signal(2);
+  pageIndexChange = vi.fn<NzPageSizeChangeFn>();
 }
