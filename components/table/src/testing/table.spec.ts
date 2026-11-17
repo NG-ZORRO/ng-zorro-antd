@@ -3,7 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Component, DebugElement, OnInit, signal, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DebugElement,
+  OnInit,
+  signal,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -646,6 +654,7 @@ export class NzTableSpecCrashComponent {
 
 @Component({
   imports: [NzTableModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nz-table
       #nzTable
