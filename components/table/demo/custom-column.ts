@@ -225,7 +225,7 @@ export class NzDemoTableCustomColumnComponent implements OnInit {
       name: 'Address',
       value: 'address',
       default: true,
-      width: 200
+      width: 'auto'
     },
     {
       name: 'Age',
