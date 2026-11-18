@@ -353,6 +353,71 @@ describe('modal with animation', () => {
     expect(afterClose).toHaveBeenCalledOnce();
   });
 
+  it('should fire afterOpen when the modal element is already torn down on open', () => {
+    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
+    const states: string[] = [];
+    modalRef.containerInstance.animationStateChanged.subscribe(state => states.push(state));
+
+    // Simulate the view being torn down before the enter animation starts,
+    // as reported on Firefox in #9637: the ViewChild setter clears the element ref.
+    (modalRef.containerInstance as unknown as Record<string, unknown>).modalElementRef = undefined;
+    expect(() => modalRef.containerInstance._startEnterAnimation()).not.toThrow();
+    // The lifecycle completes synchronously instead of hanging on `afterOpen`.
+    expect(states).toContain('enter-active');
+  });
+
+  it('should fire afterOpen when the modal element is torn down before the first frame', async () => {
+    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
+    const afterOpen = vi.fn();
+    modalRef.afterOpen.subscribe(afterOpen);
+
+    // The view is torn down after the enter animation started but before the
+    // first frame, as reported on Firefox in #9637.
+    (modalRef.containerInstance as unknown as Record<string, unknown>).modalElementRef = undefined;
+    await sleep(16); // wait for the next frame
+    await fixture.whenStable();
+    expect(afterOpen).toHaveBeenCalledOnce();
+  });
+
+  it('should fire afterOpen only once when the opening animation completes twice', async () => {
+    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
+    const afterOpen = vi.fn();
+    modalRef.afterOpen.subscribe(afterOpen);
+    const modalContentElement = overlayContainerElement.querySelector('.ant-modal')!;
+
+    // The animation completes before the first frame; the scheduled frame
+    // callback then runs the completion a second time.
+    animationDone(modalContentElement, 'antZoomIn');
+    await sleep(16); // wait for the next frame
+    await fixture.whenStable();
+    expect(afterOpen).toHaveBeenCalledOnce();
+  });
+
+  it('should complete the animation helpers silently when the modal element is gone', async () => {
+    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
+    const modalContentElement = overlayContainerElement.querySelector('.ant-modal')!;
+
+    await sleep(16); // wait for the next frame
+    animationDone(modalContentElement, 'antZoomIn');
+    await fixture.whenStable();
+
+    const container = modalRef.containerInstance as unknown as {
+      setEnterInitialClass: () => void;
+      setEnterActiveClass: () => void;
+      setModalTransformOrigin: () => void;
+      setExitAnimationClass: (backdropElement: HTMLElement | null) => void;
+    };
+    // Simulate the view being torn down, as reported on Firefox in #9637.
+    (modalRef.containerInstance as unknown as Record<string, unknown>).modalElementRef = undefined;
+    expect(() => {
+      container.setEnterInitialClass();
+      container.setEnterActiveClass();
+      container.setModalTransformOrigin();
+      container.setExitAnimationClass(null);
+    }).not.toThrow();
+    expect(modalRef.getState()).toBe(NzModalState.OPEN);
+  });
+
   it('should return the current state of the modal', async () => {
     const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
     const modalContentElement = overlayContainerElement.querySelector('.ant-modal');
