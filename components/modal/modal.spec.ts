@@ -277,6 +277,82 @@ describe('modal with animation', () => {
     expect(afterClose).toHaveBeenCalledOnce();
   });
 
+  it('should fire afterOpen when the enter animation is cancelled', async () => {
+    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
+    const afterOpen = vi.fn();
+    modalRef.afterOpen.subscribe(afterOpen);
+    const modalContentElement = overlayContainerElement.querySelector('.ant-modal')!;
+
+    await sleep(16); // wait for the next frame, so the enter animation is running
+    dispatchEvent(modalContentElement, new AnimationEvent('animationcancel', { animationName: 'antZoomIn' }));
+    // A late animationend for the same animation must not emit a second time
+    dispatchEvent(modalContentElement, new AnimationEvent('animationend', { animationName: 'antZoomIn' }));
+    await fixture.whenStable();
+    expect(afterOpen).toHaveBeenCalledOnce();
+  });
+
+  it('should close when the leave animation is cancelled', async () => {
+    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
+    const afterOpen = vi.fn();
+    const afterClose = vi.fn();
+    modalRef.afterOpen.subscribe(afterOpen);
+    modalRef.afterClose.subscribe(afterClose);
+    const modalContentElement = overlayContainerElement.querySelector('.ant-modal')!;
+
+    await sleep(16); // wait for the next frame
+    animationDone(modalContentElement, 'antZoomIn');
+    await fixture.whenStable();
+    expect(afterOpen).toHaveBeenCalledOnce();
+
+    const backdropElement = modalRef.getBackdropElement()!;
+    modalRef.close();
+    dispatchEvent(modalContentElement, new AnimationEvent('animationcancel', { animationName: 'antZoomOut' }));
+    // A late animationend for the same animation must not complete the close twice
+    animationDone(modalContentElement, 'antZoomOut');
+    animationDone(backdropElement, 'antFadeOut');
+    await fixture.whenStable();
+    expect(modalRef.getState()).toBe(NzModalState.CLOSED);
+    expect(afterClose).toHaveBeenCalledOnce();
+  });
+
+  it('should close when the backdrop fade-out animation is cancelled', async () => {
+    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
+    const afterClose = vi.fn();
+    modalRef.afterClose.subscribe(afterClose);
+    const modalContentElement = overlayContainerElement.querySelector('.ant-modal')!;
+
+    await sleep(16); // wait for the next frame
+    animationDone(modalContentElement, 'antZoomIn');
+    await fixture.whenStable();
+
+    const backdropElement = modalRef.getBackdropElement()!;
+    modalRef.close();
+    animationDone(modalContentElement, 'antZoomOut');
+    dispatchEvent(backdropElement, new AnimationEvent('animationcancel', { animationName: 'antFadeOut' }));
+    await fixture.whenStable();
+    expect(modalRef.getState()).toBe(NzModalState.CLOSED);
+    expect(afterClose).toHaveBeenCalledOnce();
+  });
+
+  it('should close when the modal element is already torn down', async () => {
+    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
+    const afterClose = vi.fn();
+    modalRef.afterClose.subscribe(afterClose);
+    const modalContentElement = overlayContainerElement.querySelector('.ant-modal')!;
+
+    await sleep(16); // wait for the next frame
+    animationDone(modalContentElement, 'antZoomIn');
+    await fixture.whenStable();
+
+    // Simulate the view being torn down before close, as reported on
+    // Firefox in #9637: the ViewChild setter clears the element ref.
+    (modalRef.containerInstance as unknown as Record<string, unknown>).modalElementRef = undefined;
+    expect(() => modalRef.close()).not.toThrow();
+    await fixture.whenStable();
+    expect(modalRef.getState()).toBe(NzModalState.CLOSED);
+    expect(afterClose).toHaveBeenCalledOnce();
+  });
+
   it('should return the current state of the modal', async () => {
     const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
     const modalContentElement = overlayContainerElement.querySelector('.ant-modal');
