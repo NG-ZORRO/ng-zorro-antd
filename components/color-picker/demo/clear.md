@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-清除已选择的颜色。
+清除已选择的颜色，清除后表单的值为 `null`。
 
 ## en-US
 
-Clear Color.
+Clear the selected color. After clearing, the form value is `null`.
