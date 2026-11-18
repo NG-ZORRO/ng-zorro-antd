@@ -25,7 +25,10 @@ export class NzCustomColumnDirective<T> implements OnInit {
         if (v.value === this.nzCellControl) {
           this.renderer.setStyle(this.el, 'display', v.default ? 'block' : 'none');
           this.renderer.setStyle(this.el, 'order', i);
-          this.renderer.setStyle(this.el, 'flex', v.fixWidth ? `1 0 ${v.width}px` : `1 1 ${v.width}px`);
+          // A numeric width uses a fixed flex-basis; 'auto' (or an omitted width)
+          // lets the flex layout size the column to its content.
+          const flexBasis = typeof v.width === 'number' ? `${v.width}px` : 'auto';
+          this.renderer.setStyle(this.el, 'flex', v.fixWidth ? `1 0 ${flexBasis}` : `1 1 ${flexBasis}`);
         }
       });
     });
