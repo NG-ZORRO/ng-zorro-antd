@@ -370,8 +370,16 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
 
       // In the next frame, add enter-active class to trigger the animation
       requestAnimationFrame(() => {
-        // The modal may have been closed or disposed before the first frame
-        if (!element.isConnected || element.classList.contains(ZOOM_CLASS_NAME_MAP.leave)) {
+        // The modal may have been closed before the first frame; the leave
+        // animation owns completion in that case, so do nothing here.
+        if (element.classList.contains(ZOOM_CLASS_NAME_MAP.leave)) {
+          return;
+        }
+        if (!element.isConnected || this.modalElementRef?.nativeElement !== element) {
+          // The modal element was torn down before the first frame (see
+          // #9637): no animation will ever complete, so finish the lifecycle
+          // now instead of leaving `afterOpen` hanging.
+          finish();
           return;
         }
         this.setEnterActiveClass();
@@ -462,7 +470,12 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
     }
   }
 
-  protected setupMouseListeners(modalContainer: ElementRef<HTMLElement>): void {
+  protected setupMouseListeners(modalContainer: ElementRef<HTMLElement> | undefined): void {
+    if (!modalContainer) {
+      // The modal element was torn down before the first check (see #9637),
+      // so there is no element to listen on.
+      return;
+    }
     fromEventOutsideAngular(this.host.nativeElement, 'mouseup')
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {

@@ -374,7 +374,24 @@ describe('modal with animation', () => {
     // The view is torn down after the enter animation started but before the
     // first frame, as reported on Firefox in #9637.
     (modalRef.containerInstance as unknown as Record<string, unknown>).modalElementRef = undefined;
-    await sleep(16); // wait for the next frame
+    // Wait for the frame the enter animation scheduled. A fixed sleep is
+    // racy under CI load: the frame may not have run after 16ms, so the
+    // lifecycle would not have completed yet when the assertion runs.
+    await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+    await fixture.whenStable();
+    expect(afterOpen).toHaveBeenCalledOnce();
+  });
+
+  it('should fire afterOpen when the modal element is removed from the DOM before the first frame', async () => {
+    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
+    const afterOpen = vi.fn();
+    modalRef.afterOpen.subscribe(afterOpen);
+    const modalContentElement = overlayContainerElement.querySelector('.ant-modal')!;
+
+    // The element is detached after the enter animation started but before
+    // the first frame, as reported on Firefox in #9637.
+    modalContentElement.remove();
+    await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
     await fixture.whenStable();
     expect(afterOpen).toHaveBeenCalledOnce();
   });
@@ -406,6 +423,7 @@ describe('modal with animation', () => {
       setEnterActiveClass: () => void;
       setModalTransformOrigin: () => void;
       setExitAnimationClass: (backdropElement: HTMLElement | null) => void;
+      cleanAnimationClass: () => void;
     };
     // Simulate the view being torn down, as reported on Firefox in #9637.
     (modalRef.containerInstance as unknown as Record<string, unknown>).modalElementRef = undefined;
@@ -414,6 +432,7 @@ describe('modal with animation', () => {
       container.setEnterActiveClass();
       container.setModalTransformOrigin();
       container.setExitAnimationClass(null);
+      container.cleanAnimationClass();
     }).not.toThrow();
     expect(modalRef.getState()).toBe(NzModalState.OPEN);
   });
