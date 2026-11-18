@@ -3,6 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { _IdGenerator } from '@angular/cdk/a11y';
+import { ENTER, SPACE } from '@angular/cdk/keycodes';
 import {
   AfterViewInit,
   booleanAttribute,
@@ -40,22 +42,29 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
   template: `
     <div
       #collapseHeader
-      role="button"
-      [attr.aria-expanded]="active()"
-      [attr.aria-disabled]="disabled"
-      [attr.tabindex]="disabled ? -1 : 0"
+      [attr.role]="iconTrigger ? null : 'button'"
+      [attr.aria-expanded]="iconTrigger ? null : active()"
+      [attr.aria-disabled]="iconTrigger ? null : disabled"
+      [attr.tabindex]="iconTrigger ? null : disabled ? -1 : 0"
       class="ant-collapse-header"
       [class.ant-collapse-collapsible-icon]="nzCollapsible === 'icon'"
       [class.ant-collapse-collapsible-header]="nzCollapsible === 'header'"
     >
       @if (nzShowArrow) {
-        <div role="button" #collapseIcon class="ant-collapse-expand-icon">
+        <div
+          #collapseIcon
+          [attr.role]="iconTrigger ? 'button' : null"
+          [attr.aria-expanded]="iconTrigger ? active() : null"
+          [attr.aria-labelledby]="iconTrigger ? titleId : null"
+          [attr.tabindex]="iconTrigger ? 0 : null"
+          class="ant-collapse-expand-icon"
+        >
           <ng-container *nzStringTemplateOutlet="nzExpandedIcon; let expandedIcon">
             <nz-icon [nzType]="expandedIcon || 'right'" class="ant-collapse-arrow" [nzRotate]="active() ? 90 : 0" />
           </ng-container>
         </div>
       }
-      <span class="ant-collapse-title">
+      <span class="ant-collapse-title" [attr.id]="iconTrigger ? titleId : null">
         <ng-container *nzStringTemplateOutlet="nzHeader">{{ nzHeader }}</ng-container>
       </span>
       @if (nzExtra) {
@@ -100,8 +109,18 @@ export class NzCollapsePanelComponent implements AfterViewInit {
   @Input() nzCollapsible?: 'disabled' | 'header' | 'icon';
   readonly nzActiveChange = output<boolean>();
 
+  protected readonly titleId = inject(_IdGenerator).getId('nz-collapse-title-');
+
   protected get disabled(): boolean {
     return this.nzCollapsible === 'disabled';
+  }
+
+  /**
+   * Whether the expand icon is the only trigger, in which case it carries the
+   * button role, the tab stop and the keyboard handler instead of the header.
+   */
+  protected get iconTrigger(): boolean {
+    return this.nzShowArrow && this.nzCollapsible === 'icon';
   }
 
   /**
@@ -125,18 +144,29 @@ export class NzCollapsePanelComponent implements AfterViewInit {
     const icon = this.collapseIcon();
     const header = this.collapseHeader();
     const element =
-      this.nzShowArrow && this.nzCollapsible === 'icon' && icon
-        ? (icon.nativeElement as HTMLElement)
-        : (header.nativeElement as HTMLElement);
+      this.iconTrigger && icon ? (icon.nativeElement as HTMLElement) : (header.nativeElement as HTMLElement);
+    const toggle = (): void => {
+      this.ngZone.run(() => {
+        this.nzCollapseComponent.click(this);
+      });
+    };
     fromEventOutsideAngular(element, 'click')
       .pipe(
         filter(() => !this.disabled),
         takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe(() => {
-        this.ngZone.run(() => {
-          this.nzCollapseComponent.click(this);
-        });
+      .subscribe(toggle);
+    // The trigger is a `div`, which does not turn Enter or Space into a click
+    // the way a `button` does.
+    fromEventOutsideAngular<KeyboardEvent>(element, 'keydown')
+      .pipe(
+        filter(({ keyCode }) => !this.disabled && (keyCode === ENTER || keyCode === SPACE)),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(event => {
+        // Space would otherwise scroll the page.
+        event.preventDefault();
+        toggle();
       });
   }
 
