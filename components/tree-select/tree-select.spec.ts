@@ -372,6 +372,44 @@ describe('tree-select', () => {
       );
     });
 
+    it('should nzMaxCount be a no-op for single select', async () => {
+      fixture.detectChanges();
+      testComponent.value.set('10001');
+      await updateNonSignalsInput(fixture);
+      testComponent.maxCount.set(1);
+      await updateNonSignalsInput(fixture);
+
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      const nodes = Array.from(
+        overlayContainerElement.querySelectorAll<HTMLElement>('.ant-select-tree-node-content-wrapper')
+      );
+      const target = nodes.find(node => node.textContent?.trim() === 'child1.1')!;
+      dispatchMouseEvent(target, 'click');
+      await fixture.whenStable();
+      expect(treeSelectComponent.value[0]).toBe('100011');
+    });
+
+    it('should nzMaxCount work in non-checkable multiple mode', async () => {
+      fixture.detectChanges();
+      testComponent.multiple.set(true);
+      fixture.detectChanges();
+      testComponent.value.set(['100011', '100012']);
+      await updateNonSignalsInput(fixture);
+      expect(treeSelectComponent.selectedNodes.length).toBe(2);
+
+      testComponent.maxCount.set(2);
+      await updateNonSignalsInput(fixture);
+      expect(treeSelectComponent.getTreeNodeByKey('1000122')!.isSelectable).toBe(false);
+      expect(treeSelectComponent.getTreeNodeByKey('100011')!.isSelectable).toBe(true);
+      expect(treeSelectComponent.getTreeNodeByKey('100012')!.isSelectable).toBe(true);
+
+      treeSelect.nativeElement.querySelector('.ant-select-selection-item-remove')!.dispatchEvent(new Event('click'));
+      await updateNonSignalsInput(fixture);
+      expect(treeSelectComponent.selectedNodes.length).toBe(1);
+      expect(treeSelectComponent.getTreeNodeByKey('1000122')!.isSelectable).toBe(true);
+    });
+
     it('should set selectable', async () => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
@@ -489,6 +527,164 @@ describe('tree-select', () => {
       testComponent.value.set(['1001', '10001', '100012']);
       await fixture.whenStable();
       expect(testComponent.nzSelectTreeComponent.selectedNodes.length).toBe(3);
+    });
+
+    it('should nzMaxCount disable not-yet-checked nodes once the limit is reached', async () => {
+      testComponent.checkStrictly.set(true);
+      testComponent.value.set(['1000122', '100221']);
+      await fixture.whenStable();
+      expect(treeSelectComponent.selectedNodes.length).toBe(2);
+
+      testComponent.maxCount.set(2);
+      await fixture.whenStable();
+
+      expect(treeSelectComponent.getTreeNodeByKey('100011')!.isDisableCheckbox).toBe(true);
+      expect(treeSelectComponent.getTreeNodeByKey('1000122')!.isDisableCheckbox).toBe(false);
+      expect(treeSelectComponent.getTreeNodeByKey('100221')!.isDisableCheckbox).toBe(false);
+    });
+
+    it('should nzMaxCount allow removing selected tags when limit reached', async () => {
+      testComponent.checkStrictly.set(true);
+      testComponent.value.set(['1000122', '100221']);
+      await fixture.whenStable();
+      testComponent.maxCount.set(2);
+      await fixture.whenStable();
+      expect(treeSelectComponent.getTreeNodeByKey('100011')!.isDisableCheckbox).toBe(true);
+
+      treeSelectComponent.removeSelected(treeSelectComponent.getTreeNodeByKey('100221')!);
+      await fixture.whenStable();
+
+      expect(treeSelectComponent.selectedNodes.length).toBe(1);
+      expect(treeSelectComponent.getTreeNodeByKey('100011')!.isDisableCheckbox).toBe(false);
+    });
+
+    it('should nzMaxCount allow reducing a selection that is already over a since-lowered limit', async () => {
+      testComponent.checkStrictly.set(true);
+      testComponent.value.set(['1000122', '100221', '100011']);
+      await fixture.whenStable();
+      expect(treeSelectComponent.selectedNodes.length).toBe(3);
+
+      testComponent.maxCount.set(1);
+      await fixture.whenStable();
+
+      treeSelectComponent.removeSelected(treeSelectComponent.getTreeNodeByKey('100011')!);
+      await fixture.whenStable();
+
+      expect(treeSelectComponent.selectedNodes.length).toBe(2);
+      expect(testComponent.value()).toEqual(['1000122', '100221']);
+    });
+
+    it('should nzMaxCount re-enable nodes once the selection is cleared programmatically', async () => {
+      testComponent.checkStrictly.set(true);
+      testComponent.value.set(['1000122', '100221']);
+      await fixture.whenStable();
+      testComponent.maxCount.set(2);
+      await fixture.whenStable();
+      expect(treeSelectComponent.getTreeNodeByKey('100011')!.isDisableCheckbox).toBe(true);
+
+      testComponent.setNull();
+      await fixture.whenStable();
+
+      expect(treeSelectComponent.getTreeNodeByKey('100011')!.isDisableCheckbox).toBe(false);
+    });
+
+    it('should nzMaxCount preserve pre-existing disableCheckbox/disabled nodes', async () => {
+      testComponent.maxCount.set(100);
+      await fixture.whenStable();
+
+      expect(treeSelectComponent.getTreeNodeByKey('10021')!.isDisableCheckbox).toBe(true);
+      expect(treeSelectComponent.getTreeNodeByKey('1000121')!.isDisabled).toBe(true);
+    });
+
+    it('should nzMaxCount re-enable nodes when the limit is raised at runtime', async () => {
+      testComponent.value.set(['1000122', '100221']);
+      await fixture.whenStable();
+      testComponent.maxCount.set(2);
+      await fixture.whenStable();
+      expect(treeSelectComponent.getTreeNodeByKey('100011')!.isDisableCheckbox).toBe(true);
+
+      testComponent.maxCount.set(3);
+      await fixture.whenStable();
+      expect(treeSelectComponent.getTreeNodeByKey('100011')!.isDisableCheckbox).toBe(false);
+    });
+
+    it('should nzMaxCount disable a half-checked ancestor too, but still let conductUp update it once a descendant is unchecked', async () => {
+      // '10001' (child1) is half-checked: '1000122' is checked but its sibling '100011' isn't.
+      // Clicking a half-checked node cascades a full check onto its unchecked descendants, so once
+      // the limit is reached it must be disabled just like any other not-yet-checked node.
+      testComponent.value.set(['1000122', '100221']);
+      await fixture.whenStable();
+      testComponent.maxCount.set(2);
+      await fixture.whenStable();
+      const child1 = treeSelectComponent.getTreeNodeByKey('10001')!;
+      expect(child1.isHalfChecked).toBe(true);
+      expect(child1.isDisableCheckbox).toBe(true);
+
+      treeSelectComponent.removeSelected(treeSelectComponent.getTreeNodeByKey('1000122')!);
+      await fixture.whenStable();
+
+      expect(child1.isChecked).toBe(false);
+      expect(child1.isHalfChecked).toBe(false);
+    });
+
+    it('should nzMaxCount count only fully checked nodes with nzCheckStrictly', async () => {
+      testComponent.checkStrictly.set(true);
+      testComponent.value.set(['1001', '10001', '100012']);
+      await fixture.whenStable();
+      expect(treeSelectComponent.selectedNodes.length).toBe(3);
+
+      testComponent.maxCount.set(3);
+      await fixture.whenStable();
+      expect(treeSelectComponent.getTreeNodeByKey('100221')!.isDisableCheckbox).toBe(true);
+    });
+
+    it('should nzMaxCount prevent checking an entire subtree that exceeds the limit in one click', async () => {
+      testComponent.setNull();
+      await fixture.whenStable();
+      testComponent.maxCount.set(1);
+      await fixture.whenStable();
+
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      const nodeEls = Array.from(overlayContainerElement.querySelectorAll<HTMLElement>('nz-tree-node[builtin]'));
+      const targetEl = nodeEls.find(
+        el => el.querySelector('.ant-select-tree-node-content-wrapper')?.textContent?.trim() === 'child1'
+      )!;
+      const checkboxEl = targetEl.querySelector<HTMLElement>('nz-tree-node-checkbox')!;
+      dispatchMouseEvent(checkboxEl, 'click');
+      await fixture.whenStable();
+
+      expect(treeSelectComponent.getTreeNodeByKey('10001')!.isChecked).toBe(false);
+      expect(treeSelectComponent.selectedNodes.length).toBe(0);
+    });
+
+    it('should nzMaxCount disable nodes added asynchronously after the limit is reached', async () => {
+      testComponent.checkStrictly.set(true);
+      testComponent.value.set(['1000122', '100221']);
+      await fixture.whenStable();
+      testComponent.maxCount.set(2);
+      await fixture.whenStable();
+
+      treeSelectComponent
+        .getTreeNodeByKey('10022')!
+        .addChildren([{ title: 'grandchild2.2.2', key: '1000222', isLeaf: true }]);
+      await fixture.whenStable();
+
+      expect(treeSelectComponent.getTreeNodeByKey('1000222')!.isDisableCheckbox).toBe(true);
+    });
+
+    it('should display the count / nzMaxCount suffix', async () => {
+      const arrowText = (): string | undefined =>
+        treeSelect.nativeElement.querySelector('nz-select-arrow > span')?.textContent?.trim();
+      expect(arrowText()).toBeUndefined();
+
+      testComponent.maxCount.set(3);
+      await fixture.whenStable();
+      expect(arrowText()).toBe('1 / 3');
+
+      testComponent.value.set(['1000122', '100221']);
+      await fixture.whenStable();
+      expect(arrowText()).toBe('2 / 3');
     });
 
     it('should remove checked when press backs', async () => {
@@ -863,6 +1059,7 @@ describe('finalVariant', () => {
       [nzShowSearch]="showSearch()"
       [nzMultiple]="multiple()"
       [nzMaxTagCount]="maxTagCount()"
+      [nzMaxCount]="maxCount()"
       [nzDropdownStyle]="{ height: '120px' }"
       [nzBackdrop]="hasBackdrop()"
       [nzPrefix]="prefix()"
@@ -886,6 +1083,7 @@ export class NzTestTreeSelectBasicComponent {
   readonly dropdownMatchSelectWidth = signal(true);
   readonly multiple = signal(false);
   readonly maxTagCount = signal(Infinity);
+  readonly maxCount = signal(Infinity);
   readonly prefix = signal<string | TemplateRef<void> | null>(null);
   readonly suffixIcon = signal<string | TemplateRef<void> | null>(null);
   readonly nodes = signal<NzTreeNodeOptions[]>([
@@ -965,6 +1163,7 @@ export class NzTestTreeSelectBasicComponent {
       [nzShowSearch]="showSearch()"
       [nzCheckable]="true"
       [nzCheckStrictly]="checkStrictly()"
+      [nzMaxCount]="maxCount()"
       [ngModel]="value()"
       (ngModelChange)="value.set($event)"
     />
@@ -976,6 +1175,7 @@ export class NzTestTreeSelectCheckableComponent {
   readonly value = signal<string[] | null>(['1000122']);
   readonly showSearch = signal(false);
   readonly checkStrictly = signal(false);
+  readonly maxCount = signal(Infinity);
   readonly nodes = signal([
     {
       title: 'root1',

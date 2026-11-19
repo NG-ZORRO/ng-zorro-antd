@@ -37,6 +37,12 @@
 .@{select-tree-prefix-cls} {
   .antTreeFn(@select-tree-prefix-cls);
 
+ 
+  &-checkbox-disabled + &-node-content-wrapper {
+    color: @disabled-color;
+    cursor: not-allowed;
+  }
+
   // change switcher icon rotation in rtl direction
   & &-switcher {
     &_close {
