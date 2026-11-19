@@ -149,6 +149,30 @@ describe('segmented', () => {
       expect(theThirdElement.classList).toContain('ant-segmented-item-selected');
     });
 
+    it('should update option labels and disabled states without changing the selection', async () => {
+      await stabilize(fixture);
+      dispatchMouseEvent(getSegmentedOptionByIndex(1), 'click');
+      await stabilize(fixture);
+      vi.mocked(component.handleValueChange).mockClear();
+
+      component.options.set([
+        { label: 'Second', value: 2 },
+        { label: 'Third', value: 3, disabled: true }
+      ]);
+      await stabilize(fixture);
+
+      const selected = getSegmentedOptionByIndex(0);
+      const disabled = getSegmentedOptionByIndex(1);
+      expect(selected.textContent?.trim()).toBe('Second');
+      expect(selected.classList).toContain('ant-segmented-item-selected');
+      expect(disabled.textContent?.trim()).toBe('Third');
+      expect(disabled.classList).toContain('ant-segmented-item-disabled');
+      dispatchMouseEvent(disabled, 'click');
+      await stabilize(fixture);
+      expect(selected.classList).toContain('ant-segmented-item-selected');
+      expect(component.handleValueChange).not.toHaveBeenCalled();
+    });
+
     it('should support disabled mode', async () => {
       const theFirstElement = getSegmentedOptionByIndex(0);
       const theSecondElement = getSegmentedOptionByIndex(1);
