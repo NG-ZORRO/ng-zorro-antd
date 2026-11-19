@@ -16,6 +16,18 @@ tag: '{{version}}'
 
 ---
 
+## 22.2.1
+
+`2026-11-19`
+
+### Bug Fixes
+
+- **button:** remove conflicting text button interaction styles ([#10049](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10049)) ([1ce86a2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1ce86a2dd86ee4ae27c4b83227d0619b9a4dba9f)), closes [#9971](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9971)
+- **date-picker:** highlight the full week range ([#10036](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10036)) ([4ca0362](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4ca03623dffe88373b848cfa90625bce049b84b3))
+- **i18n:** restore `NZ_DATE_LOCALE` export from i18n entry point ([#10051](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10051)) ([349d1f7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/349d1f77af68116741c8670e1c6eead715f4f801))
+- **modal:** complete modal lifecycle when animations do not run ([#10045](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10045)) ([6d8021b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6d8021ba2588512c141d00173394186288df22af))
+- **packaging:** add `rxjs` peer dependency ([#10048](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10048)) ([4717b4d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4717b4d695e164b6108aa5debcc53080e1497cbd))
+
 ## 22.2.0
 
 `2026-11-04`

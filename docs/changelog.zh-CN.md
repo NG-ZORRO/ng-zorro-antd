@@ -16,6 +16,18 @@ tag: '{{version}}'
 
 ---
 
+## 22.2.1
+
+`2026-11-19`
+
+### Bug Fixes
+
+- **button:** 移除文本按钮中冲突的交互样式 ([#10049](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10049)) ([1ce86a2](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1ce86a2dd86ee4ae27c4b83227d0619b9a4dba9f)), 修复 [#9971](https://github.com/NG-ZORRO/ng-zorro-antd/issues/9971)
+- **date-picker:** 高亮完整的周范围 ([#10036](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10036)) ([4ca0362](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4ca03623dffe88373b848cfa90625bce049b84b3))
+- **i18n:** 恢复从 i18n 入口导出 `NZ_DATE_LOCALE` ([#10051](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10051)) ([349d1f7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/349d1f77af68116741c8670e1c6eead715f4f801))
+- **modal:** 确保动画未运行时弹窗生命周期仍能正常完成 ([#10045](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10045)) ([6d8021b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6d8021ba2588512c141d00173394186288df22af))
+- **packaging:** 添加 `rxjs` peer dependency ([#10048](https://github.com/NG-ZORRO/ng-zorro-antd/issues/10048)) ([4717b4d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4717b4d695e164b6108aa5debcc53080e1497cbd))
+
 ## 22.2.0
 
 `2026-11-04`
