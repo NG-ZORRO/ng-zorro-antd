@@ -58,6 +58,7 @@
     "@ctrl/tinycolor": "^3.6.0",
     "@eslint/js": "^9.39.0",
     "@eslint/markdown": "^8.0.0",
+    "@gglint/cli": "0.5.0",
     "@inquirer/prompts": "^8.5.0",
     "@nx/angular": "^23.3.0",
     "@schematics/angular": "^22.1.0",
