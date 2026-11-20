@@ -188,7 +188,7 @@ export class NzTableFilterComponent implements OnChanges, OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     const { listOfFilter } = changes;
-    if (listOfFilter && this.listOfFilter && this.listOfFilter.length) {
+    if (listOfFilter && this.listOfFilter) {
       this.listOfParsedFilter = this.parseListOfFilter(this.listOfFilter);
       this.isChecked = this.getCheckedStatus(this.listOfParsedFilter);
     }

@@ -80,10 +80,34 @@ export type ValidateMessage = string | (() => string);
 
 export type NzCascaderI18nInterface = NzGlobalI18nInterface;
 
+export type NzTableFilterOperatorLabelKey =
+  | 'contains'
+  | 'equals'
+  | 'notEquals'
+  | 'startsWith'
+  | 'endsWith'
+  | 'fuzzy'
+  | 'greaterThan'
+  | 'greaterThanOrEqual'
+  | 'lessThan'
+  | 'lessThanOrEqual'
+  | 'between'
+  | 'on'
+  | 'before'
+  | 'after';
+
 export interface NzTableI18nInterface {
   filterTitle?: string;
   filterConfirm?: string;
   filterReset?: string;
+  /** Label for the generated option that matches empty values. */
+  filterEmptyOption?: string;
+  /** Accessible label of the condition select in text, number and date filters. */
+  filterOperator?: string;
+  filterValuePlaceholder?: string;
+  filterValueToPlaceholder?: string;
+  filterMatchCase?: string;
+  filterOperatorLabels?: Partial<Record<NzTableFilterOperatorLabelKey, string>>;
   selectAll?: string;
   selectInvert?: string;
   selectionAll?: string;
