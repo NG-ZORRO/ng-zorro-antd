@@ -7,7 +7,7 @@ import { getProjectFromWorkspace, getProjectTargetOptions } from '@angular/cdk/s
 
 import { normalize } from '@angular-devkit/core';
 import { Tree } from '@angular-devkit/schematics';
-import { NodePackageName } from '@angular-devkit/schematics/tasks/package-manager/options';
+import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 import { readWorkspace } from '@schematics/angular/utility';
 import { getPackageJsonDependency } from '@schematics/angular/utility/dependencies';
@@ -20,6 +20,7 @@ import { createCustomTheme } from '../utils/create-custom-theme';
 import { getFileContent } from '../utils/get-file-content';
 
 describe('ng-add schematic', () => {
+  const installTaskName = new NodePackageInstallTask().toConfiguration().name;
   const defaultOptions: NzOptions = {
     project: 'ng-zorro'
   };
@@ -36,7 +37,7 @@ describe('ng-add schematic', () => {
     const options = { ...defaultOptions };
     const tree = await runner.runSchematic('ng-add', options, appTree);
     expect(getPackageJsonDependency(tree, 'ng-zorro-antd')).not.toBeNull();
-    expect(runner.tasks.some(task => task.name === NodePackageName)).toBe(true);
+    expect(runner.tasks.some(task => task.name === installTaskName)).toBe(true);
   });
 
   it('should add hammerjs to package.json', async () => {
@@ -54,7 +55,7 @@ describe('ng-add schematic', () => {
   it('should skip install dependency package', async () => {
     const options = { ...defaultOptions, skipInstall: true };
     await runner.runSchematic('ng-add', options, appTree);
-    expect(runner.tasks.some(task => task.name === NodePackageName)).toBe(false);
+    expect(runner.tasks.some(task => task.name === installTaskName)).toBe(false);
   });
 
   it('should add less as devDependencies when choosing custom theme in non-LESS project', async () => {

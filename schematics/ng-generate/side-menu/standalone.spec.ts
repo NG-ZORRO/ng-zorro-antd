@@ -36,9 +36,9 @@ describe('[schematic][standalone] side-menu', () => {
         '/projects/ng-zorro/src/app/app.ts',
         '/projects/ng-zorro/src/app/app.routes.ts',
         '/projects/ng-zorro/src/app/icons-provider.ts',
-        '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts',
-        '/projects/ng-zorro/src/app/pages/welcome/welcome.component.css',
-        '/projects/ng-zorro/src/app/pages/welcome/welcome.component.html',
+        '/projects/ng-zorro/src/app/pages/welcome/welcome.ts',
+        '/projects/ng-zorro/src/app/pages/welcome/welcome.css',
+        '/projects/ng-zorro/src/app/pages/welcome/welcome.html',
         '/projects/ng-zorro/src/app/pages/welcome/welcome.routes.ts'
       ])
     );
@@ -62,15 +62,15 @@ describe('[schematic][standalone] side-menu', () => {
       const tree = await runner.runSchematic('sidemenu', options, appTree);
       const files = tree.files;
       const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.ts');
-      const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts');
+      const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.ts');
 
       expect(appContent).toContain('app.less');
-      expect(welcomeContent).toContain('welcome.component.less');
+      expect(welcomeContent).toContain('welcome.less');
 
       expect(files).toEqual(
         expect.arrayContaining([
           '/projects/ng-zorro/src/app/app.less',
-          '/projects/ng-zorro/src/app/pages/welcome/welcome.component.less'
+          '/projects/ng-zorro/src/app/pages/welcome/welcome.less'
         ])
       );
     });
@@ -83,7 +83,7 @@ describe('[schematic][standalone] side-menu', () => {
       expect(tree.files).toEqual(
         expect.arrayContaining([
           '/projects/ng-zorro/src/app/app.less',
-          '/projects/ng-zorro/src/app/pages/welcome/welcome.component.less'
+          '/projects/ng-zorro/src/app/pages/welcome/welcome.less'
         ])
       );
     });
@@ -93,7 +93,7 @@ describe('[schematic][standalone] side-menu', () => {
     const options = { ...defaultOptions, prefix: 'nz' };
     const tree = await runner.runSchematic('sidemenu', options, appTree);
     const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.ts');
-    const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts');
+    const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.ts');
 
     expect(appContent).toContain(`selector: 'nz-root'`);
     expect(welcomeContent).toContain(`selector: 'nz-welcome'`);

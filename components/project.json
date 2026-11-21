@@ -37,6 +37,7 @@
           "ChromiumHeadless"
         ],
         "browserViewport": "1000x1000",
+        "polyfills": [],
         "coverage": true,
         "coverageReporters": [
           "html",
