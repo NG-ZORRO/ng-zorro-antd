@@ -1,0 +1,44 @@
+{
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "name": "schematics-demo",
+  "projectType": "library",
+  "sourceRoot": "schematics-demo",
+  "targets": {
+    "build": {
+      "command": "tsx scripts/tasks/build-demo-schematics.ts",
+      "inputs": [
+        "{projectRoot}/**/*",
+        "{workspaceRoot}/scripts/tasks/build-demo-schematics.ts",
+        "{workspaceRoot}/scripts/schematics/**/*",
+        "{workspaceRoot}/scripts/build-config.ts",
+        "{workspaceRoot}/schematics/utils/build-component.ts",
+        "{workspaceRoot}/schematics/tsconfig.json",
+        "{workspaceRoot}/components/**/demo/**/*",
+        "{workspaceRoot}/components/package.json",
+        "{workspaceRoot}/LICENSE",
+        "sharedGlobals"
+      ],
+      "outputs": ["{workspaceRoot}/dist/antd-schematics"],
+      "cache": true
+    },
+    "test": {
+      "command": "vitest run schematics-demo/package.spec.ts",
+      "dependsOn": [
+        "build",
+        {
+          "projects": ["schematics"],
+          "target": "build"
+        }
+      ],
+      "inputs": [
+        "default",
+        "{workspaceRoot}/schematics/**/*",
+        "{workspaceRoot}/components/**/demo/**/*",
+        "{workspaceRoot}/scripts/schematics/**/*",
+        "{workspaceRoot}/scripts/tasks/build-demo-schematics.ts",
+        "{workspaceRoot}/components/package.json"
+      ],
+      "cache": true
+    }
+  }
+}

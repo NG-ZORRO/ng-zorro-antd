@@ -21,14 +21,28 @@ title: 脚手架
 
 快速生成模板代码，每个官网的代码演示都附有可生成的模板，开发者可以通过展开每个组件的代码演示部分获取其生成代码。
 
+示例代码生成器由可选的 `@ng-zorro/schematics` 包提供。请作为开发依赖安装 beta 版本（`22.0.0-beta.0` 要求 `ng-zorro-antd ^22.1.0`）：
+
+```bash
+npm install --save-dev @ng-zorro/schematics@beta
+```
+
+组件库默认不会下载这些示例生成器；不再需要时，可以卸载这个可选包。
+
 ### 命令
 
 ```bash
-ng g ng-zorro-antd:[schematic] <name> [options]
+ng g @ng-zorro/schematics:[schematic] <name> [options]
 ```
 
 例如通过以下代码可以快速生成一个登录框组件
 
 ```bash
-ng g ng-zorro-antd:form-normal-login login
+ng g @ng-zorro/schematics:form-normal-login login
 ```
+
+### 迁移已有命令
+
+将命令以及 `angular.json` 中针对示例的默认配置从 `ng-zorro-antd:<demo>` 改为 `@ng-zorro/schematics:<demo>`，示例名称保持不变。生成的示例组件为 standalone 组件。
+
+`ng add ng-zorro-antd`、`ng update ng-zorro-antd`，以及 `component`、`sidemenu`、`topnav`、`add-icon-assets` 生成器仍由主包提供。
