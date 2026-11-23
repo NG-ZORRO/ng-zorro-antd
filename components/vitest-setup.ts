@@ -22,6 +22,16 @@ const originalViewport = {
   innerWidth: window.innerWidth,
   matchMedia: window.matchMedia?.bind(window)
 };
+const originalViewportDescriptors = {
+  innerHeight: Object.getOwnPropertyDescriptor(window, 'innerHeight'),
+  innerWidth: Object.getOwnPropertyDescriptor(window, 'innerWidth')
+};
+const initialDocumentState = {
+  bodyClassName: document.body.className,
+  bodyStyle: document.body.getAttribute('style') ?? '',
+  documentElementClassName: document.documentElement.className,
+  documentElementStyle: document.documentElement.getAttribute('style') ?? ''
+};
 const originalAnimationFrame = {
   cancelAnimationFrame: window.cancelAnimationFrame.bind(window),
   requestAnimationFrame: window.requestAnimationFrame.bind(window)
@@ -39,12 +49,24 @@ function setViewportSize(width: number, height = window.innerHeight): void {
   window.dispatchEvent(new Event('resize'));
 }
 
+function restoreViewportProperty(name: 'innerHeight' | 'innerWidth'): void {
+  const descriptor = originalViewportDescriptors[name];
+
+  if (descriptor) {
+    Object.defineProperty(window, name, descriptor);
+  } else {
+    // In browsers innerWidth/innerHeight live on Window.prototype, so removing
+    // the data property restores the native accessor.
+    Reflect.deleteProperty(window, name);
+  }
+}
+
 function resetViewportSize(): void {
   viewportWidth = originalViewport.innerWidth;
   viewportHeight = originalViewport.innerHeight;
 
-  Object.defineProperty(window, 'innerWidth', { configurable: true, value: originalViewport.innerWidth });
-  Object.defineProperty(window, 'innerHeight', { configurable: true, value: originalViewport.innerHeight });
+  restoreViewportProperty('innerWidth');
+  restoreViewportProperty('innerHeight');
   window.matchMedia = (query: string) => createMediaQueryList(query);
   document.documentElement.scrollTop = 0;
   document.documentElement.scrollLeft = 0;
@@ -119,9 +141,18 @@ afterEach(() => {
   // Restore mocks before resetting viewport/rAF so property spies on browser
   // globals do not overwrite the normalized test environment.
   vi.restoreAllMocks();
+  vi.unstubAllGlobals();
+  vi.unstubAllEnvs();
   window.cancelAnimationFrame = originalAnimationFrame.cancelAnimationFrame;
   window.requestAnimationFrame = originalAnimationFrame.requestAnimationFrame;
   resetViewportSize();
+  (document.activeElement as HTMLElement | null)?.blur?.();
+  // Theme config writes CSS variables onto the root element and CDK scroll
+  // strategies add classes to html/body; both outlive individual tests.
+  document.documentElement.className = initialDocumentState.documentElementClassName;
+  document.documentElement.setAttribute('style', initialDocumentState.documentElementStyle);
+  document.body.className = initialDocumentState.bodyClassName;
+  document.body.setAttribute('style', initialDocumentState.bodyStyle);
   cleanupBody();
   console.warn = originalConsoleWarn;
 });
