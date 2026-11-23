@@ -185,9 +185,20 @@ describe('nz global config', () => {
 
   describe('theme config', () => {
     let nzConfigService: NzConfigService;
+    let initialThemeStyles: Set<Element>;
 
     beforeEach(() => {
       nzConfigService = TestBed.inject(NzConfigService);
+      initialThemeStyles = new Set(Array.from(document.head.querySelectorAll('style[rc-util-key]')));
+    });
+
+    afterEach(() => {
+      // registerTheme injects a marked :root stylesheet; remove nodes created by this test.
+      document.head.querySelectorAll('style[rc-util-key]').forEach(style => {
+        if (!initialThemeStyles.has(style)) {
+          style.remove();
+        }
+      });
     });
 
     function getComputedStylePropertyValue(property: string): string {
