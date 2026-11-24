@@ -31,12 +31,14 @@ stages:
           inputs:
             command: 'ci'
         - script: |
+            set -e
             npm run build
+            npm run build:schematics-demo
             export DEPLOY_DOMAIN=https://preview-${SYSTEM_PULLREQUEST_PULLREQUESTNUMBER}-ng-zorro-antd.surge.sh
             echo 'version' >> dist/browser/.surgeignore
             echo 'issue-helper' >> dist/browser/.surgeignore
             npx surge --project ./dist/browser --domain $DEPLOY_DOMAIN
-            tar --transform='flags=r;s|browser|dist|' -cvzf build.tgz lib -C dist browser
+            tar --transform='flags=r;s|browser|dist|' -cvzf build.tgz lib -C dist browser antd-schematics
 
         - task: CopyFiles@2
           inputs:

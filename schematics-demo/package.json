@@ -1,0 +1,24 @@
+{
+  "name": "@ng-zorro/schematics",
+  "version": "22.0.0-beta.0",
+  "private": true,
+  "description": "Optional demo component generators for NG-ZORRO Ant Design",
+  "license": "MIT",
+  "type": "commonjs",
+  "schematics": "./collection.json",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NG-ZORRO/ng-zorro-antd.git",
+    "directory": "schematics-demo"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "beta"
+  },
+  "files": [
+    "collection.json",
+    "demo/",
+    "utils/"
+  ]
+}
