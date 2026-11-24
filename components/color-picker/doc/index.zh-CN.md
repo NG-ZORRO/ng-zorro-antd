@@ -16,24 +16,25 @@ description: 用于颜色选择。
 
 ### nz-color-picker
 
-| 参数                 | 说明                 | 类型                                               | 默认值      | 版本   |
-| -------------------- | -------------------- | -------------------------------------------------- | ----------- | ------ |
-| `[nzFormat]`         | 颜色格式             | `'rgb' \| 'hex' \| 'hsb'`                          | `'hex'`     |
-| `[nzValue]`          | 颜色的值             | `string \| NzColor`                                | -           |
-| `[nzSize]`           | 设置触发器大小       | `'large' \| 'small' \| 'default'`                  | `'default'` |
-| `[nzDefaultValue]`   | 颜色默认的值         | `string \| NzColor`                                | -           |
-| `[nzAllowClear]`     | 允许清除选择的颜色   | `boolean`                                          | `false`     |
-| `[nzTrigger]`        | 颜色选择器的触发模式 | `'hover' \| 'click'`                               | `'click'`   |
-| `[nzShowText]`       | 显示颜色文本         | `boolean`                                          | `false`     |
-| `[nzOpen]`           | 是否显示弹出窗口     | `boolean`                                          | `false`     |
-| `[nzDisabled]`       | 禁用颜色选择器       | `boolean`                                          | `false`     |
-| `[nzDisabledAlpha]`  | 禁用透明度           | `boolean`                                          | `false`     |
-| `[nzTitle]`          | 设置颜色选择器的标题 | `TemplateRef<void> \| string`                      | -           |
-| `[nzPresets]`        | 预设的颜色           | `NzColorPickerPresetsItem[]`                       | -           | 21.0.0 |
-| `(nzOnChange)`       | 颜色变化的回调       | `EventEmitter<{ color: NzColor; format: string }>` | -           |
-| `(nzOnClear)`        | 清除的回调           | `EventEmitter<boolean>`                            | -           |
-| `(nzOnFormatChange)` | 颜色格式变化的回调   | `EventEmitter<'rgb'｜'hex'｜'hsb'>`                | -           |
-| `(nzOnOpenChange)`   | 打开颜色面板的回调   | `EventEmitter<boolean>`                            | -           |
+| 参数                 | 说明                                              | 类型                                               | 默认值      | 版本   |
+| -------------------- | ------------------------------------------------- | -------------------------------------------------- | ----------- | ------ |
+| `[nzId]`             | 触发器的 `id` 属性                                | `string`                                           | -           | 22.2.0 |
+| `[nzFormat]`         | 颜色格式                                          | `'rgb' \| 'hex' \| 'hsb'`                          | `'hex'`     |
+| `[nzValue]`          | 颜色的值，为 `null` 或 `undefined` 时显示清除状态 | `string \| NzColor \| null`                        | -           |
+| `[nzSize]`           | 设置触发器大小                                    | `'large' \| 'small' \| 'default'`                  | `'default'` |
+| `[nzDefaultValue]`   | 颜色默认的值                                      | `string \| NzColor`                                | -           |
+| `[nzAllowClear]`     | 允许清除选择的颜色                                | `boolean`                                          | `false`     |
+| `[nzTrigger]`        | 颜色选择器的触发模式                              | `'hover' \| 'click'`                               | `'click'`   |
+| `[nzShowText]`       | 显示颜色文本                                      | `boolean`                                          | `false`     |
+| `[nzOpen]`           | 是否显示弹出窗口                                  | `boolean`                                          | `false`     |
+| `[nzDisabled]`       | 禁用颜色选择器                                    | `boolean`                                          | `false`     |
+| `[nzDisabledAlpha]`  | 禁用透明度                                        | `boolean`                                          | `false`     |
+| `[nzTitle]`          | 设置颜色选择器的标题                              | `TemplateRef<void> \| string`                      | -           |
+| `[nzPresets]`        | 预设的颜色                                        | `NzColorPickerPresetsItem[]`                       | -           | 21.0.0 |
+| `(nzOnChange)`       | 颜色变化的回调                                    | `EventEmitter<{ color: NzColor; format: string }>` | -           |
+| `(nzOnClear)`        | 清除的回调，表单控件的值变为 `null`               | `EventEmitter<boolean>`                            | -           |
+| `(nzOnFormatChange)` | 颜色格式变化的回调                                | `EventEmitter<'rgb'｜'hex'｜'hsb'>`                | -           |
+| `(nzOnOpenChange)`   | 打开颜色面板的回调                                | `EventEmitter<boolean>`                            | -           |
 
 ### nz-color-block
 
