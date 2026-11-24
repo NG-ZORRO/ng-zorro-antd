@@ -148,7 +148,10 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
   }
 
   private setModalTransformOrigin(): void {
-    const modalElement = this.modalElementRef.nativeElement;
+    const modalElement = this.modalElementRef?.nativeElement;
+    if (!modalElement) {
+      return;
+    }
     if (this.elementFocusedBeforeModalWasOpened as HTMLElement) {
       const previouslyDOMRect = this.elementFocusedBeforeModalWasOpened!.getBoundingClientRect();
       const lastPosition = getElementOffset(this.elementFocusedBeforeModalWasOpened!);
@@ -201,7 +204,10 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
     if (this.animationDisabled()) {
       return;
     }
-    const modalElement = this.modalElementRef.nativeElement;
+    const modalElement = this.modalElementRef?.nativeElement;
+    if (!modalElement) {
+      return;
+    }
     const backdropElement = this.overlayRef.backdropElement;
     // Add enter class immediately to hide the modal (scale(0), opacity: 0)
     // This prevents the flicker when the modal is first rendered
@@ -217,7 +223,10 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
     }
     // Make sure to set the `TransformOrigin` style before set the enter-active class names
     this.setModalTransformOrigin();
-    const modalElement = this.modalElementRef.nativeElement;
+    const modalElement = this.modalElementRef?.nativeElement;
+    if (!modalElement) {
+      return;
+    }
     const backdropElement = this.overlayRef.backdropElement;
     // Add enter-active class to trigger the animation
     modalElement.classList.add(ZOOM_CLASS_NAME_MAP.enterActive);
@@ -227,10 +236,12 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
   }
 
   private setExitAnimationClass(backdropElement: HTMLElement | null): void {
-    const modalElement = this.modalElementRef.nativeElement;
+    const modalElement = this.modalElementRef?.nativeElement;
 
-    modalElement.classList.add(ZOOM_CLASS_NAME_MAP.leave);
-    modalElement.classList.add(ZOOM_CLASS_NAME_MAP.leaveActive);
+    if (modalElement) {
+      modalElement.classList.add(ZOOM_CLASS_NAME_MAP.leave);
+      modalElement.classList.add(ZOOM_CLASS_NAME_MAP.leaveActive);
+    }
 
     this.setMaskExitAnimationClass(backdropElement);
   }
@@ -252,15 +263,17 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
       return;
     }
     const backdropElement = this.overlayRef.backdropElement;
-    const modalElement = this.modalElementRef.nativeElement;
+    const modalElement = this.modalElementRef?.nativeElement;
     if (backdropElement) {
       backdropElement.classList.remove(FADE_CLASS_NAME_MAP.enter);
       backdropElement.classList.remove(FADE_CLASS_NAME_MAP.enterActive);
     }
-    modalElement.classList.remove(ZOOM_CLASS_NAME_MAP.enter);
-    modalElement.classList.remove(ZOOM_CLASS_NAME_MAP.enterActive);
-    modalElement.classList.remove(ZOOM_CLASS_NAME_MAP.leave);
-    modalElement.classList.remove(ZOOM_CLASS_NAME_MAP.leaveActive);
+    if (modalElement) {
+      modalElement.classList.remove(ZOOM_CLASS_NAME_MAP.enter);
+      modalElement.classList.remove(ZOOM_CLASS_NAME_MAP.enterActive);
+      modalElement.classList.remove(ZOOM_CLASS_NAME_MAP.leave);
+      modalElement.classList.remove(ZOOM_CLASS_NAME_MAP.leaveActive);
+    }
   }
 
   private setZIndexForBackdrop(): void {
@@ -314,18 +327,33 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
       this.trapFocus();
       this.animationStateChanged.emit('enter-active');
     } else {
+      const element = this.modalElementRef?.nativeElement;
+      if (!element) {
+        // The modal element was already torn down (its view was recreated
+        // while opening). Complete the lifecycle instead of throwing, so
+        // `afterOpen` does not hang.
+        this.trapFocus();
+        this.animationStateChanged.emit('enter-active');
+        return;
+      }
+
       // Immediately add enter class to hide the modal (prevents flicker)
       // The enter class sets scale(0) and opacity(0) so the modal is invisible
       this.setEnterInitialClass();
 
-      const element = this.modalElementRef.nativeElement;
+      let finished = false;
       const finish = (): void => {
-        element.removeEventListener('animationend', onAnimationEnd);
+        if (finished) {
+          return;
+        }
+        finished = true;
+        element.removeEventListener('animationend', onAnimationDone);
+        element.removeEventListener('animationcancel', onAnimationDone);
         this.trapFocus();
         this.cleanAnimationClass();
         this.animationStateChanged.emit('enter-active');
       };
-      const onAnimationEnd = (event: AnimationEvent): void => {
+      const onAnimationDone = (event: AnimationEvent): void => {
         if (
           event.target === element &&
           event.animationName === 'antZoomIn' &&
@@ -334,12 +362,24 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
           finish();
         }
       };
-      element.addEventListener('animationend', onAnimationEnd);
+      element.addEventListener('animationend', onAnimationDone);
+      // A cancelled animation never fires `animationend`; treat the
+      // cancellation as the end of the enter animation so `afterOpen`
+      // still fires.
+      element.addEventListener('animationcancel', onAnimationDone);
 
       // In the next frame, add enter-active class to trigger the animation
       requestAnimationFrame(() => {
-        // The modal may have been closed or disposed before the first frame
-        if (!element.isConnected || element.classList.contains(ZOOM_CLASS_NAME_MAP.leave)) {
+        // The modal may have been closed before the first frame; the leave
+        // animation owns completion in that case, so do nothing here.
+        if (element.classList.contains(ZOOM_CLASS_NAME_MAP.leave)) {
+          return;
+        }
+        if (!element.isConnected || this.modalElementRef?.nativeElement !== element) {
+          // The modal element was torn down before the first frame (see
+          // #9637): no animation will ever complete, so finish the lifecycle
+          // now instead of leaving `afterOpen` hanging.
+          finish();
           return;
         }
         this.setEnterActiveClass();
@@ -357,8 +397,16 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
       this.restoreFocus();
       this.animationStateChanged.emit('leave-active');
     } else {
+      const element = this.modalElementRef?.nativeElement;
+      if (!element) {
+        // The modal element was already torn down (its view was recreated
+        // while closing, see #9637). Complete the lifecycle instead of
+        // throwing, so `afterClose` still fires.
+        this.restoreFocus();
+        this.animationStateChanged.emit('leave-active');
+        return;
+      }
       this.setExitAnimationClass(backdropElement);
-      const element = this.modalElementRef.nativeElement;
       let pendingAnimations = backdropElement ? 2 : 1;
       const finish = (): void => {
         if (--pendingAnimations > 0) {
@@ -369,16 +417,22 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
         this.animationStateChanged.emit('leave-active');
       };
 
-      const onModalAnimationEnd = (event: AnimationEvent): void => {
-        if (event.target !== element || event.animationName !== 'antZoomOut') {
+      let modalFinished = false;
+      const onModalAnimationDone = (event: AnimationEvent): void => {
+        if (modalFinished || event.target !== element || event.animationName !== 'antZoomOut') {
           return;
         }
-        element.removeEventListener('animationend', onModalAnimationEnd);
+        modalFinished = true;
+        element.removeEventListener('animationend', onModalAnimationDone);
+        element.removeEventListener('animationcancel', onModalAnimationDone);
         finish();
       };
 
       if (this.isAnimating(element, 'antZoomOut')) {
-        element.addEventListener('animationend', onModalAnimationEnd);
+        element.addEventListener('animationend', onModalAnimationDone);
+        // A cancelled animation never fires `animationend`; treat the
+        // cancellation as completion so the close is never stuck.
+        element.addEventListener('animationcancel', onModalAnimationDone);
       } else {
         finish();
       }
@@ -390,18 +444,25 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
             finishBackdrop();
           }
         });
+        let backdropFinished = false;
         const finishBackdrop = (): void => {
-          backdropElement.removeEventListener('animationend', onBackdropAnimationEnd);
+          if (backdropFinished) {
+            return;
+          }
+          backdropFinished = true;
+          backdropElement.removeEventListener('animationend', onBackdropAnimationDone);
+          backdropElement.removeEventListener('animationcancel', onBackdropAnimationDone);
           observer.disconnect();
           finish();
         };
-        const onBackdropAnimationEnd = (event: AnimationEvent): void => {
+        const onBackdropAnimationDone = (event: AnimationEvent): void => {
           if (event.target !== backdropElement || event.animationName !== 'antFadeOut') {
             return;
           }
           finishBackdrop();
         };
-        backdropElement.addEventListener('animationend', onBackdropAnimationEnd);
+        backdropElement.addEventListener('animationend', onBackdropAnimationDone);
+        backdropElement.addEventListener('animationcancel', onBackdropAnimationDone);
         if (backdropParent) {
           observer.observe(backdropParent, { childList: true });
         }
@@ -409,7 +470,12 @@ export class BaseModalContainerComponent extends BasePortalOutlet {
     }
   }
 
-  protected setupMouseListeners(modalContainer: ElementRef<HTMLElement>): void {
+  protected setupMouseListeners(modalContainer: ElementRef<HTMLElement> | undefined): void {
+    if (!modalContainer) {
+      // The modal element was torn down before the first check (see #9637),
+      // so there is no element to listen on.
+      return;
+    }
     fromEventOutsideAngular(this.host.nativeElement, 'mouseup')
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
