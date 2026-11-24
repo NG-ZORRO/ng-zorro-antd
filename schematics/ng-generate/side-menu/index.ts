@@ -40,7 +40,7 @@ export default function(options: Schema): Rule {
     const workspace = await readWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
     const mainFile = getProjectMainFile(project);
-    const { componentOptions, sourceDir } = await getAppOptions(options.project, project.root);
+    const { componentOptions, sourceDir } = await getAppOptions(workspace, project);
     const prefix = options.prefix || project.prefix;
     const style = options.style || componentOptions.style;
     const exportDefault = componentOptions.exportDefault ?? false;
