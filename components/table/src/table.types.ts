@@ -25,7 +25,11 @@ export interface NzTableQueryParams {
 export interface NzCustomColumn {
   value: string;
   default: boolean;
-  width: number;
+  /**
+   * Fixed width in pixels, or `'auto'` to size the column to its content.
+   * Defaults to `'auto'` when omitted.
+   */
+  width?: number | 'auto';
   fixWidth?: boolean;
 }
 
