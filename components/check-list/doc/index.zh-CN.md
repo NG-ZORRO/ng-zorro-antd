@@ -29,6 +29,7 @@ description: 用于在项目中梳理任务流程。
 | `(nzHide)`          | 隐藏清单的回调         | `EventEmitter<boolean>`       | `false` | -        |
 
 > `(nzHide)` 的回调值为是否不再显示清单。你可以在回调中存储数据到 `LocalStorage` 中，以避免再次显示清单。
+> 点击确定时，会触发一次 `(nzHide)`，回调值为当前复选框的值。点击取消不会触发 `(nzHide)`，再次进入确认面板时会保留复选框的值。
 
 ### Interfaces
 

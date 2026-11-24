@@ -31,6 +31,12 @@ describe('check-list', () => {
     fixture.detectChanges();
   }
 
+  async function waitingForConfirmationChanges(): Promise<void> {
+    fixture.detectChanges();
+    await vi.advanceTimersByTimeAsync(500);
+    fixture.detectChanges();
+  }
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideNzNoAnimation(), provideNzIconsTesting()]
@@ -252,6 +258,62 @@ describe('check-list', () => {
     expect(overlayContainerElement.querySelector('.ant-check-list')).toBeNull();
   });
 
+  it.each([false, true])('should emit nzHide once with the checkbox value %s', async checked => {
+    testComponent.visible.set(true);
+    await waitingForConfirmationChanges();
+    dispatchMouseEvent(overlayContainerElement.querySelector('.ant-check-list-footer')!, 'click');
+    await waitingForConfirmationChanges();
+
+    const checkbox = overlayContainerElement.querySelector<HTMLInputElement>('input[type="checkbox"]')!;
+    expect(checkbox.checked).toBe(false);
+    if (checked) {
+      dispatchMouseEvent(overlayContainerElement.querySelector('.ant-checkbox-wrapper')!, 'click');
+      await waitingForConfirmationChanges();
+    }
+    expect(checkbox.checked).toBe(checked);
+    expect(testComponent.hide).not.toHaveBeenCalled();
+
+    dispatchMouseEvent(
+      overlayContainerElement.querySelector('.ant-check-list-close-check-action .ant-btn-primary')!,
+      'click'
+    );
+    await waitingForConfirmationChanges();
+
+    expect(testComponent.hide).toHaveBeenCalledExactlyOnceWith(checked);
+  });
+
+  it('should retain the checkbox value after cancelling without emitting nzHide', async () => {
+    testComponent.visible.set(true);
+    await waitingForConfirmationChanges();
+    dispatchMouseEvent(overlayContainerElement.querySelector('.ant-check-list-footer')!, 'click');
+    await waitingForConfirmationChanges();
+    dispatchMouseEvent(overlayContainerElement.querySelector('.ant-checkbox-wrapper')!, 'click');
+    await waitingForConfirmationChanges();
+
+    dispatchMouseEvent(
+      overlayContainerElement.querySelector('.ant-check-list-close-check-action .ant-btn:not(.ant-btn-primary)')!,
+      'click'
+    );
+    await waitingForConfirmationChanges();
+    expect(overlayContainerElement.querySelector('.ant-check-list-header')).not.toBeNull();
+    expect(testComponent.hide).not.toHaveBeenCalled();
+
+    dispatchMouseEvent(overlayContainerElement.querySelector('.ant-check-list-footer')!, 'click');
+    await waitingForConfirmationChanges();
+    const checkbox = overlayContainerElement.querySelector<HTMLInputElement>('input[type="checkbox"]')!;
+    expect(checkbox.checked).toBe(true);
+
+    dispatchMouseEvent(overlayContainerElement.querySelector('.ant-checkbox-wrapper')!, 'click');
+    await waitingForConfirmationChanges();
+    expect(checkbox.checked).toBe(false);
+    dispatchMouseEvent(
+      overlayContainerElement.querySelector('.ant-check-list-close-check-action .ant-btn-primary')!,
+      'click'
+    );
+    await waitingForConfirmationChanges();
+    expect(testComponent.hide).toHaveBeenCalledExactlyOnceWith(false);
+  });
+
   it('nzTriggerRender ', () => {
     testComponent.triggerRender.set('Check List');
     fixture.detectChanges();
@@ -293,10 +355,12 @@ describe('check-list', () => {
       [nzTriggerRender]="triggerRender()"
       [nzTitle]="title()"
       [nzFooter]="footer()"
+      (nzHide)="hide($event)"
     />
   `
 })
 export class NzTestCheckListBasicComponent {
+  readonly hide = vi.fn<(hidden: boolean) => void>();
   readonly visible = signal<boolean>(false);
   readonly items = signal<NzItemProps[]>([]);
   readonly index = signal<number>(1);
