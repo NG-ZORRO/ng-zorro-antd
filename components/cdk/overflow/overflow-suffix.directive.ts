@@ -19,7 +19,7 @@ export class NzOverflowSuffixDirective {
   private elementRef = inject(ElementRef);
   private cdr = inject(ChangeDetectorRef);
 
-  suffixStyle = {};
+  suffixStyle: Record<string, string | number | undefined> = {};
   suffixWidth$ = this.nzResizeObserver.observe(this.elementRef.nativeElement).pipe(
     map(([item]) => (item.target as HTMLElement).offsetWidth),
     tap(width => (this.suffixWidth = width))
@@ -30,7 +30,7 @@ export class NzOverflowSuffixDirective {
     if (start !== null) {
       this.suffixStyle = {
         position: 'absolute',
-        left: `${start}px`,
+        'inset-inline-start': `${start}px`,
         top: 0,
         opacity: 1,
         order: order

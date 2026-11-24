@@ -4,19 +4,21 @@
  */
 
 import {
-  Component,
-  ContentChildren,
-  QueryList,
-  ElementRef,
-  OnInit,
   AfterContentInit,
-  ContentChild,
   ChangeDetectorRef,
+  Component,
+  ContentChild,
+  ContentChildren,
+  DestroyRef,
+  ElementRef,
+  NgZone,
+  OnInit,
+  QueryList,
   inject,
-  DestroyRef
+  signal
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, combineLatest, Observable, ReplaySubject, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject, Subject, combineLatest } from 'rxjs';
 import { filter, map, pairwise, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
@@ -29,8 +31,8 @@ import { NzOverflowSuffixDirective } from './overflow-suffix.directive';
   selector: 'nz-overflow-container',
   template: `
     <ng-content />
-    <ng-content select="[appOverflowRest]" />
-    <ng-content select="[appOverflowSuffix]" />
+    <ng-content select="[nzOverflowRest]" />
+    <ng-content select="[nzOverflowSuffix]" />
   `,
   providers: [NzResizeObserver]
 })
@@ -39,6 +41,15 @@ export class NzOverflowContainerComponent implements OnInit, AfterContentInit {
   private elementRef = inject(ElementRef);
   private cdr = inject(ChangeDetectorRef);
   private destroyRef = inject(DestroyRef);
+  private ngZone = inject(NgZone);
+  private readonly displayCountState = signal(Number.MAX_SAFE_INTEGER);
+  private measured = false;
+
+  /**
+   * Last visible item index. `Number.MAX_SAFE_INTEGER` until the container has been measured,
+   * and `-1` when nothing fits on the line.
+   */
+  readonly displayCount = this.displayCountState.asReadonly();
 
   contentInit$ = new Subject<void>();
   @ContentChildren(NzOverflowItemDirective)
@@ -69,7 +80,7 @@ export class NzOverflowContainerComponent implements OnInit, AfterContentInit {
   );
 
   updateDisplayCount(count: number, notReady?: boolean): void {
-    this.displayCount$.next(count);
+    this.publishDisplayCount(count);
     if (this.overflowItems && !notReady) {
       this.restReady$.next(count < this.overflowItems.length - 1);
     }
@@ -81,8 +92,13 @@ export class NzOverflowContainerComponent implements OnInit, AfterContentInit {
     ) as Observable<number[]>;
     this.overflowItems$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(overflowItems => {
       if (!overflowItems.length) {
-        this.displayCount$.next(0);
+        // Nothing to measure. A later non-empty list stays fully visible until widths arrive,
+        // which keeps SSR and a missing ResizeObserver from collapsing to the first tag.
+        this.measured = false;
+        this.publishDisplayCount(0);
         this.suffixFixedStart$.next(null);
+      } else if (!this.measured) {
+        this.publishDisplayCount(Number.MAX_SAFE_INTEGER);
       }
     });
     combineLatest([overflowItemsWidth$, this.containerWidth$, this.maxRestWith$, this.restWidth$, this.suffixWidth$])
@@ -91,6 +107,9 @@ export class NzOverflowContainerComponent implements OnInit, AfterContentInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(([overflowItemsWidth, containerWidth, maxRestWith, restWidth, suffixWidth]) => {
+        if (overflowItemsWidth.every(width => width !== undefined)) {
+          this.measured = true;
+        }
         let totalWidth = suffixWidth;
         const len = overflowItemsWidth.length;
         const lastIndex = len - 1;
@@ -122,7 +141,6 @@ export class NzOverflowContainerComponent implements OnInit, AfterContentInit {
               this.suffixFixedStart$.next(totalWidth - currentItemWidth - suffixWidth + restWidth);
               break;
             }
-            this.cdr.detectChanges();
           }
         }
         if (
@@ -151,10 +169,18 @@ export class NzOverflowContainerComponent implements OnInit, AfterContentInit {
         this.overflowRest?.setRestStyle(displayRest, displayRest ? displayCount : Number.MAX_SAFE_INTEGER);
       });
   }
+
   ngAfterContentInit(): void {
     this.overflowItems?.changes.pipe(startWith(this.overflowItems)).subscribe(this.overflowItems$);
     this.overflowSuffix?.suffixWidth$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(this.suffixWidth$);
     this.overflowRest?.restWidth$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(this.restWidth$);
     this.contentInit$.next();
+  }
+
+  private publishDisplayCount(count: number): void {
+    this.ngZone.run(() => {
+      this.displayCountState.set(count);
+      this.displayCount$.next(count);
+    });
   }
 }
