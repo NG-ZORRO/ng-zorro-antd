@@ -56,7 +56,8 @@ export class NzSiderTriggerComponent implements OnChanges, OnInit {
 
   updateTriggerType(): void {
     this.isZeroTrigger =
-      this.nzCollapsedWidth === 0 && ((this.nzBreakpoint && this.matchBreakPoint) || !this.nzBreakpoint);
+      this.nzCollapsedWidth === 0 &&
+      (this.nzCollapsed || (this.nzBreakpoint && this.matchBreakPoint) || !this.nzBreakpoint);
     this.isNormalTrigger = this.nzCollapsedWidth !== 0;
   }
 

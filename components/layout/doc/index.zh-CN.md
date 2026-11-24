@@ -87,6 +87,10 @@ description: 协助进行页面级整体布局。
 | `[nzTheme]`           | 主题颜色                                            | `'light' \| 'dark'`                                       | `'dark'` |              |
 | `(nzCollapsedChange)` | 展开-收起时的回调函数                               | `EventEmitter<boolean>`                                   | -        |              |
 
+设置 `nzBreakpoint` 后，初始化时视窗宽度小于断点会收起侧边栏；大于或等于断点时保留初始的 `nzCollapsed` 值。初始化后，跨越断点会自动收起或展开侧边栏，在断点同一侧调整视窗宽度则保留当前收起状态。
+
+当 `nzCollapsedWidth` 为 `0` 时，侧边栏收起后仍会显示特殊触发器，即使视窗宽度大于或等于断点也可通过它展开侧边栏。
+
 #### breakpoint width
 
 ```js
