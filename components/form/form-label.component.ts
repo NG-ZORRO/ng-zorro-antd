@@ -11,7 +11,8 @@ import {
   ViewEncapsulation,
   booleanAttribute,
   computed,
-  inject
+  inject,
+  signal
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter } from 'rxjs/operators';
@@ -86,48 +87,52 @@ export class NzFormLabelComponent {
   @Input({ transform: booleanAttribute }) nzRequired = false;
   @Input({ transform: booleanAttribute })
   set nzNoColon(value: boolean) {
-    this.noColon = value;
+    this.noColon.set(value);
   }
   get nzNoColon(): boolean {
-    return this.noColon !== 'default' ? this.noColon : !!this.nzFormDirective?.nzNoColon;
+    const noColon = this.noColon();
+    return noColon !== 'default' ? noColon : !!this.nzFormDirective?.nzNoColon;
   }
 
-  private noColon: boolean | 'default' = 'default';
+  private readonly noColon = signal<boolean | 'default'>('default');
 
   @Input() nzTooltipTitle?: NzTSType;
   @Input()
   set nzTooltipIcon(value: string | NzFormTooltipIcon) {
-    this._tooltipIcon = toTooltipIcon(value);
+    this._tooltipIcon.set(toTooltipIcon(value));
   }
   // due to 'get' and 'set' accessor must have the same type, so it was renamed to `tooltipIcon`
   get tooltipIcon(): NzFormTooltipIcon {
-    return this._tooltipIcon !== 'default'
-      ? this._tooltipIcon
+    const tooltipIcon = this._tooltipIcon();
+    return tooltipIcon !== 'default'
+      ? tooltipIcon
       : toTooltipIcon(this.nzFormDirective?.nzTooltipIcon || DefaultTooltipIcon);
   }
-  private _tooltipIcon: NzFormTooltipIcon | 'default' = 'default';
+  private readonly _tooltipIcon = signal<NzFormTooltipIcon | 'default'>('default');
 
   @Input()
   set nzLabelAlign(value: NzLabelAlignType) {
-    this.labelAlign = value;
+    this.labelAlign.set(value);
   }
 
   get nzLabelAlign(): NzLabelAlignType {
-    return this.labelAlign !== 'default' ? this.labelAlign : this.nzFormDirective?.nzLabelAlign || 'right';
+    const labelAlign = this.labelAlign();
+    return labelAlign !== 'default' ? labelAlign : this.nzFormDirective?.nzLabelAlign || 'right';
   }
 
-  private labelAlign: NzLabelAlignType | 'default' = 'default';
+  private readonly labelAlign = signal<NzLabelAlignType | 'default'>('default');
 
   @Input({ transform: booleanAttribute })
   set nzLabelWrap(value: boolean) {
-    this.labelWrap = value;
+    this.labelWrap.set(value);
   }
 
   get nzLabelWrap(): boolean {
-    return this.labelWrap !== 'default' ? this.labelWrap : !!this.nzFormDirective?.nzLabelWrap;
+    const labelWrap = this.labelWrap();
+    return labelWrap !== 'default' ? labelWrap : !!this.nzFormDirective?.nzLabelWrap;
   }
 
-  private labelWrap: boolean | 'default' = 'default';
+  private readonly labelWrap = signal<boolean | 'default'>('default');
 
   private nzFormDirective = inject(NzFormDirective, { skipSelf: true, optional: true });
 
@@ -140,7 +145,7 @@ export class NzFormLabelComponent {
       this.nzFormDirective
         .getInputObservable('nzNoColon')
         .pipe(
-          filter(() => this.noColon === 'default'),
+          filter(() => this.noColon() === 'default'),
           takeUntilDestroyed()
         )
         .subscribe(() => this.cdr.markForCheck());
@@ -148,7 +153,7 @@ export class NzFormLabelComponent {
       this.nzFormDirective
         .getInputObservable('nzTooltipIcon')
         .pipe(
-          filter(() => this._tooltipIcon === 'default'),
+          filter(() => this._tooltipIcon() === 'default'),
           takeUntilDestroyed()
         )
         .subscribe(() => this.cdr.markForCheck());
@@ -156,7 +161,7 @@ export class NzFormLabelComponent {
       this.nzFormDirective
         .getInputObservable('nzLabelAlign')
         .pipe(
-          filter(() => this.labelAlign === 'default'),
+          filter(() => this.labelAlign() === 'default'),
           takeUntilDestroyed()
         )
         .subscribe(() => this.cdr.markForCheck());
@@ -164,7 +169,7 @@ export class NzFormLabelComponent {
       this.nzFormDirective
         .getInputObservable('nzLabelWrap')
         .pipe(
-          filter(() => this.labelWrap === 'default'),
+          filter(() => this.labelWrap() === 'default'),
           takeUntilDestroyed()
         )
         .subscribe(() => this.cdr.markForCheck());

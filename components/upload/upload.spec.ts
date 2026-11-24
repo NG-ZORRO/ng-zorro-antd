@@ -109,6 +109,41 @@ describe('upload', () => {
         httpMock.verify();
       });
 
+      it('should preserve upload list options when toggling visibility', async () => {
+        instance.nzFileList = [{ uid: '1', name: 'test.txt', status: 'done', url: '/test.txt' }];
+        fixture.detectChanges();
+        expect(instance.comp.nzShowUploadList).toEqual({
+          showPreviewIcon: true,
+          showRemoveIcon: true,
+          showDownloadIcon: true
+        });
+
+        const upload = dl.query(By.directive(NzUploadComponent));
+        const list = (): HTMLElement => upload.nativeElement.querySelector('nz-upload-list');
+        const setOptions = async (value: boolean | NzShowUploadList): Promise<void> => {
+          instance.nzShowUploadList.set(value);
+          await fixture.whenStable();
+        };
+
+        await setOptions(false);
+        expect(instance.comp.nzShowUploadList).toBe(false);
+        expect(list().style.display).toBe('none');
+
+        const options: NzShowUploadList = { showRemoveIcon: false, showPreviewIcon: false, showDownloadIcon: false };
+        await setOptions(options);
+        expect(instance.comp.nzShowUploadList).toBe(options);
+        expect(list().style.display).toBe('');
+        expect(list().querySelector('.anticon-delete')).toBeNull();
+
+        await setOptions(true);
+        expect(instance.comp.nzShowUploadList).toEqual({
+          showPreviewIcon: true,
+          showRemoveIcon: true,
+          showDownloadIcon: true
+        });
+        expect(list().querySelector('.anticon-delete')).not.toBeNull();
+      });
+
       it('should notify progress when upload a large file', () => {
         pageObject.postLarge();
         const req = httpMock.expectOne(instance.nzAction() as string);
@@ -1465,7 +1500,7 @@ describe('upload', () => {
         [nzListType]="nzListType()"
         [nzMultiple]="nzMultiple()"
         [nzName]="nzName"
-        [nzShowUploadList]="nzShowUploadList"
+        [nzShowUploadList]="nzShowUploadList()"
         [nzShowButton]="nzShowButton()"
         [nzWithCredentials]="nzWithCredentials()"
         [nzPreview]="onPreview"
@@ -1527,7 +1562,7 @@ class TestUploadComponent {
   readonly nzListType = signal<NzUploadListType>('text');
   readonly nzMultiple = signal(false);
   nzName = 'file';
-  nzShowUploadList: boolean | NzShowUploadList = true;
+  readonly nzShowUploadList = signal<boolean | NzShowUploadList>(true);
   readonly nzShowButton = signal(true);
   readonly nzWithCredentials = signal(false);
   readonly nzIconRender = signal<NzIconRenderTemplate | null>(null);
