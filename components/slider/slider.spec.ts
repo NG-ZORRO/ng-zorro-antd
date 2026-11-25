@@ -113,6 +113,21 @@ describe('slider', () => {
       expect(trackFillElement.style.width).toBe('86%');
     });
 
+    it('should commit the current maximum if it decreases during a drag', () => {
+      const onChangeSpy = vi.fn();
+      sliderInstance.nzOnAfterChange.subscribe(onChangeSpy);
+
+      dispatchSlideEventSequence(sliderNativeElement, 0, 0.8, true);
+      expect(sliderInstance.value).toBe(80);
+
+      fixture.componentInstance.max.set(60);
+      fixture.detectChanges();
+      dispatchSlideEndEvent(sliderNativeElement, 0.8);
+
+      expect(sliderInstance.value).toBe(60);
+      expect(onChangeSpy).toHaveBeenCalledExactlyOnceWith(60);
+    });
+
     it('should not change value without emitting a change event', () => {
       const onChangeSpy = vi.fn();
 
@@ -1005,11 +1020,12 @@ const styles = `
 
 @Component({
   imports: [NzSliderModule],
-  template: `<nz-slider [nzDisabled]="disabled()" />`,
+  template: `<nz-slider [nzDisabled]="disabled()" [nzMax]="max()" />`,
   styles: [styles]
 })
 class NzTestSliderComponent {
   readonly disabled = signal(false);
+  readonly max = signal(100);
 }
 
 @Component({
