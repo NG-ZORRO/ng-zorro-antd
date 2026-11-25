@@ -365,6 +365,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   }
 
   private onDragEnd(): void {
+    this.setValue(this.formatValue(this.getValue()));
     this.nzOnAfterChange.emit(this.getValue(true));
     this.toggleDragMoving(false);
     this.cacheSliderProperty(true);
