@@ -9,7 +9,7 @@ title: FAQ
 
 The size hello-world project of angular after gzip is about `30KB`, the size of `ng-zorro-antd`'s doc site is about `287KB`.
 
-If you meet the bundle size issue, please make sure you use `ng build --prod` correctly to compile. If other third-party component kits other than `ng-zorro-antd` are imported, you could generate a sourcemap file using this command `ng build --prod --sourceMap=true` to check every dependency's bundled size. You can check [this link](https://angular.io/guide/deployment#inspect-the-bundles) for further instructions.
+If you meet the bundle size issue, please make sure you build with the production configuration (`ng build`, which uses it by default, or `ng build --configuration production`). If other third-party component kits other than `ng-zorro-antd` are imported, you could generate a sourcemap file using this command `ng build --source-map` and check every dependency's bundled size with [source-map-explorer](https://github.com/danvk/source-map-explorer).
 
 ### Runtime performance of Angular and `ng-zorro-antd`
 
@@ -37,7 +37,7 @@ Please make sure you have export NG-ZORRO's feature modules in `ShareModule` if 
 
 ### Expression Changed After It Has Been Checked Error
 
-This [doc](https://blog.angularindepth.com/everything-you-need-to-know-about-the-expressionchangedafterithasbeencheckederror-error-e3fd9ce7dbb4) will help you.
+This [doc](https://angular.dev/errors/NG0100) will help you.
 
 ### Can't bind to 'formGroup' since it isn't a known property of 'form'
 
@@ -66,7 +66,11 @@ this.dataSet = [
 this.dataSet = this.dataSet.filter(d => d.key !== i);
 ```
 
-Recommend using [immer](https://immerjs.github.io/immer/docs/introduction) for a better development experience.
+Recommend using [immer](https://immerjs.github.io/immer/) for a better development experience.
+
+Since Angular 22, `OnPush` is also the default for your own components. An `OnPush` component is checked again only when one of its input values changes (Angular compares them with `Object.is`), an event bound in its template fires, an `async` pipe in its template receives a new value, a signal read in its template changes, or `markForCheck()` is called. To keep the previous behavior for a component, set `changeDetection: ChangeDetectionStrategy.Eager`.
+
+For more details, see [Skipping component subtrees](https://angular.dev/best-practices/skipping-subtrees) in the Angular documentation.
 
 ### My Angular app is deadlock, what happened?
 
@@ -86,7 +90,7 @@ export class BugComponent {
 
 ### How to make Angular applications faster?
 
-Read [https://web.dev/angular](https://web.dev/angular).
+Read [https://web.dev/explore/angular](https://web.dev/explore/angular).
 
 ### Why some features are not supported?
 

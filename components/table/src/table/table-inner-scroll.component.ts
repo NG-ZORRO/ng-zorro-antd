@@ -202,12 +202,17 @@ export class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit 
       merge(scrollEvent$, resize$, this.data$, this.scroll$)
         .pipe(startWith(true), delay(0), takeUntilDestroyed(this.destroyRef))
         .subscribe(() => this.setScrollPositionClassName());
-      scrollEvent$.pipe(filter(() => !!this.scrollY)).subscribe(() => {
-        this.tableHeaderElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft;
-        if (this.tableFootElement) {
-          this.tableFootElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft;
-        }
-      });
+      scrollEvent$
+        .pipe(
+          filter(() => !!this.scrollY),
+          takeUntilDestroyed(this.destroyRef)
+        )
+        .subscribe(() => {
+          this.tableHeaderElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft;
+          if (this.tableFootElement) {
+            this.tableFootElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft;
+          }
+        });
     }
   }
 }

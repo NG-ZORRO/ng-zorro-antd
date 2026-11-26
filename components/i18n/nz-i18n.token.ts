@@ -23,6 +23,3 @@ export function provideNzI18n(config: FactoryLike<NzI18nInterface>): Environment
     typeof config === 'function' ? { provide: NZ_I18N, useFactory: config } : { provide: NZ_I18N, useValue: config }
   ]);
 }
-
-// Re-export NZ_DATE_LOCALE from core/time for backward compatibility
-export { NZ_DATE_LOCALE } from 'ng-zorro-antd/core/time';

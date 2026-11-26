@@ -15,7 +15,12 @@ export const DRAWER_LARGE_SIZE = 736;
 export type NzDrawerPlacement = 'left' | 'right' | 'top' | 'bottom';
 export type NzDrawerSize = 'default' | 'large';
 
-export interface NzDrawerOptionsOfComponent<T = NzSafeAny, D = NzSafeAny> {
+/**
+ * @deprecated Use `NzDrawerOptions` instead.
+ */
+export type NzDrawerOptionsOfComponent<T = NzSafeAny, D = NzSafeAny> = NzDrawerOptions<T, D>;
+
+export interface NzDrawerOptions<T = NzSafeAny, D = NzSafeAny> {
   nzClosable?: boolean;
   nzMaskClosable?: boolean;
   nzCloseOnNavigation?: boolean;
@@ -42,11 +47,10 @@ export interface NzDrawerOptionsOfComponent<T = NzSafeAny, D = NzSafeAny> {
   nzZIndex?: number;
   nzOffsetX?: number;
   nzOffsetY?: number;
-}
-
-export interface NzDrawerOptions<T = NzSafeAny, D = NzSafeAny> extends NzDrawerOptionsOfComponent<T, D> {
   nzOnCancel?(): Promise<NzSafeAny>;
 }
+
+export type NzDrawerUpdateOptions<T = NzSafeAny> = Omit<NzDrawerOptions<T>, 'nzContent' | 'nzContentParams' | 'nzData'>;
 
 export const NZ_DRAWER_DATA = new InjectionToken<NzSafeAny>(
   typeof ngDevMode !== 'undefined' && ngDevMode ? 'nz-drawer-data' : ''

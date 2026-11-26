@@ -47,8 +47,18 @@ describe('modal with animation', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   let fixture: ComponentFixture<TestWithServiceComponent>;
+  let animationStyle: HTMLStyleElement;
 
   beforeEach(() => {
+    animationStyle = document.createElement('style');
+    animationStyle.textContent = `
+      @keyframes antZoomIn {}
+      @keyframes antZoomOut {}
+      .ant-zoom-enter-active { animation: antZoomIn 100s; }
+      .ant-zoom-leave-active { animation: antZoomOut 100s; }
+    `;
+    document.head.appendChild(animationStyle);
+
     TestBed.configureTestingModule({
       providers: [NzModalService]
     });
@@ -59,6 +69,7 @@ describe('modal with animation', () => {
   });
 
   afterEach(() => {
+    animationStyle.remove();
     overlayContainer.ngOnDestroy();
   });
 
@@ -194,6 +205,76 @@ describe('modal with animation', () => {
 
     await fixture.whenStable();
     expect(spy).toHaveBeenCalled();
+  });
+
+  it('should ignore animationend events bubbling from projected modal content when opening', async () => {
+    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
+    const spy = vi.fn();
+    modalRef.afterOpen.subscribe(spy);
+
+    const projectedElement = overlayContainerElement.querySelector('.modal-content')!;
+    dispatchEvent(projectedElement, new AnimationEvent('animationend', { animationName: 'antZoomIn', bubbles: true }));
+    await fixture.whenStable();
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('should ignore an opening animation completion delivered after closing started', async () => {
+    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
+    const spy = vi.fn();
+    modalRef.afterOpen.subscribe(spy);
+    const modalContentElement = overlayContainerElement.querySelector('.ant-modal')!;
+
+    const backdropElement = modalRef.getBackdropElement()!;
+    modalRef.close();
+    animationDone(modalContentElement, 'antZoomIn');
+    expect(spy).not.toHaveBeenCalled();
+    expect(modalContentElement.classList).toContain('ant-zoom-leave');
+
+    animationDone(modalContentElement, 'antZoomOut');
+    animationDone(backdropElement, 'antFadeOut');
+    await fixture.whenStable();
+    expect(modalRef.getState()).toBe(NzModalState.CLOSED);
+  });
+
+  it('should complete afterOpen without emitting when closed before opening finished', async () => {
+    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
+    const next = vi.fn();
+    const complete = vi.fn();
+    modalRef.afterOpen.subscribe({ next, complete });
+    const modalContentElement = overlayContainerElement.querySelector('.ant-modal')!;
+
+    const backdropElement = modalRef.getBackdropElement()!;
+    modalRef.close();
+    await sleep(16); // wait for the next frame
+    expect(modalContentElement.classList).not.toContain('ant-zoom-enter-active');
+
+    animationDone(modalContentElement, 'antZoomOut');
+    animationDone(backdropElement, 'antFadeOut');
+    await fixture.whenStable();
+    expect(modalRef.getState()).toBe(NzModalState.CLOSED);
+    expect(next).not.toHaveBeenCalled();
+    expect(complete).toHaveBeenCalledOnce();
+  });
+
+  it('should open and close when the browser runs no animation', async () => {
+    animationStyle.textContent = '';
+    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
+    const afterOpen = vi.fn();
+    const afterClose = vi.fn();
+    modalRef.afterOpen.subscribe(afterOpen);
+    modalRef.afterClose.subscribe(afterClose);
+    const modalContentElement = overlayContainerElement.querySelector('.ant-modal')!;
+
+    await sleep(16); // wait for the next frame
+    expect(afterOpen).toHaveBeenCalledOnce();
+    expect(modalContentElement.classList).not.toContain('ant-zoom-enter');
+
+    const backdropElement = modalRef.getBackdropElement()!;
+    modalRef.close();
+    animationDone(backdropElement, 'antFadeOut');
+    await fixture.whenStable();
+    expect(modalRef.getState()).toBe(NzModalState.CLOSED);
+    expect(afterClose).toHaveBeenCalledOnce();
   });
 
   it('should return the current state of the modal', async () => {
@@ -379,6 +460,12 @@ describe('modal', () => {
     expect(modalContentElement).toBeTruthy();
     expect(modalContentElement!.textContent).toBe('Hello Modal');
     modalRef.close();
+  });
+
+  it('should emit afterOpen to subscribers added after the modal is created', () => {
+    const spy = vi.fn();
+    modalService.create({ nzContent: TestWithModalContentComponent }).afterOpen.subscribe(spy);
+    expect(spy).toHaveBeenCalledOnce();
   });
 
   describe('close', () => {

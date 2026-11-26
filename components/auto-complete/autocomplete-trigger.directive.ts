@@ -33,6 +33,7 @@ import { Subscription } from 'rxjs';
 import { delay, filter, tap } from 'rxjs/operators';
 
 import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { NZ_INPUT_WRAPPER } from 'ng-zorro-antd/input';
 
 import { NzAutocompleteOptionComponent } from './autocomplete-option.component';
 import { NzAutocompleteOriginDirective } from './autocomplete-origin.directive';
@@ -66,6 +67,7 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   private readonly viewContainerRef = inject(ViewContainerRef);
   private readonly destroyRef = inject(DestroyRef);
   private readonly document = inject(DOCUMENT);
+  private readonly inputWrapper = inject(NZ_INPUT_WRAPPER, { host: true, optional: true });
 
   /** Bind nzAutocomplete component */
   @Input() nzAutocomplete!: NzAutocompleteComponent;
@@ -102,7 +104,9 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   ngAfterViewInit(): void {
     if (this.nzAutocomplete) {
       this.nzAutocomplete.animationStateChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(event => {
-        if (this.overlayRef) {
+        // A leave animation can finish after a subsequent input makes the panel visible again.
+        // In that case, disposing the current overlay races with its next attachment.
+        if (this.overlayRef && !this.panelOpen) {
           this.overlayRef.dispose();
           this.overlayRef = null;
           event.animationComplete();
@@ -336,7 +340,7 @@ export class NzAutocompleteTriggerDirective implements AfterViewInit, ControlVal
   }
 
   private getConnectedElement(): ElementRef<HTMLElement> {
-    return this.nzAutocompleteConnectedTo?.elementRef ?? this.elementRef;
+    return this.nzAutocompleteConnectedTo?.elementRef ?? this.inputWrapper?.elementRef ?? this.elementRef;
   }
 
   private resetActiveItem(): void {

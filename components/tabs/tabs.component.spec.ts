@@ -674,10 +674,16 @@ describe('tabs', () => {
       const tabNavBarComponent = fixture.debugElement.query(By.directive(NzTabNavBarComponent))!
         .componentInstance as NzTabNavBarComponent;
       const tabsList = element.querySelector('.ant-tabs-nav-list')! as HTMLElement;
-      let translateX = getTranslate(tabsList.style.transform).x;
+      const tabsWrapper = tabsList.parentElement!;
 
-      expect(translateX).toBe(0);
-      expect(tabNavBarComponent).toBeDefined();
+      // Rendering the overflow control resizes the wrapper and triggers a second measurement.
+      await vi.waitFor(() => {
+        fixture.detectChanges();
+        expect(tabsWrapper.classList).toContain('ant-tabs-nav-wrap-ping-right');
+        expect(tabNavBarComponent['wrapperWidth']).toBe(tabsWrapper.offsetWidth);
+        expect(tabNavBarComponent['scrollListWidth']).toBe(tabsList.offsetWidth);
+      });
+      expect(getTranslate(tabsList.style.transform).x).toBe(0);
 
       const event = {
         x: -200,
@@ -688,8 +694,7 @@ describe('tabs', () => {
       tabNavBarComponent.onOffsetChange(event);
       await stabilize(fixture, 32);
 
-      translateX = getTranslate(tabsList.style.transform).x;
-      expect(translateX).toBe(-200);
+      expect(getTranslate(tabsList.style.transform).x).toBe(-200);
     });
 
     it('should set transformY when scroll(mock)', async () => {

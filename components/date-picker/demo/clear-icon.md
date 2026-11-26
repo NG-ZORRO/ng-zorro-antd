@@ -1,5 +1,6 @@
 ---
 order: 15
+version: 22.2.0
 title:
   zh-CN: 自定义清除图标
   en-US: Custom clear icon

@@ -256,4 +256,4 @@ this.dataSet = [
 this.dataSet = this.dataSet.filter(d => d.key !== i);
 ```
 
-开发者也可以使用 [immer](https://immerjs.github.io/immer/docs/introduction) 获得更好的操作体验。
+开发者也可以使用 [immer](https://immerjs.github.io/immer/) 获得更好的操作体验。

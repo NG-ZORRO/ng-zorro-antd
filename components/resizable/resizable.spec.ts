@@ -714,7 +714,7 @@ function touchMoveTrigger(el: HTMLElement, from: { x: number; y: number }, to: {
 }
 
 function afterNextFrameRender(): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, 16));
+  return new Promise(resolve => requestAnimationFrame(() => resolve()));
 }
 
 @Component({

@@ -178,6 +178,8 @@ export interface NzCountConfig {
 })
 export class NzInputWrapperComponent {
   private readonly focusMonitor = inject(FocusMonitor);
+  /** Host element, used e.g. by `nz-autocomplete` to align its panel with the whole wrapper. */
+  readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
   protected readonly inputPasswordDir = inject(NzInputPasswordDirective, { self: true, optional: true });
   protected readonly inputSearchDir = inject(NzInputSearchDirective, { self: true, optional: true });

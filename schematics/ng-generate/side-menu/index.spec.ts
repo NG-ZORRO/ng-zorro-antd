@@ -28,7 +28,7 @@ describe('[schematic] side-menu', () => {
     const options = { ...defaultOptions };
     const tree = await runner.runSchematic('sidemenu', options, appTree);
     const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.ts');
-    const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts');
+    const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.ts');
     expect(appContent).toContain('standalone: false');
     expect(welcomeContent).toContain('standalone: false');
 
@@ -40,9 +40,9 @@ describe('[schematic] side-menu', () => {
         '/projects/ng-zorro/src/app/app-routing-module.ts',
         '/projects/ng-zorro/src/app/pages/welcome/welcome-module.ts',
         '/projects/ng-zorro/src/app/pages/welcome/welcome-routing-module.ts',
-        '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts',
-        '/projects/ng-zorro/src/app/pages/welcome/welcome.component.css',
-        '/projects/ng-zorro/src/app/pages/welcome/welcome.component.html'
+        '/projects/ng-zorro/src/app/pages/welcome/welcome.ts',
+        '/projects/ng-zorro/src/app/pages/welcome/welcome.css',
+        '/projects/ng-zorro/src/app/pages/welcome/welcome.html'
       ])
     );
   });
@@ -52,14 +52,14 @@ describe('[schematic] side-menu', () => {
       const options = { ...defaultOptions, style: Style.Less };
       const tree = await runner.runSchematic('sidemenu', options, appTree);
       const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.ts');
-      const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts');
+      const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.ts');
       expect(appContent).toContain('app.less');
-      expect(welcomeContent).toContain('welcome.component.less');
+      expect(welcomeContent).toContain('welcome.less');
 
       expect(tree.files).toEqual(
         expect.arrayContaining([
           '/projects/ng-zorro/src/app/app.less',
-          '/projects/ng-zorro/src/app/pages/welcome/welcome.component.less'
+          '/projects/ng-zorro/src/app/pages/welcome/welcome.less'
         ])
       );
     });
@@ -72,7 +72,7 @@ describe('[schematic] side-menu', () => {
       expect(tree.files).toEqual(
         expect.arrayContaining([
           '/projects/ng-zorro/src/app/app.less',
-          '/projects/ng-zorro/src/app/pages/welcome/welcome.component.less'
+          '/projects/ng-zorro/src/app/pages/welcome/welcome.less'
         ])
       );
     });
@@ -82,7 +82,7 @@ describe('[schematic] side-menu', () => {
     const options = { ...defaultOptions, prefix: 'nz' };
     const tree = await runner.runSchematic('sidemenu', options, appTree);
     const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.ts');
-    const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts');
+    const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.ts');
 
     expect(appContent).toContain(`selector: 'nz-root'`);
     expect(welcomeContent).toContain(`selector: 'nz-welcome'`);

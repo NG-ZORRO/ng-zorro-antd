@@ -2179,10 +2179,9 @@ describe('cascader', () => {
     it('should nzLoadData work when specifies default value', async () => {
       vi.spyOn(testComponent, 'addCallTimes').mockImplementation(() => {});
       testComponent.values.set(['zhejiang', 'hangzhou', 'xihu']);
-      await sleep(LAZY_LOAD_DELAY * 3 + 16);
       fixture.detectChanges();
+      await vi.waitFor(() => expect(testComponent.cascader.cascaderService.columns.length).toBe(3));
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(3);
-      expect(testComponent.cascader.cascaderService.columns.length).toBe(3);
       expect(testComponent.values()).toEqual(['zhejiang', 'hangzhou', 'xihu']);
     });
 

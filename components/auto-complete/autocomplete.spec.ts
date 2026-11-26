@@ -34,7 +34,7 @@ import {
   typeInElement
 } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzInputModule, NzInputWrapperComponent } from 'ng-zorro-antd/input';
 
 import {
   NzAutocompleteComponent,
@@ -164,6 +164,34 @@ describe('auto-complete', () => {
       expect(fixture.componentInstance.trigger.panelOpen).toBe(false);
       // With native animations, the overlay is detached immediately when NoopAnimations is used
       // The important check is that the panel state is closed, not the DOM cleanup timing
+    });
+
+    it('should dispose the overlay when the leave animation completes after the panel closes', () => {
+      const trigger = fixture.componentInstance.trigger;
+      trigger.openPanel();
+      fixture.detectChanges();
+
+      trigger.closePanel();
+      const animationComplete = vi.fn();
+      trigger.nzAutocomplete.animationStateChange.emit({ animationComplete } as never);
+
+      expect(trigger['overlayRef']).toBeNull();
+      expect(animationComplete).toHaveBeenCalled();
+    });
+
+    it('should not dispose the overlay when a stale leave animation completes after the panel reopens', () => {
+      const trigger = fixture.componentInstance.trigger;
+      trigger.openPanel();
+      fixture.detectChanges();
+
+      const overlayRef = trigger['overlayRef']!;
+      trigger.closePanel();
+      trigger.openPanel();
+      trigger.nzAutocomplete.animationStateChange.emit({ animationComplete: vi.fn() } as never);
+
+      expect(trigger.panelOpen).toBe(true);
+      expect(trigger['overlayRef']).toBe(overlayRef);
+      expect(overlayRef.hasAttached()).toBe(true);
     });
 
     it('should close the panel when the user clicks away', () => {
@@ -889,6 +917,19 @@ describe('auto-complete', () => {
       expect(componentInstance.trigger['getConnectedElement']()).toBe(componentInstance.origin.elementRef);
       const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
       expect(Math.ceil(parseFloat(overlayPane.style.width))).toBe(320);
+    });
+
+    it('should align the dropdown with the input-wrapper by default', () => {
+      const componentInstance = fixture.componentInstance;
+      const wrapper = fixture.debugElement.query(By.directive(NzInputWrapperComponent)).nativeElement as HTMLElement;
+      vi.spyOn(wrapper, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 0, 360, 32));
+
+      componentInstance.trigger.openPanel();
+      fixture.detectChanges();
+
+      expect(componentInstance.trigger['getConnectedElement']().nativeElement).toBe(wrapper);
+      const overlayPane = overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement;
+      expect(Math.ceil(parseFloat(overlayPane.style.width))).toBe(360);
     });
   });
 });

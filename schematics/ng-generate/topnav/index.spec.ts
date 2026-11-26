@@ -37,9 +37,9 @@ describe('[schematic] top-nav', () => {
         '/projects/ng-zorro/src/app/app-routing-module.ts',
         '/projects/ng-zorro/src/app/pages/welcome/welcome-module.ts',
         '/projects/ng-zorro/src/app/pages/welcome/welcome-routing-module.ts',
-        '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts',
-        '/projects/ng-zorro/src/app/pages/welcome/welcome.component.css',
-        '/projects/ng-zorro/src/app/pages/welcome/welcome.component.html'
+        '/projects/ng-zorro/src/app/pages/welcome/welcome.ts',
+        '/projects/ng-zorro/src/app/pages/welcome/welcome.css',
+        '/projects/ng-zorro/src/app/pages/welcome/welcome.html'
       ])
     );
   });
@@ -49,15 +49,15 @@ describe('[schematic] top-nav', () => {
     const tree = await runner.runSchematic('topnav', options, appTree);
     const files = tree.files;
     const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.ts');
-    const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts');
+    const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.ts');
 
     expect(appContent).toContain('app.less');
-    expect(welcomeContent).toContain('welcome.component.less');
+    expect(welcomeContent).toContain('welcome.less');
 
     expect(files).toEqual(
       expect.arrayContaining([
         '/projects/ng-zorro/src/app/app.less',
-        '/projects/ng-zorro/src/app/pages/welcome/welcome.component.less'
+        '/projects/ng-zorro/src/app/pages/welcome/welcome.less'
       ])
     );
   });
@@ -66,7 +66,7 @@ describe('[schematic] top-nav', () => {
     const options = {...defaultOptions, prefix: 'nz'};
     const tree = await runner.runSchematic('topnav', options, appTree);
     const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.ts');
-    const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts');
+    const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.ts');
 
     expect(appContent).toContain(`selector: 'nz-root'`);
     expect(welcomeContent).toContain(`selector: 'nz-welcome'`);
@@ -75,7 +75,7 @@ describe('[schematic] top-nav', () => {
   it('should set standalone to be false', async () => {
     const tree = await runner.runSchematic('topnav', defaultOptions, appTree);
     const appContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.ts');
-    const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts');
+    const welcomeContent = getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.ts');
 
     expect(appContent).toContain('standalone: false');
     expect(welcomeContent).toContain('standalone: false');
