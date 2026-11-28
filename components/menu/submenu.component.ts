@@ -265,15 +265,12 @@ export class NzSubMenuComponent implements OnInit, AfterContentInit, OnChanges {
 
   ngAfterContentInit(): void {
     this.setTriggerWidth();
-    const listOfNzMenuItemDirective = this.listOfNzMenuItemDirective;
-    const changes = listOfNzMenuItemDirective!.changes;
-    const mergedObservable = merge(changes, ...listOfNzMenuItemDirective!.map(menu => menu.selected$));
-    changes
+    const listOfNzMenuItemDirective = this.listOfNzMenuItemDirective!;
+    listOfNzMenuItemDirective.changes
       .pipe(
         startWith(listOfNzMenuItemDirective),
-        switchMap(() => mergedObservable),
-        startWith(true),
-        map(() => listOfNzMenuItemDirective!.some(e => e.nzSelected)),
+        switchMap(() => merge(...listOfNzMenuItemDirective.map(menu => menu.selected$)).pipe(startWith(true))),
+        map(() => listOfNzMenuItemDirective.some(e => e.nzSelected)),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(selected => {
