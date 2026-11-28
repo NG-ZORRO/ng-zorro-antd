@@ -15,6 +15,7 @@ import {
   ViewEncapsulation,
   booleanAttribute,
   inject,
+  input,
   DestroyRef,
   ChangeDetectorRef
 } from '@angular/core';
@@ -63,6 +64,7 @@ export class NzMenuItemComponent implements OnInit, OnChanges, AfterContentInit 
   level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
   selected$ = new Subject<boolean>();
   inlinePaddingLeft: number | null = null;
+  readonly nzKey = input<string>();
   @Input({ transform: numberAttributeWithZeroFallback }) nzPaddingLeft?: number;
   @Input({ transform: booleanAttribute }) nzDisabled = false;
   @Input({ transform: booleanAttribute }) nzSelected = false;

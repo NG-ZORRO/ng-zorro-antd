@@ -614,6 +614,62 @@ describe('menu', () => {
         );
       });
     });
+
+    describe('selected keys', () => {
+      let fixture: ComponentFixture<NzTestMenuSelectedKeysComponent>;
+      let items: HTMLElement[];
+
+      beforeEach(() => {
+        fixture = TestBed.createComponent(NzTestMenuSelectedKeysComponent);
+        fixture.detectChanges();
+        items = fixture.debugElement.queryAll(By.directive(NzMenuItemComponent)).map(item => item.nativeElement);
+      });
+
+      it('should select items matching nzSelectedKeys', () => {
+        expect(items.map(item => item.classList.contains('ant-menu-item-selected'))).toEqual([true, false, false]);
+        expect(fixture.nativeElement.querySelector('.ant-menu-submenu').classList).not.toContain(
+          'ant-menu-submenu-selected'
+        );
+      });
+
+      it('should update selected items when nzSelectedKeys changes', () => {
+        fixture.componentInstance.selectedKeys.set(['2', '3']);
+        fixture.detectChanges();
+        expect(items.map(item => item.classList.contains('ant-menu-item-selected'))).toEqual([false, true, true]);
+        expect(fixture.nativeElement.querySelector('.ant-menu-submenu').classList).toContain(
+          'ant-menu-submenu-selected'
+        );
+      });
+
+      it('should sync submenu selection with a dynamically added item', () => {
+        const submenu = fixture.nativeElement.querySelector('.ant-menu-submenu');
+        fixture.componentInstance.showDynamicItem.set(true);
+        fixture.detectChanges();
+
+        fixture.componentInstance.selectedKeys.set(['4']);
+        fixture.detectChanges();
+        expect(submenu.classList).toContain('ant-menu-submenu-selected');
+
+        fixture.componentInstance.selectedKeys.set([]);
+        fixture.detectChanges();
+        expect(submenu.classList).not.toContain('ant-menu-submenu-selected');
+      });
+    });
+
+    describe('empty selected key', () => {
+      it('should only select the item keyed with an empty string', () => {
+        const fixture = TestBed.createComponent(NzTestMenuEmptySelectedKeyComponent);
+        fixture.detectChanges();
+        const items: HTMLElement[] = fixture.debugElement
+          .queryAll(By.directive(NzMenuItemComponent))
+          .map(item => item.nativeElement);
+        expect(items.map(item => item.classList.contains('ant-menu-item-selected'))).toEqual([true, false]);
+
+        fixture.componentInstance.selectedKeys.set([]);
+        fixture.detectChanges();
+        expect(items.map(item => item.classList.contains('ant-menu-item-selected'))).toEqual([false, false]);
+      });
+    });
   });
 
   describe('RTL', () => {
@@ -861,6 +917,41 @@ export class NzTestBasicMenuInlineComponent {}
   `
 })
 export class NzTestSubMenuSelectedComponent {}
+
+@Component({
+  imports: [NzMenuModule],
+  template: `
+    <ul nz-menu nzMode="inline" [nzSelectedKeys]="selectedKeys()">
+      <li nz-menu-item nzKey="1">Option 1</li>
+      <li nz-menu-item nzKey="2">Option 2</li>
+      <li nz-submenu nzTitle="Submenu">
+        <ul>
+          <li nz-menu-item nzKey="3">Option 3</li>
+          @if (showDynamicItem()) {
+            <li nz-menu-item nzKey="4">Option 4</li>
+          }
+        </ul>
+      </li>
+    </ul>
+  `
+})
+export class NzTestMenuSelectedKeysComponent {
+  readonly selectedKeys = signal(['1']);
+  readonly showDynamicItem = signal(false);
+}
+
+@Component({
+  imports: [NzMenuModule],
+  template: `
+    <ul nz-menu [nzSelectedKeys]="selectedKeys()">
+      <li nz-menu-item nzKey="">Empty key</li>
+      <li nz-menu-item>Unkeyed</li>
+    </ul>
+  `
+})
+export class NzTestMenuEmptySelectedKeyComponent {
+  readonly selectedKeys = signal(['']);
+}
 
 @Component({
   imports: [NzButtonModule, NzIconModule, NzMenuModule],

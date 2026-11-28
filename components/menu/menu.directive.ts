@@ -8,6 +8,7 @@ import {
   AfterContentInit,
   ChangeDetectorRef,
   ContentChildren,
+  DestroyRef,
   Directive,
   EventEmitter,
   Input,
@@ -17,8 +18,10 @@ import {
   QueryList,
   SimpleChanges,
   booleanAttribute,
+  contentChildren,
+  effect,
   inject,
-  DestroyRef
+  input
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, combineLatest } from 'rxjs';
@@ -86,8 +89,7 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges {
   protected readonly dir = inject(Directionality).valueSignal;
   protected readonly isMenuInsideDropdown = inject(NzIsMenuInsideDropdownToken);
 
-  @ContentChildren(NzMenuItemComponent, { descendants: true })
-  listOfNzMenuItemDirective!: QueryList<NzMenuItemComponent>;
+  readonly listOfNzMenuItemDirective = contentChildren(NzMenuItemComponent, { descendants: true });
   @ContentChildren(NzSubMenuComponent, { descendants: true }) listOfNzSubMenuComponent!: QueryList<NzSubMenuComponent>;
   @Input() nzInlineIndent = 24;
   @Input() nzTheme: NzMenuThemeType = 'light';
@@ -96,10 +98,27 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges {
   @Input({ transform: booleanAttribute }) nzSelectable = !this.isMenuInsideDropdown;
   @Output() readonly nzClick = new EventEmitter<NzMenuItemComponent>();
 
+  readonly nzSelectedKeys = input<string[]>();
+
   actualMode: NzMenuModeType = 'vertical';
   private inlineCollapsed$ = new BehaviorSubject<boolean>(this.nzInlineCollapsed);
   private mode$ = new BehaviorSubject<NzMenuModeType>(this.nzMode);
   private listOfOpenedNzSubMenuComponent: NzSubMenuComponent[] = [];
+
+  constructor() {
+    effect(() => {
+      const keys = this.nzSelectedKeys();
+      if (keys) {
+        this.listOfNzMenuItemDirective().forEach(item => {
+          const itemKey = item.nzKey();
+          if (itemKey !== undefined) {
+            item.setSelectedState(keys.includes(itemKey));
+          }
+        });
+        this.cdr.markForCheck();
+      }
+    });
+  }
 
   setInlineCollapsed(inlineCollapsed: boolean): void {
     this.nzInlineCollapsed = inlineCollapsed;
@@ -107,7 +126,7 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges {
   }
 
   updateInlineCollapse(): void {
-    if (this.listOfNzMenuItemDirective) {
+    if (this.listOfNzSubMenuComponent) {
       if (this.nzInlineCollapsed) {
         this.listOfOpenedNzSubMenuComponent = this.listOfNzSubMenuComponent.filter(submenu => submenu.nzOpen);
         this.listOfNzSubMenuComponent.forEach(submenu => submenu.setOpenStateWithoutDebounce(false));
@@ -129,7 +148,7 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges {
     this.nzMenuService.descendantMenuItemClick$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(menu => {
       this.nzClick.emit(menu);
       if (this.nzSelectable && !menu.nzMatchRouter) {
-        this.listOfNzMenuItemDirective.forEach(item => item.setSelectedState(item === menu));
+        this.listOfNzMenuItemDirective().forEach(item => item.setSelectedState(item === menu));
       }
     });
   }

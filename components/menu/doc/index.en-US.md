@@ -39,6 +39,7 @@ More layouts with navigation: [layout](/components/layout/en).
 | `[nzInlineIndent]`    | indent px of `inline` menu item on each level                                 | `number`                                 | `24`          |
 | `[nzMode]`            | type of the menu; `vertical`、 `horizontal`, and `inline` modes are supported | `'vertical' \| 'horizontal' \| 'inline'` | `'vertical'`  |
 | `[nzSelectable]`      | allow selecting menu items                                                    | `boolean`                                | `true`        |
+| `[nzSelectedKeys]`    | keys of the selected menu items, matched against `nzKey`                      | `string[]`                               | -             |
 | `[nzTheme]`           | color theme of the menu                                                       | `'light' \| 'dark'`                      | `'light'`     |
 | `(nzClick)`           | the Output when click `nz-menu-item` inside nz-menu                           | `EventEmitter<NzMenuItemComponent>`      |               |
 
@@ -48,6 +49,7 @@ More layouts with navigation: [layout](/components/layout/en).
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- | ------------- |
 | `[nzDisabled]`         | whether menu item is disabled or not                                                                                                                         | `boolean` | `false`       |
 | `[nzSelected]`         | whether menu item is selected or not                                                                                                                         | `boolean` | `false`       |
+| `[nzKey]`              | unique key of the menu item, used by `nzSelectedKeys`                                                                                                        | `string`  | -             |
 | `[nzMatchRouter]`      | whether auto set `nzSelected` according to [routerLink](https://www.angular.io/api/router/RouterLink)                                                        | `boolean` | `false`       |
 | `[nzMatchRouterExact]` | only match when the url matches the link exactly, same as [routerLinkActiveOptions](https://angular.dev/api/router/RouterLinkActive#routerLinkActiveOptions) | `boolean` | `false`       |
 | `[nzDanger]`           | display the danger style                                                                                                                                     | `boolean` | `false`       |

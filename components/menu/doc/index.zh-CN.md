@@ -38,6 +38,7 @@ description: 为页面和功能提供导航的菜单列表。
 | `[nzInlineIndent]`    | `inline` 模式的菜单缩进宽度                  | `number`                                 | `24`         |
 | `[nzMode]`            | 菜单类型，现在支持垂直、水平、和内嵌模式三种 | `'vertical' \| 'horizontal' \| 'inline'` | `'vertical'` |
 | `[nzSelectable]`      | 是否允许选中                                 | `boolean`                                | `true`       |
+| `[nzSelectedKeys]`    | 当前选中的菜单项 key 数组，与 `nzKey` 匹配   | `string[]`                               | -            |
 | `[nzTheme]`           | 主题颜色                                     | `'light' \| 'dark'`                      | `'light'`    |
 | `(nzClick)`           | 点击 `nz-menu-item` 输出属性                 | `EventEmitter<NzMenuItemComponent>`      |              |
 
@@ -47,6 +48,7 @@ description: 为页面和功能提供导航的菜单列表。
 | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------- | --------- | ------- |
 | `[nzDisabled]`         | 是否禁用                                                                                                                     | `boolean` | `false` |
 | `[nzSelected]`         | 是否被选中                                                                                                                   | `boolean` | `false` |
+| `[nzKey]`              | 菜单项的唯一标识，用于 `nzSelectedKeys`                                                                                      | `string`  | -       |
 | `[nzMatchRouter]`      | 是否根据 [routerLink](https://www.angular.cn/api/router/RouterLink) 自动设定 `nzSelected`                                    | `boolean` | `false` |
 | `[nzMatchRouterExact]` | 是否路由完整精确匹配, 详见 [routerLinkActiveOptions](https://angular.cn/api/router/RouterLinkActive#routerLinkActiveOptions) | `boolean` | `false` |
 | `[nzDanger]`           | 展示错误状态样式                                                                                                             | `boolean` | `false` |
