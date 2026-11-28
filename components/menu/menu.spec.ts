@@ -614,6 +614,33 @@ describe('menu', () => {
         );
       });
     });
+
+    describe('selected keys', () => {
+      let fixture: ComponentFixture<NzTestMenuSelectedKeysComponent>;
+      let items: HTMLElement[];
+
+      beforeEach(() => {
+        fixture = TestBed.createComponent(NzTestMenuSelectedKeysComponent);
+        fixture.detectChanges();
+        items = fixture.debugElement.queryAll(By.directive(NzMenuItemComponent)).map(item => item.nativeElement);
+      });
+
+      it('should select items matching nzSelectedKeys', () => {
+        expect(items.map(item => item.classList.contains('ant-menu-item-selected'))).toEqual([true, false, false]);
+        expect(fixture.nativeElement.querySelector('.ant-menu-submenu').classList).not.toContain(
+          'ant-menu-submenu-selected'
+        );
+      });
+
+      it('should update selected items when nzSelectedKeys changes', () => {
+        fixture.componentInstance.selectedKeys.set(['2', '3']);
+        fixture.detectChanges();
+        expect(items.map(item => item.classList.contains('ant-menu-item-selected'))).toEqual([false, true, true]);
+        expect(fixture.nativeElement.querySelector('.ant-menu-submenu').classList).toContain(
+          'ant-menu-submenu-selected'
+        );
+      });
+    });
   });
 
   describe('RTL', () => {
@@ -861,6 +888,24 @@ export class NzTestBasicMenuInlineComponent {}
   `
 })
 export class NzTestSubMenuSelectedComponent {}
+
+@Component({
+  imports: [NzMenuModule],
+  template: `
+    <ul nz-menu nzMode="inline" [nzSelectedKeys]="selectedKeys()">
+      <li nz-menu-item nzKey="1">Option 1</li>
+      <li nz-menu-item nzKey="2">Option 2</li>
+      <li nz-submenu nzTitle="Submenu">
+        <ul>
+          <li nz-menu-item nzKey="3">Option 3</li>
+        </ul>
+      </li>
+    </ul>
+  `
+})
+export class NzTestMenuSelectedKeysComponent {
+  readonly selectedKeys = signal(['1']);
+}
 
 @Component({
   imports: [NzButtonModule, NzIconModule, NzMenuModule],
